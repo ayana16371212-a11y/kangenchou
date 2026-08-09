@@ -1619,6 +1619,7 @@
       クレカから残高へ「経由」させて還元を重ねるルートです。合計還元率が高い順に並べています。
       各社の規約変更で塞がれることが多いので、実行前に必ず最新情報を確認してください。
     </div>
+    <div class="category-chip-row" id="routeChipRow"></div>
     <div id="routeList"></div>
   </div>
 
@@ -2361,43 +2362,44 @@ const CATEGORY_LIST = [
 // localStorage → この初期値、の順で読み込む。
 const DEFAULT_PICKS = [
   {
-    name: "VポイントPay ポイント優先払いで10%還元",
-    rate: "10%還元",
-    period: "8/1〜8/31",
-    expires: "2026-08-31",
-    how: [
-      "キャンペーンサイトからエントリーする",
-      "VポイントPayで「ポイントで支払う」をONにする",
-      "Visaのタッチ決済対応店で、スマホのタッチ決済を合計500円（税込）以上使う",
+    "name": "VポイントPay ポイント優先払いで10%還元",
+    "rate": "10%還元",
+    "period": "8/1〜8/31",
+    "expires": "2026-08-31",
+    "how": [
+      "キャンペーンページからエントリーする",
+      "VポイントPayアプリとVポイントを連携（ID連携）する",
+      "アプリで「ポイントで支払う」をONにする",
+      "店頭で「Visaで」または「クレジットカードで」と伝え、スマホのタッチ決済で合計500円（税込）以上使う"
     ],
-    note: "上限500ポイント（＝5,000円分の利用で上限に達する）。ポイント付与は2026年11月末頃の予定。貯まっているVポイントを消化しながら10%上乗せで受け取れるため、ポイント残高がある人は今月これを最優先にする価値がある。［確認日: 2026-08-09］",
-    url: "https://www.smbc-card.com/camp/vcoupon/index.jsp"
+    "note": "上限500ポイント（＝5,000円分の利用で上限）。付与は2026年11月末頃、本会員1人につき1回まで。【対象外に注意】iD払いは対象外で、セルフレジで「Apple Pay」ボタンを選ぶとiDになってしまうため、必ず「クレジットカード」を選ぶこと。バーコード決済アプリ経由・ネットショッピング・配達サービスも対象外。原則1万円を超えるとタッチ決済自体ができない場合がある。Oliveの「ポイント払いモード」でのスマホタッチ決済も対象。［確認日: 2026-08-09／出典: 三井住友カード公式・Vポイントサイト］",
+    "url": "https://www.smbc-card.com/mem/cardinfo/26/cardinfo7244745.jsp"
   },
   {
-    name: "Vクーポン 複数ショップ利用で最大500ポイント",
-    rate: "最大500pt上乗せ",
-    period: "8/1〜9/30",
-    expires: "2026-09-30",
-    how: [
+    "name": "Vクーポン 複数ショップ利用で最大500ポイント",
+    "rate": "最大500pt上乗せ",
+    "period": "8/1〜9/30",
+    "expires": "2026-09-30",
+    "how": [
       "キャンペーンにエントリーする",
-      "Vクーポンを複数の対象ショップで使う",
+      "Vクーポンを複数の対象ショップで使う"
     ],
-    note: "下の店舗別Vクーポンと併用できる、いわば「はしご」ボーナス。1店舗で終わらせず複数店で使うほど有利になる。［確認日: 2026-08-09］",
-    url: "https://www.smbc-card.com/camp/vcoupon/index.jsp"
+    "note": "下の店舗別Vクーポンと併用できる、いわば「はしご」ボーナス。1店舗で終わらせず複数店で使うほど有利になる。［確認日: 2026-08-09］",
+    "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
   },
   {
-    name: "夏のクーポン祭り（Vクーポン × Vポイントアプリ）",
-    rate: "2種類のクーポンを重ね取り",
-    period: "8/1〜9/30",
-    expires: "2026-09-30",
-    how: [
+    "name": "夏のクーポン祭り（Vクーポン × Vポイントアプリ）",
+    "rate": "2種類のクーポンを重ね取り",
+    "period": "8/1〜9/30",
+    "expires": "2026-09-30",
+    "how": [
       "三井住友カードの「Vクーポン」を事前に獲得しておく",
       "Vポイントアプリの「Vカードクーポン」もセットしておく",
-      "会計時にモバイルVカードを提示し、そのうえで三井住友カードで決済する",
+      "会計時にモバイルVカードを提示し、そのうえで三井住友カードで決済する"
     ],
-    note: "提示と決済で別々のクーポンが効くため、両方セットしておくと特典が重なる。Vポイントアプリを初めて使う人／久しぶりの人には30ptがもらえるクーポンも配信中。［確認日: 2026-08-09］",
-    url: "https://www.smbc-card.com/camp/vcoupon/index.jsp"
-  },
+    "note": "提示と決済で別々のクーポンが効くため、両方セットしておくと特典が重なる。Vポイントアプリを初めて使う人／久しぶりの人には30ptがもらえるクーポンも配信中。［確認日: 2026-08-09］",
+    "url": "https://www.vpoint.net/scm1"
+  }
 ];
 
 // ---------- 今月の優先決済：読み込みと保存 ----------
@@ -2500,6 +2502,7 @@ const INVEST_PLANS = [
 const CHARGE_ROUTES = [
   {
     name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
+    pays: ["楽天ペイ", "ANA Pay", "楽天Edy"],
     total: "合計 約2.5%",
     steps: ["対象クレカ", "ANA Pay", "楽天Edy", "楽天キャッシュ", "楽天ペイで支払い"],
     gains: [
@@ -2514,6 +2517,7 @@ const CHARGE_ROUTES = [
   },
   {
     name: "クレカ → VポイントPay",
+    pays: ["VポイントPay"],
     total: "合計 約1.5%",
     steps: ["Visa/Mastercardのクレカ", "VポイントPay", "Visaタッチで支払い"],
     gains: [
@@ -2527,6 +2531,7 @@ const CHARGE_ROUTES = [
   },
   {
     name: "Revolut 経由（三井住友カードの代替ルート）",
+    pays: ["Revolut", "ANA Pay"],
     total: "経由用（還元はクレカ側のみ）",
     steps: ["Mastercardのクレカ", "Revolut", "ANA Pay など"],
     gains: ["クレカのチャージ還元のみ（Revolut自体の付与はなし）"],
@@ -2536,6 +2541,7 @@ const CHARGE_ROUTES = [
   },
   {
     name: "JALカードSuica → ANA Pay（二刀流）",
+    pays: ["楽天ペイ", "ANA Pay", "Suica"],
     total: "JAL 1.0% ＋ ANA 0.5% ＋ 楽天 1.5%",
     steps: ["JALカードSuica", "ANA Pay", "楽天Edy", "楽天キャッシュ", "楽天ペイ"],
     gains: [
@@ -2943,11 +2949,11 @@ const DEFAULT_STORES = [
       },
       {
         "name": "dPOINT（来店回数キャンペーン）",
-        "rate": "来店回数に応じて最大10倍（不定率）",
+        "rate": "最大10倍（来店5回で）",
         "method": "dポイント提示",
-        "note": "1回2倍→2回5倍→3回6倍→4回7倍→5回10倍と、来店回数が増えるほど倍率アップ。dポイントカード提示で貯まる通常ポイントが対象で、株主優待での支払い分はポイント対象外。要エントリー。［確認日: 2026-08-09／出典: dポイントクラブ公式］",
+        "note": "来店1回で2倍、2回5倍、3回6倍、4回7倍、5回10倍と段階的にアップ。来店回数のカウントは1日最大1回まで、対象は5回まで。進呈上限は1,000ポイント（期間・用途限定）。要エントリーで、会計時にdポイントカードの提示が必要。株主優待での支払い分はポイント対象外。［確認日: 2026-08-09／出典: かっぱ寿司公式・カッパクリエイト発表］",
         "expires": "2026-08-31",
-        "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+        "url": "https://www.kappasushi.jp/campaign_list/"
       }
     ]
   },
@@ -5096,10 +5102,39 @@ function renderCampaigns(){
   });
 }
 
+let routeFilter = "all";
+
+// ルートに紐づく決済手段でチップを作る。「楽天ペイならどのルート？」を引けるようにする。
+function renderRouteChips(){
+  const row = document.getElementById("routeChipRow");
+  if(!row) return;
+  const counts = {};
+  CHARGE_ROUTES.forEach(r => (r.pays || []).forEach(p => counts[p] = (counts[p]||0)+1));
+
+  row.innerHTML = "";
+  const mk = (key, label, count) => {
+    const b = document.createElement("button");
+    b.className = "category-chip" + (routeFilter === key ? " active" : "");
+    b.innerHTML = `${label} <span class="chip-count">${count}</span>`;
+    b.addEventListener("click", ()=>{ routeFilter = key; renderRoutes(); });
+    row.appendChild(b);
+  };
+  mk("all", "すべて", CHARGE_ROUTES.length);
+  Object.keys(counts).sort((a,b)=> counts[b]-counts[a]).forEach(p => mk(p, p, counts[p]));
+}
+
 function renderRoutes(){
+  renderRouteChips();
   const list = document.getElementById("routeList");
   list.innerHTML = "";
-  CHARGE_ROUTES.forEach(r => {
+  const shown = CHARGE_ROUTES.filter(r =>
+    routeFilter === "all" || (r.pays || []).includes(routeFilter));
+
+  if(shown.length === 0){
+    list.innerHTML = `<div class="store-empty-note">該当するルートがありません。</div>`;
+    return;
+  }
+  shown.forEach(r => {
     const el = document.createElement("div");
     el.className = "route-card";
     const chain = r.steps.map((s, i) =>
