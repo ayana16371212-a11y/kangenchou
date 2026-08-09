@@ -287,7 +287,7 @@
         "method": "dポイント提示",
         "note": "1回2倍→5回目10倍と回数が増えるほど倍率アップ。7/1〜8/31限定。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
         "expires": "2026-08-31",
-        "url": "https://dpoint.docomo.ne.jp/"
+        "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
       }
     ]
   },
@@ -456,7 +456,7 @@
         "method": "au PAY支払い",
         "note": "持ち帰りネット注文5000円以上、1回550ポイント・期間中2回まで。7/22〜8/16の期間限定キャンペーン。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
         "expires": "2026-08-16",
-        "url": "https://aupay.wallet.auone.jp/"
+        "url": "https://aupay.wallet.auone.jp/campaign/"
       }
     ]
   },
