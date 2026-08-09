@@ -369,6 +369,82 @@
   }
   .theme-btn:hover{ color: var(--text); border-color: var(--dim); }
 
+  /* ===== affiliate links ===== */
+  .link-row{ display: flex; gap: 7px; flex-wrap: wrap; margin-top: 9px; }
+  .link-row .src-link{ margin-top: 0; }
+  .apply-link{
+    border-color: transparent;
+    background: var(--foil);
+    color: var(--on-foil);
+  }
+  .apply-link:hover{
+    filter: brightness(1.08);
+    border-color: transparent;
+    background: var(--foil);
+    color: var(--on-foil);
+  }
+  .aff-list{ max-height: 46vh; overflow-y: auto; padding-right: 3px; }
+  .aff-row{ margin-bottom: 12px; }
+  .aff-name{
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .aff-input{
+    width: 100%;
+    padding: 8px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    outline: none;
+  }
+  .aff-input:focus{ border-color: var(--foil-2); }
+
+  /* ===== credit-card investing ===== */
+  .invest-calc{
+    padding: 12px 15px;
+    margin-bottom: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .route-card.is-top{ border-color: var(--foil-2); }
+  .invest-result{
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 12px 14px;
+    margin-bottom: 11px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+  }
+  .invest-result-item{ display: flex; flex-direction: column; gap: 2px; }
+  .invest-result-label{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: .08em;
+    color: var(--dim);
+  }
+  .invest-result-val{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .invest-result-val.big{
+    font-size: 19px;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .invest-result-val.sub{ font-size: 11.5px; font-weight: 600; color: var(--muted); }
+
   /* ===== charge routes ===== */
   .route-card{
     position: relative;
@@ -1142,6 +1218,10 @@
     line-height: 1.55;
     color: var(--muted);
   }
+  .route-tag{
+    color: var(--foil-3) !important;
+    background: color-mix(in srgb, var(--foil-3) 16%, transparent) !important;
+  }
   .universal-tag{
     flex-shrink: 0;
     padding: 2px 7px;
@@ -1172,6 +1252,16 @@
     text-decoration: none;
     transition: all .15s ease;
   }
+  /* ブランド見出しの中に置くときは、行内に収まるよう調整する */
+  .brand-link{
+    margin-top: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+    background: rgba(255,255,255,.08);
+    border-color: transparent;
+  }
+  .brand-link:hover{ background: rgba(255,255,255,.16); }
+
   .src-link:hover{
     border-color: var(--foil-2);
     color: var(--foil-2);
@@ -1298,6 +1388,18 @@
     color: var(--dim);
   }
 
+  .ad-disclosure{
+    display: inline-block;
+    padding: 6px 13px;
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
   footer.colophon{
     margin-top: 40px;
     padding-top: 16px;
@@ -1337,6 +1439,7 @@
     <button class="mode-btn" data-mode="apps">決済アプリ別特典</button>
     <button class="mode-btn" data-mode="campaigns">今月のキャンペーン</button>
     <button class="mode-btn" data-mode="routes">チャージルート</button>
+    <button class="mode-btn" data-mode="invest">クレカ積立</button>
   </div>
 
   <div class="mode-panel" id="panel-apps">
@@ -1382,6 +1485,7 @@
       <button id="editModeBtn" class="edit-toggle-btn">✏️ 編集モード</button>
       <button id="addStoreBtn" class="add-store-btn">＋ 新しいお店を追加</button>
       <button id="aiImportBtn" class="add-store-btn ai-btn">✨ リンクから取り込む</button>
+      <button id="affiliateBtn" class="add-store-btn">🔗 紹介リンク管理</button>
       <button id="githubSettingsBtn" class="edit-toggle-btn" style="margin-left:auto;">🔗 GitHub連携</button>
     </div>
     
@@ -1412,6 +1516,22 @@
     <div style="margin-top:18px;">
       <button id="resetStoresBtn" style="background:none;border:none;color:#9a8f6f;font-size:11px;text-decoration:underline;cursor:pointer;padding:0;">初期データにリセット</button>
     </div>
+  </div>
+
+  <div class="mode-panel" id="panel-invest">
+    <div class="campaign-intro">
+      証券口座の積立をクレカ払いにすると、積立額に対してポイントが貯まります。
+      新NISAのつみたて投資枠は月10万円まで、クレカ積立の上限も月10万円なので、枠すべてを対象にできます。
+      還元率が高い順に並べています。
+    </div>
+    <div class="invest-calc">
+      <span class="mypanel-label">毎月の積立額</span>
+      <div class="amount-input-wrap">
+        <input id="investAmount" type="number" inputmode="numeric" value="50000" min="0" max="100000" step="10000">
+        <span class="amount-yen">円 / 月</span>
+      </div>
+    </div>
+    <div id="investList"></div>
   </div>
 
   <div class="mode-panel" id="panel-routes">
@@ -1454,59 +1574,523 @@
     <div class="modal-box" id="modalBox"></div>
   </div>
 
-  <footer class="colophon">還元率・条件は変更される場合があります。利用前に各社公式ページでご確認ください。</footer>
+  <footer class="colophon">
+    <div class="ad-disclosure">本サイトはアフィリエイト広告を利用しています。</div>
+    還元率・条件は変更される場合があります。利用前に各社公式ページでご確認ください。
+  </footer>
 </div>
 
 <script>
+// ========== アフィリエイトリンク ==========
+// カード名ごとに1件登録すると、そのカードが出てくる全タブ（お店・決済アプリ・
+// クレカ積立・チャージルート）の該当箇所に自動で「申し込み」ボタンが並ぶ。
+// stores.json とは別キーで保存するので、店舗データを更新しても消えない。
+const AFFILIATE_KEY = "kangenchou_affiliates";
+const AFFILIATES_JSON_PATH = "affiliates.json"; // GitHubに置く公開用ファイル
+
+function loadAffiliates(){
+  try{
+    const raw = localStorage.getItem(AFFILIATE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+function saveAffiliates(){
+  try{ localStorage.setItem(AFFILIATE_KEY, JSON.stringify(affiliates)); } catch {}
+}
+
+let affiliates = loadAffiliates();
+
+// カード名から該当するアフィリリンクを引く。登録キーは部分一致で照合するので
+// 「三井住友カード」と登録しておけば「三井住友カード ゴールド（NL）」にも当たる。
+// より具体的なキー（長いキー）を優先する。
+function affiliateFor(cardName){
+  if(!cardName) return null;
+  const hits = Object.keys(affiliates)
+    .filter(k => affiliates[k] && (cardName.includes(k) || k.includes(cardName.split("（")[0])))
+    .sort((a,b) => b.length - a.length);
+  return hits.length ? affiliates[hits[0]] : null;
+}
+
+// 「公式」＋「申し込み」を並べたリンク列を返す
+function linkRowHtml(officialUrl, cardName){
+  const aff = affiliateFor(cardName);
+  const parts = [];
+  if(officialUrl){
+    parts.push(`<a class="src-link" href="${officialUrl}" target="_blank" rel="noopener noreferrer">公式 ↗</a>`);
+  }
+  if(aff){
+    parts.push(`<a class="src-link apply-link" href="${aff}" target="_blank" rel="sponsored noopener noreferrer">申し込み ↗</a>`);
+  }
+  return parts.length ? `<div class="link-row">${parts.join("")}</div>` : "";
+}
+
+
 const DATA = [
-  // ===== クレジットカード =====
-  { brand:"JCBオリジナル", cat:"card", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"カード払い", entry:false, period:"-" },
-  { brand:"JCBオリジナル", cat:"card", campaign:"ポイントアップ登録で対象店の還元率アップ 2倍〜最大20倍", rate:"最大20倍", perUse:"-", periodLimit:"-", target:"対象店", method:"対象決済", entry:true, period:"-" },
-
-  { brand:"三井住友カード", cat:"card", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"カード払い", entry:false, period:"-" },
-  { brand:"三井住友カード", cat:"card", campaign:"スマホのタッチ決済 or モバイルオーダーで対象店合計7%還元〜最大20%還元", rate:"+6.5%", perUse:"-", periodLimit:"-", target:"対象店", method:"スマホのタッチ決済／モバイルオーダー", entry:false, period:"-", note:"モバイルオーダー対象：マクドナルド、モスバーガー、ケンタッキー、吉野家、すき家、スターバックス（※スタバはモバイルオーダーのみ）" },
-  { brand:"三井住友カード", cat:"card", campaign:"注目のVクーポン 対象店で+10%", rate:"+10%", perUse:"-", periodLimit:"500ポイント", target:"対象店", method:"カード払い", entry:"pre", period:"8/1〜8/31" },
-
-  { brand:"三菱UFJカード", cat:"card", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"カード払い", entry:false, period:"-" },
-  { brand:"三菱UFJカード", cat:"card", campaign:"対象店利用7%還元〜最大20%還元", rate:"+6.5%", perUse:"-", periodLimit:"-", target:"対象店", method:"カード払い", entry:false, period:"-" },
-
-  // ===== スマホ決済 =====
-  { brand:"PayPay", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"7500pt", periodLimit:"月15000pt", target:"全店", method:"PayPay残高／PayPayカードクレジット", entry:false, period:"-", note:"PayPay STEPカウント期間は前月1日0:00〜前月末日23:59" },
-  { brand:"PayPay", cat:"smartphone", campaign:"PayPay STEP 条件を満たすと還元上乗せ", rate:"+0.5%（翌月）", perUse:"7500pt", periodLimit:"月15000pt", target:"全店", method:"PayPay残高／PayPayカードクレジット", entry:false, period:"-" },
-  { brand:"PayPay", cat:"smartphone", campaign:"PayPayクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"PayPayアプリ", entry:"pre", period:"クーポンによる" },
-
-  { brand:"楽天Pay", cat:"smartphone", campaign:"楽天ペイクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"楽天ペイアプリ", entry:"pre", period:"クーポンによる", note:"先着次第早期終了の可能性あり" },
-  { brand:"楽天Pay", cat:"smartphone", campaign:"ポイント支払い1%／キャッシュ支払い1.5%還元（指定期間に楽天ポイントの提示が必要）", rate:"1%〜1.5%", perUse:"-", periodLimit:"-", target:"ほぼ全店", method:"楽天ペイアプリ", entry:false, period:"終了未定", note:"郵便局やOKストアなど還元対象外あり" },
-  { brand:"楽天Pay", cat:"smartphone", campaign:"はるやまで3000円以上の利用 最大10%還元", rate:"+8.5%", perUse:"-", periodLimit:"1000ポイント", target:"はるやま", method:"楽天ペイアプリ", entry:true, period:"8/1〜8/31" },
-
-  { brand:"楽天POINT", cat:"smartphone", campaign:"楽天ポイントクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"楽天ペイアプリ", entry:"pre", period:"クーポンによる", note:"先着次第早期終了の可能性あり" },
-  { brand:"楽天POINT", cat:"smartphone", campaign:"楽天モバイル契約者限定で対象店のポイントカード提示のポイントが20倍", rate:"20倍", perUse:"-", periodLimit:"1000ポイント", target:"対象店", method:"楽天ポイント提示", entry:true, period:"7/1〜9/30", note:"くら寿司、サンマルク、ツルハドラッグ、セイムスなど" },
-
-  { brand:"auPAY", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"auPAYアプリ", entry:false, period:"-" },
-  { brand:"auPAY", cat:"smartphone", campaign:"auPAYポイント増量", rate:"0.5〜1%上乗せ", perUse:"-", periodLimit:"-", target:"トモズ、Vドラッグ、ノジマ、オリジン、エディオン", method:"auPAYアプリ", entry:false, period:"-" },
-  { brand:"auPAY", cat:"smartphone", campaign:"auPayクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"auPAYアプリ", entry:"pre", period:"クーポンによる" },
-  { brand:"auPAY", cat:"smartphone", campaign:"グリーンライフキャンペーン 対象店はポイント2倍", rate:"+0.5%", perUse:"-", periodLimit:"500ポイント", target:"ウエルシア、アパホテル、ららぽーと", method:"auPAYアプリ", entry:true, period:"期間未定" },
-  { brand:"auPAY", cat:"smartphone", campaign:"スシローの持ち帰りネット注文5000円以上の利用で10%還元", rate:"10%", perUse:"550ポイント", periodLimit:"2回まで", target:"スシロー持ち帰りネット", method:"au PAY支払い", entry:true, period:"7/22〜8/16" },
-  { brand:"auPAY", cat:"smartphone", campaign:"はるやまで3000円以上の利用 最大10%還元", rate:"+10%", perUse:"-", periodLimit:"1000ポイント", target:"はるやま", method:"auPAYアプリ", entry:true, period:"8/1〜8/31" },
-
-  { brand:"d払い", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"電話料金合算払い／dカード支払い／d払い残高", entry:false, period:"-" },
-  { brand:"d払い", cat:"smartphone", campaign:"吉野家のテイクアウト・モバイルオーダーで10%還元", rate:"+10%", perUse:"-", periodLimit:"300ポイント", target:"吉野家", method:"d払い", entry:true, period:"7/17〜8/16", note:"2026年3月以降の利用がなければ20%還元" },
-
-  { brand:"dPOINT", cat:"smartphone", campaign:"かっぱ寿司 来店回数で倍率アップ（1回2倍、2回5倍、3回6倍、4回7倍、5回10倍）", rate:"最大10倍", perUse:"-", periodLimit:"-", target:"かっぱ寿司", method:"dポイント提示", entry:true, period:"7/1〜8/31" },
-  { brand:"dPOINT", cat:"smartphone", campaign:"トイザらス、ベビーザらスではずれなし抽選。最低でも10P", rate:"抽選", perUse:"-", periodLimit:"-", target:"トイザらス、ベビーザらス", method:"dポイント提示", entry:true, period:"7/17〜8/17" },
-  { brand:"dPOINT", cat:"smartphone", campaign:"すかいらーくグループではずれなし抽選 最大1000倍、最低10P", rate:"抽選", perUse:"-", periodLimit:"-", target:"すかいらーく", method:"dポイント提示", entry:true, period:"8/1〜8/31" },
-  { brand:"dPOINT", cat:"smartphone", campaign:"杵屋グループで期間中合計税抜2000円以上利用で8倍", rate:"8倍", perUse:"-", periodLimit:"500ポイント", target:"杵屋", method:"dポイント提示", entry:true, period:"8/1〜8/31" },
-
-  { brand:"mPay", cat:"smartphone", campaign:"基本還元率", rate:"還元なし", perUse:"-", periodLimit:"-", target:"-", method:"-", entry:false, period:"-" },
-
-  { brand:"AEON Pay", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"-", method:"-", entry:false, period:"-" },
-
-  { brand:"AirWALLET", cat:"smartphone", campaign:"基本還元率", rate:"還元なし", perUse:"-", periodLimit:"-", target:"-", method:"COIN+", entry:false, period:"-" },
-  { brand:"AirWALLET", cat:"smartphone", campaign:"全店で50%還元", rate:"50%", perUse:"-", periodLimit:"200P", target:"全店", method:"エアウォレット（QRコード）", entry:true, period:"7/22〜8/31" },
-
-  { brand:"Jcoin", cat:"smartphone", campaign:"基本還元率", rate:"0.55%", perUse:"-", periodLimit:"-", target:"-", method:"-", entry:false, period:"-" },
-
-  { brand:"FamiPay", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"FamiPayアプリ", entry:false, period:"-" },
+  {
+    "brand": "JCBオリジナル",
+    "cat": "card",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "カード払い",
+    "entry": false,
+    "period": "-",
+    "url": "https://j-pointpartner.jcb.co.jp/"
+  },
+  {
+    "brand": "JCBオリジナル",
+    "cat": "card",
+    "campaign": "ポイントアップ登録で対象店の還元率アップ 2倍〜最大20倍",
+    "rate": "最大20倍",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "対象決済",
+    "entry": true,
+    "period": "-",
+    "url": "https://j-pointpartner.jcb.co.jp/"
+  },
+  {
+    "brand": "三井住友カード",
+    "cat": "card",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "カード払い",
+    "entry": false,
+    "period": "-",
+    "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+  },
+  {
+    "brand": "三井住友カード",
+    "cat": "card",
+    "campaign": "スマホのタッチ決済 or モバイルオーダーで対象店合計7%還元〜最大20%還元",
+    "rate": "+6.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "スマホのタッチ決済／モバイルオーダー",
+    "entry": false,
+    "period": "-",
+    "note": "モバイルオーダー対象：マクドナルド、モスバーガー、ケンタッキー、吉野家、すき家、スターバックス（※スタバはモバイルオーダーのみ）",
+    "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+  },
+  {
+    "brand": "三井住友カード",
+    "cat": "card",
+    "campaign": "注目のVクーポン 対象店で+10%",
+    "rate": "+10%",
+    "perUse": "-",
+    "periodLimit": "500ポイント",
+    "target": "対象店",
+    "method": "カード払い",
+    "entry": "pre",
+    "period": "8/1〜8/31",
+    "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+  },
+  {
+    "brand": "三菱UFJカード",
+    "cat": "card",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "カード払い",
+    "entry": false,
+    "period": "-",
+    "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+  },
+  {
+    "brand": "三菱UFJカード",
+    "cat": "card",
+    "campaign": "対象店利用7%還元〜最大20%還元",
+    "rate": "+6.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "カード払い",
+    "entry": false,
+    "period": "-",
+    "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+  },
+  {
+    "brand": "PayPay",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "7500pt",
+    "periodLimit": "月15000pt",
+    "target": "全店",
+    "method": "PayPay残高／PayPayカードクレジット",
+    "entry": false,
+    "period": "-",
+    "note": "PayPay STEPカウント期間は前月1日0:00〜前月末日23:59",
+    "url": "https://paypay.ne.jp/event/paypaystep/"
+  },
+  {
+    "brand": "PayPay",
+    "cat": "smartphone",
+    "campaign": "PayPay STEP 条件を満たすと還元上乗せ",
+    "rate": "+0.5%（翌月）",
+    "perUse": "7500pt",
+    "periodLimit": "月15000pt",
+    "target": "全店",
+    "method": "PayPay残高／PayPayカードクレジット",
+    "entry": false,
+    "period": "-",
+    "url": "https://paypay.ne.jp/event/paypaystep/"
+  },
+  {
+    "brand": "PayPay",
+    "cat": "smartphone",
+    "campaign": "PayPayクーポン",
+    "rate": "クーポンによる",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "PayPayアプリ",
+    "entry": "pre",
+    "period": "クーポンによる",
+    "url": "https://paypay.ne.jp/event/paypaystep/"
+  },
+  {
+    "brand": "楽天Pay",
+    "cat": "smartphone",
+    "campaign": "楽天ペイクーポン",
+    "rate": "クーポンによる",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "楽天ペイアプリ",
+    "entry": "pre",
+    "period": "クーポンによる",
+    "note": "先着次第早期終了の可能性あり",
+    "url": "https://pay.rakuten.co.jp/campaign/"
+  },
+  {
+    "brand": "楽天Pay",
+    "cat": "smartphone",
+    "campaign": "ポイント支払い1%／キャッシュ支払い1.5%還元（指定期間に楽天ポイントの提示が必要）",
+    "rate": "1%〜1.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "ほぼ全店",
+    "method": "楽天ペイアプリ",
+    "entry": false,
+    "period": "終了未定",
+    "note": "郵便局やOKストアなど還元対象外あり",
+    "url": "https://pay.rakuten.co.jp/campaign/"
+  },
+  {
+    "brand": "楽天Pay",
+    "cat": "smartphone",
+    "campaign": "はるやまで3000円以上の利用 最大10%還元",
+    "rate": "+8.5%",
+    "perUse": "-",
+    "periodLimit": "1000ポイント",
+    "target": "はるやま",
+    "method": "楽天ペイアプリ",
+    "entry": true,
+    "period": "8/1〜8/31",
+    "url": "https://pay.rakuten.co.jp/campaign/"
+  },
+  {
+    "brand": "楽天POINT",
+    "cat": "smartphone",
+    "campaign": "楽天ポイントクーポン",
+    "rate": "クーポンによる",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "楽天ペイアプリ",
+    "entry": "pre",
+    "period": "クーポンによる",
+    "note": "先着次第早期終了の可能性あり",
+    "url": "https://pointcard.rakuten.co.jp/campaign/"
+  },
+  {
+    "brand": "楽天POINT",
+    "cat": "smartphone",
+    "campaign": "楽天モバイル契約者限定で対象店のポイントカード提示のポイントが20倍",
+    "rate": "20倍",
+    "perUse": "-",
+    "periodLimit": "1000ポイント",
+    "target": "対象店",
+    "method": "楽天ポイント提示",
+    "entry": true,
+    "period": "7/1〜9/30",
+    "note": "くら寿司、サンマルク、ツルハドラッグ、セイムスなど",
+    "url": "https://pointcard.rakuten.co.jp/campaign/"
+  },
+  {
+    "brand": "auPAY",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "auPAYアプリ",
+    "entry": false,
+    "period": "-",
+    "url": "https://aupay.wallet.auone.jp/campaign/"
+  },
+  {
+    "brand": "auPAY",
+    "cat": "smartphone",
+    "campaign": "auPAYポイント増量",
+    "rate": "0.5〜1%上乗せ",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "トモズ、Vドラッグ、ノジマ、オリジン、エディオン",
+    "method": "auPAYアプリ",
+    "entry": false,
+    "period": "-",
+    "url": "https://aupay.wallet.auone.jp/campaign/"
+  },
+  {
+    "brand": "auPAY",
+    "cat": "smartphone",
+    "campaign": "auPayクーポン",
+    "rate": "クーポンによる",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "対象店",
+    "method": "auPAYアプリ",
+    "entry": "pre",
+    "period": "クーポンによる",
+    "url": "https://aupay.wallet.auone.jp/campaign/"
+  },
+  {
+    "brand": "auPAY",
+    "cat": "smartphone",
+    "campaign": "グリーンライフキャンペーン 対象店はポイント2倍",
+    "rate": "+0.5%",
+    "perUse": "-",
+    "periodLimit": "500ポイント",
+    "target": "ウエルシア、アパホテル、ららぽーと",
+    "method": "auPAYアプリ",
+    "entry": true,
+    "period": "期間未定",
+    "url": "https://aupay.wallet.auone.jp/campaign/"
+  },
+  {
+    "brand": "auPAY",
+    "cat": "smartphone",
+    "campaign": "スシローの持ち帰りネット注文5000円以上の利用で10%還元",
+    "rate": "10%",
+    "perUse": "550ポイント",
+    "periodLimit": "2回まで",
+    "target": "スシロー持ち帰りネット",
+    "method": "au PAY支払い",
+    "entry": true,
+    "period": "7/22〜8/16",
+    "url": "https://aupay.wallet.auone.jp/campaign/"
+  },
+  {
+    "brand": "auPAY",
+    "cat": "smartphone",
+    "campaign": "はるやまで3000円以上の利用 最大10%還元",
+    "rate": "+10%",
+    "perUse": "-",
+    "periodLimit": "1000ポイント",
+    "target": "はるやま",
+    "method": "auPAYアプリ",
+    "entry": true,
+    "period": "8/1〜8/31",
+    "url": "https://aupay.wallet.auone.jp/campaign/"
+  },
+  {
+    "brand": "d払い",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "電話料金合算払い／dカード支払い／d払い残高",
+    "entry": false,
+    "period": "-",
+    "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "brand": "d払い",
+    "cat": "smartphone",
+    "campaign": "吉野家のテイクアウト・モバイルオーダーで10%還元",
+    "rate": "+10%",
+    "perUse": "-",
+    "periodLimit": "300ポイント",
+    "target": "吉野家",
+    "method": "d払い",
+    "entry": true,
+    "period": "7/17〜8/16",
+    "note": "2026年3月以降の利用がなければ20%還元",
+    "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "brand": "dPOINT",
+    "cat": "smartphone",
+    "campaign": "かっぱ寿司 来店回数で倍率アップ（1回2倍、2回5倍、3回6倍、4回7倍、5回10倍）",
+    "rate": "最大10倍",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "かっぱ寿司",
+    "method": "dポイント提示",
+    "entry": true,
+    "period": "7/1〜8/31",
+    "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "brand": "dPOINT",
+    "cat": "smartphone",
+    "campaign": "トイザらス、ベビーザらスではずれなし抽選。最低でも10P",
+    "rate": "抽選",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "トイザらス、ベビーザらス",
+    "method": "dポイント提示",
+    "entry": true,
+    "period": "7/17〜8/17",
+    "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "brand": "dPOINT",
+    "cat": "smartphone",
+    "campaign": "すかいらーくグループではずれなし抽選 最大1000倍、最低10P",
+    "rate": "抽選",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "すかいらーく",
+    "method": "dポイント提示",
+    "entry": true,
+    "period": "8/1〜8/31",
+    "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "brand": "dPOINT",
+    "cat": "smartphone",
+    "campaign": "杵屋グループで期間中合計税抜2000円以上利用で8倍",
+    "rate": "8倍",
+    "perUse": "-",
+    "periodLimit": "500ポイント",
+    "target": "杵屋",
+    "method": "dポイント提示",
+    "entry": true,
+    "period": "8/1〜8/31",
+    "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "brand": "メルペイ",
+    "cat": "smartphone",
+    "campaign": "基本還元率（メルペイ単体では還元なし）",
+    "rate": "還元なし",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "メルペイ（iD決済・コード決済）",
+    "entry": false,
+    "period": "-",
+    "note": "メルペイのコード決済・iD決済そのものにはポイント還元がない。還元を受けたい場合は、支払い元にメルカードを設定する必要がある。",
+    "url": "https://www.mercari.com/jp/merpay/"
+  },
+  {
+    "brand": "メルペイ",
+    "cat": "smartphone",
+    "campaign": "メルカードでの支払いなら還元あり",
+    "rate": "1.0%（メルカリ内は最大4%）",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店（Visa加盟店）",
+    "method": "メルカード、またはメルペイの支払い元にメルカード設定",
+    "entry": false,
+    "period": "-",
+    "note": "年会費永年無料。街のお店では1.0%、メルカリ内での購入は利用実績に応じて最大4.0%。貯まるのはメルカリポイントで、メルカリでの購入かメルペイ支払いにのみ使える（他社ポイントへの交換や現金化は不可）。",
+    "url": "https://card.mercari.com/"
+  },
+  {
+    "brand": "メルペイ",
+    "cat": "smartphone",
+    "campaign": "毎月8日はメルカードがおトク +8%還元",
+    "rate": "+8%",
+    "perUse": "-",
+    "periodLimit": "300ポイント",
+    "target": "メルカリ内外",
+    "method": "メルカード／バーチャルカード／メルペイ（iD・コード・ネット決済）",
+    "entry": true,
+    "period": "毎月8日",
+    "note": "上限300ポイントのため、約3,750円の買い物で上限に達する。電子マネー・プリペイドカードへのチャージや決済サービスへのチャージは対象外。付与ポイントの有効期限は30日と短い。要エントリー。",
+    "url": "https://card.mercari.com/"
+  },
+  {
+    "brand": "AEON Pay",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "-",
+    "method": "-",
+    "entry": false,
+    "period": "-",
+    "url": "https://www.aeon.com/aeonapp/campaign/"
+  },
+  {
+    "brand": "AirWALLET",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "還元なし",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "-",
+    "method": "COIN+",
+    "entry": false,
+    "period": "-",
+    "url": "https://airwallet.jp/"
+  },
+  {
+    "brand": "AirWALLET",
+    "cat": "smartphone",
+    "campaign": "全店で50%還元",
+    "rate": "50%",
+    "perUse": "-",
+    "periodLimit": "200P",
+    "target": "全店",
+    "method": "エアウォレット（QRコード）",
+    "entry": true,
+    "period": "7/22〜8/31",
+    "url": "https://airwallet.jp/"
+  },
+  {
+    "brand": "Jcoin",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "0.55%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "-",
+    "method": "-",
+    "entry": false,
+    "period": "-",
+    "url": "https://j-coin.jp/"
+  },
+  {
+    "brand": "FamiPay",
+    "cat": "smartphone",
+    "campaign": "基本還元率",
+    "rate": "0.5%",
+    "perUse": "-",
+    "periodLimit": "-",
+    "target": "全店",
+    "method": "FamiPayアプリ",
+    "entry": false,
+    "period": "-",
+    "url": "https://www.family.co.jp/campaign.html"
+  }
 ];
 
 const brandOrder = [...new Set(DATA.map(d=>d.brand))];
@@ -1541,7 +2125,9 @@ function render(){
     if(rows.length === 0) return;
     totalVisible += rows.length;
 
-    const catOfBrand = DATA.find(d=>d.brand===brand).cat;
+    const brandRow = DATA.find(d=>d.brand===brand);
+    const catOfBrand = brandRow.cat;
+    const brandUrl = brandRow.url;
     const section = document.createElement("div");
     section.className = "brand";
 
@@ -1553,9 +2139,14 @@ function render(){
         <div class="brand-title">${brand}</div>
         <div class="brand-sub">${catOfBrand === "card" ? "クレジットカード" : "スマホ決済"} ／ ${rows.length}件のキャンペーン</div>
       </div>
+      ${brandUrl ? `<a class="src-link brand-link" href="${brandUrl}" target="_blank" rel="noopener noreferrer" title="公式ページを開く">公式 ↗</a>` : ""}
+      ${affiliateFor(brand) ? `<a class="src-link brand-link apply-link" href="${affiliateFor(brand)}" target="_blank" rel="sponsored noopener noreferrer">申込 ↗</a>` : ""}
       <div class="brand-toggle">▾</div>
     `;
-    head.addEventListener("click", ()=> section.classList.toggle("collapsed"));
+    head.addEventListener("click", (e)=>{
+      if(e.target.closest(".brand-link")) return; // リンクは開閉させない
+      section.classList.toggle("collapsed");
+    });
 
     const rowHead = document.createElement("div");
     rowHead.className = "row-head";
@@ -1672,6 +2263,62 @@ const CATEGORY_LIST = [
 // クレカ→プリペイド→残高…と経由させ、各段階の還元を積み上げる方法。
 // steps は経由順、gains は「どこで何%付くか」の内訳。
 // このジャンルは各社の規約変更で頻繁に塞がれるため、確認日を必ず残す。
+// ========== クレカ積立 ==========
+// 証券口座の投信積立をクレカ払いにしたときの還元率。店舗決済とは仕組みが違い、
+// 「毎月自動で」貯まるのが特徴。rate は月5万円積立時の実効還元率で並べ替える。
+const INVEST_PLANS = [
+  {
+    broker: "マネックス証券", card: "dカード",
+    rate: 1.1, rateLabel: "1.1%（月5万円まで）",
+    tiers: [[50000, 1.1], [70000, 0.6], [100000, 0.2]],
+    fee: "年会費無料",
+    note: "条件なし・年会費無料で1.1%は最高水準。月5万円を超えた分は段階的に下がり、5〜7万円部分は0.6%、7〜10万円部分は0.2%。月10万円を満額積み立てた場合の合計は730ポイントで、それでも他社を上回る。なお、マネックスカードは2026年10月にショッピング月間利用額が1万円未満だと還元率0%になる改定が予定されているが、dカードは現時点で変更予定なしと案内されている。［確認日: 2026-08-09］",
+    url: "https://www.monex.co.jp/"
+  },
+  {
+    broker: "三菱UFJ eスマート証券", card: "au PAY ゴールドカード",
+    rate: 1.0, rateLabel: "1.0%（条件達成で最大2.0%）",
+    fee: "年会費11,000円",
+    note: "年間利用額の条件がなく、安定して1.0%を得られるのが強み。auの通信サービスとの連携条件を満たすと最大2.0%まで上がる。［確認日: 2026-08-09］",
+    url: "https://kabu.com/"
+  },
+  {
+    broker: "楽天証券", card: "楽天プレミアムカード",
+    rate: 1.0, rateLabel: "0.75〜1.0%（銘柄による）",
+    fee: "年会費11,000円",
+    note: "利用額の条件がないため安定している。ただし還元率は積み立てる銘柄によって0.75%または1.0%に分かれる（信託報酬の水準で決まる）。楽天キャッシュ経由の積立と併用すれば、クレカ積立の枠を超えて還元を受けられる。［確認日: 2026-08-09］",
+    url: "https://www.rakuten-sec.co.jp/"
+  },
+  {
+    broker: "SBI証券", card: "三井住友カード ゴールド（NL）",
+    rate: 1.0, rateLabel: "最大1.0%（前年の利用額しだい）",
+    fee: "年会費5,500円（年100万円利用で翌年以降無料）",
+    note: "【注意】前年のカード利用額で還元率が決まる方式。年100万円以上で1.0%だが、10万円未満だと還元率0%になる。メインカードとして日常的に使う前提の設計。100万円修行を達成すれば年会費も永年無料になるため、条件を満たせる人には強い。［確認日: 2026-08-09］",
+    url: "https://www.sbisec.co.jp/"
+  },
+  {
+    broker: "SBI証券", card: "三井住友カード（NL）",
+    rate: 0.5, rateLabel: "0.5%（前年10万円以上の利用が条件）",
+    fee: "年会費無料",
+    note: "【注意】前年のカード年間利用額が10万円未満だとポイント付与が停止される。クレカ積立のためだけに作って普段使わない、という使い方だと還元を受けられない点に注意。［確認日: 2026-08-09］",
+    url: "https://www.sbisec.co.jp/"
+  },
+  {
+    broker: "楽天証券", card: "楽天カード",
+    rate: 0.5, rateLabel: "0.5%",
+    fee: "年会費無料",
+    note: "年会費無料で条件もシンプル。貯まる楽天ポイントはそのまま投資にも使える（ポイント投資は1ポイント＝1円から）。楽天銀行とのマネーブリッジ連携で普通預金金利が上がる特典もある。［確認日: 2026-08-09］",
+    url: "https://www.rakuten-sec.co.jp/"
+  },
+  {
+    broker: "三菱UFJ eスマート証券", card: "au PAY カード",
+    rate: 0.5, rateLabel: "0.5%",
+    fee: "年会費無料",
+    note: "年会費無料なので、クレカ積立のためだけに入会しても維持費がかからない。旧auカブコム証券。［確認日: 2026-08-09］",
+    url: "https://kabu.com/"
+  },
+];
+
 const CHARGE_ROUTES = [
   {
     name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
@@ -1682,6 +2329,7 @@ const CHARGE_ROUTES = [
       "ANA Pay→楽天Edy：ANAマイル0.5%",
       "楽天ペイ支払い：楽天ポイント約1%",
     ],
+    atStore: { rate: "2.5%", method: "楽天ペイで支払い（事前にANA Pay→楽天Edy→楽天キャッシュへ移しておく）" },
     note: "現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月10万円まで。［確認日: 2026-08-09］",
     url: "https://cash.rakuten.co.jp/",
     caution: "ANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外。エポスゴールド・JQ CARDエポスゴールドは対象。"
@@ -1694,9 +2342,10 @@ const CHARGE_ROUTES = [
       "クレカのチャージ還元：カードによる（1%前後）",
       "VポイントPayのVisa利用特典：0.5%",
     ],
+    atStore: { rate: "1.5%", method: "VポイントPayをVisaタッチで支払い（事前にクレカからチャージ）" },
     note: "2025年11月のアップデートで、Visa/Mastercardブランドかつ3Dセキュア対応のカードなら種類を問わず手数料無料でチャージできるようになった。一方で、三井住友カード発行カードからのチャージ特典0.25%は同時に廃止されている。チャージ上限は本人確認またはOlive連携で月100万円。［確認日: 2026-08-09］",
     url: "https://www.smbc-card.com/nyukai/magazine/tips/Vpoint-method.jsp",
-    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。"
+    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。また、チャージ元にV NEOBANKデビットを使っている場合、2026年11月1日から他社決済サービスへのチャージがポイント対象外になるため、このルートは実質的に使えなくなる。"
   },
   {
     name: "Revolut 経由（三井住友カードの代替ルート）",
@@ -1716,6 +2365,7 @@ const CHARGE_ROUTES = [
       "ANA Pay経由：ANAマイル0.5%",
       "楽天ペイ支払い：楽天ポイント",
     ],
+    atStore: { rate: "2.5%", method: "楽天ペイで支払い（JALカードSuica→ANA Pay→楽天Edy→楽天キャッシュ経由）" },
     note: "JALとANA両方のマイルを同時に貯めたい人向け。かつて主流だった「JAL Pay→ANA Pay」ルートは、JAL Pay側の制度改定で他社Payへのチャージ時のマイル還元率が大きく下がったため、その代替として使われている。［確認日: 2026-08-09］",
     url: null,
     caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。"
@@ -1742,13 +2392,26 @@ const UNIVERSAL_PAYMENTS = [
     note: "年会費11,000円。2026年6月2日の改定で「+0.5%上乗せ」は廃止され、基本の付与率は年会費無料のPayPayカードと同じ1.0%になった。代わりに年100万円以上の決済で11,000ポイント（年会費相当）が付与される特典が新設。実質的な価値はソフトバンク・ワイモバイル契約者向けの割引と上乗せに寄っているため、キャリアが違う人はメリットが薄い。ソフトバンクの新プラン（ペイトク2など）に変更すると通信料の付与率が10%→1%に下がる点にも注意。［確認日: 2026-08-09／出典: PayPayカード公式・報道各社］"
   },
   {
+    name: "V NEOBANKデビット（住信SBI）", universal: true, url: "https://www.netbk.co.jp/contents/lp/vneobank/",
+    rate: "1.5%（2026/11/1から1.25%）",
+    method: "V NEOBANKデビット（Mastercard）での決済。月間合計1,000円以上の利用が条件",
+    expires: "2026-10-31",
+    note: "年会費無料で常時1.5%。ただし1,000円未満の端数は切り捨てで計算されるため、少額決済が多いと実質還元率は下がる。【2026年11月1日から大幅改定】①還元率が1.25%に引き下げ ②他社決済サービスへのチャージ（VポイントPay・ANA Pay・au PAY・Revolut・交通系IC・コード決済など）が軒並みポイント対象外に ③鉄道・公共料金・税金・病院なども対象外に ④円普通預金の月50pt特典が廃止 ⑤他行からの被振込ポイントが20pt→10ptに半減。チャージルートの起点として使っていた場合、11月以降はその用途では還元されなくなる点に注意。［確認日: 2026-08-09／出典: 公式発表・報道各社］"
+  },
+  {
+    name: "デビットカード Point＋（住信SBI）", universal: true, url: "https://www.netbk.co.jp/contents/lp/debit/pointplus/",
+    rate: "1.25〜2.0%（スマプロランクで変動）",
+    method: "デビットカード Point＋（Mastercard）での決済",
+    note: "年会費無料。基本1.25%に、スマプロランクに応じて最大+0.75%が上乗せされる。ランクは円普通預金＋SBIハイブリッド預金の残高、または残高以外の条件で決まり、判定月末のランクが翌々月から適用される。給与・年金の受け取り設定で1.5%になる。V NEOBANKデビットが2026年11月に改定されるため、その移行先として比較検討する価値がある。［確認日: 2026-08-09／出典: 住信SBIネット銀行公式・比較メディア複数］"
+  },
+  {
     name: "楽天カード", universal: true, url: "https://www.rakuten-card.co.jp/",
     rate: "1.0%",
     method: "楽天カードでのクレジット決済（タッチ決済・差し込みどちらでも）",
     note: "どこで使っても1.0%の安定した還元。楽天ポイントカードが使えない店や、コード決済に対応していないレジでは、これが確実な選択肢になる。楽天ポイントカード提示に対応した店なら、楽天ペイとの併用（二重取り）の方が有利になりやすい。［確認日: 2026-08-09／出典: 楽天カード公式・比較メディア複数］"
   },
   {
-    name: "楽天ポイントカード提示（＋楽天ペイ）", universal: true, url: "https://pointcard.rakuten.co.jp/",
+    name: "楽天ペイ（ポイントカード提示との併用）", universal: true, url: "https://pointcard.rakuten.co.jp/",
     rate: "合計 最大2.5%（提示1.0% ＋ 楽天ペイ1.5%）",
     method: "会計前に楽天ペイアプリ内の楽天ポイントカードを提示し、そのうえで楽天ペイで支払う",
     note: "楽天ポイントカードと楽天ペイの両方に対応した加盟店であることが前提。プラスチックのポイントカード提示は対象外で、必ずアプリ内のカードを提示する必要がある。楽天ペイ側を1.5%にするには、カウント期間中に楽天ポイントカードを規定回数以上提示してポイントを獲得している必要があり、条件を満たせないと1.0%止まり。この提示回数の条件は改定が続いているため、最新条件は公式で確認を。［確認日: 2026-08-09／出典: 楽天公式・比較メディア複数］"
@@ -3774,6 +4437,23 @@ function setSyncStatus(text, kind){
 }
 
 // 起動時：GitHub上の公開データを取得できたら、それを正としてキャッシュを更新
+// 公開されている紹介リンク設定を読み込む。訪問者全員に同じリンクを出すため、
+// 端末ごとのlocalStorageより、GitHub上のファイルを優先する。
+async function refreshAffiliatesFromGithubPages(){
+  try{
+    const res = await fetch(`${AFFILIATES_JSON_PATH}?t=${Date.now()}`, { cache: "no-store" });
+    if(!res.ok) return; // まだファイルが無い場合は静かに無視
+    const data = await res.json();
+    if(data && typeof data === "object" && !Array.isArray(data)){
+      affiliates = data;
+      saveAffiliates();
+      renderStores(); render(); renderInvest(); renderRoutes();
+    }
+  } catch(e){
+    console.info("affiliates.json の取得をスキップしました", e.message);
+  }
+}
+
 async function refreshFromGithubPages(){
   try{
     const res = await fetch(`${STORES_JSON_PATH}?t=${Date.now()}`, { cache: "no-store" });
@@ -3821,6 +4501,21 @@ function combinedCards(store){
       !ownNames.some(n => n.includes(u.name.split("（")[0]))
     );
     all = own.concat(extras);
+
+    // チャージルートの終着点は店頭で使える決済手段なので、比較対象に加える。
+    // 「楽天ペイ単体で1%」と「経由すれば2.5%」を並べて見比べられるようにする。
+    const routeEntries = CHARGE_ROUTES
+      .filter(r => r.atStore)
+      .map(r => ({
+        name: r.name,
+        rate: r.atStore.rate,
+        method: r.atStore.method,
+        note: r.note,
+        url: r.url,
+        universal: true,
+        isRoute: true
+      }));
+    all = all.concat(routeEntries);
   }
   // 保有カードが設定されていれば、持っているものだけに絞る。
   // ただし全部消えてしまう店では、比較の手がかりを残すため元の一覧に戻す。
@@ -3840,8 +4535,8 @@ function bestUnowned(store){
 }
 
 function linkHtml(card){
-  if(!card.url) return "";
-  return `<a class="src-link" href="${card.url}" target="_blank" rel="noopener noreferrer" title="公式ページを開く">公式 ↗</a>`;
+  // 公式リンクと、登録済みならアフィリの申し込みリンクを並べて返す
+  return linkRowHtml(card.url, card.name);
 }
 
 function buildStoreCardEl(store, distanceMeters){
@@ -3888,7 +4583,7 @@ function buildStoreCardEl(store, distanceMeters){
       <div class="card-option-top">
         <span class="card-option-rank ${i===0 ? "rank-1" : ""}">${i+1}位</span>
         <span class="card-option-name">${c.name}</span>
-        ${c.universal ? `<span class="universal-tag">全店共通</span>` : ""}
+        ${c.isRoute ? `<span class="universal-tag route-tag">経由ルート</span>` : (c.universal ? `<span class="universal-tag">全店共通</span>` : "")}
         ${expiryBadgeHtml(c)}
         <span class="card-option-rate">${c.rate}${(()=>{const y=yenBack(c); return y!==null ? `<span class="rate-yen">${y.toLocaleString()}円</span>` : "";})()}</span>
         <button class="icon-btn edit-card-btn" title="編集">✎</button>
@@ -4104,7 +4799,7 @@ function renderRoutes(){
       <ul class="route-gains">${r.gains.map(g => `<li>${g}</li>`).join("")}</ul>
       ${r.caution ? `<div class="route-caution">${r.caution}</div>` : ""}
       <div class="card-option-note">${r.note}</div>
-      ${r.url ? `<a class="src-link" href="${r.url}" target="_blank" rel="noopener noreferrer">公式 ↗</a>` : ""}
+      ${linkRowHtml(r.url, r.name)}
     `;
     list.appendChild(el);
   });
@@ -4147,8 +4842,10 @@ const WALLET_OPTIONS = [
   "dカード", "セゾンゴールドプレミアム", "セゾンパール・アメックス",
   // 店舗系カード
   "イオンカード", "セブンカード・プラス", "ビックカメラSuicaカード", "ローソンPontaプラス",
+  // デビットカード
+  "V NEOBANKデビット", "デビットカード Point＋",
   // スマホ決済・共通ポイント
-  "楽天カード", "楽天ポイントカード提示", "PayPay", "PayPayカード ゴールド",
+  "楽天カード", "PayPay", "PayPayカード ゴールド",
   "楽天ペイ", "d払い", "auPAY", "FamiPay", "AEON Pay",
 ];
 
@@ -4201,6 +4898,8 @@ function aiPrompt(input, categories, storeNames){
 【入力】
 ${input}
 
+入力がURLの場合、そのページを直接開けないことがあります。その場合はURLに含まれる企業名・キャンペーン名などの手がかりから web_search で検索し、該当する情報を探してください。1回の検索で見つからなければ、キーワードを変えて数回試してください。
+
 【出力形式】
 必ず次のJSONだけを返してください。前置き・後書き・マークダウンのコードフェンスは一切不要です。
 {
@@ -4236,7 +4935,7 @@ async function runAiImport(input, statusEl, previewEl, saveBtn){
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1000,
+        max_tokens: 4000,
         messages: [{ role: "user", content: aiPrompt(input, CATEGORY_LIST, STORES.map(s=>s.name)) }],
         tools: [{ type: "web_search_20250305", name: "web_search" }]
       })
@@ -4244,12 +4943,33 @@ async function runAiImport(input, statusEl, previewEl, saveBtn){
     if(!res.ok) throw new Error(`APIエラー（HTTP ${res.status}）`);
     const data = await res.json();
 
+    if(data.error){
+      throw new Error(`APIがエラーを返しました：${data.error.message || JSON.stringify(data.error).slice(0,120)}`);
+    }
+
     const text = (data.content || [])
       .map(b => b.type === "text" ? b.text : "")
       .filter(Boolean).join("\n");
+
+    if(!text.trim()){
+      throw new Error("応答が空でした。検索で情報が見つからなかった可能性があります。");
+    }
+
     const clean = text.replace(/```json/g, "").replace(/```/g, "").trim();
-    const jsonStr = clean.slice(clean.indexOf("{"), clean.lastIndexOf("}") + 1);
-    const r = JSON.parse(jsonStr);
+    const s = clean.indexOf("{"), e = clean.lastIndexOf("}");
+    if(s === -1 || e === -1 || e <= s){
+      // JSONが返らなかったときは、実際に返ってきた文章を見せて原因を特定できるようにする
+      throw new Error(`JSON形式で返りませんでした。応答の冒頭：\n${clean.slice(0, 220)}`);
+    }
+    let r;
+    try{
+      r = JSON.parse(clean.slice(s, e + 1));
+    } catch(pe){
+      throw new Error(`読み取り結果を解釈できませんでした（応答が途中で切れた可能性）。応答の冒頭：\n${clean.slice(0, 220)}`);
+    }
+    if(!r.store || !r.card){
+      throw new Error("店舗名または決済手段を特定できませんでした。店名を明記して、もう一度お試しください。");
+    }
 
     const conf = { high: "確度: 高", medium: "確度: 中", low: "確度: 低" }[r.confidence] || "";
     statusEl.textContent = `読み取りました（${conf}）。内容を確認して保存してください。`;
@@ -4328,6 +5048,53 @@ document.getElementById("aiImportBtn").addEventListener("click", ()=>{
     if(!v){ alert("URLまたはキャンペーンの内容を入力してください"); return; }
     statusEl.style.display = "block";
     runAiImport(v, statusEl, previewEl, saveBtn);
+  });
+});
+
+// --- 紹介リンクの管理画面 ---
+document.getElementById("affiliateBtn").addEventListener("click", ()=>{
+  const overlay = document.getElementById("modalOverlay");
+  const box = document.getElementById("modalBox");
+
+  const rows = WALLET_OPTIONS.map(name => `
+    <div class="aff-row">
+      <label class="aff-name">${name}</label>
+      <input class="aff-input" data-card="${name}" type="url"
+             placeholder="https://... （未設定なら空欄）"
+             value="${affiliates[name] ? escapeAttr(affiliates[name]) : ""}">
+    </div>
+  `).join("");
+
+  box.innerHTML = `
+    <div class="modal-title">紹介リンク管理</div>
+    <p class="ai-hint" style="margin:-8px 0 16px;">
+      登録すると、そのカードが出てくる全タブに「申し込み」ボタンが並びます。
+      カード名は部分一致で照合するので、「三井住友カード」に登録すればゴールド（NL）にも適用されます。
+      リンクには rel="sponsored" が自動で付きます。
+    </p>
+    <div class="aff-list">${rows}</div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="affCancelBtn">閉じる</button>
+      <button class="modal-btn save" id="affSaveBtn">保存</button>
+    </div>
+  `;
+  overlay.style.display = "flex";
+
+  document.getElementById("affCancelBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("affSaveBtn").addEventListener("click", ()=>{
+    const next = {};
+    box.querySelectorAll(".aff-input").forEach(inp => {
+      const v = inp.value.trim();
+      if(v) next[inp.dataset.card] = v;
+    });
+    affiliates = next;
+    saveAffiliates();
+    pushAffiliatesToGithub();
+    renderStores();
+    render();
+    renderInvest();
+    renderRoutes();
+    overlay.style.display = "none";
   });
 });
 
@@ -4442,9 +5209,64 @@ maybeOnboard();
 initTheme();
 
 document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
+document.getElementById("investAmount").addEventListener("input", renderInvest);
 
 renderCampaigns();
+// 段階制（tiers）があるものは階層ごとに計算し、無ければ一律の還元率で計算する
+function monthlyPoints(plan, monthly){
+  if(!plan.tiers) return monthly * plan.rate / 100;
+  let remaining = monthly, prev = 0, pts = 0;
+  for(const [cap, r] of plan.tiers){
+    const band = Math.max(0, Math.min(remaining, cap - prev));
+    pts += band * r / 100;
+    remaining -= band;
+    prev = cap;
+    if(remaining <= 0) break;
+  }
+  return pts;
+}
+
+function renderInvest(){
+  const list = document.getElementById("investList");
+  if(!list) return;
+  const monthly = Math.max(0, parseInt(document.getElementById("investAmount").value, 10) || 0);
+  list.innerHTML = "";
+
+  const sorted = [...INVEST_PLANS].sort((a,b) => monthlyPoints(b, monthly) - monthlyPoints(a, monthly));
+
+  sorted.forEach((p, i) => {
+    const mp = Math.floor(monthlyPoints(p, monthly));
+    const yearly = mp * 12;
+    const el = document.createElement("div");
+    el.className = "route-card" + (i === 0 ? " is-top" : "");
+    el.innerHTML = `
+      <div class="route-top">
+        <span class="route-name">${p.broker} × ${p.card}</span>
+        <span class="route-total">${p.rateLabel}</span>
+      </div>
+      <div class="invest-result">
+        <div class="invest-result-item">
+          <span class="invest-result-label">毎月</span>
+          <span class="invest-result-val">${mp.toLocaleString()} pt</span>
+        </div>
+        <div class="invest-result-item">
+          <span class="invest-result-label">年間</span>
+          <span class="invest-result-val big">${yearly.toLocaleString()} pt</span>
+        </div>
+        <div class="invest-result-item">
+          <span class="invest-result-label">年会費</span>
+          <span class="invest-result-val sub">${p.fee}</span>
+        </div>
+      </div>
+      <div class="card-option-note">${p.note}</div>
+      ${linkRowHtml(p.url, p.card)}
+    `;
+    list.appendChild(el);
+  });
+}
+
 renderRoutes();
+renderInvest();
 renderStores();
 
 // ========== 現在地から探す ==========
@@ -4800,15 +5622,17 @@ function utf8ToBase64(str){
   return btoa(unescape(encodeURIComponent(str)));
 }
 
-async function pushStoresToGithub(){
+// 任意のJSONファイルをGitHubにコミットする汎用関数。
+// stores.json と affiliates.json の両方で使う。
+async function pushJsonToGithub(path, data, label){
   const cfg = loadGithubConfig();
   if(!cfg || !cfg.username || !cfg.repo || !cfg.token){
-    return; // 未設定なら何もしない（ローカル保存のみ）
+    return false; // 未設定なら何もしない（ローカル保存のみ）
   }
 
-  setSyncStatus("GitHubに保存中…", "busy");
+  setSyncStatus(`GitHubに保存中…（${label}）`, "busy");
 
-  const apiUrl = `https://api.github.com/repos/${cfg.username}/${cfg.repo}/contents/${STORES_JSON_PATH}`;
+  const apiUrl = `https://api.github.com/repos/${cfg.username}/${cfg.repo}/contents/${path}`;
   const branch = cfg.branch || "main";
 
   try{
@@ -4825,7 +5649,7 @@ async function pushStoresToGithub(){
     }
 
     // 2. 更新（またはファイルが無ければ新規作成）をコミット
-    const content = utf8ToBase64(JSON.stringify(STORES, null, 2));
+    const content = utf8ToBase64(JSON.stringify(data, null, 2));
     const putRes = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -4834,7 +5658,7 @@ async function pushStoresToGithub(){
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "還元帳：編集モードからstores.jsonを更新",
+        message: `還元帳：編集モードから${path}を更新`,
         content,
         branch,
         ...(sha ? { sha } : {})
@@ -4846,13 +5670,22 @@ async function pushStoresToGithub(){
       throw new Error(`コミットに失敗（HTTP ${putRes.status}）：${errBody.slice(0,150)}`);
     }
 
-    syncPending = false;
-    setSyncStatus(`✅ GitHubに保存済み（${new Date().toLocaleTimeString("ja-JP")}）`, "ok");
+    setSyncStatus(`✅ GitHubに保存済み：${label}（${new Date().toLocaleTimeString("ja-JP")}）`, "ok");
+    return true;
   } catch(err){
-    syncPending = true;
-    setSyncStatus(`⚠️ GitHubへの保存に失敗：${err.message}（この端末には保存済み。編集モードの再操作で再送されます）`, "err");
+    setSyncStatus(`⚠️ GitHubへの保存に失敗（${label}）：${err.message}（この端末には保存済み）`, "err");
     console.error(err);
+    return false;
   }
+}
+
+async function pushStoresToGithub(){
+  const ok = await pushJsonToGithub(STORES_JSON_PATH, STORES, "店舗データ");
+  syncPending = !ok && !!loadGithubConfig();
+}
+
+async function pushAffiliatesToGithub(){
+  await pushJsonToGithub(AFFILIATES_JSON_PATH, affiliates, "紹介リンク");
 }
 
 function persistStores(){
@@ -4881,6 +5714,7 @@ document.getElementById("githubSettingsBtn").addEventListener("click", ()=>{
 
 // 初回読み込み時に、GitHub上の最新データを取得しにいく
 refreshFromGithubPages();
+refreshAffiliatesFromGithubPages();
 </script>
 </body>
 </html>
