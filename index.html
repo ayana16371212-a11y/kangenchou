@@ -16,7 +16,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Midnight terminal palette — the screen of a card reader at night */
+    /* Foil stays constant across themes — it's the brand signature */
+    --foil-1: #2BB3AC;
+    --foil-2: #4A7FE0;
+    --foil-3: #9B5FE0;
+    --foil-4: #E05C9B;
+    --foil: linear-gradient(100deg, var(--foil-1), var(--foil-2) 35%, var(--foil-3) 68%, var(--foil-4));
+
+    --radius: 14px;
+    --radius-sm: 9px;
+  }
+
+  /* ---- Dark: the screen of a card reader at night ---- */
+  :root, [data-theme="dark"]{
     --bg:        #1B2239;
     --surface:   #262E52;
     --surface-2: #333D68;
@@ -24,32 +36,57 @@
     --text:      #F2F4FB;
     --muted:     #B0B8D8;
     --dim:       #8C95BA;
+    --on-foil:   #131829;
 
-    /* Holographic foil — lifted from the security hologram on a card face.
-       Used only on the winning option, never as general decoration. */
     --foil-1: #5EE7E0;
     --foil-2: #8AB4FF;
     --foil-3: #C79BFF;
     --foil-4: #FF9DC8;
-    --foil: linear-gradient(100deg, var(--foil-1), var(--foil-2) 35%, var(--foil-3) 68%, var(--foil-4));
 
     --good:  #4ADE9B;
-    --warn:  #F5C563;
     --alert: #FF6B8A;
     --amber: #F5C563;
 
-    --on-foil: #131829;
+    --glow-a: var(--tint-2);
+    --glow-b: rgba(199,155,255,0.11);
+    --tint:   var(--tint);
+    --tint-2: var(--tint-2);
+    --hairline: var(--hairline);
+  }
 
-    --radius: 14px;
-    --radius-sm: 9px;
+  /* ---- Light: the same card under daylight ---- */
+  [data-theme="light"]{
+    --bg:        #F7F8FC;
+    --surface:   #FFFFFF;
+    --surface-2: #EEF1F9;
+    --line:      #DDE2EF;
+    --text:      #171C2E;
+    --muted:     #59627F;
+    --dim:       #7C859E;
+    --on-foil:   #FFFFFF;
+
+    --foil-1: #17A79F;
+    --foil-2: #3A6FD8;
+    --foil-3: #8B45D6;
+    --foil-4: #D6438A;
+
+    --good:  #12855C;
+    --alert: #D6335C;
+    --amber: #9A6B12;
+
+    --glow-a: rgba(74,127,224,0.09);
+    --glow-b: rgba(155,95,224,0.07);
+    --tint:   rgba(139,69,214,0.05);
+    --tint-2: rgba(58,111,216,0.035);
+    --hairline: rgba(0,0,0,.04);
   }
   *{ box-sizing: border-box; }
   html, body{ margin:0; padding:0; }
   body{
     background: var(--bg);
     background-image:
-      radial-gradient(900px 500px at 12% -8%, rgba(138,180,255,0.14), transparent 62%),
-      radial-gradient(700px 420px at 95% 4%, rgba(199,155,255,0.11), transparent 62%);
+      radial-gradient(900px 500px at 12% -8%, var(--glow-a), transparent 62%),
+      radial-gradient(700px 420px at 95% 4%, var(--glow-b), transparent 62%);
     background-attachment: fixed;
     color: var(--text);
     font-family: "Zen Kaku Gothic New", "Archivo", system-ui, sans-serif;
@@ -63,6 +100,356 @@
     max-width: 940px;
     margin: 0 auto;
     padding: 26px 18px 90px;
+  }
+
+  /* ===== first-run onboarding ===== */
+  .onboard-overlay{
+    position: fixed; inset: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    background: var(--bg);
+    overflow-y: auto;
+  }
+  .onboard-box{
+    width: 100%;
+    max-width: 460px;
+    margin: auto;
+    padding: 30px 24px 26px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    animation: rise .3s cubic-bezier(.22,1,.36,1) both;
+  }
+  .onboard-eyebrow{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .onboard-title{
+    margin: 0 0 10px;
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -.01em;
+  }
+  .onboard-lead{
+    margin: 0 0 20px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .onboard-actions{ display: flex; gap: 9px; margin-top: 22px; }
+
+  /* ===== my panel: wallet + amount ===== */
+  .mypanel{
+    display: flex;
+    gap: 9px;
+    margin-bottom: 14px;
+  }
+  .mypanel-btn,
+  .amount-field{
+    flex: 1;
+    min-width: 0;
+    padding: 10px 13px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    text-align: left;
+  }
+  .mypanel-btn{ cursor: pointer; font-family: inherit; transition: border-color .15s ease; }
+  .mypanel-btn:hover{ border-color: var(--dim); }
+  .mypanel-btn.unset{
+    border-color: var(--foil-2);
+    background: var(--tint-2);
+  }
+  .mypanel-btn.unset .mypanel-val{ color: var(--foil-2); }
+  .mypanel-label{
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: .08em;
+    color: var(--dim);
+    margin-bottom: 3px;
+  }
+  .mypanel-val{
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .amount-input-wrap{ display: flex; align-items: baseline; gap: 3px; }
+  .amount-input-wrap input{
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    font-weight: 700;
+    outline: none;
+  }
+  .amount-input-wrap input::placeholder{ color: var(--dim); }
+  .amount-input-wrap input::-webkit-outer-spin-button,
+  .amount-input-wrap input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+  .amount-yen{ font-size: 12px; color: var(--dim); flex-shrink: 0; }
+
+  .wallet-grid{ display: flex; flex-wrap: wrap; gap: 7px; }
+  .wallet-opt{
+    padding: 9px 13px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--bg);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .wallet-opt.on{
+    background: var(--surface-2);
+    border-color: var(--foil-2);
+    color: var(--text);
+  }
+  .wallet-opt.on::before{ content: "✓ "; color: var(--foil-2); }
+
+  /* ===== favorites & upgrade hint ===== */
+  .fav-btn{
+    flex-shrink: 0;
+    padding: 0;
+    width: 26px; height: 26px;
+    border: none;
+    background: none;
+    color: var(--dim);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .15s ease, transform .12s ease;
+  }
+  .fav-btn:hover{ transform: scale(1.15); }
+  .fav-btn.on{ color: var(--amber); }
+  .store-best-wrap{ margin-left: auto; text-align: right; }
+  .store-best-yen{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--good);
+    margin-top: 1px;
+  }
+  .rate-yen{
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--good);
+    -webkit-text-fill-color: var(--good);
+    margin-top: 1px;
+  }
+  .upgrade-hint{
+    padding: 11px 16px;
+    border-top: 1px dashed var(--line);
+    background: var(--tint-2);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .upgrade-hint b{ color: var(--text); }
+
+  /* ===== AI import ===== */
+  .ai-btn{
+    border-style: solid !important;
+    border-color: transparent !important;
+    background: var(--foil) !important;
+    color: var(--on-foil) !important;
+  }
+  .ai-input{
+    width: 100%;
+    min-height: 84px;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+  }
+  .ai-input:focus{ border-color: var(--foil-2); }
+  .ai-hint{
+    margin: 7px 0 0;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--dim);
+  }
+  .ai-status{
+    margin-top: 12px;
+    padding: 11px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .ai-status.err{ color: var(--alert); }
+  .ai-preview{
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--foil-2);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+  }
+  .ai-preview h4{
+    margin: 0 0 9px;
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+  .ai-preview-row{
+    display: flex;
+    gap: 9px;
+    padding: 5px 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    border-top: 1px solid var(--hairline);
+  }
+  .ai-preview-row:first-of-type{ border-top: none; }
+  .ai-preview-key{
+    flex-shrink: 0;
+    width: 74px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: var(--dim);
+    padding-top: 3px;
+  }
+  .ai-preview-val{ flex: 1; color: var(--text); word-break: break-word; }
+  .ai-spinner{
+    display: inline-block;
+    width: 11px; height: 11px;
+    margin-right: 7px;
+    border: 2px solid var(--line);
+    border-top-color: var(--foil-2);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    vertical-align: -1px;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  /* ===== theme toggle ===== */
+  .masthead-right{ display: flex; align-items: center; gap: 14px; }
+  .theme-btn{
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 15px;
+    cursor: pointer;
+    transition: all .18s ease;
+  }
+  .theme-btn:hover{ color: var(--text); border-color: var(--dim); }
+
+  /* ===== charge routes ===== */
+  .route-card{
+    position: relative;
+    padding: 17px 18px;
+    margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .route-card::before{
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--foil);
+  }
+  .route-top{
+    display: flex; align-items: baseline; gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 11px;
+  }
+  .route-name{
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+  .route-total{
+    margin-left: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .route-chain{
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 5px;
+    padding: 11px 12px;
+    margin-bottom: 11px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+  }
+  .route-step{
+    padding: 3px 9px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .route-step.is-end{
+    border-color: transparent;
+    background: var(--foil);
+    color: var(--on-foil);
+  }
+  .route-arrow{
+    color: var(--dim);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .route-gains{
+    margin: 0 0 10px;
+    padding-left: 17px;
+    font-size: 12px;
+    line-height: 1.85;
+    color: var(--muted);
+  }
+  .route-caution{
+    margin-bottom: 9px;
+    padding: 8px 11px;
+    border-left: 2px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--muted);
   }
 
   /* ===== masthead ===== */
@@ -191,7 +578,7 @@
   .search-box input::placeholder{ color: var(--dim); }
   .search-box input:focus{
     border-color: var(--foil-2);
-    box-shadow: 0 0 0 3px rgba(138,180,255,0.14);
+    box-shadow: 0 0 0 3px var(--tint-2);
   }
   .search-box::before{
     content: "";
@@ -224,7 +611,7 @@
   }
   .chip:hover{ border-color: var(--dim); color: var(--text); }
   .chip.active{
-    background: rgba(138,180,255,0.14);
+    background: var(--tint-2);
     border-color: var(--foil-2);
     color: var(--foil-2);
   }
@@ -310,7 +697,7 @@
     font-size: 13px;
     transition: background .15s ease;
   }
-  .row:hover{ background: rgba(138,180,255,0.04); }
+  .row:hover{ background: var(--tint-2); }
   .row .campaign{ font-weight: 600; line-height: 1.5; }
   .row .campaign .period{
     display: block;
@@ -340,15 +727,15 @@
     font-weight: 700;
     white-space: nowrap;
   }
-  .entry-tag.fuyou{ color: var(--good); background: rgba(74,222,155,0.12); }
-  .entry-tag.hitsuyo{ color: var(--amber); background: rgba(245,197,99,0.14); }
+  .entry-tag.fuyou{ color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+  .entry-tag.hitsuyo{ color: var(--amber); background: color-mix(in srgb, var(--amber) 16%, transparent); }
   .row .note{
     grid-column: 1 / -1;
     margin-top: 4px;
     padding: 8px 11px;
     border-left: 2px solid var(--foil-3);
     border-radius: 0 6px 6px 0;
-    background: rgba(199,155,255,0.07);
+    background: var(--tint);
     font-size: 11.5px;
     line-height: 1.6;
     color: var(--muted);
@@ -432,7 +819,7 @@
     flex-shrink: 0;
     padding: 3px 8px;
     border-radius: 5px;
-    background: rgba(94,231,224,0.14);
+    background: color-mix(in srgb, var(--foil-1) 16%, transparent);
     color: var(--foil-1);
     font-family: "JetBrains Mono", monospace;
     font-size: 10.5px;
@@ -455,7 +842,7 @@
   }
   .edit-toggle-btn:hover{ color: var(--text); border-color: var(--dim); }
   .edit-toggle-btn.on{
-    background: rgba(199,155,255,0.16);
+    background: color-mix(in srgb, var(--foil-3) 18%, transparent);
     border-color: var(--foil-3);
     color: var(--foil-3);
   }
@@ -464,7 +851,7 @@
     padding: 8px 15px;
     border: 1px dashed var(--foil-2);
     border-radius: 999px;
-    background: rgba(138,180,255,0.08);
+    background: var(--tint-2);
     color: var(--foil-2);
     font-family: inherit;
     font-weight: 600;
@@ -477,7 +864,7 @@
     margin-bottom: 12px;
     padding: 9px 12px;
     border-radius: var(--radius-sm);
-    background: rgba(199,155,255,0.07);
+    background: var(--tint);
     font-size: 11.5px;
     line-height: 1.6;
     color: var(--muted);
@@ -529,7 +916,7 @@
   .modal-overlay{
     position: fixed; inset: 0; z-index: 100;
     display: flex; align-items: flex-end; justify-content: center;
-    background: rgba(5,7,14,.72);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
     backdrop-filter: blur(6px);
   }
   @media (min-width: 641px){ .modal-overlay{ align-items: center; padding: 20px; } }
@@ -580,7 +967,7 @@
   .modal-field textarea:focus,
   .modal-field select:focus{
     border-color: var(--foil-2);
-    box-shadow: 0 0 0 3px rgba(138,180,255,.14);
+    box-shadow: 0 0 0 3px var(--tint-2);
   }
   .modal-field textarea{ min-height: 76px; line-height: 1.6; }
   .modal-actions{ display: flex; gap: 9px; margin-top: 20px; }
@@ -598,7 +985,7 @@
   .modal-btn:hover{ filter: brightness(1.1); }
   .modal-btn.save{ background: var(--foil); color: var(--on-foil); }
   .modal-btn.cancel{ background: var(--surface-2); color: var(--muted); }
-  .modal-btn.delete{ background: rgba(255,107,138,.16); color: var(--alert); }
+  .modal-btn.delete{ background: color-mix(in srgb, var(--alert) 16%, transparent); color: var(--alert); }
 
   /* ===== sort toggle & category chips ===== */
   .sort-toggle-row{ display: flex; align-items: center; gap: 10px; margin: 2px 2px 14px; }
@@ -662,9 +1049,9 @@
     white-space: nowrap;
     letter-spacing: 0.03em;
   }
-  .expiry-badge.active{ color: var(--good); background: rgba(74,222,155,.12); }
+  .expiry-badge.active{ color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
   .expiry-badge.ending{ color: var(--on-foil); background: var(--alert); }
-  .expiry-badge.expired{ color: var(--dim); background: rgba(255,255,255,.05); }
+  .expiry-badge.expired{ color: var(--dim); background: var(--hairline); }
   .campaign-intro{
     margin-bottom: 14px;
     font-size: 12.5px;
@@ -712,7 +1099,7 @@
     padding: 8px 11px;
     border-left: 2px solid var(--foil-3);
     border-radius: 0 6px 6px 0;
-    background: rgba(199,155,255,.07);
+    background: var(--tint);
     font-size: 11.5px;
     line-height: 1.6;
     color: var(--muted);
@@ -756,14 +1143,14 @@
     flex-shrink: 0;
     padding: 2px 7px;
     border-radius: 5px;
-    background: rgba(138,180,255,.14);
+    background: var(--tint-2);
     color: var(--foil-2);
     font-family: "JetBrains Mono", monospace;
     font-size: 9.5px;
     font-weight: 700;
     white-space: nowrap;
   }
-  .card-option.is-universal{ background: rgba(255,255,255,.015); }
+  .card-option.is-universal{ background: var(--tint-2); }
 
   /* ===== source links ===== */
   .src-link{
@@ -785,7 +1172,7 @@
   .src-link:hover{
     border-color: var(--foil-2);
     color: var(--foil-2);
-    background: rgba(138,180,255,.10);
+    background: var(--tint-2);
   }
 
   /* ===== store cards — the signature ===== */
@@ -894,7 +1281,7 @@
     padding: 8px 11px;
     border-left: 2px solid var(--foil-3);
     border-radius: 0 6px 6px 0;
-    background: rgba(199,155,255,.07);
+    background: var(--tint);
     font-size: 11.5px;
     line-height: 1.65;
     color: var(--muted);
@@ -931,19 +1318,25 @@
 <div class="wrap">
   <header class="masthead">
     <h1>還元帳<small>レジの前で、どれで払うか決める</small></h1>
-    <div class="dateline">
-      出典 — 各社公式<br>
-      更新 — 2026.08.09
+    <div class="masthead-right">
+      <button id="themeBtn" class="theme-btn" title="表示テーマを切り替える" aria-label="表示テーマを切り替える">
+        <span id="themeIcon">☾</span>
+      </button>
+      <div class="dateline">
+        出典 — 各社公式<br>
+        更新 — 2026.08.09
+      </div>
     </div>
   </header>
 
   <div class="mode-switch" id="modeSwitch">
-    <button class="mode-btn active" data-mode="apps">決済アプリ別特典</button>
-    <button class="mode-btn" data-mode="stores">お店から探す（β）</button>
+    <button class="mode-btn active" data-mode="stores">お店から探す</button>
+    <button class="mode-btn" data-mode="apps">決済アプリ別特典</button>
     <button class="mode-btn" data-mode="campaigns">今月のキャンペーン</button>
+    <button class="mode-btn" data-mode="routes">チャージルート</button>
   </div>
 
-  <div class="mode-panel active" id="panel-apps">
+  <div class="mode-panel" id="panel-apps">
     <div class="controls">
       <div class="tabs" id="tabs"></div>
       <div class="search-box"><input id="search" type="text" placeholder="決済名・キャンペーン・対象店で検索"></div>
@@ -963,7 +1356,7 @@
     </div>
   </div>
 
-  <div class="mode-panel" id="panel-stores">
+  <div class="mode-panel active" id="panel-stores">
     <div class="nearby-box">
       <button id="nearbyBtn" class="nearby-btn">📍 現在地から近くのお店を探す</button>
       <div class="nearby-status" id="nearbyStatus"></div>
@@ -972,10 +1365,24 @@
     <div class="edit-toggle-row">
       <button id="editModeBtn" class="edit-toggle-btn">✏️ 編集モード</button>
       <button id="addStoreBtn" class="add-store-btn">＋ 新しいお店を追加</button>
+      <button id="aiImportBtn" class="add-store-btn ai-btn">✨ リンクから取り込む</button>
       <button id="githubSettingsBtn" class="edit-toggle-btn" style="margin-left:auto;">🔗 GitHub連携</button>
     </div>
     <div class="sync-status" id="syncStatus"></div>
     <div class="edit-mode-hint">編集モード中です。カード右上の✎で編集、🗑で削除できます。GitHub連携を設定していれば、変更は自動でリポジトリにも保存されます。</div>
+    <div class="mypanel">
+      <button id="walletBtn" class="mypanel-btn">
+        <span class="mypanel-label">持っているカード</span>
+        <span class="mypanel-val" id="walletSummary">すべて表示中</span>
+      </button>
+      <div class="amount-field">
+        <span class="mypanel-label">会計金額</span>
+        <div class="amount-input-wrap">
+          <input id="amountInput" type="number" inputmode="numeric" placeholder="0" min="0">
+          <span class="amount-yen">円</span>
+        </div>
+      </div>
+    </div>
     <div class="controls">
       <div class="search-box"><input id="storeSearch" type="text" placeholder="お店の名前で検索（例：セブン、スシロー）"></div>
     </div>
@@ -1003,6 +1410,14 @@
     </div>
   </div>
 
+  <div class="mode-panel" id="panel-routes">
+    <div class="campaign-intro">
+      クレカから残高へ「経由」させて還元を重ねるルートです。合計還元率が高い順に並べています。
+      各社の規約変更で塞がれることが多いので、実行前に必ず最新情報を確認してください。
+    </div>
+    <div id="routeList"></div>
+  </div>
+
   <div class="mode-panel" id="panel-campaigns">
     <div class="campaign-intro">
       終了日が設定されているキャンペーンだけを、終了が近い順に並べています。
@@ -1013,6 +1428,22 @@
     </label>
     <div class="count-line" id="campaignCountLine"></div>
     <div id="campaignList"></div>
+  </div>
+
+  <div class="onboard-overlay" id="onboardOverlay" style="display:none;">
+    <div class="onboard-box">
+      <div class="onboard-eyebrow">はじめに</div>
+      <h2 class="onboard-title">持っているカードを選んでください</h2>
+      <p class="onboard-lead">
+        選んだものだけに絞って「この店ではどれで払うのが一番お得か」を表示します。
+        あとから右上の設定でいつでも変更できます。
+      </p>
+      <div class="wallet-grid" id="onboardGrid"></div>
+      <div class="onboard-actions">
+        <button class="modal-btn cancel" id="onboardSkipBtn">あとで設定する</button>
+        <button class="modal-btn save" id="onboardDoneBtn">はじめる</button>
+      </div>
+    </div>
   </div>
 
   <div class="modal-overlay" id="modalOverlay" style="display:none;">
@@ -1233,6 +1664,60 @@ const CATEGORY_LIST = [
 // 表示するときは各店舗のカード一覧に合流させ、クレカと同じ土俵で並べ替える。
 // これにより「この店ならクレカとスマホ決済のどっちが得か」がその場で分かる。
 // 店舗限定のキャンペーン（例：スシローのauPAY 10%）は従来どおり STORES 側に入れる。
+// ========== チャージルート ==========
+// クレカ→プリペイド→残高…と経由させ、各段階の還元を積み上げる方法。
+// steps は経由順、gains は「どこで何%付くか」の内訳。
+// このジャンルは各社の規約変更で頻繁に塞がれるため、確認日を必ず残す。
+const CHARGE_ROUTES = [
+  {
+    name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
+    total: "合計 約2.5%",
+    steps: ["対象クレカ", "ANA Pay", "楽天Edy", "楽天キャッシュ", "楽天ペイで支払い"],
+    gains: [
+      "クレカ→ANA Pay チャージ：最大1.5%（エポスゴールド等、年100万円利用時）",
+      "ANA Pay→楽天Edy：ANAマイル0.5%",
+      "楽天ペイ支払い：楽天ポイント約1%",
+    ],
+    note: "現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月10万円まで。［確認日: 2026-08-09］",
+    url: "https://cash.rakuten.co.jp/",
+    caution: "ANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外。エポスゴールド・JQ CARDエポスゴールドは対象。"
+  },
+  {
+    name: "クレカ → VポイントPay",
+    total: "合計 約1.5%",
+    steps: ["Visa/Mastercardのクレカ", "VポイントPay", "Visaタッチで支払い"],
+    gains: [
+      "クレカのチャージ還元：カードによる（1%前後）",
+      "VポイントPayのVisa利用特典：0.5%",
+    ],
+    note: "2025年11月のアップデートで、Visa/Mastercardブランドかつ3Dセキュア対応のカードなら種類を問わず手数料無料でチャージできるようになった。一方で、三井住友カード発行カードからのチャージ特典0.25%は同時に廃止されている。チャージ上限は本人確認またはOlive連携で月100万円。［確認日: 2026-08-09］",
+    url: "https://www.smbc-card.com/nyukai/magazine/tips/Vpoint-method.jsp",
+    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。"
+  },
+  {
+    name: "Revolut 経由（三井住友カードの代替ルート）",
+    total: "経由用（還元はクレカ側のみ）",
+    steps: ["Mastercardのクレカ", "Revolut", "ANA Pay など"],
+    gains: ["クレカのチャージ還元のみ（Revolut自体の付与はなし）"],
+    note: "2026年3月1日から、JAL Pay・au PAY・Kyash・バンドルカードへのチャージが三井住友カードの年間利用金額の集計対象外になった。その結果、100万円修行を進めながら経由できる手段としてはRevolutがほぼ唯一の選択肢になっている。Mastercardブランドのクレカ、またはVisaブランドのデビットなら手数料無料。［確認日: 2026-08-09］",
+    url: null,
+    caution: "Visaブランドの三井住友カードはチャージ不可・還元対象外の経路が多い。"
+  },
+  {
+    name: "JALカードSuica → ANA Pay（二刀流）",
+    total: "JAL 1.0% ＋ ANA 0.5% ＋ 楽天 1.5%",
+    steps: ["JALカードSuica", "ANA Pay", "楽天Edy", "楽天キャッシュ", "楽天ペイ"],
+    gains: [
+      "JALカードSuicaのチャージ：JALマイル1.0%",
+      "ANA Pay経由：ANAマイル0.5%",
+      "楽天ペイ支払い：楽天ポイント",
+    ],
+    note: "JALとANA両方のマイルを同時に貯めたい人向け。かつて主流だった「JAL Pay→ANA Pay」ルートは、JAL Pay側の制度改定で他社Payへのチャージ時のマイル還元率が大きく下がったため、その代替として使われている。［確認日: 2026-08-09］",
+    url: null,
+    caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。"
+  },
+];
+
 const UNIVERSAL_PAYMENTS = [
   {
     name: "PayPay（残高払い）", universal: true, url: "https://paypay.ne.jp/event/paypaystep/",
@@ -1242,9 +1727,27 @@ const UNIVERSAL_PAYMENTS = [
   },
   {
     name: "PayPay（PayPayクレジット／PayPayカード）", universal: true, url: "https://www.paypay-card.co.jp/service/benefit/point/",
-    rate: "1.0%（ステップ達成で1.5%、ゴールドで最大2.0%）",
+    rate: "1.0%（ステップ達成で1.5%）",
     method: "PayPayクレジット、またはPayPayカードでの決済",
     note: "残高払いより還元率が高い。2026年6月2日にPayPayカード特典がPayPayステップへ統合されたため、PayPayカードをPayPayアプリに登録していないとポイントが付かない点に注意。［確認日: 2026-08-09／出典: PayPay公式・PayPayカード公式］"
+  },
+  {
+    name: "PayPayカード ゴールド", universal: true, url: "https://paypay.ne.jp/card-gold/",
+    rate: "1.0%（年100万円利用で年会費相当を回収）",
+    method: "PayPayカード ゴールドでの決済、またはPayPayアプリ連携",
+    note: "年会費11,000円。2026年6月2日の改定で「+0.5%上乗せ」は廃止され、基本の付与率は年会費無料のPayPayカードと同じ1.0%になった。代わりに年100万円以上の決済で11,000ポイント（年会費相当）が付与される特典が新設。実質的な価値はソフトバンク・ワイモバイル契約者向けの割引と上乗せに寄っているため、キャリアが違う人はメリットが薄い。ソフトバンクの新プラン（ペイトク2など）に変更すると通信料の付与率が10%→1%に下がる点にも注意。［確認日: 2026-08-09／出典: PayPayカード公式・報道各社］"
+  },
+  {
+    name: "楽天カード", universal: true, url: "https://www.rakuten-card.co.jp/",
+    rate: "1.0%",
+    method: "楽天カードでのクレジット決済（タッチ決済・差し込みどちらでも）",
+    note: "どこで使っても1.0%の安定した還元。楽天ポイントカードが使えない店や、コード決済に対応していないレジでは、これが確実な選択肢になる。楽天ポイントカード提示に対応した店なら、楽天ペイとの併用（二重取り）の方が有利になりやすい。［確認日: 2026-08-09／出典: 楽天カード公式・比較メディア複数］"
+  },
+  {
+    name: "楽天ポイントカード提示（＋楽天ペイ）", universal: true, url: "https://pointcard.rakuten.co.jp/",
+    rate: "合計 最大2.5%（提示1.0% ＋ 楽天ペイ1.5%）",
+    method: "会計前に楽天ペイアプリ内の楽天ポイントカードを提示し、そのうえで楽天ペイで支払う",
+    note: "楽天ポイントカードと楽天ペイの両方に対応した加盟店であることが前提。プラスチックのポイントカード提示は対象外で、必ずアプリ内のカードを提示する必要がある。楽天ペイ側を1.5%にするには、カウント期間中に楽天ポイントカードを規定回数以上提示してポイントを獲得している必要があり、条件を満たせないと1.0%止まり。この提示回数の条件は改定が続いているため、最新条件は公式で確認を。［確認日: 2026-08-09／出典: 楽天公式・比較メディア複数］"
   },
   {
     name: "楽天ペイ", universal: true, url: "https://pay.rakuten.co.jp/",
@@ -1317,6 +1820,19 @@ function visibleCards(store){
 
 const DEFAULT_STORES = [
   {
+    "name": "NewDays",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "ビックカメラSuicaカード",
+        "rate": "1.0%＋JRE POINT優待",
+        "method": "Suica払い、またはカード決済",
+        "note": "JR東日本の駅ナカ店舗はJRE POINT優待店のため、通常還元に上乗せされる場合がある。［確認日: 2026-08-09］",
+        "url": "https://www.jreast.co.jp/card/"
+      }
+    ]
+  },
+  {
     "name": "セイコーマート",
     "category": "コンビニ",
     "cards": [
@@ -1325,6 +1841,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1353,6 +1876,61 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "一部対象外の店舗あり。法人会員は対象外。 JCB基本0.5%に対して3倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "セブンカード・プラス",
+        "rate": "最大10%",
+        "method": "セブンカード・プラスでのクレジット決済（事前に7iDへのカード登録が必要）",
+        "note": "内訳はnanacoポイント9.5%＋セブンマイル0.5%。7iDへの登録をしていないと大幅に還元率が下がる。一部対象外の支払い方法・商品・サービスあり（収納代行、たばこ、金券類など）。［確認日: 2026-08-09］",
+        "url": "https://www.7card.co.jp/"
+      },
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      },
+      {
+        "name": "セゾンパール・アメックス",
+        "rate": "2%",
+        "method": "QUICPay払い",
+        "note": "QUICPayでの支払いに限り2%還元。カードを直接使った通常決済では還元率が下がるので、必ずQUICPayを選ぶこと。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      },
+      {
+        "name": "JCB CARD W",
+        "rate": "2%",
+        "method": "JCB CARD Wでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCBオリジナルシリーズの中でも常時2倍の区分。18〜39歳限定で申し込め、39歳までに入会すれば40歳以降も年会費無料。J-POINTパートナーではさらに上乗せされる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "最大10〜11%",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/camp/seven-eleven_vpoint/index.html"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1.5%（3倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ファミリーマート",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "セゾンパール・アメックス",
+        "rate": "2%",
+        "method": "QUICPay払い",
+        "note": "QUICPayでの支払いに限り2%還元。カードを直接使った通常決済では還元率が下がるので、必ずQUICPayを選ぶこと。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
       }
     ]
   },
@@ -1373,6 +1951,20 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "ポプラグループが対象。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -1385,6 +1977,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1406,6 +2005,34 @@ const DEFAULT_STORES = [
         "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
         "note": "ナチュラルローソン・ローソンストア100も対象。駅ビル内やガソリンスタンド併設店、オンライン・デリバリー・スマホレジは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      },
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      },
+      {
+        "name": "セゾンパール・アメックス",
+        "rate": "2%",
+        "method": "QUICPay払い",
+        "note": "QUICPayでの支払いに限り2%還元。カードを直接使った通常決済では還元率が下がるので、必ずQUICPayを選ぶこと。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      },
+      {
+        "name": "ローソンPontaプラス",
+        "rate": "最大6%",
+        "method": "ローソンPontaプラスでの決済",
+        "note": "時間帯や利用額の条件で還元率が変動する。詳細な適用条件は公式ページで確認を推奨。［確認日: 2026-08-09］",
+        "url": "https://www.lawson.co.jp/ponta/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
   },
@@ -1426,6 +2053,20 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -1438,6 +2079,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1473,6 +2121,13 @@ const DEFAULT_STORES = [
         "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
   },
@@ -1485,6 +2140,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1499,6 +2161,13 @@ const DEFAULT_STORES = [
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
   },
@@ -1511,6 +2180,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1532,6 +2208,20 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -1551,6 +2241,20 @@ const DEFAULT_STORES = [
         "rate": "10%（20倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -1590,6 +2294,19 @@ const DEFAULT_STORES = [
     ]
   },
   {
+    "name": "デニーズ",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "セブンカード・プラス",
+        "rate": "1%",
+        "method": "セブンカード・プラスでのクレジット決済",
+        "note": "セブン&アイグループ店舗は通常0.5%から1%にアップ。イトーヨーカドーは毎月8のつく日（8日・18日・28日）に5%オフの特典もある。［確認日: 2026-08-09］",
+        "url": "https://www.7card.co.jp/"
+      }
+    ]
+  },
+  {
     "name": "ドミノ・ピザ",
     "category": "飲食店",
     "cards": [
@@ -1598,6 +2315,13 @@ const DEFAULT_STORES = [
         "rate": "10%（20倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -1619,6 +2343,20 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -1631,6 +2369,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1657,6 +2402,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1685,6 +2437,27 @@ const DEFAULT_STORES = [
         "method": "モバイルオーダー／マックデリバリー限定（事前のポイントアップ登録が必要）",
         "note": "モバイルオーダー・マックデリバリー限定。店頭での通常決済は対象外。 JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "モバイルオーダー／マックデリバリー限定（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -1697,6 +2470,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1717,6 +2497,20 @@ const DEFAULT_STORES = [
         "rate": "10%（20倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -1744,6 +2538,13 @@ const DEFAULT_STORES = [
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
   },
@@ -1756,6 +2557,13 @@ const DEFAULT_STORES = [
         "rate": "7%（Oliveクレジットモードは8%）",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
@@ -1770,6 +2578,26 @@ const DEFAULT_STORES = [
         "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
         "note": "モバイルオーダーとクリエカードへのチャージは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      },
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "カフェ・ベローチェ",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
       }
     ]
   },
@@ -1782,6 +2610,13 @@ const DEFAULT_STORES = [
         "rate": "10%（20倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -1817,6 +2652,27 @@ const DEFAULT_STORES = [
         "method": "モバイルオーダー／カードへのオンライン入金・オートチャージ／Starbucks eGift（事前登録が必要）",
         "note": "モバイルオーダー、スターバックスカードへのオンライン入金・オートチャージ、Starbucks eGiftが対象。店舗での直接利用・店頭入金は対象外。 JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "モバイルオーダー限定（スターバックスアプリまたはApp Clip経由のApple Pay決済のみ）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "モバイルオーダー／カードへのオンライン入金・オートチャージ／Starbucks eGift（事前登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -1837,6 +2693,13 @@ const DEFAULT_STORES = [
         "method": "ドトールバリューカードへのクレジットチャージ",
         "note": "基本1%＋特約店ポイント3%の合計。dカードでの直接決済では特約店ポイントは付かず、必ずバリューカード経由のチャージが必要。［確認日: 2026-08-09／出典: 比較メディア複数］",
         "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
     ]
   },
@@ -1850,6 +2713,19 @@ const DEFAULT_STORES = [
         "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
         "note": "UCC Cafe Plazaも対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "珈琲館",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "セゾンゴールドプレミアム",
+        "rate": "2.5〜5%（年間利用額で変動）",
+        "method": "セゾンゴールドプレミアムでの決済",
+        "note": "年間利用額で還元率が変わる方式：30万円以上で5%、15万円以上で4%、15万円未満は2.5%。判定は毎月行われ、家族カードの利用分も合算される。［確認日: 2026-08-09］",
+        "url": "https://www.saisoncard.co.jp/"
       }
     ]
   },
@@ -1876,6 +2752,19 @@ const DEFAULT_STORES = [
         "method": "イオンマークのカード払い／AEON Payのスマホ決済／電子マネーWAON",
         "note": "還元ポイントではなく「会計から5%OFF」という割引形式。イオン・イオンスタイル・マックスバリュ・ザ・ビッグなど幅広く対象だが、たばこ・切手・商品券・酒類の一部などは対象外。毎月10日の「ありが10デー」はポイント5倍（還元率2.5%相当）で別方式。［確認日: 2026-08-09／出典: イオンカード公式・WAON公式］",
         "url": "https://www.aeon.co.jp/merit/thanks_day/"
+      }
+    ]
+  },
+  {
+    "name": "イトーヨーカドー",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "セブンカード・プラス",
+        "rate": "1%",
+        "method": "セブンカード・プラスでのクレジット決済",
+        "note": "セブン&アイグループ店舗は通常0.5%から1%にアップ。イトーヨーカドーは毎月8のつく日（8日・18日・28日）に5%オフの特典もある。［確認日: 2026-08-09］",
+        "url": "https://www.7card.co.jp/"
       }
     ]
   },
@@ -2006,6 +2895,26 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ヨークマート",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "セブンカード・プラス",
+        "rate": "1%",
+        "method": "セブンカード・プラスでのクレジット決済",
+        "note": "セブン&アイグループ店舗は通常0.5%から1%にアップ。イトーヨーカドーは毎月8のつく日（8日・18日・28日）に5%オフの特典もある。［確認日: 2026-08-09］",
+        "url": "https://www.7card.co.jp/"
       }
     ]
   },
@@ -2044,6 +2953,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "成城石井.com（オンラインショップ）とLe Bar a Vin 52 AZABU TOKYOも対象。 JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2097,6 +3013,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2123,6 +3046,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2135,6 +3065,13 @@ const DEFAULT_STORES = [
         "rate": "2.5%（5倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "最大5倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2149,6 +3086,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "最大5倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2161,6 +3105,13 @@ const DEFAULT_STORES = [
         "rate": "2.5%（5倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "最大5倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2175,6 +3126,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2188,6 +3146,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2200,6 +3165,13 @@ const DEFAULT_STORES = [
         "rate": "10%（20倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "最大20倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2215,6 +3187,14 @@ const DEFAULT_STORES = [
         "note": "通常特典の最大+8.5%に、期間限定のキャンペーン上乗せ分を加えた数値。三井住友カード経由の宿泊予約サイトを通した予約が対象で、ホテルに直接申し込む場合は対象外。期間や上乗せ幅は変動しやすいので、予約前に公式サイトで最新の還元率を確認するのが安全。［確認日: 2026-08-09／出典: 三井住友カード公式 リワードアップ一覧］",
         "expires": "2026-08-31",
         "url": "https://www.smbc-card.com/mem/platinum-preferred/special-store/index.jsp"
+      },
+      {
+        "name": "三井住友カード ゴールド（NL）",
+        "rate": "最大+18.5%（2026/8/31まで還元率UP中）",
+        "method": "Vトリップ経由での宿泊予約・決済",
+        "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
+        "url": "https://www.smbc-card.com/mem/platinum-preferred/special-store/index.jsp",
+        "expires": "2026-08-31"
       }
     ]
   },
@@ -2227,6 +3207,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2241,6 +3228,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2253,6 +3247,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2267,6 +3268,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して3倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1.5%（3倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2279,6 +3287,20 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "ビックカメラSuicaカード",
+        "rate": "最大11.5%",
+        "method": "Suicaにチャージしてから、ビックカメラでSuica払い",
+        "note": "チャージ時のJRE POINT 1.5%＋ビックカメラでのSuica払い10%の合計。カードで直接支払うと10%還元にはならないので、必ずSuicaを経由すること。一般加盟店では1.0%（ビックポイント0.5%＋JRE POINT 0.5%）。［確認日: 2026-08-09］",
+        "url": "https://www.jreast.co.jp/card/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2293,6 +3315,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2305,6 +3334,13 @@ const DEFAULT_STORES = [
         "rate": "1.5%（3倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して3倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1.5%（3倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2319,6 +3355,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（登録不要）",
         "note": "この店舗はポイントアップ登録が不要。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（登録不要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2331,6 +3374,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2345,6 +3395,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2357,6 +3414,13 @@ const DEFAULT_STORES = [
         "rate": "2.5%（5倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2371,6 +3435,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2384,6 +3455,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2396,6 +3474,13 @@ const DEFAULT_STORES = [
         "rate": "2.5%（5倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2423,6 +3508,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "ハックドラッグ・金光薬品も対象。 JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2435,6 +3527,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2462,6 +3561,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2475,6 +3581,26 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "そごう",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "セブンカード・プラス",
+        "rate": "1%",
+        "method": "セブンカード・プラスでのクレジット決済",
+        "note": "セブン&アイグループ店舗は通常0.5%から1%にアップ。イトーヨーカドーは毎月8のつく日（8日・18日・28日）に5%オフの特典もある。［確認日: 2026-08-09］",
+        "url": "https://www.7card.co.jp/"
       }
     ]
   },
@@ -2487,6 +3613,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2501,6 +3634,13 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
   },
@@ -2513,6 +3653,13 @@ const DEFAULT_STORES = [
         "rate": "1%（2倍）",
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "JCBゴールド",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
     ]
@@ -2540,6 +3687,19 @@ const DEFAULT_STORES = [
         "method": "リンベル オンラインショップでのdカード決済",
         "note": "基本1%＋特約店ポイント1%。オンラインショップでの注文が対象。［確認日: 2026-08-09／出典: dカード公式・比較メディア複数］",
         "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      }
+    ]
+  },
+  {
+    "name": "西武百貨店",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "セブンカード・プラス",
+        "rate": "1%",
+        "method": "セブンカード・プラスでのクレジット決済",
+        "note": "セブン&アイグループ店舗は通常0.5%から1%にアップ。イトーヨーカドーは毎月8のつく日（8日・18日・28日）に5%オフの特典もある。［確認日: 2026-08-09］",
+        "url": "https://www.7card.co.jp/"
       }
     ]
   },
@@ -2650,12 +3810,29 @@ function rateValue(card){
 
 function combinedCards(store){
   const own = visibleCards(store);
-  if(!showUniversal) return own;
-  const ownNames = own.map(c => c.name);
-  const extras = UNIVERSAL_PAYMENTS.filter(u =>
-    !ownNames.some(n => n.includes(u.name.split("（")[0]))
-  );
-  return own.concat(extras);
+  let all = own;
+  if(showUniversal){
+    const ownNames = own.map(c => c.name);
+    const extras = UNIVERSAL_PAYMENTS.filter(u =>
+      !ownNames.some(n => n.includes(u.name.split("（")[0]))
+    );
+    all = own.concat(extras);
+  }
+  // 保有カードが設定されていれば、持っているものだけに絞る。
+  // ただし全部消えてしまう店では、比較の手がかりを残すため元の一覧に戻す。
+  const mine = all.filter(c => ownsCard(c.name));
+  return mine.length ? mine : all;
+}
+
+// その店で、持っていないカードのうち最も還元率が高いもの（＝乗り換え候補）
+function bestUnowned(store){
+  if(!wallet || wallet.size === 0) return null;
+  const own = visibleCards(store);
+  const others = own.filter(c => !ownsCard(c.name));
+  if(!others.length) return null;
+  const best = others.reduce((a,b) => rateValue(b) > rateValue(a) ? b : a);
+  const mineBest = combinedCards(store).reduce((a,b) => rateValue(b) > rateValue(a) ? b : a, {rate:"0"});
+  return rateValue(best) > rateValue(mineBest) ? best : null;
 }
 
 function linkHtml(card){
@@ -2677,16 +3854,22 @@ function buildStoreCardEl(store, distanceMeters){
 
   const head = document.createElement("div");
   head.className = "store-head";
+  const topYen = sorted[0] ? yenBack(sorted[0]) : null;
   head.innerHTML = `
     ${distBadge}
+    <button class="fav-btn${isFav(store.name) ? " on" : ""}" title="よく行く店にする">${isFav(store.name) ? "★" : "☆"}</button>
     <div class="store-name">${store.name}</div>
-    <div class="store-best-badge">最大 ${sorted[0] ? sorted[0].rate : "—"}</div>
+    <div class="store-best-wrap">
+      <div class="store-best-badge">最大 ${sorted[0] ? sorted[0].rate : "—"}</div>
+      ${topYen !== null ? `<div class="store-best-yen">${topYen.toLocaleString()}円分</div>` : ""}
+    </div>
     <button class="icon-btn edit-store-btn" title="お店情報を編集">✎</button>
     <button class="icon-btn delete-store-btn" title="お店を削除">🗑</button>
     <div class="store-toggle">▾</div>
   `;
   head.addEventListener("click", (e)=>{
     if(e.target.closest(".icon-btn")) return; // don't toggle when clicking edit/delete
+    if(e.target.closest(".fav-btn")){ toggleFav(store.name); return; }
     card.classList.toggle("collapsed");
   });
   head.querySelector(".edit-store-btn").addEventListener("click", ()=> openStoreModal(store));
@@ -2703,7 +3886,7 @@ function buildStoreCardEl(store, distanceMeters){
         <span class="card-option-name">${c.name}</span>
         ${c.universal ? `<span class="universal-tag">全店共通</span>` : ""}
         ${expiryBadgeHtml(c)}
-        <span class="card-option-rate">${c.rate}</span>
+        <span class="card-option-rate">${c.rate}${(()=>{const y=yenBack(c); return y!==null ? `<span class="rate-yen">${y.toLocaleString()}円</span>` : "";})()}</span>
         <button class="icon-btn edit-card-btn" title="編集">✎</button>
         <button class="icon-btn delete-card-btn" title="削除">🗑</button>
       </div>
@@ -2726,6 +3909,15 @@ function buildStoreCardEl(store, distanceMeters){
   addCardRow.innerHTML = `<button class="add-card-btn">＋ このお店にカードを追加</button>`;
   addCardRow.querySelector("button").addEventListener("click", ()=> openCardModal(store, null));
   options.appendChild(addCardRow);
+
+  const up = bestUnowned(store);
+  if(up){
+    const hint = document.createElement("div");
+    hint.className = "upgrade-hint";
+    const y = yenBack(up);
+    hint.innerHTML = `持っていないカードなら <b>${up.name}</b> が <b>${up.rate}</b>${y !== null ? `（${y.toLocaleString()}円分）` : ""}`;
+    options.appendChild(hint);
+  }
 
   card.appendChild(head);
   card.appendChild(options);
@@ -2777,6 +3969,24 @@ function renderStores(){
     return;
   }
   emptyNote.style.display = "none";
+
+  // お気に入りは常に最上部に固定（検索・絞り込み中は通常の並びに任せる）
+  const showFavSection = !q && storeState.category === "all" && !storeState.sortByRate;
+  if(showFavSection){
+    const favStores = filtered.filter(s => isFav(s.name));
+    if(favStores.length){
+      const label = document.createElement("div");
+      label.className = "store-category-label";
+      label.textContent = "★ よく行く店";
+      list.appendChild(label);
+      favStores.forEach(store => {
+        const card = buildStoreCardEl(store);
+        card.classList.remove("collapsed");
+        list.appendChild(card);
+      });
+      filtered = filtered.filter(s => !isFav(s.name));
+    }
+  }
 
   if(storeState.sortByRate){
     // 還元率が高い順：カテゴリ見出しは出さず、フラットに並べる
@@ -2871,9 +4081,365 @@ function renderCampaigns(){
   });
 }
 
+function renderRoutes(){
+  const list = document.getElementById("routeList");
+  list.innerHTML = "";
+  CHARGE_ROUTES.forEach(r => {
+    const el = document.createElement("div");
+    el.className = "route-card";
+    const chain = r.steps.map((s, i) =>
+      `<span class="route-step${i === r.steps.length - 1 ? " is-end" : ""}">${s}</span>`
+    ).join(`<span class="route-arrow">→</span>`);
+
+    el.innerHTML = `
+      <div class="route-top">
+        <span class="route-name">${r.name}</span>
+        <span class="route-total">${r.total}</span>
+      </div>
+      <div class="route-chain">${chain}</div>
+      <ul class="route-gains">${r.gains.map(g => `<li>${g}</li>`).join("")}</ul>
+      ${r.caution ? `<div class="route-caution">${r.caution}</div>` : ""}
+      <div class="card-option-note">${r.note}</div>
+      ${r.url ? `<a class="src-link" href="${r.url}" target="_blank" rel="noopener noreferrer">公式 ↗</a>` : ""}
+    `;
+    list.appendChild(el);
+  });
+}
+
+// ========== 表示テーマ（ダーク / ライト） ==========
+// 初回は端末のOS設定に従い、以降は選んだテーマを記憶する。
+const THEME_KEY = "kangenchou_theme";
+
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme", theme);
+  document.getElementById("themeIcon").textContent = theme === "dark" ? "☾" : "☀";
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute("content", theme === "dark" ? "#1B2239" : "#F7F8FC");
+}
+
+function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem(THEME_KEY); } catch {}
+  const prefersLight = window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
+  applyTheme(saved || (prefersLight ? "light" : "dark"));
+}
+
+document.getElementById("themeBtn").addEventListener("click", ()=>{
+  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try{ localStorage.setItem(THEME_KEY, next); } catch {}
+});
+
+// ========== AIでキャンペーンを取り込む ==========
+// キャンペーンページのURL（または説明文）を渡すと、Claudeがweb検索でその内容を
+// 調べ、このアプリのデータ形式に整えて返す。ブラウザから他サイトを直接読むのは
+// CORSで塞がれるため、読み取りはAPI側のweb searchツールに任せている。
+// 反映前に必ずプレビューを挟み、人が確認してから保存する。
+
+function aiPrompt(input, categories, storeNames){
+  return `あなたは日本のキャッシュレス決済・クレジットカード還元の専門アシスタントです。
+以下の入力について web_search で最新情報を調べ、還元キャンペーンの情報を抽出してください。
+
+【入力】
+${input}
+
+【出力形式】
+必ず次のJSONだけを返してください。前置き・後書き・マークダウンのコードフェンスは一切不要です。
+{
+  "store": "店舗・チェーン名",
+  "category": "次のいずれか: ${categories.join(" / ")}",
+  "card": "決済手段の名前（例: 三井住友カード / Olive、PayPay、dカード）",
+  "rate": "還元率（例: 7%、最大10〜11%、20倍）",
+  "method": "対象となる支払い方法と、対象外の条件",
+  "expires": "終了日をYYYY-MM-DD形式で。終了日が無い常設ならnull",
+  "note": "上限・エントリー要否・注意点を簡潔に。最後に［確認日: ${new Date().toISOString().slice(0,10)}／出典: 調べた媒体名］を付ける",
+  "url": "根拠になった公式ページのURL",
+  "confidence": "high / medium / low のいずれか",
+  "warning": "情報が不確かな点があれば書く。無ければ空文字"
+}
+
+【重要な注意】
+- 情報源の文章をそのまま引き写さず、条件を自分の言葉で要約してください。
+- 「スマホのタッチ決済のみ対象」「カード現物のタッチは対象外」のような、対象取引の細かい違いは還元を受けられるかどうかを左右するので必ず method に含めてください。
+- 確認できなかった項目は推測で埋めず、confidence を low にして warning に理由を書いてください。
+- category は必ず指定した選択肢の中から選んでください。
+- 既に登録済みの店舗名がある場合はその表記に合わせてください: ${storeNames.slice(0, 40).join("、")}`;
+}
+
+async function runAiImport(input, statusEl, previewEl, saveBtn){
+  statusEl.className = "ai-status";
+  statusEl.innerHTML = `<span class="ai-spinner"></span>公式ページを調べています…`;
+  previewEl.innerHTML = "";
+  saveBtn.style.display = "none";
+
+  try{
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: aiPrompt(input, CATEGORY_LIST, STORES.map(s=>s.name)) }],
+        tools: [{ type: "web_search_20250305", name: "web_search" }]
+      })
+    });
+    if(!res.ok) throw new Error(`APIエラー（HTTP ${res.status}）`);
+    const data = await res.json();
+
+    const text = (data.content || [])
+      .map(b => b.type === "text" ? b.text : "")
+      .filter(Boolean).join("\n");
+    const clean = text.replace(/```json/g, "").replace(/```/g, "").trim();
+    const jsonStr = clean.slice(clean.indexOf("{"), clean.lastIndexOf("}") + 1);
+    const r = JSON.parse(jsonStr);
+
+    const conf = { high: "確度: 高", medium: "確度: 中", low: "確度: 低" }[r.confidence] || "";
+    statusEl.textContent = `読み取りました（${conf}）。内容を確認して保存してください。`;
+
+    const row = (k, v) => v
+      ? `<div class="ai-preview-row"><div class="ai-preview-key">${k}</div><div class="ai-preview-val">${v}</div></div>`
+      : "";
+    previewEl.innerHTML = `
+      <h4>${r.store || "（店舗名なし）"}</h4>
+      ${row("カテゴリ", r.category)}
+      ${row("決済手段", r.card)}
+      ${row("還元率", r.rate)}
+      ${row("支払い方法", r.method)}
+      ${row("終了日", r.expires || "常設（終了日なし）")}
+      ${row("補足", r.note)}
+      ${row("出典", r.url ? `<a class="src-link" href="${r.url}" target="_blank" rel="noopener noreferrer">公式 ↗</a>` : "")}
+      ${r.warning ? row("⚠ 注意", r.warning) : ""}
+    `;
+
+    saveBtn.style.display = "block";
+    saveBtn.onclick = ()=>{
+      const cat = CATEGORY_LIST.includes(r.category) ? r.category : "その他";
+      let store = STORES.find(s => s.name === r.store);
+      if(!store){
+        store = { name: r.store, category: cat, cards: [] };
+        STORES.push(store);
+      }
+      const card = {
+        name: r.card, rate: r.rate, method: r.method, note: r.note,
+        url: r.url || undefined,
+        expires: (r.expires && r.expires !== "null") ? r.expires : undefined
+      };
+      const idx = store.cards.findIndex(c => c.name === r.card);
+      if(idx >= 0) store.cards[idx] = card; else store.cards.push(card);
+
+      persistStores();
+      renderStores();
+      renderCampaigns();
+      document.getElementById("modalOverlay").style.display = "none";
+    };
+
+  } catch(err){
+    statusEl.className = "ai-status err";
+    statusEl.textContent = `読み取りに失敗しました：${err.message}\nURLを確認するか、店名とキャンペーン内容を文章で書いてもう一度お試しください。`;
+    console.error(err);
+  }
+}
+
+document.getElementById("aiImportBtn").addEventListener("click", ()=>{
+  const overlay = document.getElementById("modalOverlay");
+  const box = document.getElementById("modalBox");
+  box.innerHTML = `
+    <div class="modal-title">リンクから取り込む</div>
+    <div class="modal-field">
+      <label>キャンペーンのURL、または内容の説明</label>
+      <textarea class="ai-input" id="aiInput" placeholder="https://www.smbc-card.com/... &#10;または「セブンイレブンの8月のPayPayキャンペーン」のような説明でもOK"></textarea>
+      <p class="ai-hint">公式ページを調べて、還元率・対象の支払い方法・終了日を読み取ります。保存前に内容を確認できます。</p>
+    </div>
+    <div id="aiStatus" class="ai-status" style="display:none;"></div>
+    <div id="aiPreview"></div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="aiCancelBtn">閉じる</button>
+      <button class="modal-btn save" id="aiRunBtn">調べる</button>
+    </div>
+    <button class="modal-btn save" id="aiSaveBtn" style="display:none;margin-top:9px;width:100%;">この内容で保存</button>
+  `;
+  overlay.style.display = "flex";
+
+  const statusEl = document.getElementById("aiStatus");
+  const previewEl = document.getElementById("aiPreview");
+  const saveBtn = document.getElementById("aiSaveBtn");
+
+  document.getElementById("aiCancelBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("aiRunBtn").addEventListener("click", ()=>{
+    const v = document.getElementById("aiInput").value.trim();
+    if(!v){ alert("URLまたはキャンペーンの内容を入力してください"); return; }
+    statusEl.style.display = "block";
+    runAiImport(v, statusEl, previewEl, saveBtn);
+  });
+});
+
+// --- 保有カード設定 ---
+function updateWalletSummary(){
+  const el = document.getElementById("walletSummary");
+  const btn = document.getElementById("walletBtn");
+  if(!wallet || wallet.size === 0){
+    el.textContent = "タップして選ぶ";
+    btn.classList.add("unset");   // 未設定は目立たせて設定を促す
+    return;
+  }
+  btn.classList.remove("unset");
+  const arr = [...wallet];
+  el.textContent = arr.length <= 2 ? arr.join("、") : `${arr[0]} ほか${arr.length - 1}件`;
+}
+
+document.getElementById("walletBtn").addEventListener("click", ()=>{
+  const overlay = document.getElementById("modalOverlay");
+  const box = document.getElementById("modalBox");
+  const cur = wallet || new Set();
+  box.innerHTML = `
+    <div class="modal-title">持っているカード・決済</div>
+    <p class="ai-hint" style="margin:-8px 0 14px;">選ぶと、その決済だけに絞って比較します。何も選ばなければ全部表示します。</p>
+    <div class="wallet-grid">
+      ${WALLET_OPTIONS.map(o => `<button class="wallet-opt${cur.has(o) ? " on" : ""}" data-opt="${o}">${o}</button>`).join("")}
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="walletClearBtn">すべて解除</button>
+      <button class="modal-btn save" id="walletSaveBtn">保存</button>
+    </div>
+  `;
+  overlay.style.display = "flex";
+
+  const picked = new Set(cur);
+  box.querySelectorAll(".wallet-opt").forEach(b => {
+    b.addEventListener("click", ()=>{
+      const o = b.dataset.opt;
+      if(picked.has(o)){ picked.delete(o); b.classList.remove("on"); }
+      else { picked.add(o); b.classList.add("on"); }
+    });
+  });
+  document.getElementById("walletClearBtn").addEventListener("click", ()=>{
+    picked.clear();
+    box.querySelectorAll(".wallet-opt").forEach(b => b.classList.remove("on"));
+  });
+  document.getElementById("walletSaveBtn").addEventListener("click", ()=>{
+    wallet = picked.size ? picked : null;
+    saveSet(WALLET_KEY, picked);
+    updateWalletSummary();
+    renderStores();
+    overlay.style.display = "none";
+  });
+});
+
+document.getElementById("amountInput").addEventListener("input", (e)=>{
+  amount = Math.max(0, parseInt(e.target.value, 10) || 0);
+  renderStores();
+});
+
+updateWalletSummary();
+
+// --- 初回セットアップ ---
+// カードが22種類あるため、未設定のまま使うと全部並んで読みにくい。
+// そこで初回だけ保有カードの選択画面を出す。「あとで」を選んだ場合も
+// 記録して、二度と邪魔しない。
+const ONBOARD_KEY = "kangenchou_onboarded";
+
+function showOnboarding(){
+  const overlay = document.getElementById("onboardOverlay");
+  const grid = document.getElementById("onboardGrid");
+  const picked = new Set();
+
+  grid.innerHTML = WALLET_OPTIONS
+    .map(o => `<button class="wallet-opt" data-opt="${o}">${o}</button>`).join("");
+  grid.querySelectorAll(".wallet-opt").forEach(b => {
+    b.addEventListener("click", ()=>{
+      const o = b.dataset.opt;
+      if(picked.has(o)){ picked.delete(o); b.classList.remove("on"); }
+      else { picked.add(o); b.classList.add("on"); }
+      document.getElementById("onboardDoneBtn").textContent =
+        picked.size ? `${picked.size}枚で はじめる` : "はじめる";
+    });
+  });
+
+  const finish = (save)=>{
+    if(save && picked.size){
+      wallet = picked;
+      saveSet(WALLET_KEY, picked);
+      updateWalletSummary();
+      renderStores();
+    }
+    try{ localStorage.setItem(ONBOARD_KEY, "1"); } catch {}
+    overlay.style.display = "none";
+  };
+
+  document.getElementById("onboardDoneBtn").addEventListener("click", ()=> finish(true));
+  document.getElementById("onboardSkipBtn").addEventListener("click", ()=> finish(false));
+  overlay.style.display = "flex";
+}
+
+function maybeOnboard(){
+  let done = null;
+  try{ done = localStorage.getItem(ONBOARD_KEY); } catch {}
+  // すでに保有カードを設定済みなら、初回画面は不要
+  if(done || (wallet && wallet.size)) return;
+  showOnboarding();
+}
+
+maybeOnboard();
+
+initTheme();
+
+// ========== 保有カード・お気に入り・金額 ==========
+const WALLET_KEY = "kangenchou_wallet";
+const FAV_KEY    = "kangenchou_favs";
+
+// 選択肢として出す決済手段。データ中のカード名と部分一致で照合する。
+const WALLET_OPTIONS = [
+  // 汎用の高還元カード
+  "三井住友カード / Olive", "三井住友カード ゴールド（NL）",
+  "三菱UFJカード", "JCBオリジナルシリーズ", "JCB CARD W", "JCBゴールド",
+  "dカード", "セゾンゴールドプレミアム", "セゾンパール・アメックス",
+  // 店舗系カード
+  "イオンカード", "セブンカード・プラス", "ビックカメラSuicaカード", "ローソンPontaプラス",
+  // スマホ決済・共通ポイント
+  "楽天カード", "楽天ポイントカード提示", "PayPay", "PayPayカード ゴールド",
+  "楽天ペイ", "d払い", "auPAY", "FamiPay", "AEON Pay",
+];
+
+function loadSet(key){
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? new Set(JSON.parse(raw)) : null;
+  } catch { return null; }
+}
+function saveSet(key, set){
+  try{ localStorage.setItem(key, JSON.stringify([...set])); } catch {}
+}
+
+// null = 未設定（＝全部表示）。空Setとは意味が違うので区別する。
+let wallet = loadSet(WALLET_KEY);
+let favs   = loadSet(FAV_KEY) || new Set();
+let amount = 0;
+
+function ownsCard(cardName){
+  if(!wallet || wallet.size === 0) return true; // 未設定なら全部表示
+  return [...wallet].some(w => cardName.includes(w) || w.includes(cardName.split("（")[0]));
+}
+
+// 会計金額を入れているとき、その還元率で何円戻るかを概算する
+function yenBack(card){
+  if(!amount) return null;
+  const v = rateValue(card);
+  if(!v) return null;
+  return Math.floor(amount * v / 100);
+}
+
+function isFav(storeName){ return favs.has(storeName); }
+function toggleFav(storeName){
+  if(favs.has(storeName)) favs.delete(storeName); else favs.add(storeName);
+  saveSet(FAV_KEY, favs);
+  renderStores();
+}
+
 document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
 
 renderCampaigns();
+renderRoutes();
 renderStores();
 
 // ========== 現在地から探す ==========
