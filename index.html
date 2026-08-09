@@ -449,6 +449,82 @@
   }
   .invest-result-val.sub{ font-size: 11.5px; font-weight: 600; color: var(--muted); }
 
+  /* ===== monthly picks ===== */
+  .picks-section{ margin-bottom: 22px; }
+  .picks-head{ display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+  .picks-head .add-store-btn{ margin-left: auto; }
+  .picks-title{
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+  }
+  .pick-card{
+    position: relative;
+    padding: 16px 17px;
+    margin-bottom: 11px;
+    background: var(--surface);
+    border: 1px solid var(--foil-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .pick-card::before{
+    content: "";
+    position: absolute; inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--foil);
+  }
+  .pick-top{
+    display: flex; align-items: baseline; gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+  .pick-name{
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .pick-rate{
+    margin-left: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 16px;
+    white-space: nowrap;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .pick-period{
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 11px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--dim);
+  }
+  .pick-steps{
+    margin: 0 0 11px;
+    padding-left: 20px;
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: var(--text);
+  }
+  .pick-steps li{ padding-left: 2px; }
+  .picks-divider{
+    display: flex; align-items: center; gap: 12px;
+    margin: 24px 0 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    color: var(--dim);
+  }
+  .picks-divider::before, .picks-divider::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
   /* ===== charge routes ===== */
   .route-card{
     position: relative;
@@ -1551,6 +1627,17 @@
       終了日が設定されているキャンペーンだけを、終了が近い順に並べています。
       終了日を過ぎたものは自動で「終了」扱いになります。
     </div>
+    <div class="picks-section">
+      <div class="picks-head">
+        <span class="picks-title">🔥 今月まず使うべき決済</span>
+        <button id="addPickBtn" class="add-store-btn">＋ 追加</button>
+      </div>
+      <div id="picksList"></div>
+    </div>
+
+    <div class="picks-divider"><span>店舗別のキャンペーン</span></div>
+
+    <div class="category-chip-row" id="campaignChipRow"></div>
     <label class="show-expired-row">
       <input type="checkbox" id="showExpiredChk"> 終了済みも表示する
     </label>
@@ -2267,6 +2354,93 @@ const CATEGORY_LIST = [
 // クレカ→プリペイド→残高…と経由させ、各段階の還元を積み上げる方法。
 // steps は経由順、gains は「どこで何%付くか」の内訳。
 // このジャンルは各社の規約変更で頻繁に塞がれるため、確認日を必ず残す。
+// ========== 今月の優先決済 ==========
+// 「今月はこれで払うのが一番おトク」という、期間限定の決済手段そのものの特典。
+// 店舗別のキャンペーンとは別枠で、月初の判断材料として一番上に出す。
+// stores.json と同じく、これは初期データ。実際の表示は picks.json →
+// localStorage → この初期値、の順で読み込む。
+const DEFAULT_PICKS = [
+  {
+    name: "VポイントPay ポイント優先払いで10%還元",
+    rate: "10%還元",
+    period: "8/1〜8/31",
+    expires: "2026-08-31",
+    how: [
+      "キャンペーンサイトからエントリーする",
+      "VポイントPayで「ポイントで支払う」をONにする",
+      "Visaのタッチ決済対応店で、スマホのタッチ決済を合計500円（税込）以上使う",
+    ],
+    note: "上限500ポイント（＝5,000円分の利用で上限に達する）。ポイント付与は2026年11月末頃の予定。貯まっているVポイントを消化しながら10%上乗せで受け取れるため、ポイント残高がある人は今月これを最優先にする価値がある。［確認日: 2026-08-09］",
+    url: "https://www.smbc-card.com/camp/vcoupon/index.jsp"
+  },
+  {
+    name: "Vクーポン 複数ショップ利用で最大500ポイント",
+    rate: "最大500pt上乗せ",
+    period: "8/1〜9/30",
+    expires: "2026-09-30",
+    how: [
+      "キャンペーンにエントリーする",
+      "Vクーポンを複数の対象ショップで使う",
+    ],
+    note: "下の店舗別Vクーポンと併用できる、いわば「はしご」ボーナス。1店舗で終わらせず複数店で使うほど有利になる。［確認日: 2026-08-09］",
+    url: "https://www.smbc-card.com/camp/vcoupon/index.jsp"
+  },
+  {
+    name: "夏のクーポン祭り（Vクーポン × Vポイントアプリ）",
+    rate: "2種類のクーポンを重ね取り",
+    period: "8/1〜9/30",
+    expires: "2026-09-30",
+    how: [
+      "三井住友カードの「Vクーポン」を事前に獲得しておく",
+      "Vポイントアプリの「Vカードクーポン」もセットしておく",
+      "会計時にモバイルVカードを提示し、そのうえで三井住友カードで決済する",
+    ],
+    note: "提示と決済で別々のクーポンが効くため、両方セットしておくと特典が重なる。Vポイントアプリを初めて使う人／久しぶりの人には30ptがもらえるクーポンも配信中。［確認日: 2026-08-09］",
+    url: "https://www.smbc-card.com/camp/vcoupon/index.jsp"
+  },
+];
+
+// ---------- 今月の優先決済：読み込みと保存 ----------
+const PICKS_KEY = "kangenchou_picks";
+const PICKS_JSON_PATH = "picks.json";
+
+function loadPicks(){
+  try{
+    const raw = localStorage.getItem(PICKS_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      if(Array.isArray(p)) return p;
+    }
+  } catch {}
+  return JSON.parse(JSON.stringify(DEFAULT_PICKS));
+}
+function savePicks(){
+  try{ localStorage.setItem(PICKS_KEY, JSON.stringify(MONTHLY_PICKS)); } catch {}
+}
+function persistPicks(){
+  savePicks();
+  pushJsonToGithub(PICKS_JSON_PATH, MONTHLY_PICKS, "今月の優先決済");
+}
+
+let MONTHLY_PICKS = loadPicks();
+
+// 公開されているpicks.jsonがあれば、そちらを正とする
+async function refreshPicksFromGithubPages(){
+  try{
+    const res = await fetch(`${PICKS_JSON_PATH}?t=${Date.now()}`, { cache: "no-store" });
+    if(!res.ok) return;
+    const data = await res.json();
+    if(Array.isArray(data)){
+      MONTHLY_PICKS = data;
+      savePicks();
+      renderPicks();
+    }
+  } catch(e){
+    console.info("picks.json の取得をスキップしました", e.message);
+  }
+}
+
+
 // ========== クレカ積立 ==========
 // 証券口座の投信積立をクレカ払いにしたときの還元率。店舗決済とは仕組みが違い、
 // 「毎月自動で」貯まるのが特徴。rate は月5万円積立時の実効還元率で並べ替える。
@@ -2738,6 +2912,14 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "Vクーポン（三井住友カード）",
+        "rate": "+5%",
+        "method": "事前にVクーポンを獲得したうえで、対象店舗で三井住友カード決済",
+        "note": "期間中500ポイントまで。事前にVpassアプリまたはVクーポンサイトでクーポンを獲得しておく必要がある（獲得し忘れると対象外）。Vポイントアプリのクーポンも併せてセットしておけば、提示分と決済分で重ね取りができる。［確認日: 2026-08-09／出典: 三井住友カード公式・報道各社］",
+        "expires": "2026-08-31",
+        "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
     ]
   },
@@ -2758,6 +2940,14 @@ const DEFAULT_STORES = [
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "dPOINT（来店回数キャンペーン）",
+        "rate": "来店回数に応じて最大10倍（不定率）",
+        "method": "dポイント提示",
+        "note": "1回2倍→2回5倍→3回6倍→4回7倍→5回10倍と、来店回数が増えるほど倍率アップ。dポイントカード提示で貯まる通常ポイントが対象で、株主優待での支払い分はポイント対象外。要エントリー。［確認日: 2026-08-09／出典: dポイントクラブ公式］",
+        "expires": "2026-08-31",
+        "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
       }
     ]
   },
@@ -2771,14 +2961,6 @@ const DEFAULT_STORES = [
         "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
         "note": "スマホでお持ち帰り・どこでもくら寿司・通販などのオンライン事前決済は対象外。ららぽーとTOKYO-BAY店など一部店舗は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
-      },
-      {
-        "name": "dPOINT（来店回数キャンペーン）",
-        "rate": "来店回数に応じて最大10倍（不定率）",
-        "method": "dポイント提示",
-        "note": "1回2倍→5回目10倍と回数が増えるほど倍率アップ。7/1〜8/31限定。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
-        "expires": "2026-08-31",
-        "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
       }
     ]
   },
@@ -2859,6 +3041,14 @@ const DEFAULT_STORES = [
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "Vクーポン（三井住友カード）",
+        "rate": "+5%",
+        "method": "事前にVクーポンを獲得したうえで、対象店舗で三井住友カード決済",
+        "note": "期間中500ポイントまで。事前にVpassアプリまたはVクーポンサイトでクーポンを獲得しておく必要がある（獲得し忘れると対象外）。Vポイントアプリのクーポンも併せてセットしておけば、提示分と決済分で重ね取りができる。［確認日: 2026-08-09／出典: 三井住友カード公式・報道各社］",
+        "expires": "2026-08-31",
+        "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
     ]
   },
@@ -2927,6 +3117,14 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "Vクーポン（三井住友カード）",
+        "rate": "+10%",
+        "method": "事前にVクーポンを獲得したうえで、対象店舗で三井住友カード決済",
+        "note": "期間中の上限は公式ページで要確認。事前にVpassアプリまたはVクーポンサイトでクーポンを獲得しておく必要がある（獲得し忘れると対象外）。Vポイントアプリのクーポンも併せてセットしておけば、提示分と決済分で重ね取りができる。［確認日: 2026-08-09／出典: 三井住友カード公式・報道各社］",
+        "expires": "2026-08-31",
+        "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
     ]
   },
@@ -2947,7 +3145,7 @@ const DEFAULT_STORES = [
         "method": "au PAY支払い",
         "note": "持ち帰りネット注文5000円以上、1回550ポイント・期間中2回まで。7/22〜8/16の期間限定キャンペーン。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
         "expires": "2026-08-16",
-        "url": "https://aupay.wallet.auone.jp/campaign/"
+        "url": "https://camp.auone.jp/campaign/0df4b414dd4f1ae8d3eb8384"
       }
     ]
   },
@@ -3028,6 +3226,14 @@ const DEFAULT_STORES = [
         "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
+      },
+      {
+        "name": "Vクーポン（三井住友カード）",
+        "rate": "+5%",
+        "method": "事前にVクーポンを獲得したうえで、対象店舗で三井住友カード決済",
+        "note": "期間中500ポイントまで。事前にVpassアプリまたはVクーポンサイトでクーポンを獲得しておく必要がある（獲得し忘れると対象外）。Vポイントアプリのクーポンも併せてセットしておけば、提示分と決済分で重ね取りができる。［確認日: 2026-08-09／出典: 三井住友カード公式・報道各社］",
+        "expires": "2026-08-31",
+        "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
     ]
   },
@@ -4743,6 +4949,107 @@ document.getElementById("showUniversalChk").addEventListener("change", (e)=>{
 });
 
 
+let campaignCategory = "all";
+
+// キャンペーンがある店舗のカテゴリだけをチップとして出す（空振りを作らない）
+function renderCampaignChips(){
+  const row = document.getElementById("campaignChipRow");
+  if(!row) return;
+  const showExpired = document.getElementById("showExpiredChk").checked;
+  const counts = {};
+  let total = 0;
+  STORES.forEach(store => {
+    store.cards.forEach(card => {
+      const st = campaignStatus(card);
+      if(st.kind === "permanent") return;
+      if(st.kind === "expired" && !showExpired) return;
+      counts[store.category] = (counts[store.category] || 0) + 1;
+      total++;
+    });
+  });
+
+  row.innerHTML = "";
+  const mk = (key, label, count) => {
+    const b = document.createElement("button");
+    b.className = "category-chip" + (campaignCategory === key ? " active" : "");
+    b.innerHTML = `${label} <span class="chip-count">${count}</span>`;
+    b.addEventListener("click", ()=>{ campaignCategory = key; renderCampaigns(); });
+    row.appendChild(b);
+  };
+  mk("all", "すべて", total);
+  CATEGORY_LIST.forEach(cat => { if(counts[cat]) mk(cat, cat, counts[cat]); });
+}
+
+function renderPicks(){
+  const list = document.getElementById("picksList");
+  if(!list) return;
+  list.innerHTML = "";
+  const live = MONTHLY_PICKS.filter(p => campaignStatus(p).kind !== "expired");
+  if(live.length === 0){
+    list.innerHTML = `<div class="store-empty-note">今月の優先決済は登録されていません。</div>`;
+    return;
+  }
+  live.forEach(p => {
+    const el = document.createElement("div");
+    el.className = "pick-card";
+    el.innerHTML = `
+      <div class="pick-top">
+        <span class="pick-name">${p.name}</span>
+        <span class="pick-rate">${p.rate}</span>
+        <button class="icon-btn edit-pick-btn" title="編集">✎</button>
+        <button class="icon-btn delete-pick-btn" title="削除">🗑</button>
+      </div>
+      <div class="pick-period">${p.period}　${expiryBadgeHtml(p)}</div>
+      <ol class="pick-steps">${p.how.map(h => `<li>${h}</li>`).join("")}</ol>
+      <div class="card-option-note">${p.note}</div>
+      ${linkRowHtml(p.url, p.name)}
+    `;
+    el.querySelector(".edit-pick-btn").addEventListener("click", ()=> openPickModal(p));
+    el.querySelector(".delete-pick-btn").addEventListener("click", ()=> deletePick(p));
+    list.appendChild(el);
+  });
+}
+
+// 「今月の優先決済」の追加・編集・削除。手順は改行区切りで入力してもらう。
+function openPickModal(pick){
+  const isNew = pick === null;
+  showModal(
+    isNew ? "今月の優先決済を追加" : "優先決済を編集",
+    [
+      { key: "name", label: "名称（例：VポイントPay ポイント優先払いで10%還元）", value: pick ? pick.name : "" },
+      { key: "rate", label: "特典（例：10%還元）", value: pick ? pick.rate : "" },
+      { key: "period", label: "期間の表示（例：8/1〜8/31）", value: pick ? pick.period : "" },
+      { key: "expires", label: "終了日（例：2026-08-31）", value: pick ? pick.expires : "" },
+      { key: "how", label: "手順（1行に1ステップ。改行で区切る）", type: "textarea",
+        value: pick ? (pick.how || []).join("\n") : "" },
+      { key: "url", label: "キャンペーンページのURL", value: pick ? pick.url : "" },
+      { key: "note", label: "上限・注意点", type: "textarea", value: pick ? pick.note : "" },
+    ],
+    (v)=>{
+      const obj = {
+        name: v.name, rate: v.rate, period: v.period,
+        expires: v.expires || undefined,
+        how: v.how ? v.how.split("\n").map(s=>s.trim()).filter(Boolean) : [],
+        note: v.note, url: v.url || undefined
+      };
+      if(isNew) MONTHLY_PICKS.push(obj);
+      else Object.assign(pick, obj);
+      persistPicks();
+      renderPicks();
+    },
+    isNew ? null : ()=> deletePick(pick)
+  );
+}
+
+function deletePick(pick){
+  if(!confirm(`「${pick.name}」を削除しますか？`)) return;
+  const i = MONTHLY_PICKS.indexOf(pick);
+  if(i === -1) return;
+  MONTHLY_PICKS.splice(i, 1);
+  persistPicks();
+  renderPicks();
+}
+
 function renderCampaigns(){
   const list = document.getElementById("campaignList");
   list.innerHTML = "";
@@ -4750,6 +5057,7 @@ function renderCampaigns(){
   // 期限が設定されているものだけを集め、終了が近い順に並べる
   const items = [];
   STORES.forEach(store => {
+    if(campaignCategory !== "all" && store.category !== campaignCategory) return;
     store.cards.forEach(card => {
       const st = campaignStatus(card);
       if(st.kind === "permanent") return;
@@ -4757,6 +5065,7 @@ function renderCampaigns(){
       items.push({ store, card, status: st });
     });
   });
+  renderCampaignChips();
   items.sort((a,b) => (a.status.days ?? 0) - (b.status.days ?? 0));
 
   document.getElementById("campaignCountLine").textContent =
@@ -5218,6 +5527,7 @@ initTheme();
 document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
 document.getElementById("investAmount").addEventListener("input", renderInvest);
 
+renderPicks();
 renderCampaigns();
 // 段階制（tiers）があるものは階層ごとに計算し、無ければ一律の還元率で計算する
 function monthlyPoints(plan, monthly){
@@ -5609,10 +5919,13 @@ document.getElementById("editModeBtn").addEventListener("click", ()=>{
   editMode = !editMode;
   document.getElementById("editModeBtn").classList.toggle("on", editMode);
   document.getElementById("panel-stores").classList.toggle("edit-mode", editMode);
+  document.getElementById("panel-campaigns").classList.toggle("edit-mode", editMode);
   renderStores();
+  renderPicks();
 });
 
 document.getElementById("addStoreBtn").addEventListener("click", ()=> openStoreModal(null));
+document.getElementById("addPickBtn").addEventListener("click", ()=> openPickModal(null));
 
 document.getElementById("resetStoresBtn").addEventListener("click", ()=>{
   if(!confirm("この端末で編集した内容をすべて削除し、初期データに戻します。よろしいですか？")) return;
@@ -5722,6 +6035,7 @@ document.getElementById("githubSettingsBtn").addEventListener("click", ()=>{
 // 初回読み込み時に、GitHub上の最新データを取得しにいく
 refreshFromGithubPages();
 refreshAffiliatesFromGithubPages();
+refreshPicksFromGithubPages();
 </script>
 </body>
 </html>
