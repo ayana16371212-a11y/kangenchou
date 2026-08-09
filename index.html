@@ -372,6 +372,10 @@
   /* ===== affiliate links ===== */
   .link-row{ display: flex; gap: 7px; flex-wrap: wrap; margin-top: 9px; }
   .link-row .src-link{ margin-top: 0; }
+  .campaign-link{
+    border-color: var(--foil-2);
+    color: var(--foil-2);
+  }
   .apply-link{
     border-color: transparent;
     background: var(--foil);
@@ -2330,9 +2334,9 @@ const CHARGE_ROUTES = [
       "楽天ペイ支払い：楽天ポイント約1%",
     ],
     atStore: { rate: "2.5%", method: "楽天ペイで支払い（事前にANA Pay→楽天Edy→楽天キャッシュへ移しておく）" },
-    note: "現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月10万円まで。［確認日: 2026-08-09］",
+    note: "現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月1万円まで（以前の10万円から引き下げられたため、このルートで動かせる金額はかなり小さくなっている）。［確認日: 2026-08-09］",
     url: "https://cash.rakuten.co.jp/",
-    caution: "ANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外。エポスゴールド・JQ CARDエポスゴールドは対象。"
+    caution: "楽天Edy→楽天キャッシュの交換上限が月1万円になったため、このルートで回せるのは月1万円分まで。少額しか動かせない点を踏まえて手間に見合うか判断を。なおANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外（エポスゴールド・JQ CARDエポスゴールドは対象）。"
   },
   {
     name: "クレカ → VポイントPay",
@@ -2368,7 +2372,7 @@ const CHARGE_ROUTES = [
     atStore: { rate: "2.5%", method: "楽天ペイで支払い（JALカードSuica→ANA Pay→楽天Edy→楽天キャッシュ経由）" },
     note: "JALとANA両方のマイルを同時に貯めたい人向け。かつて主流だった「JAL Pay→ANA Pay」ルートは、JAL Pay側の制度改定で他社Payへのチャージ時のマイル還元率が大きく下がったため、その代替として使われている。［確認日: 2026-08-09］",
     url: null,
-    caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。"
+    caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。また楽天Edy→楽天キャッシュの交換上限が月1万円のため、回せる金額は小さい。"
   },
 ];
 
@@ -2774,7 +2778,7 @@ const DEFAULT_STORES = [
         "method": "dポイント提示",
         "note": "1回2倍→5回目10倍と回数が増えるほど倍率アップ。7/1〜8/31限定。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
         "expires": "2026-08-31",
-        "url": "https://dpoint.docomo.ne.jp/"
+        "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
       }
     ]
   },
@@ -2943,7 +2947,7 @@ const DEFAULT_STORES = [
         "method": "au PAY支払い",
         "note": "持ち帰りネット注文5000円以上、1回550ポイント・期間中2回まで。7/22〜8/16の期間限定キャンペーン。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
         "expires": "2026-08-16",
-        "url": "https://aupay.wallet.auone.jp/"
+        "url": "https://aupay.wallet.auone.jp/campaign/"
       }
     ]
   },
@@ -4774,7 +4778,10 @@ function renderCampaigns(){
       </div>
       <div class="campaign-cardname">${card.name}　／　${card.method || ""}</div>
       ${card.note ? `<div class="campaign-note">${card.note}</div>` : ""}
-      ${linkHtml(card)}
+      <div class="link-row">
+        ${card.url ? `<a class="src-link campaign-link" href="${card.url}" target="_blank" rel="noopener noreferrer">キャンペーンを見る ↗</a>` : ""}
+        ${affiliateFor(card.name) ? `<a class="src-link apply-link" href="${affiliateFor(card.name)}" target="_blank" rel="sponsored noopener noreferrer">申し込み ↗</a>` : ""}
+      </div>
     `;
     list.appendChild(el);
   });
