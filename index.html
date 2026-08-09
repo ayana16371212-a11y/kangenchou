@@ -859,6 +859,9 @@
     cursor: pointer;
   }
   .edit-mode .add-store-btn{ display: inline-block; }
+  /* GitHub連携は編集作業のときだけ使うので、通常時は隠しておく */
+  #githubSettingsBtn{ display: none; }
+  .edit-mode #githubSettingsBtn{ display: inline-block; }
   .edit-mode-hint{
     display: none;
     margin-bottom: 12px;
@@ -1357,19 +1360,6 @@
   </div>
 
   <div class="mode-panel active" id="panel-stores">
-    <div class="nearby-box">
-      <button id="nearbyBtn" class="nearby-btn">📍 現在地から近くのお店を探す</button>
-      <div class="nearby-status" id="nearbyStatus"></div>
-      <div id="nearbyResults"></div>
-    </div>
-    <div class="edit-toggle-row">
-      <button id="editModeBtn" class="edit-toggle-btn">✏️ 編集モード</button>
-      <button id="addStoreBtn" class="add-store-btn">＋ 新しいお店を追加</button>
-      <button id="aiImportBtn" class="add-store-btn ai-btn">✨ リンクから取り込む</button>
-      <button id="githubSettingsBtn" class="edit-toggle-btn" style="margin-left:auto;">🔗 GitHub連携</button>
-    </div>
-    <div class="sync-status" id="syncStatus"></div>
-    <div class="edit-mode-hint">編集モード中です。カード右上の✎で編集、🗑で削除できます。GitHub連携を設定していれば、変更は自動でリポジトリにも保存されます。</div>
     <div class="mypanel">
       <button id="walletBtn" class="mypanel-btn">
         <span class="mypanel-label">持っているカード</span>
@@ -1383,6 +1373,20 @@
         </div>
       </div>
     </div>
+    <div class="nearby-box">
+      <button id="nearbyBtn" class="nearby-btn">📍 現在地から近くのお店を探す</button>
+      <div class="nearby-status" id="nearbyStatus"></div>
+      <div id="nearbyResults"></div>
+    </div>
+    <div class="edit-toggle-row">
+      <button id="editModeBtn" class="edit-toggle-btn">✏️ 編集モード</button>
+      <button id="addStoreBtn" class="add-store-btn">＋ 新しいお店を追加</button>
+      <button id="aiImportBtn" class="add-store-btn ai-btn">✨ リンクから取り込む</button>
+      <button id="githubSettingsBtn" class="edit-toggle-btn" style="margin-left:auto;">🔗 GitHub連携</button>
+    </div>
+    
+    <div class="sync-status" id="syncStatus"></div>
+    <div class="edit-mode-hint">編集モード中です。カード右上の✎で編集、🗑で削除できます。GitHub連携を設定していれば、変更は自動でリポジトリにも保存されます。</div>
     <div class="controls">
       <div class="search-box"><input id="storeSearch" type="text" placeholder="お店の名前で検索（例：セブン、スシロー）"></div>
     </div>
