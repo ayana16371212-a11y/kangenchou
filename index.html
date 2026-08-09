@@ -1,0 +1,3315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>還元帳</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="還元帳">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B2239">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Midnight terminal palette — the screen of a card reader at night */
+    --bg:        #1B2239;
+    --surface:   #262E52;
+    --surface-2: #333D68;
+    --line:      #4A5484;
+    --text:      #F2F4FB;
+    --muted:     #B0B8D8;
+    --dim:       #8C95BA;
+
+    /* Holographic foil — lifted from the security hologram on a card face.
+       Used only on the winning option, never as general decoration. */
+    --foil-1: #5EE7E0;
+    --foil-2: #8AB4FF;
+    --foil-3: #C79BFF;
+    --foil-4: #FF9DC8;
+    --foil: linear-gradient(100deg, var(--foil-1), var(--foil-2) 35%, var(--foil-3) 68%, var(--foil-4));
+
+    --good:  #4ADE9B;
+    --warn:  #F5C563;
+    --alert: #FF6B8A;
+    --amber: #F5C563;
+
+    --on-foil: #131829;
+
+    --radius: 14px;
+    --radius-sm: 9px;
+  }
+  *{ box-sizing: border-box; }
+  html, body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    background-image:
+      radial-gradient(900px 500px at 12% -8%, rgba(138,180,255,0.14), transparent 62%),
+      radial-gradient(700px 420px at 95% 4%, rgba(199,155,255,0.11), transparent 62%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: "Zen Kaku Gothic New", "Archivo", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .wrap{
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 26px 18px 90px;
+  }
+
+  /* ===== masthead ===== */
+  header.masthead{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .masthead h1{
+    margin: 0;
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 7vw, 46px);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .masthead h1 small{
+    display: block;
+    margin-top: 10px;
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    background: none;
+    -webkit-text-fill-color: var(--muted);
+  }
+  .dateline{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    line-height: 1.9;
+    color: var(--dim);
+    text-align: right;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== mode switch ===== */
+  .mode-switch{
+    display: flex;
+    gap: 3px;
+    padding: 4px;
+    margin-bottom: 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .mode-switch::-webkit-scrollbar{ display: none; }
+  .mode-btn{
+    flex: 1 0 auto;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color .18s ease, background .18s ease;
+  }
+  .mode-btn:hover{ color: var(--text); }
+  .mode-btn.active{
+    background: var(--surface-2);
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .mode-panel{ display: none; }
+  .mode-panel.active{ display: block; animation: fade .25s ease both; }
+  @keyframes fade{ from{ opacity:0; transform: translateY(5px);} to{ opacity:1; transform:none; } }
+
+  /* ===== controls ===== */
+  .controls{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .tabs{
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .tab-btn{
+    padding: 7px 15px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12.5px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .tab-btn.active{ background: var(--surface-2); color: var(--text); }
+  .search-box{ position: relative; flex: 1 1 220px; min-width: 180px; }
+  .search-box input{
+    width: 100%;
+    padding: 11px 14px 11px 36px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-box input::placeholder{ color: var(--dim); }
+  .search-box input:focus{
+    border-color: var(--foil-2);
+    box-shadow: 0 0 0 3px rgba(138,180,255,0.14);
+  }
+  .search-box::before{
+    content: "";
+    position: absolute; left: 14px; top: 50%;
+    width: 11px; height: 11px;
+    margin-top: -7px;
+    border: 1.6px solid var(--dim);
+    border-radius: 50%;
+  }
+  .search-box::after{
+    content: "";
+    position: absolute; left: 23px; top: 50%;
+    width: 6px; height: 1.6px;
+    margin-top: 3px;
+    background: var(--dim);
+    transform: rotate(45deg);
+  }
+  .chip-toggle{ display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip{
+    padding: 8px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: all .15s ease;
+  }
+  .chip:hover{ border-color: var(--dim); color: var(--text); }
+  .chip.active{
+    background: rgba(138,180,255,0.14);
+    border-color: var(--foil-2);
+    color: var(--foil-2);
+  }
+  .count-line{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+    margin: 0 0 14px 2px;
+  }
+
+  /* ===== payment-app brand blocks ===== */
+  .brand{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .brand-head{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .brand-head:hover{ background: var(--surface-2); }
+  .brand-badge{
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--foil-2);
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .brand-title{
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 700;
+    font-size: 15.5px;
+    letter-spacing: -0.01em;
+  }
+  .brand-sub{
+    margin-top: 1px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    color: var(--dim);
+  }
+  .brand-toggle{
+    margin-left: auto;
+    color: var(--dim);
+    font-size: 15px;
+    transition: transform .2s ease;
+  }
+  .brand.collapsed .brand-toggle{ transform: rotate(-90deg); }
+  .brand.collapsed .rows{ display: none; }
+  .rows{ display: flex; flex-direction: column; }
+  .row-head{
+    display: grid;
+    grid-template-columns: 1.7fr .6fr .8fr .95fr .6fr;
+    gap: 10px;
+    padding: 9px 16px;
+    background: var(--surface-2);
+    border-top: 1px solid var(--line);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .row{
+    display: grid;
+    grid-template-columns: 1.7fr .6fr .8fr .95fr .6fr;
+    gap: 10px;
+    align-items: start;
+    padding: 14px 16px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    transition: background .15s ease;
+  }
+  .row:hover{ background: rgba(138,180,255,0.04); }
+  .row .campaign{ font-weight: 600; line-height: 1.5; }
+  .row .campaign .period{
+    display: block;
+    margin-top: 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--dim);
+  }
+  .row .rate{
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--foil-1);
+    white-space: nowrap;
+  }
+  .row .limits{ font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+  .row .limits .lbl{ color: var(--dim); }
+  .row .target{ font-size: 12px; color: var(--text); line-height: 1.55; }
+  .row .method{ font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+  .entry-cell{ display: flex; }
+  .entry-tag{
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .entry-tag.fuyou{ color: var(--good); background: rgba(74,222,155,0.12); }
+  .entry-tag.hitsuyo{ color: var(--amber); background: rgba(245,197,99,0.14); }
+  .row .note{
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    padding: 8px 11px;
+    border-left: 2px solid var(--foil-3);
+    border-radius: 0 6px 6px 0;
+    background: rgba(199,155,255,0.07);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  @media (max-width: 760px){
+    .row-head{ display: none; }
+    .row{ grid-template-columns: 1fr; row-gap: 7px; padding: 15px 16px; }
+    .row .limits:not(:empty)::before{ content:"上限\A"; white-space:pre; display:block; color:var(--dim); font-size:9.5px; letter-spacing:.08em; }
+    .row .target:not(:empty)::before{ content:"対象店\A"; white-space:pre; display:block; color:var(--dim); font-size:9.5px; letter-spacing:.08em; }
+    .row .method:not(:empty)::before{ content:"支払い\A"; white-space:pre; display:block; color:var(--dim); font-size:9.5px; letter-spacing:.08em; }
+  }
+
+  .others{
+    margin-top: 24px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .others h2{
+    display: flex; align-items: center; gap: 9px;
+    margin: 0 0 10px;
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .others h2::before{
+    content: "";
+    width: 16px; height: 2px;
+    border-radius: 2px;
+    background: var(--foil);
+  }
+  .others ul{ margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.9; color: var(--muted); }
+
+  /* ===== nearby search ===== */
+  .nearby-box{
+    position: relative;
+    padding: 18px;
+    margin-bottom: 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .nearby-box::before{
+    content: "";
+    position: absolute; inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--foil);
+  }
+  .nearby-btn{
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--foil);
+    color: var(--on-foil);
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 800;
+    font-size: 14.5px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: transform .12s ease, filter .15s ease;
+  }
+  .nearby-btn:hover{ filter: brightness(1.07); }
+  .nearby-btn:active{ transform: scale(.985); }
+  .nearby-btn:disabled{ opacity: .5; cursor: default; }
+  .nearby-status{
+    margin-top: 11px;
+    min-height: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    line-height: 1.65;
+    color: var(--muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  #nearbyResults .store-card{ margin-top: 11px; }
+  .store-dist{
+    flex-shrink: 0;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: rgba(94,231,224,0.14);
+    color: var(--foil-1);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+
+  /* ===== edit mode ===== */
+  .edit-toggle-row{ display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .edit-toggle-btn{
+    padding: 8px 15px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .edit-toggle-btn:hover{ color: var(--text); border-color: var(--dim); }
+  .edit-toggle-btn.on{
+    background: rgba(199,155,255,0.16);
+    border-color: var(--foil-3);
+    color: var(--foil-3);
+  }
+  .add-store-btn{
+    display: none;
+    padding: 8px 15px;
+    border: 1px dashed var(--foil-2);
+    border-radius: 999px;
+    background: rgba(138,180,255,0.08);
+    color: var(--foil-2);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .edit-mode .add-store-btn{ display: inline-block; }
+  .edit-mode-hint{
+    display: none;
+    margin-bottom: 12px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(199,155,255,0.07);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .edit-mode .edit-mode-hint{ display: block; }
+  .sync-status{
+    min-height: 14px;
+    margin: -4px 0 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--dim);
+  }
+  .sync-status.ok{ color: var(--good); }
+  .sync-status.err{ color: var(--alert); }
+  .sync-status.busy{ color: var(--amber); }
+  .icon-btn{
+    display: none;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border: none;
+    border-radius: 7px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .icon-btn:hover{ background: var(--line); color: var(--text); }
+  .edit-mode .icon-btn{ display: inline-flex; }
+  .add-card-row{ display: none; padding: 11px 16px; }
+  .edit-mode .add-card-row{ display: block; }
+  .add-card-btn{
+    width: 100%;
+    padding: 9px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .add-card-btn:hover{ border-color: var(--foil-2); color: var(--foil-2); }
+
+  /* ===== modal ===== */
+  .modal-overlay{
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: flex-end; justify-content: center;
+    background: rgba(5,7,14,.72);
+    backdrop-filter: blur(6px);
+  }
+  @media (min-width: 641px){ .modal-overlay{ align-items: center; padding: 20px; } }
+  .modal-box{
+    width: 100%; max-width: 470px; max-height: 88vh;
+    overflow-y: auto;
+    padding: 24px 20px 30px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px 20px 0 0;
+    animation: rise .22s cubic-bezier(.22,1,.36,1) both;
+  }
+  @media (min-width: 641px){ .modal-box{ border-radius: 16px; } }
+  @keyframes rise{ from{ transform: translateY(14px); opacity:0; } to{ transform:none; opacity:1; } }
+  .modal-title{
+    margin: 0 0 18px;
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-size: 16.5px;
+    font-weight: 700;
+  }
+  .modal-field{ margin-bottom: 14px; }
+  .modal-field label{
+    display: block;
+    margin-bottom: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .modal-field input,
+  .modal-field textarea,
+  .modal-field select{
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .modal-field input:focus,
+  .modal-field textarea:focus,
+  .modal-field select:focus{
+    border-color: var(--foil-2);
+    box-shadow: 0 0 0 3px rgba(138,180,255,.14);
+  }
+  .modal-field textarea{ min-height: 76px; line-height: 1.6; }
+  .modal-actions{ display: flex; gap: 9px; margin-top: 20px; }
+  .modal-btn{
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: filter .15s ease;
+  }
+  .modal-btn:hover{ filter: brightness(1.1); }
+  .modal-btn.save{ background: var(--foil); color: var(--on-foil); }
+  .modal-btn.cancel{ background: var(--surface-2); color: var(--muted); }
+  .modal-btn.delete{ background: rgba(255,107,138,.16); color: var(--alert); }
+
+  /* ===== sort toggle & category chips ===== */
+  .sort-toggle-row{ display: flex; align-items: center; gap: 10px; margin: 2px 2px 14px; }
+  .switch-btn{
+    position: relative;
+    flex-shrink: 0;
+    width: 42px; height: 24px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: background .18s ease, border-color .18s ease;
+  }
+  .switch-btn[aria-checked="true"]{ background: var(--foil); border-color: transparent; }
+  .switch-knob{
+    position: absolute; top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--text);
+    transition: left .18s cubic-bezier(.22,1,.36,1);
+  }
+  .switch-btn[aria-checked="true"] .switch-knob{ left: 21px; background: var(--on-foil); }
+  .sort-toggle-label{ font-size: 13px; font-weight: 600; color: var(--muted); }
+  .category-chip-row{ display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+  .category-chip{
+    padding: 8px 13px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .category-chip:hover{ color: var(--text); border-color: var(--dim); }
+  .category-chip .chip-count{
+    margin-left: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    color: var(--dim);
+  }
+  .category-chip.active{
+    background: var(--surface-2);
+    border-color: var(--foil-2);
+    color: var(--text);
+  }
+  .category-chip.active .chip-count{ color: var(--foil-2); }
+
+  /* ===== expiry badges & campaigns ===== */
+  .expiry-badge{
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+  .expiry-badge.active{ color: var(--good); background: rgba(74,222,155,.12); }
+  .expiry-badge.ending{ color: var(--on-foil); background: var(--alert); }
+  .expiry-badge.expired{ color: var(--dim); background: rgba(255,255,255,.05); }
+  .campaign-intro{
+    margin-bottom: 14px;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+  .show-expired-row{
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+    font-size: 12.5px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .show-expired-row input{ accent-color: var(--foil-2); }
+  .campaign-card{
+    position: relative;
+    padding: 15px 16px;
+    margin-bottom: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .campaign-card.is-expired{ opacity: .45; }
+  .campaign-card-top{
+    display: flex; align-items: baseline; gap: 9px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .campaign-store{
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .campaign-rate{
+    margin-left: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--foil-1);
+  }
+  .campaign-cardname{ font-size: 12px; color: var(--muted); }
+  .campaign-note{
+    margin-top: 7px;
+    padding: 8px 11px;
+    border-left: 2px solid var(--foil-3);
+    border-radius: 0 6px 6px 0;
+    background: rgba(199,155,255,.07);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ===== universal payments toggle ===== */
+  .universal-box{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+  }
+  .universal-toggle-row{
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 14px 16px;
+    cursor: pointer;
+  }
+  .universal-toggle-row input{
+    margin: 3px 0 0;
+    width: 17px; height: 17px;
+    accent-color: var(--foil-2);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .universal-toggle-row strong{
+    display: block;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .universal-toggle-row small{
+    display: block;
+    margin-top: 3px;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .universal-tag{
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: rgba(138,180,255,.14);
+    color: var(--foil-2);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .card-option.is-universal{ background: rgba(255,255,255,.015); }
+
+  /* ===== source links ===== */
+  .src-link{
+    display: inline-flex;
+    align-items: center;
+    margin-top: 9px;
+    padding: 5px 11px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-decoration: none;
+    transition: all .15s ease;
+  }
+  .src-link:hover{
+    border-color: var(--foil-2);
+    color: var(--foil-2);
+    background: rgba(138,180,255,.10);
+  }
+
+  /* ===== store cards — the signature ===== */
+  .store-category-label{
+    margin: 22px 2px 9px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .store-category-label:first-child{ margin-top: 0; }
+  .store-card{
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color .18s ease;
+  }
+  .store-card:hover{ border-color: var(--dim); }
+  .store-head{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 16px;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .store-head:hover{ background: var(--surface-2); }
+  .store-name{
+    font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
+    font-weight: 700;
+    font-size: 15.5px;
+    letter-spacing: -0.01em;
+  }
+  .store-best-badge{
+    margin-left: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 14.5px;
+    white-space: nowrap;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .store-toggle{ color: var(--dim); font-size: 14px; transition: transform .2s ease; }
+  .store-card.collapsed .store-toggle{ transform: rotate(-90deg); }
+  .store-card.collapsed .card-options{ display: none; }
+  .card-options{ border-top: 1px solid var(--line); }
+  .card-option{
+    position: relative;
+    padding: 14px 16px 14px 17px;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-option:last-child{ border-bottom: none; }
+  /* Signature: the winning option gets a foil rail down its left edge */
+  .card-option.is-winner::before{
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--foil);
+  }
+  .card-option-top{
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .card-option-rank{
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: var(--surface-2);
+    color: var(--dim);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+  }
+  .card-option-rank.rank-1{
+    background: var(--foil);
+    color: var(--on-foil);
+  }
+  .card-option-name{ font-weight: 700; font-size: 13.5px; }
+  .card-option-rate{
+    margin-left: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--foil-1);
+    white-space: nowrap;
+  }
+  .card-option.is-winner .card-option-rate{
+    font-size: 17px;
+    background: var(--foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .card-option-method{ font-size: 11.5px; color: var(--muted); margin-bottom: 5px; line-height: 1.6; }
+  .card-option-note{
+    padding: 8px 11px;
+    border-left: 2px solid var(--foil-3);
+    border-radius: 0 6px 6px 0;
+    background: rgba(199,155,255,.07);
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .store-empty-note,
+  .empty-state{
+    padding: 46px 20px;
+    text-align: center;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--dim);
+  }
+
+  footer.colophon{
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    line-height: 1.8;
+    color: var(--dim);
+    text-align: center;
+  }
+
+  /* Accessibility floor */
+  :focus-visible{ outline: 2px solid var(--foil-2); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <h1>還元帳<small>レジの前で、どれで払うか決める</small></h1>
+    <div class="dateline">
+      出典 — 各社公式<br>
+      更新 — 2026.08.09
+    </div>
+  </header>
+
+  <div class="mode-switch" id="modeSwitch">
+    <button class="mode-btn active" data-mode="apps">決済アプリ別特典</button>
+    <button class="mode-btn" data-mode="stores">お店から探す（β）</button>
+    <button class="mode-btn" data-mode="campaigns">今月のキャンペーン</button>
+  </div>
+
+  <div class="mode-panel active" id="panel-apps">
+    <div class="controls">
+      <div class="tabs" id="tabs"></div>
+      <div class="search-box"><input id="search" type="text" placeholder="決済名・キャンペーン・対象店で検索"></div>
+      <div class="chip-toggle" id="entryChips"></div>
+    </div>
+    <div class="count-line" id="countLine"></div>
+
+    <div id="list"></div>
+
+    <div class="others">
+      <h2>その他のキャンペーン</h2>
+      <ul>
+        <li>ビックカメラで来店予約、楽天ポイントカード or ビックポイントカード提示で楽天市場SPU分 上乗せ</li>
+        <li>すき家、なか卯で来店回数によるポイントアップ　楽天ポイント・dポイント・Vポイントが対象（すき家のみPontaも対象）　5回来店で15倍　毎月開催</li>
+        <li>エディオンで共通ポイント（V・d・楽天）を「利用」すると、利用ポイント額の20%還元。利用ポイント額は購入金額の50%まで。8/1〜8/16</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mode-panel" id="panel-stores">
+    <div class="nearby-box">
+      <button id="nearbyBtn" class="nearby-btn">📍 現在地から近くのお店を探す</button>
+      <div class="nearby-status" id="nearbyStatus"></div>
+      <div id="nearbyResults"></div>
+    </div>
+    <div class="edit-toggle-row">
+      <button id="editModeBtn" class="edit-toggle-btn">✏️ 編集モード</button>
+      <button id="addStoreBtn" class="add-store-btn">＋ 新しいお店を追加</button>
+      <button id="githubSettingsBtn" class="edit-toggle-btn" style="margin-left:auto;">🔗 GitHub連携</button>
+    </div>
+    <div class="sync-status" id="syncStatus"></div>
+    <div class="edit-mode-hint">編集モード中です。カード右上の✎で編集、🗑で削除できます。GitHub連携を設定していれば、変更は自動でリポジトリにも保存されます。</div>
+    <div class="controls">
+      <div class="search-box"><input id="storeSearch" type="text" placeholder="お店の名前で検索（例：セブン、スシロー）"></div>
+    </div>
+    <div class="sort-toggle-row">
+      <button id="sortToggleBtn" class="switch-btn" role="switch" aria-checked="false"><span class="switch-knob"></span></button>
+      <span class="sort-toggle-label">還元率が高い順</span>
+    </div>
+    <div class="category-chip-row" id="categoryChipRow"></div>
+    <div class="universal-box" id="universalBox">
+      <label class="universal-toggle-row">
+        <input type="checkbox" id="showUniversalChk" checked>
+        <span>
+          <strong>スマホ決済も一緒に比較する</strong>
+          <small>PayPay・楽天ペイなど、どの店でも使える決済を各店の順位に混ぜます</small>
+        </span>
+      </label>
+    </div>
+    <div class="count-line" id="storeCountLine"></div>
+    <div id="storeList"></div>
+    <div class="store-empty-note" id="storeEmptyNote" style="display:none;">
+      まだ登録されていないお店です。<br>編集モードで「＋ 新しいお店を追加」から登録できます。
+    </div>
+    <div style="margin-top:18px;">
+      <button id="resetStoresBtn" style="background:none;border:none;color:#9a8f6f;font-size:11px;text-decoration:underline;cursor:pointer;padding:0;">初期データにリセット</button>
+    </div>
+  </div>
+
+  <div class="mode-panel" id="panel-campaigns">
+    <div class="campaign-intro">
+      終了日が設定されているキャンペーンだけを、終了が近い順に並べています。
+      終了日を過ぎたものは自動で「終了」扱いになります。
+    </div>
+    <label class="show-expired-row">
+      <input type="checkbox" id="showExpiredChk"> 終了済みも表示する
+    </label>
+    <div class="count-line" id="campaignCountLine"></div>
+    <div id="campaignList"></div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" style="display:none;">
+    <div class="modal-box" id="modalBox"></div>
+  </div>
+
+  <footer class="colophon">還元率・条件は変更される場合があります。利用前に各社公式ページでご確認ください。</footer>
+</div>
+
+<script>
+const DATA = [
+  // ===== クレジットカード =====
+  { brand:"JCBオリジナル", cat:"card", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"カード払い", entry:false, period:"-" },
+  { brand:"JCBオリジナル", cat:"card", campaign:"ポイントアップ登録で対象店の還元率アップ 2倍〜最大20倍", rate:"最大20倍", perUse:"-", periodLimit:"-", target:"対象店", method:"対象決済", entry:true, period:"-" },
+
+  { brand:"三井住友カード", cat:"card", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"カード払い", entry:false, period:"-" },
+  { brand:"三井住友カード", cat:"card", campaign:"スマホのタッチ決済 or モバイルオーダーで対象店合計7%還元〜最大20%還元", rate:"+6.5%", perUse:"-", periodLimit:"-", target:"対象店", method:"スマホのタッチ決済／モバイルオーダー", entry:false, period:"-", note:"モバイルオーダー対象：マクドナルド、モスバーガー、ケンタッキー、吉野家、すき家、スターバックス（※スタバはモバイルオーダーのみ）" },
+  { brand:"三井住友カード", cat:"card", campaign:"注目のVクーポン 対象店で+10%", rate:"+10%", perUse:"-", periodLimit:"500ポイント", target:"対象店", method:"カード払い", entry:"pre", period:"8/1〜8/31" },
+
+  { brand:"三菱UFJカード", cat:"card", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"カード払い", entry:false, period:"-" },
+  { brand:"三菱UFJカード", cat:"card", campaign:"対象店利用7%還元〜最大20%還元", rate:"+6.5%", perUse:"-", periodLimit:"-", target:"対象店", method:"カード払い", entry:false, period:"-" },
+
+  // ===== スマホ決済 =====
+  { brand:"PayPay", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"7500pt", periodLimit:"月15000pt", target:"全店", method:"PayPay残高／PayPayカードクレジット", entry:false, period:"-", note:"PayPay STEPカウント期間は前月1日0:00〜前月末日23:59" },
+  { brand:"PayPay", cat:"smartphone", campaign:"PayPay STEP 条件を満たすと還元上乗せ", rate:"+0.5%（翌月）", perUse:"7500pt", periodLimit:"月15000pt", target:"全店", method:"PayPay残高／PayPayカードクレジット", entry:false, period:"-" },
+  { brand:"PayPay", cat:"smartphone", campaign:"PayPayクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"PayPayアプリ", entry:"pre", period:"クーポンによる" },
+
+  { brand:"楽天Pay", cat:"smartphone", campaign:"楽天ペイクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"楽天ペイアプリ", entry:"pre", period:"クーポンによる", note:"先着次第早期終了の可能性あり" },
+  { brand:"楽天Pay", cat:"smartphone", campaign:"ポイント支払い1%／キャッシュ支払い1.5%還元（指定期間に楽天ポイントの提示が必要）", rate:"1%〜1.5%", perUse:"-", periodLimit:"-", target:"ほぼ全店", method:"楽天ペイアプリ", entry:false, period:"終了未定", note:"郵便局やOKストアなど還元対象外あり" },
+  { brand:"楽天Pay", cat:"smartphone", campaign:"はるやまで3000円以上の利用 最大10%還元", rate:"+8.5%", perUse:"-", periodLimit:"1000ポイント", target:"はるやま", method:"楽天ペイアプリ", entry:true, period:"8/1〜8/31" },
+
+  { brand:"楽天POINT", cat:"smartphone", campaign:"楽天ポイントクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"楽天ペイアプリ", entry:"pre", period:"クーポンによる", note:"先着次第早期終了の可能性あり" },
+  { brand:"楽天POINT", cat:"smartphone", campaign:"楽天モバイル契約者限定で対象店のポイントカード提示のポイントが20倍", rate:"20倍", perUse:"-", periodLimit:"1000ポイント", target:"対象店", method:"楽天ポイント提示", entry:true, period:"7/1〜9/30", note:"くら寿司、サンマルク、ツルハドラッグ、セイムスなど" },
+
+  { brand:"auPAY", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"auPAYアプリ", entry:false, period:"-" },
+  { brand:"auPAY", cat:"smartphone", campaign:"auPAYポイント増量", rate:"0.5〜1%上乗せ", perUse:"-", periodLimit:"-", target:"トモズ、Vドラッグ、ノジマ、オリジン、エディオン", method:"auPAYアプリ", entry:false, period:"-" },
+  { brand:"auPAY", cat:"smartphone", campaign:"auPayクーポン", rate:"クーポンによる", perUse:"-", periodLimit:"-", target:"対象店", method:"auPAYアプリ", entry:"pre", period:"クーポンによる" },
+  { brand:"auPAY", cat:"smartphone", campaign:"グリーンライフキャンペーン 対象店はポイント2倍", rate:"+0.5%", perUse:"-", periodLimit:"500ポイント", target:"ウエルシア、アパホテル、ららぽーと", method:"auPAYアプリ", entry:true, period:"期間未定" },
+  { brand:"auPAY", cat:"smartphone", campaign:"スシローの持ち帰りネット注文5000円以上の利用で10%還元", rate:"10%", perUse:"550ポイント", periodLimit:"2回まで", target:"スシロー持ち帰りネット", method:"au PAY支払い", entry:true, period:"7/22〜8/16" },
+  { brand:"auPAY", cat:"smartphone", campaign:"はるやまで3000円以上の利用 最大10%還元", rate:"+10%", perUse:"-", periodLimit:"1000ポイント", target:"はるやま", method:"auPAYアプリ", entry:true, period:"8/1〜8/31" },
+
+  { brand:"d払い", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"電話料金合算払い／dカード支払い／d払い残高", entry:false, period:"-" },
+  { brand:"d払い", cat:"smartphone", campaign:"吉野家のテイクアウト・モバイルオーダーで10%還元", rate:"+10%", perUse:"-", periodLimit:"300ポイント", target:"吉野家", method:"d払い", entry:true, period:"7/17〜8/16", note:"2026年3月以降の利用がなければ20%還元" },
+
+  { brand:"dPOINT", cat:"smartphone", campaign:"かっぱ寿司 来店回数で倍率アップ（1回2倍、2回5倍、3回6倍、4回7倍、5回10倍）", rate:"最大10倍", perUse:"-", periodLimit:"-", target:"かっぱ寿司", method:"dポイント提示", entry:true, period:"7/1〜8/31" },
+  { brand:"dPOINT", cat:"smartphone", campaign:"トイザらス、ベビーザらスではずれなし抽選。最低でも10P", rate:"抽選", perUse:"-", periodLimit:"-", target:"トイザらス、ベビーザらス", method:"dポイント提示", entry:true, period:"7/17〜8/17" },
+  { brand:"dPOINT", cat:"smartphone", campaign:"すかいらーくグループではずれなし抽選 最大1000倍、最低10P", rate:"抽選", perUse:"-", periodLimit:"-", target:"すかいらーく", method:"dポイント提示", entry:true, period:"8/1〜8/31" },
+  { brand:"dPOINT", cat:"smartphone", campaign:"杵屋グループで期間中合計税抜2000円以上利用で8倍", rate:"8倍", perUse:"-", periodLimit:"500ポイント", target:"杵屋", method:"dポイント提示", entry:true, period:"8/1〜8/31" },
+
+  { brand:"mPay", cat:"smartphone", campaign:"基本還元率", rate:"還元なし", perUse:"-", periodLimit:"-", target:"-", method:"-", entry:false, period:"-" },
+
+  { brand:"AEON Pay", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"-", method:"-", entry:false, period:"-" },
+
+  { brand:"AirWALLET", cat:"smartphone", campaign:"基本還元率", rate:"還元なし", perUse:"-", periodLimit:"-", target:"-", method:"COIN+", entry:false, period:"-" },
+  { brand:"AirWALLET", cat:"smartphone", campaign:"全店で50%還元", rate:"50%", perUse:"-", periodLimit:"200P", target:"全店", method:"エアウォレット（QRコード）", entry:true, period:"7/22〜8/31" },
+
+  { brand:"Jcoin", cat:"smartphone", campaign:"基本還元率", rate:"0.55%", perUse:"-", periodLimit:"-", target:"-", method:"-", entry:false, period:"-" },
+
+  { brand:"FamiPay", cat:"smartphone", campaign:"基本還元率", rate:"0.5%", perUse:"-", periodLimit:"-", target:"全店", method:"FamiPayアプリ", entry:false, period:"-" },
+];
+
+const brandOrder = [...new Set(DATA.map(d=>d.brand))];
+
+let state = { cat: "all", search: "", entry: "all" };
+
+function entryLabel(e){
+  if(e === true) return {cls:"hitsuyo", text:"必要"};
+  if(e === "pre") return {cls:"hitsuyo", text:"事前獲得"};
+  return {cls:"fuyou", text:"不要"};
+}
+
+function matchesFilters(d){
+  if(state.cat !== "all" && d.cat !== state.cat) return false;
+  if(state.entry === "fuyou" && d.entry !== false) return false;
+  if(state.entry === "hitsuyo" && d.entry === false) return false;
+  if(state.search){
+    const q = state.search.toLowerCase();
+    const hay = [d.brand, d.campaign, d.target, d.method].join(" ").toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function render(){
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  let totalVisible = 0;
+
+  brandOrder.forEach(brand=>{
+    const rows = DATA.filter(d=>d.brand===brand && matchesFilters(d));
+    if(rows.length === 0) return;
+    totalVisible += rows.length;
+
+    const catOfBrand = DATA.find(d=>d.brand===brand).cat;
+    const section = document.createElement("div");
+    section.className = "brand";
+
+    const head = document.createElement("div");
+    head.className = "brand-head";
+    head.innerHTML = `
+      <div class="brand-badge">${brand.slice(0,1)}</div>
+      <div>
+        <div class="brand-title">${brand}</div>
+        <div class="brand-sub">${catOfBrand === "card" ? "クレジットカード" : "スマホ決済"} ／ ${rows.length}件のキャンペーン</div>
+      </div>
+      <div class="brand-toggle">▾</div>
+    `;
+    head.addEventListener("click", ()=> section.classList.toggle("collapsed"));
+
+    const rowHead = document.createElement("div");
+    rowHead.className = "row-head";
+    rowHead.innerHTML = `<div>キャンペーン</div><div>還元内容</div><div>上限</div><div>対象店・支払い</div><div>エントリー</div>`;
+
+    const rowsWrap = document.createElement("div");
+    rowsWrap.className = "rows";
+    rowsWrap.appendChild(rowHead);
+
+    rows.forEach(d=>{
+      const tag = entryLabel(d.entry);
+      const row = document.createElement("div");
+      row.className = "row";
+      row.innerHTML = `
+        <div class="campaign">${d.campaign}<span class="period">期間：${d.period}</span></div>
+        <div class="rate">${d.rate}</div>
+        <div class="limits"><span class="lbl">1回：</span>${d.perUse}<br><span class="lbl">期間：</span>${d.periodLimit}</div>
+        <div class="target">${d.target}<br><span style="color:#b3a97f">${d.method}</span></div>
+        <div class="entry-cell"><span class="entry-tag ${tag.cls}">${tag.text}</span></div>
+        ${d.note ? `<div class="note">${d.note}</div>` : ""}
+      `;
+      rowsWrap.appendChild(row);
+    });
+
+    section.appendChild(head);
+    section.appendChild(rowsWrap);
+    list.appendChild(section);
+  });
+
+  document.getElementById("countLine").textContent = `全${DATA.length}件中 ${totalVisible}件を表示`;
+
+  if(totalVisible === 0){
+    list.innerHTML = `<div class="empty-state">該当するキャンペーンが見つかりませんでした</div>`;
+  }
+}
+
+function buildTabs(){
+  const tabs = [
+    {key:"all", label:"すべて"},
+    {key:"card", label:"クレジットカード"},
+    {key:"smartphone", label:"スマホ決済"},
+  ];
+  const wrap = document.getElementById("tabs");
+  tabs.forEach(t=>{
+    const btn = document.createElement("button");
+    btn.className = "tab-btn" + (state.cat===t.key ? " active" : "");
+    btn.textContent = t.label;
+    btn.addEventListener("click", ()=>{
+      state.cat = t.key;
+      [...wrap.children].forEach(c=>c.classList.remove("active"));
+      btn.classList.add("active");
+      render();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function buildEntryChips(){
+  const chips = [
+    {key:"all", label:"すべて"},
+    {key:"fuyou", label:"エントリー不要のみ"},
+    {key:"hitsuyo", label:"エントリー必要あり"},
+  ];
+  const wrap = document.getElementById("entryChips");
+  chips.forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "chip" + (state.entry===c.key ? " active" : "");
+    el.textContent = c.label;
+    el.addEventListener("click", ()=>{
+      state.entry = c.key;
+      [...wrap.children].forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      render();
+    });
+    wrap.appendChild(el);
+  });
+}
+
+document.getElementById("search").addEventListener("input", (e)=>{
+  state.search = e.target.value.trim();
+  render();
+});
+
+buildTabs();
+buildEntryChips();
+render();
+
+// ========== 店舗から探す（β） ==========
+// 各社の還元プログラムの「事実」（対象カード・還元率・支払い方法の条件）を
+// 自分の言葉でまとめたデータです。出典サイトの文章をそのまま複製せず、
+// 条件を要約し直しています。
+//
+// [追加・修正のしかた]
+// これはあくまで「初期データ（工場出荷時の状態）」です。実際に画面に表示
+// されるデータは、下の loadStores() でこの初期データをこの端末のブラウザ
+// （localStorage）にコピーしたものを使います。編集モードでサイト上から
+// 追加・編集・削除すると、そちらのコピーだけが更新されます。
+//
+// 各エントリーの note には「確認日」を残しています。還元率・条件はよく
+// 変わるので、日付が古くなってきたら再確認をお願いすることがあります。
+// 参照元サイトのジャンル分けに合わせた固定カテゴリ一覧。
+// 新しいお店を追加するときは、必ずこの中から選ぶ形にしている。
+const CATEGORY_LIST = [
+  "コンビニ", "飲食店", "カフェ", "スーパー", "自販機",
+  "エンタメ", "トラベル", "ホームセンター", "ファッション", "その他"
+];
+
+// スマホ決済（PayPay・楽天ペイなど）は「どの加盟店でも同じ還元率」が基本なので、
+// 店舗データ側には重複して持たせず、ここに一元管理する。
+// 表示するときは各店舗のカード一覧に合流させ、クレカと同じ土俵で並べ替える。
+// これにより「この店ならクレカとスマホ決済のどっちが得か」がその場で分かる。
+// 店舗限定のキャンペーン（例：スシローのauPAY 10%）は従来どおり STORES 側に入れる。
+const UNIVERSAL_PAYMENTS = [
+  {
+    name: "PayPay（残高払い）", universal: true, url: "https://paypay.ne.jp/event/paypaystep/",
+    rate: "0.5%（PayPayステップ達成で1.0%）",
+    method: "PayPay残高でのコード決済",
+    note: "前月に「200円以上の決済を月30回」かつ「支払い合計10万円以上」の両方を満たすと、翌月+0.5%。2026年6月2日以降、PayPayポイントで支払った分はステップ付与の対象外（回数・金額のカウントには引き続き含まれる）。公共料金や金券など一部対象外の支払いあり。［確認日: 2026-08-09／出典: PayPay公式ヘルプ・PayPayステップ公式］"
+  },
+  {
+    name: "PayPay（PayPayクレジット／PayPayカード）", universal: true, url: "https://www.paypay-card.co.jp/service/benefit/point/",
+    rate: "1.0%（ステップ達成で1.5%、ゴールドで最大2.0%）",
+    method: "PayPayクレジット、またはPayPayカードでの決済",
+    note: "残高払いより還元率が高い。2026年6月2日にPayPayカード特典がPayPayステップへ統合されたため、PayPayカードをPayPayアプリに登録していないとポイントが付かない点に注意。［確認日: 2026-08-09／出典: PayPay公式・PayPayカード公式］"
+  },
+  {
+    name: "楽天ペイ", universal: true, url: "https://pay.rakuten.co.jp/",
+    rate: "1.0%前後（条件により最大2.5%）",
+    method: "楽天ペイアプリでのコード決済（チャージ元は楽天カード／楽天キャッシュなど）",
+    note: "2026年3月に制度変更があり、還元率まわりの情報が錯綜している。最大2.5%は「楽天ポイントカード対応店でアプリ内ポイントカードを提示し、楽天ペイ残高で支払う」など複数条件を満たした場合の合計値で、どこでも自動的に出る数字ではない。郵便局やOKストアなど対象外店舗もある。利用前に楽天ペイ公式で現在の条件を確認するのが安全。［確認日: 2026-08-09／出典: 比較メディア複数（公式での再確認を推奨）］"
+  },
+  {
+    name: "d払い", universal: true, url: "https://service.smt.docomo.ne.jp/keitai_payment/",
+    rate: "0.5%（街のお店）／1.0%（ネット）",
+    method: "d払いアプリでのコード決済",
+    note: "支払い方法をdカードに設定すると還元率が上がる。ドコモのランク制度により最大4.0%まで上がる仕組みもある。［確認日: 2026-08-09／出典: 比較メディア複数］"
+  },
+  {
+    name: "auPAY", universal: true, url: "https://aupay.wallet.auone.jp/",
+    rate: "0.5%",
+    method: "auPAYアプリでのコード決済",
+    note: "「auマネ活プラン」加入で最大1.5〜2.0%まで上がる。トモズ・Vドラッグ・ノジマ・オリジン・エディオンなどでは0.5〜1%が上乗せされる。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］"
+  },
+  {
+    name: "FamiPay", universal: true, url: "https://www.family.co.jp/famipay.html",
+    rate: "0.5%",
+    method: "FamiPayアプリでのコード決済",
+    note: "［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］"
+  },
+  {
+    name: "AEON Pay", universal: true, url: "https://www.aeon.co.jp/aeonpay/",
+    rate: "0.5%",
+    method: "AEON Payでのスマホ決済",
+    note: "イオン系列では毎月20日・30日のお客さま感謝デーで5%OFFの対象決済にもなる。［確認日: 2026-08-09／出典: イオン公式］"
+  },
+];
+
+// ---------- 期間限定キャンペーンの期限判定 ----------
+// カードに expires: "2026-08-31" があれば期間限定、無ければ常設として扱う。
+// 「終了済みかどうか」を毎回その場で計算するので、9月になれば自動的に
+// 終了済み扱いになり、古い情報を出し続ける事故を防げる。
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const end = new Date(dateStr + "T23:59:59");
+  if(isNaN(end)) return null;
+  const now = new Date();
+  return Math.floor((end - now) / (1000 * 60 * 60 * 24));
+}
+
+function campaignStatus(card){
+  const d = daysUntil(card.expires);
+  if(d === null) return { kind: "permanent" };            // 常設
+  if(d < 0)      return { kind: "expired", days: d };     // 終了済み
+  if(d <= 7)     return { kind: "ending", days: d };      // まもなく終了
+  return { kind: "active", days: d };                      // 期間限定（開催中）
+}
+
+function expiryBadgeHtml(card){
+  const st = campaignStatus(card);
+  if(st.kind === "permanent") return "";
+  if(st.kind === "expired")   return `<span class="expiry-badge expired">終了（${card.expires}）</span>`;
+  if(st.kind === "ending")    return `<span class="expiry-badge ending">あと${st.days}日</span>`;
+  return `<span class="expiry-badge active">〜${card.expires.slice(5).replace("-", "/")}</span>`;
+}
+
+// 終了済みキャンペーンを隠すかどうか（既定は隠す）
+let hideExpired = true;
+// 各店舗の比較に、全店共通のスマホ決済を混ぜて表示するか
+let showUniversal = true;
+
+function visibleCards(store){
+  return store.cards.filter(c => !(hideExpired && campaignStatus(c).kind === "expired"));
+}
+
+const DEFAULT_STORES = [
+  {
+    "name": "セイコーマート",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "セブン-イレブン",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "最大10〜11%",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "ベースは7%（Oliveクレジットモードは8%）。これにセブン-イレブンアプリの会員コード提示などの条件達成で+3%が上乗せされ、Oliveクレジットモードなら最大11%、その他の三井住友カードなら最大10%。上乗せ3%のうち0.5%はセブンマイルとして付与（Vポイントに交換可）。1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/camp/seven-eleven_vpoint/index.html"
+      },
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "オンラインショッピング・デリバリー・セブン自販機・スマホレジは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1.5%（3倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "一部対象外の店舗あり。法人会員は対象外。 JCB基本0.5%に対して3倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ポプラ",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "ポプラグループが対象。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ミニストップ",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "ローソン",
+    "category": "コンビニ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "ナチュラルローソン・ローソンストア100も対象。駅ビル内やガソリンスタンド併設店、オンライン・デリバリー・スマホレジは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ガスト（すかいらーくグループ）",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "かっぱ寿司",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "くら寿司",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "スマホでお持ち帰り・どこでもくら寿司・通販などのオンライン事前決済は対象外。ららぽーとTOKYO-BAY店など一部店舗は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      },
+      {
+        "name": "dPOINT（来店回数キャンペーン）",
+        "rate": "来店回数に応じて最大10倍（不定率）",
+        "method": "dポイント提示",
+        "note": "1回2倍→5回目10倍と回数が増えるほど倍率アップ。7/1〜8/31限定。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
+        "expires": "2026-08-31",
+        "url": "https://dpoint.docomo.ne.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ケンタッキーフライドチキン",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "ココス",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "サイゼリヤ",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "しゃぶ葉",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "ジョナサン",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "すき家",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "スシロー",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "オンライン決済、京樽スシロー、スシローToGoでの利用は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      },
+      {
+        "name": "auPAY",
+        "rate": "10%（持ち帰りネット注文限定）",
+        "method": "au PAY支払い",
+        "note": "持ち帰りネット注文5000円以上、1回550ポイント・期間中2回まで。7/22〜8/16の期間限定キャンペーン。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］",
+        "expires": "2026-08-16",
+        "url": "https://aupay.wallet.auone.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ゼッテリア",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "店頭決済および公式アプリのモバイルオーダーでのクレジット決済が対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ドミノ・ピザ",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "バーミヤン",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "はま寿司",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "ピザハットオンライン",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "ピザハット公式サイト・公式アプリでのオンライン注文時のクレジットカード決済",
+        "note": "店頭での決済は対象外（オンライン注文限定）。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "フレッシュネスバーガー",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "マクドナルド",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "dカード（d払い経由）",
+        "rate": "基本1%、キャンペーン時のみ7%前後",
+        "method": "d払い（dカードを支払い設定）",
+        "note": "常設の優待ではなく、不定期キャンペーン時のみ還元率が上がる方式。キャンペーンをやっていない時期は基本の1%還元にとどまる点に注意。［確認日: 2026-08-09／出典: dポイントクラブ公式・比較メディア複数］",
+        "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "モバイルオーダー／マックデリバリー限定（事前のポイントアップ登録が必要）",
+        "note": "モバイルオーダー・マックデリバリー限定。店頭での通常決済は対象外。 JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "モスバーガー",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "吉野家",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済 または モバイルオーダー（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。モバイルオーダーは2025年9月16日から対象に追加。1回1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "松屋",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "松のや・マイカリー食堂も対象。店舗券売機・セルフレジでの決済のほか、松弁ネット・松屋モバイルオーダー・松弁デリバリーも対象（ステーキ屋松・松軒中華食堂・すし松なども含む）。松屋公式オンラインショップと高速SA・PA内店舗は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "夢庵",
+    "category": "飲食店",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "エクセルシオール カフェ",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      }
+    ]
+  },
+  {
+    "name": "カフェ・ド・クリエ",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "モバイルオーダーとクリエカードへのチャージは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "サンマルクカフェ",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "スターバックス",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "モバイルオーダー限定（スターバックスアプリまたはApp Clip経由のApple Pay決済のみ）",
+        "note": "店頭でのタッチ決済は対象外。スターバックスカードへのチャージも対象外なので注意。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "dカード",
+        "rate": "4%（カードチャージ）／7%（Starbucks eGift購入）",
+        "method": "スターバックスカードへのオンライン入金・オートチャージ、またはStarbucks eGiftの購入",
+        "note": "レジでdカードを直接出して支払っても特約店ポイントは付かない。基本1%＋特約店ポイント3%（eGiftは6%）の合計。dカード GOLDも同率。［確認日: 2026-08-09／出典: dカード公式・比較メディア複数］",
+        "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      },
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "スターバックスカードへのオンライン入金のみ",
+        "note": "店頭での入金・利用は対象外。Apple Payでのチャージも対象外。三井住友カードとは対象取引が正反対（あちらはモバイルオーダー限定でチャージ対象外）なので使い分けに注意。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      },
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "モバイルオーダー／カードへのオンライン入金・オートチャージ／Starbucks eGift（事前登録が必要）",
+        "note": "モバイルオーダー、スターバックスカードへのオンライン入金・オートチャージ、Starbucks eGiftが対象。店舗での直接利用・店頭入金は対象外。 JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ドトールコーヒー",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "7%（Oliveクレジットモードは8%）",
+        "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
+        "note": "Oliveフレキシブルペイのクレジットモードは8%、デビットモードは1.5%。1回1万円を超えると差し込み扱いになり対象外になることがある。商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
+      },
+      {
+        "name": "dカード",
+        "rate": "4%（ドトールバリューカードのチャージ限定）",
+        "method": "ドトールバリューカードへのクレジットチャージ",
+        "note": "基本1%＋特約店ポイント3%の合計。dカードでの直接決済では特約店ポイントは付かず、必ずバリューカード経由のチャージが必要。［確認日: 2026-08-09／出典: 比較メディア複数］",
+        "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      }
+    ]
+  },
+  {
+    "name": "上島珈琲店",
+    "category": "カフェ",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "UCC Cafe Plazaも対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "アオキスーパー",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "ショッピングセンターアズパーク内の専門店・花いちばアズガーデン、クイックコマース・インターネット注文は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "イオン",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "イオンカード",
+        "rate": "5%OFF（毎月20日・30日限定、割引方式）",
+        "method": "イオンマークのカード払い／AEON Payのスマホ決済／電子マネーWAON",
+        "note": "還元ポイントではなく「会計から5%OFF」という割引形式。イオン・イオンスタイル・マックスバリュ・ザ・ビッグなど幅広く対象だが、たばこ・切手・商品券・酒類の一部などは対象外。毎月10日の「ありが10デー」はポイント5倍（還元率2.5%相当）で別方式。［確認日: 2026-08-09／出典: イオンカード公式・WAON公式］",
+        "url": "https://www.aeon.co.jp/merit/thanks_day/"
+      }
+    ]
+  },
+  {
+    "name": "オーケー",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "ネットスーパーは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "オオゼキ",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "オンラインストア・ネットスーパーは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "サンリブ",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "マルショク・リブホール・サンク・サンリブBUONO各店も対象。ネットスーパーは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ジャパンミート",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "MEATMeet・パワーマートも対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "スーパー魚長",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "生鮮乃木市場・生鮮げんき市場も対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ドミー",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "一部対象外の店舗あり。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "フィール",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "テナント・インターネットでの利用は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "フードストアあおき",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "ネットスーパーは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ヤマナカ",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "フランテ・フランテロゼも対象。ネットスーパーは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "やまや",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "近商ストア",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "ハーベス各店・Pochetteも対象。ネットスーパーと食品スーパー以外の利用は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "三和・フードワン",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "成城石井",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "成城石井.com（オンラインショップ）とLe Bar a Vin 52 AZABU TOKYOも対象。 JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "東急ストア",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "プレッセ・フードステーションも対象。テナントとネットスーパーは対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "東武ストア",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "ネットショップ・手ぶら決済・専門店売り場は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "肉のハナマサ",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "フランチャイズ店は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "北海市場",
+    "category": "スーパー",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "コカ・コーラ自販機",
+    "category": "自販機",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "自販機上のタッチ決済（カードのタッチ決済／QUICPay）またはCoke ON Pay・Coke ON Pass",
+        "note": "Coke ONアプリに対象カードを登録しての決済も対象だが、Apple Pay利用分は対象外。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ジハンピ",
+    "category": "自販機",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "Hulu",
+    "category": "エンタメ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "最大5倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "U-NEXT",
+    "category": "エンタメ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "最大5倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "コミックシーモア",
+    "category": "エンタメ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "最大5倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ディズニープラス",
+    "category": "エンタメ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ナガシマリゾート",
+    "category": "エンタメ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ユニバーサル・スタジオ・ジャパン",
+    "category": "エンタメ",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "10%（20倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "最大20倍。プレミアムカード（ゴールド以上）でよりおトクになる区分。 JCB基本0.5%に対して20倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "Vトリップ（宿泊予約サイト）",
+    "category": "トラベル",
+    "cards": [
+      {
+        "name": "三井住友カード / Olive",
+        "rate": "最大+18.5%（2026/8/31まで還元率UP中）",
+        "method": "Vトリップ経由での宿泊予約・決済",
+        "note": "通常特典の最大+8.5%に、期間限定のキャンペーン上乗せ分を加えた数値。三井住友カード経由の宿泊予約サイトを通した予約が対象で、ホテルに直接申し込む場合は対象外。期間や上乗せ幅は変動しやすいので、予約前に公式サイトで最新の還元率を確認するのが安全。［確認日: 2026-08-09／出典: 三井住友カード公式 リワードアップ一覧］",
+        "expires": "2026-08-31",
+        "url": "https://www.smbc-card.com/mem/platinum-preferred/special-store/index.jsp"
+      }
+    ]
+  },
+  {
+    "name": "コジマ",
+    "category": "ホームセンター",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ジョーシン",
+    "category": "ホームセンター",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ソフマップ",
+    "category": "ホームセンター",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ダイシン",
+    "category": "ホームセンター",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1.5%（3倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して3倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ビックカメラ／ビックドラッグ",
+    "category": "ホームセンター",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "AOKI",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "OWNDAYS／オンデーズ",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1.5%（3倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して3倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "アレックス",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（登録不要）",
+        "note": "この店舗はポイントアップ登録が不要。 JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "コナカグループ",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "はるやまチェーン",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "メガネサロンルック・ルックコンタクト",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "メガネのプリンス",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "好日山荘",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "洋服の青山",
+    "category": "ファッション",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "2.5%（5倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して5倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "アカチャンホンポ",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "クレジットカード決済／カード現物のタッチ決済／Apple Pay（QUICPay）が対象。スマホのタッチ決済とグローバルポイントWalletは対象外",
+        "note": "アカチャンホンポ Online Shopも対象。店頭ではMastercard・JCB・Visaのみ優遇対象で、QUICPay利用分は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "ウエルシア",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "ハックドラッグ・金光薬品も対象。 JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ウェルパーク",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "カーブス",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "三菱UFJカード",
+        "rate": "7%（条件達成で最大20%）",
+        "method": "入会金・月会費のカード払い",
+        "note": "都度の利用ではなく、入会金と月会費の支払いが対象。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
+        "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
+      }
+    ]
+  },
+  {
+    "name": "コクミン",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "スーパードラッグひまわり",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ダックス",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ハッピー・ドラッグ",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "ふく薬品",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "JCBオリジナルシリーズ",
+        "rate": "1%（2倍）",
+        "method": "対象カードでの決済（事前のポイントアップ登録が必要）",
+        "note": "JCB基本0.5%に対して2倍。JCBカードW / W plus Lなら常時+1倍されるため実質はもう一段高くなる。優待を受けるには事前に公式サイトで店舗ごとのポイントアップ登録が必要（初回1度きりの店舗が大多数）。［確認日: 2026-08-09／出典: JCB公式 J-POINTパートナー］",
+        "url": "https://j-pointpartner.jcb.co.jp/"
+      }
+    ]
+  },
+  {
+    "name": "マツモトキヨシ／ココカラファイン",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "dカード",
+        "rate": "合計4%（dポイントカード提示分を含む）",
+        "method": "dカードでの決済＋dポイントカード提示",
+        "note": "内訳は基本1%＋特約店ポイント3%（dポイントカード提示分を含む合計値）。決済だけでなくポイントカードの提示も忘れずに。［確認日: 2026-08-09／出典: dカード公式・比較メディア複数］",
+        "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      }
+    ]
+  },
+  {
+    "name": "リンベル",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "dカード",
+        "rate": "2%",
+        "method": "リンベル オンラインショップでのdカード決済",
+        "note": "基本1%＋特約店ポイント1%。オンラインショップでの注文が対象。［確認日: 2026-08-09／出典: dカード公式・比較メディア複数］",
+        "url": "https://dcard.docomo.ne.jp/st/dpoint_tokuyaku/index.html"
+      }
+    ]
+  },
+  {
+    "name": "髙島屋",
+    "category": "その他",
+    "cards": [
+      {
+        "name": "dカード",
+        "rate": "最大2.5%",
+        "method": "dカードでのクレジット決済（iD払いは対象外）",
+        "note": "髙島屋各店（日本橋・新宿・玉川・横浜・大宮・柏・高崎・大阪・泉北・京都・岡山・JU米子）とタカシマヤフードメゾンおおたかの森、タカシマヤ ウオッチメゾン、エキ・タカ泉ケ丘が対象。髙島屋オンラインストア・通信販売・アウトレット各店はdポイントカードのポイント対象外。一部対象外商品あり。［確認日: 2026-08-09／出典: dカード公式・比較メディア複数］",
+        "url": "https://dcard.docomo.ne.jp/std/topics/takashimaya/takashimaya16.html"
+      }
+    ]
+  }
+];
+
+// ---------- データの読み込み ----------
+// 優先順位：① GitHub上のstores.json（公開データ）→ ②この端末のlocalStorage
+// キャッシュ → ③ コード埋め込みのDEFAULT_STORES（オフライン・初回表示用の
+// 最終フォールバック）。
+const STORAGE_KEY = "kangenchou_stores_v1";
+const GITHUB_CONFIG_KEY = "kangenchou_github_config_v1";
+const STORES_JSON_PATH = "stores.json"; // 同じフォルダに置く想定
+
+function loadStoresFromCache(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(Array.isArray(parsed)) return parsed;
+    }
+  } catch(e){
+    console.warn("店舗データの読み込みに失敗、初期データを使用します", e);
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_STORES)); // deep copy
+}
+
+function saveStoresToCache(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(STORES));
+  } catch(e){
+    console.warn("店舗データの保存に失敗しました", e);
+  }
+}
+
+function loadGithubConfig(){
+  try{
+    const raw = localStorage.getItem(GITHUB_CONFIG_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function saveGithubConfig(cfg){
+  localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(cfg));
+}
+
+let STORES = loadStoresFromCache();
+let editMode = false;
+let syncPending = false; // 直近の保存がGitHubへのpushに失敗し、再送待ちかどうか
+
+function setSyncStatus(text, kind){
+  const el = document.getElementById("syncStatus");
+  if(!el) return;
+  el.textContent = text;
+  el.className = "sync-status" + (kind ? " " + kind : "");
+}
+
+// 起動時：GitHub上の公開データを取得できたら、それを正としてキャッシュを更新
+async function refreshFromGithubPages(){
+  try{
+    const res = await fetch(`${STORES_JSON_PATH}?t=${Date.now()}`, { cache: "no-store" });
+    if(!res.ok) return; // stores.jsonがまだ存在しない場合は静かに無視
+    const data = await res.json();
+    if(!Array.isArray(data)) return;
+    if(syncPending){
+      // 未送信のローカル編集がある間は、リモートで上書きしない
+      return;
+    }
+    STORES = data;
+    saveStoresToCache();
+    renderStores();
+  } catch(e){
+    // オフライン時やfile://表示時は取得できないのが正常なので、静かに無視
+    console.info("stores.json の取得をスキップしました", e.message);
+  }
+}
+
+let storeState = { search: "", category: "all", sortByRate: false };
+
+// 表示用に、その店舗のカード一覧＋（設定がONなら）全店共通のスマホ決済を合流させる。
+// 同名の決済がすでに店舗側にある場合（例：スシローのauPAY限定キャンペーン）は、
+// 店舗側の情報のほうが具体的なので、そちらを優先して共通側は落とす。
+// 還元率の文字列から並べ替え用の数値を取り出す。
+// 「最大10〜11%」「7%（条件達成で最大20%）」「20倍」など表記が揺れるため、
+// parseFloat では先頭に文字があると読めない。文字列中の最初の数値を拾い、
+// 「N倍」表記はJCB基本0.5%を掛けて実質の％に換算して比較する。
+function rateValue(card){
+  const s = String(card.rate || "");
+  const m = s.match(/(\d+(?:\.\d+)?)/);
+  if(!m) return 0;
+  let v = parseFloat(m[1]);
+  // ％表記があればその数値をそのまま使う。％が一切なく「N倍」だけの場合のみ換算する。
+  if(!/%/.test(s) && /倍/.test(s)) v = v * 0.5;
+  return v;
+}
+
+function combinedCards(store){
+  const own = visibleCards(store);
+  if(!showUniversal) return own;
+  const ownNames = own.map(c => c.name);
+  const extras = UNIVERSAL_PAYMENTS.filter(u =>
+    !ownNames.some(n => n.includes(u.name.split("（")[0]))
+  );
+  return own.concat(extras);
+}
+
+function linkHtml(card){
+  if(!card.url) return "";
+  return `<a class="src-link" href="${card.url}" target="_blank" rel="noopener noreferrer" title="公式ページを開く">公式 ↗</a>`;
+}
+
+function buildStoreCardEl(store, distanceMeters){
+  const shown = combinedCards(store);
+  const sorted = [...shown].sort((a,b) => rateValue(b) - rateValue(a));
+
+  const card = document.createElement("div");
+  card.className = "store-card collapsed";
+  if(editMode) card.classList.add("edit-mode");
+
+  const distBadge = (typeof distanceMeters === "number")
+    ? `<div class="store-dist">${distanceMeters < 1000 ? Math.round(distanceMeters)+"m" : (distanceMeters/1000).toFixed(1)+"km"}</div>`
+    : "";
+
+  const head = document.createElement("div");
+  head.className = "store-head";
+  head.innerHTML = `
+    ${distBadge}
+    <div class="store-name">${store.name}</div>
+    <div class="store-best-badge">最大 ${sorted[0] ? sorted[0].rate : "—"}</div>
+    <button class="icon-btn edit-store-btn" title="お店情報を編集">✎</button>
+    <button class="icon-btn delete-store-btn" title="お店を削除">🗑</button>
+    <div class="store-toggle">▾</div>
+  `;
+  head.addEventListener("click", (e)=>{
+    if(e.target.closest(".icon-btn")) return; // don't toggle when clicking edit/delete
+    card.classList.toggle("collapsed");
+  });
+  head.querySelector(".edit-store-btn").addEventListener("click", ()=> openStoreModal(store));
+  head.querySelector(".delete-store-btn").addEventListener("click", ()=> deleteStore(store));
+
+  const options = document.createElement("div");
+  options.className = "card-options";
+  sorted.forEach((c, i)=>{
+    const opt = document.createElement("div");
+    opt.className = "card-option" + (i === 0 ? " is-winner" : "") + (c.universal ? " is-universal" : "");
+    opt.innerHTML = `
+      <div class="card-option-top">
+        <span class="card-option-rank ${i===0 ? "rank-1" : ""}">${i+1}位</span>
+        <span class="card-option-name">${c.name}</span>
+        ${c.universal ? `<span class="universal-tag">全店共通</span>` : ""}
+        ${expiryBadgeHtml(c)}
+        <span class="card-option-rate">${c.rate}</span>
+        <button class="icon-btn edit-card-btn" title="編集">✎</button>
+        <button class="icon-btn delete-card-btn" title="削除">🗑</button>
+      </div>
+      <div class="card-option-method">${c.method || ""}</div>
+      ${c.note ? `<div class="card-option-note">${c.note}</div>` : ""}
+      ${linkHtml(c)}
+    `;
+    if(c.universal){
+      // 共通決済は店舗データではないので、この場では編集させない
+      opt.querySelectorAll(".icon-btn").forEach(b => b.remove());
+    } else {
+      opt.querySelector(".edit-card-btn").addEventListener("click", ()=> openCardModal(store, c));
+      opt.querySelector(".delete-card-btn").addEventListener("click", ()=> deleteCard(store, c));
+    }
+    options.appendChild(opt);
+  });
+
+  const addCardRow = document.createElement("div");
+  addCardRow.className = "add-card-row";
+  addCardRow.innerHTML = `<button class="add-card-btn">＋ このお店にカードを追加</button>`;
+  addCardRow.querySelector("button").addEventListener("click", ()=> openCardModal(store, null));
+  options.appendChild(addCardRow);
+
+  card.appendChild(head);
+  card.appendChild(options);
+  return card;
+}
+
+function storeBestRate(store){
+  return store.cards.reduce((max, c) => Math.max(max, rateValue(c)), 0);
+}
+
+function renderCategoryChips(){
+  const row = document.getElementById("categoryChipRow");
+  row.innerHTML = "";
+
+  const allChip = document.createElement("button");
+  allChip.className = "category-chip" + (storeState.category === "all" ? " active" : "");
+  allChip.innerHTML = `すべて <span class="chip-count">${STORES.length}</span>`;
+  allChip.addEventListener("click", ()=>{ storeState.category = "all"; renderStores(); });
+  row.appendChild(allChip);
+
+  CATEGORY_LIST.forEach(cat => {
+    const count = STORES.filter(s => s.category === cat).length;
+    if(count === 0) return; // データが無いカテゴリは表示しない
+    const chip = document.createElement("button");
+    chip.className = "category-chip" + (storeState.category === cat ? " active" : "");
+    chip.innerHTML = `${cat} <span class="chip-count">${count}</span>`;
+    chip.addEventListener("click", ()=>{ storeState.category = cat; renderStores(); });
+    row.appendChild(chip);
+  });
+}
+
+function renderStores(){
+  renderCategoryChips();
+
+  const list = document.getElementById("storeList");
+  const emptyNote = document.getElementById("storeEmptyNote");
+  list.innerHTML = "";
+
+  const q = storeState.search.toLowerCase();
+  let filtered = STORES.filter(s =>
+    (storeState.category === "all" || s.category === storeState.category) &&
+    (!q || s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q))
+  );
+
+  document.getElementById("storeCountLine").textContent = `登録店舗 ${STORES.length}件中 ${filtered.length}件を表示`;
+
+  if(filtered.length === 0){
+    emptyNote.style.display = "block";
+    return;
+  }
+  emptyNote.style.display = "none";
+
+  if(storeState.sortByRate){
+    // 還元率が高い順：カテゴリ見出しは出さず、フラットに並べる
+    filtered = [...filtered].sort((a,b) => storeBestRate(b) - storeBestRate(a));
+    filtered.forEach(store => {
+      const card = buildStoreCardEl(store);
+      card.classList.remove("collapsed");
+      list.appendChild(card);
+    });
+    return;
+  }
+
+  let lastCategory = null;
+  filtered.forEach(store => {
+    if(store.category !== lastCategory){
+      const label = document.createElement("div");
+      label.className = "store-category-label";
+      label.textContent = store.category;
+      list.appendChild(label);
+      lastCategory = store.category;
+    }
+    const card = buildStoreCardEl(store);
+    card.classList.remove("collapsed"); // keep list view expanded by default, as before
+    list.appendChild(card);
+  });
+}
+
+document.getElementById("sortToggleBtn").addEventListener("click", ()=>{
+  storeState.sortByRate = !storeState.sortByRate;
+  document.getElementById("sortToggleBtn").setAttribute("aria-checked", String(storeState.sortByRate));
+  renderStores();
+});
+
+document.getElementById("storeSearch").addEventListener("input", (e)=>{
+  storeState.search = e.target.value.trim();
+  renderStores();
+});
+
+document.querySelectorAll(".mode-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".mode-panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(`panel-${btn.dataset.mode}`).classList.add("active");
+  });
+});
+
+document.getElementById("showUniversalChk").addEventListener("change", (e)=>{
+  showUniversal = e.target.checked;
+  renderStores();
+});
+
+
+function renderCampaigns(){
+  const list = document.getElementById("campaignList");
+  list.innerHTML = "";
+
+  // 期限が設定されているものだけを集め、終了が近い順に並べる
+  const items = [];
+  STORES.forEach(store => {
+    store.cards.forEach(card => {
+      const st = campaignStatus(card);
+      if(st.kind === "permanent") return;
+      if(st.kind === "expired" && !document.getElementById("showExpiredChk").checked) return;
+      items.push({ store, card, status: st });
+    });
+  });
+  items.sort((a,b) => (a.status.days ?? 0) - (b.status.days ?? 0));
+
+  document.getElementById("campaignCountLine").textContent =
+    items.length ? `${items.length}件のキャンペーン` : "";
+
+  if(items.length === 0){
+    list.innerHTML = `<div class="store-empty-note">期間限定のキャンペーンは登録されていません。<br>「お店から探す」の編集モードで、終了日を設定すると，ここに表示されます。</div>`;
+    return;
+  }
+
+  items.forEach(({ store, card, status }) => {
+    const el = document.createElement("div");
+    el.className = "campaign-card" + (status.kind === "expired" ? " is-expired" : "");
+    el.innerHTML = `
+      <div class="campaign-card-top">
+        <span class="campaign-store">${store.name}</span>
+        ${expiryBadgeHtml(card)}
+        <span class="campaign-rate">${card.rate}</span>
+      </div>
+      <div class="campaign-cardname">${card.name}　／　${card.method || ""}</div>
+      ${card.note ? `<div class="campaign-note">${card.note}</div>` : ""}
+      ${linkHtml(card)}
+    `;
+    list.appendChild(el);
+  });
+}
+
+document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
+
+renderCampaigns();
+renderStores();
+
+// ========== 現在地から探す ==========
+// ブラウザのGeolocation APIで現在地を取得し、OpenStreetMap の Overpass API
+// （無料・APIキー不要）に「半径1.2km以内にある、登録済みチェーン名の店舗」を
+// 問い合わせて、近くにある店舗だけを表示します。
+// 注意：Geolocation APIは https（またはlocalhost）でしか動作しません。
+// file:// で開いている場合、位置情報の許可ダイアログ自体が出ないことがあります。
+
+function haversineMeters(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function buildOverpassQuery(lat, lon, radiusMeters, names){
+  // Escape names minimally for use inside a regex alternation.
+  const escaped = names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const pattern = escaped.join("|");
+  // Node-only search (convenience/chain stores in Japan are almost always
+  // mapped as points, not ways) — cuts server-side work roughly in half
+  // compared to also searching ways, which matters a lot on congested
+  // public instances.
+  return `
+    [out:json][timeout:10];
+    (
+      node(around:${radiusMeters},${lat},${lon})["name"~"${pattern}",i];
+      node(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
+    );
+    out center;
+  `;
+}
+
+function findStoreDataByName(rawName){
+  const name = rawName.toLowerCase();
+  return STORES.find(s => name.includes(s.name.toLowerCase()) || s.name.toLowerCase().includes(name));
+}
+
+// Public Overpass API is a shared free service. As of 2026, the original
+// overpass-api.de instance is heavily congested; kumi.systems and its
+// private.coffee mirror are currently the more reliable public options.
+// Kept overpass-api.de last as a final fallback only.
+const OVERPASS_ENDPOINTS = [
+  "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter",
+  "https://overpass-api.de/api/interpreter",
+];
+
+async function fetchWithTimeout(url, options, timeoutMs){
+  const controller = new AbortController();
+  const timer = setTimeout(()=> controller.abort(), timeoutMs);
+  try{
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function queryOverpassWithFallback(query){
+  // Race all mirrors in parallel instead of trying them one-by-one — much
+  // faster in the common case, and we only wait as long as the slowest
+  // *successful* response instead of stacking up multiple timeouts.
+  const attempts = OVERPASS_ENDPOINTS.map(endpoint =>
+    fetchWithTimeout(endpoint, { method: "POST", body: query }, 15000)
+      .then(async (res) => {
+        if(!res.ok){
+          throw new Error(`${endpoint.replace("https://","")} が HTTP ${res.status} を返しました`);
+        }
+        const text = await res.text();
+        try{
+          return JSON.parse(text);
+        } catch {
+          const firstLine = text.split("\n").find(l => l.trim()) || text.slice(0, 100);
+          throw new Error(`${endpoint.replace("https://","")} が不正な応答: ${firstLine}`);
+        }
+      })
+      .catch(err => {
+        // Normalize abort errors into a readable Japanese message.
+        if(err.name === "AbortError"){
+          throw new Error(`${endpoint.replace("https://","")} が15秒以内に応答しませんでした`);
+        }
+        throw err;
+      })
+  );
+
+  try{
+    return await Promise.any(attempts);
+  } catch(aggregateErr){
+    const details = (aggregateErr.errors || [aggregateErr])
+      .map(e => e.message)
+      .join(" ／ ");
+    throw new Error(details || "すべてのサーバーへの接続に失敗しました");
+  }
+}
+
+async function searchNearby(){
+  const btn = document.getElementById("nearbyBtn");
+  const resultBox = document.getElementById("nearbyResults");
+  const statusEl = document.getElementById("nearbyStatus");
+
+  if(!("geolocation" in navigator)){
+    statusEl.textContent = "この端末・ブラウザは位置情報に対応していません。";
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = "現在地を取得中…";
+  resultBox.innerHTML = "";
+
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    const { latitude, longitude } = pos.coords;
+    statusEl.textContent = "周辺のお店を検索中…";
+
+    try{
+      const names = STORES.map(s => s.name);
+      const query = buildOverpassQuery(latitude, longitude, 800, names);
+      const data = await queryOverpassWithFallback(query);
+
+      const matches = [];
+      const seen = new Set();
+      (data.elements || []).forEach(el => {
+        const tagName = (el.tags && (el.tags.name || el.tags.brand)) || "";
+        if(!tagName) return;
+        const storeData = findStoreDataByName(tagName);
+        if(!storeData) return;
+
+        const lat = el.lat ?? (el.center && el.center.lat);
+        const lon = el.lon ?? (el.center && el.center.lon);
+        if(lat == null || lon == null) return;
+
+        const dist = haversineMeters(latitude, longitude, lat, lon);
+        const key = storeData.name + "_" + Math.round(lat*1000) + "_" + Math.round(lon*1000);
+        if(seen.has(key)) return;
+        seen.add(key);
+        matches.push({ storeData, tagName, dist });
+      });
+
+      matches.sort((a,b)=> a.dist - b.dist);
+
+      if(matches.length === 0){
+        statusEl.textContent = "半径1.2km以内に、登録済みのお店が見つかりませんでした。";
+        return;
+      }
+
+      statusEl.textContent = `近くで見つかった登録済み店舗：${matches.length}件（近い順に5件を表示）`;
+      matches.slice(0, 5).forEach(m => {
+        const card = buildStoreCardEl(m.storeData, m.dist);
+        resultBox.appendChild(card);
+      });
+
+    } catch(err){
+      // Show the real error inline (not just a generic message) so it can
+      // be screenshotted and reported without needing browser dev tools.
+      // Public Overpass servers get congested at busy times — most
+      // failures here are server-side, not a bug in this page.
+      statusEl.textContent =
+        `検索サーバーが混み合っているようです（30秒ほど待ってからもう一度お試しください）\n詳細：${err.message || err}`;
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+    }
+
+  }, (err)=>{
+    btn.disabled = false;
+    if(err.code === err.PERMISSION_DENIED){
+      statusEl.textContent = "位置情報の利用が許可されませんでした。設定アプリからこのサイトの位置情報アクセスを確認してください。";
+    } else {
+      statusEl.textContent = "位置情報を取得できませんでした（file://で開いている場合、httpsでの公開が必要な場合があります）。";
+    }
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+document.getElementById("nearbyBtn").addEventListener("click", searchNearby);
+
+// ========== 編集モード：モーダル＆CRUD ==========
+
+function showModal(title, fields, onSave, onDelete){
+  const overlay = document.getElementById("modalOverlay");
+  const box = document.getElementById("modalBox");
+
+  const fieldsHtml = fields.map(f => {
+    if(f.type === "textarea"){
+      return `<div class="modal-field"><label>${f.label}</label><textarea data-key="${f.key}">${f.value ? escapeHtml(f.value) : ""}</textarea></div>`;
+    }
+    if(f.type === "select"){
+      const opts = f.options.map(o => `<option value="${escapeAttr(o)}" ${o === f.value ? "selected" : ""}>${escapeHtml(o)}</option>`).join("");
+      return `<div class="modal-field"><label>${f.label}</label><select data-key="${f.key}">${opts}</select></div>`;
+    }
+    return `<div class="modal-field"><label>${f.label}</label><input type="${f.type === "password" ? "password" : "text"}" data-key="${f.key}" value="${f.value ? escapeAttr(f.value) : ""}"></div>`;
+  }).join("");
+
+  box.innerHTML = `
+    <div class="modal-title">${title}</div>
+    ${fieldsHtml}
+    <div class="modal-actions">
+      ${onDelete ? `<button class="modal-btn delete" id="modalDeleteBtn">削除</button>` : ""}
+      <button class="modal-btn cancel" id="modalCancelBtn">キャンセル</button>
+      <button class="modal-btn save" id="modalSaveBtn">保存</button>
+    </div>
+  `;
+
+  overlay.style.display = "flex";
+
+  const close = () => { overlay.style.display = "none"; };
+
+  document.getElementById("modalCancelBtn").addEventListener("click", close);
+  overlay.addEventListener("click", (e)=>{ if(e.target === overlay) close(); }, { once: true });
+
+  document.getElementById("modalSaveBtn").addEventListener("click", ()=>{
+    const values = {};
+    fields.forEach(f => {
+      const el = box.querySelector(`[data-key="${f.key}"]`);
+      values[f.key] = el.value.trim();
+    });
+    if(!values[fields[0].key]){
+      alert(`${fields[0].label}は必須です`);
+      return;
+    }
+    onSave(values);
+    close();
+  });
+
+  if(onDelete){
+    document.getElementById("modalDeleteBtn").addEventListener("click", ()=>{
+      if(confirm("本当に削除しますか？")){
+        onDelete();
+        close();
+      }
+    });
+  }
+}
+
+function escapeHtml(str){
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function escapeAttr(str){
+  return String(str).replace(/&/g,"&amp;").replace(/"/g,"&quot;");
+}
+
+// ---- お店の追加・編集・削除 ----
+
+function openStoreModal(store){
+  // store === null → 新規追加
+  const isNew = store === null;
+  showModal(
+    isNew ? "新しいお店を追加" : "お店情報を編集",
+    [
+      { key: "name", label: "店名（例：モスバーガー）", value: store ? store.name : "" },
+      { key: "category", label: "カテゴリ", type: "select", options: CATEGORY_LIST, value: store ? store.category : CATEGORY_LIST[0] },
+    ],
+    (vals)=>{
+      if(isNew){
+        const newStore = { name: vals.name, category: vals.category || "未分類", cards: [] };
+        STORES.push(newStore);
+        persistStores();
+        renderStores();
+        // 新規店舗は続けてカード追加モーダルを開く
+        openCardModal(newStore, null);
+      } else {
+        store.name = vals.name;
+        store.category = vals.category || "未分類";
+        persistStores();
+        renderStores();
+      }
+    },
+    isNew ? null : ()=> deleteStore(store)
+  );
+}
+
+function deleteStore(store){
+  if(!confirm(`「${store.name}」を削除しますか？`)) return;
+  const idx = STORES.indexOf(store);
+  if(idx === -1) return;
+  STORES.splice(idx, 1);
+  persistStores();
+  renderStores();
+  renderCampaigns();
+}
+
+// ---- カードの追加・編集・削除 ----
+
+function openCardModal(store, card){
+  const isNew = card === null;
+  showModal(
+    isNew ? `${store.name} にカードを追加` : `${store.name} のカード情報を編集`,
+    [
+      { key: "name", label: "カード名（例：三井住友カード）", value: card ? card.name : "" },
+      { key: "rate", label: "還元率（例：7%＋α）", value: card ? card.rate : "" },
+      { key: "method", label: "対象の支払い方法", value: card ? card.method : "" },
+      { key: "expires", label: "終了日（期間限定の場合のみ。例：2026-08-31／常設なら空欄）", value: card ? card.expires : "" },
+      { key: "url", label: "公式ページのURL（任意）", value: card ? card.url : "" },
+      { key: "note", label: "補足・注意点（任意）", type: "textarea", value: card ? card.note : "" },
+    ],
+    (vals)=>{
+      if(isNew){
+        store.cards.push({ name: vals.name, rate: vals.rate, method: vals.method, note: vals.note,
+                           expires: vals.expires || undefined, url: vals.url || undefined });
+      } else {
+        card.name = vals.name;
+        card.rate = vals.rate;
+        card.method = vals.method;
+        card.note = vals.note;
+        if(vals.expires) card.expires = vals.expires;
+        else delete card.expires;
+        if(vals.url) card.url = vals.url;
+        else delete card.url;
+      }
+      persistStores();
+      renderStores();
+      renderCampaigns();
+    },
+    isNew ? null : ()=> deleteCard(store, card)
+  );
+}
+
+function deleteCard(store, card){
+  if(!confirm(`「${card.name}」の情報を削除しますか？`)) return;
+  const idx = store.cards.indexOf(card);
+  if(idx === -1) return;
+  store.cards.splice(idx, 1);
+  persistStores();
+  renderStores();
+  renderCampaigns();
+}
+
+// ---- 編集モードのON/OFF、追加ボタン、リセット ----
+
+document.getElementById("editModeBtn").addEventListener("click", ()=>{
+  editMode = !editMode;
+  document.getElementById("editModeBtn").classList.toggle("on", editMode);
+  document.getElementById("panel-stores").classList.toggle("edit-mode", editMode);
+  renderStores();
+});
+
+document.getElementById("addStoreBtn").addEventListener("click", ()=> openStoreModal(null));
+
+document.getElementById("resetStoresBtn").addEventListener("click", ()=>{
+  if(!confirm("この端末で編集した内容をすべて削除し、初期データに戻します。よろしいですか？")) return;
+  STORES = JSON.parse(JSON.stringify(DEFAULT_STORES));
+  persistStores();
+  renderStores();
+  renderCampaigns();
+});
+
+// ========== GitHub 自動同期 ==========
+
+// UTF-8文字列を安全にbase64化する（日本語を含むためbtoa単体では壊れる）
+function utf8ToBase64(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+async function pushStoresToGithub(){
+  const cfg = loadGithubConfig();
+  if(!cfg || !cfg.username || !cfg.repo || !cfg.token){
+    return; // 未設定なら何もしない（ローカル保存のみ）
+  }
+
+  setSyncStatus("GitHubに保存中…", "busy");
+
+  const apiUrl = `https://api.github.com/repos/${cfg.username}/${cfg.repo}/contents/${STORES_JSON_PATH}`;
+  const branch = cfg.branch || "main";
+
+  try{
+    // 1. 現在のファイルのshaを取得（更新には必須。ファイルがまだ無ければ新規作成）
+    let sha = undefined;
+    const getRes = await fetch(`${apiUrl}?ref=${branch}`, {
+      headers: { Authorization: `Bearer ${cfg.token}`, Accept: "application/vnd.github+json" }
+    });
+    if(getRes.status === 200){
+      const getData = await getRes.json();
+      sha = getData.sha;
+    } else if(getRes.status !== 404){
+      throw new Error(`ファイル取得に失敗（HTTP ${getRes.status}）`);
+    }
+
+    // 2. 更新（またはファイルが無ければ新規作成）をコミット
+    const content = utf8ToBase64(JSON.stringify(STORES, null, 2));
+    const putRes = await fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${cfg.token}`,
+        Accept: "application/vnd.github+json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: "還元帳：編集モードからstores.jsonを更新",
+        content,
+        branch,
+        ...(sha ? { sha } : {})
+      })
+    });
+
+    if(!putRes.ok){
+      const errBody = await putRes.text();
+      throw new Error(`コミットに失敗（HTTP ${putRes.status}）：${errBody.slice(0,150)}`);
+    }
+
+    syncPending = false;
+    setSyncStatus(`✅ GitHubに保存済み（${new Date().toLocaleTimeString("ja-JP")}）`, "ok");
+  } catch(err){
+    syncPending = true;
+    setSyncStatus(`⚠️ GitHubへの保存に失敗：${err.message}（この端末には保存済み。編集モードの再操作で再送されます）`, "err");
+    console.error(err);
+  }
+}
+
+function persistStores(){
+  saveStoresToCache();
+  pushStoresToGithub(); // 非同期。設定が無ければ内部で何もしない
+}
+
+// ---- GitHub連携の設定モーダル ----
+
+document.getElementById("githubSettingsBtn").addEventListener("click", ()=>{
+  const cfg = loadGithubConfig() || {};
+  showModal(
+    "GitHub連携の設定",
+    [
+      { key: "username", label: "GitHubユーザー名", value: cfg.username || "" },
+      { key: "repo", label: "リポジトリ名（例：kangenchou）", value: cfg.repo || "" },
+      { key: "branch", label: "ブランチ名（通常は main）", value: cfg.branch || "main" },
+      { key: "token", label: "Personal Access Token（Contents: Read and write 権限）", type: "password", value: cfg.token || "" },
+    ],
+    (vals)=>{
+      saveGithubConfig(vals);
+      setSyncStatus("GitHub連携を保存しました。次の編集から自動で同期されます。", "ok");
+    }
+  );
+});
+
+// 初回読み込み時に、GitHub上の最新データを取得しにいく
+refreshFromGithubPages();
+</script>
+</body>
+</html>
