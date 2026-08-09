@@ -4135,6 +4135,59 @@ document.getElementById("themeBtn").addEventListener("click", ()=>{
   try{ localStorage.setItem(THEME_KEY, next); } catch {}
 });
 
+// ========== 保有カード・お気に入り・金額 ==========
+const WALLET_KEY = "kangenchou_wallet";
+const FAV_KEY    = "kangenchou_favs";
+
+// 選択肢として出す決済手段。データ中のカード名と部分一致で照合する。
+const WALLET_OPTIONS = [
+  // 汎用の高還元カード
+  "三井住友カード / Olive", "三井住友カード ゴールド（NL）",
+  "三菱UFJカード", "JCBオリジナルシリーズ", "JCB CARD W", "JCBゴールド",
+  "dカード", "セゾンゴールドプレミアム", "セゾンパール・アメックス",
+  // 店舗系カード
+  "イオンカード", "セブンカード・プラス", "ビックカメラSuicaカード", "ローソンPontaプラス",
+  // スマホ決済・共通ポイント
+  "楽天カード", "楽天ポイントカード提示", "PayPay", "PayPayカード ゴールド",
+  "楽天ペイ", "d払い", "auPAY", "FamiPay", "AEON Pay",
+];
+
+function loadSet(key){
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? new Set(JSON.parse(raw)) : null;
+  } catch { return null; }
+}
+function saveSet(key, set){
+  try{ localStorage.setItem(key, JSON.stringify([...set])); } catch {}
+}
+
+// null = 未設定（＝全部表示）。空Setとは意味が違うので区別する。
+let wallet = loadSet(WALLET_KEY);
+let favs   = loadSet(FAV_KEY) || new Set();
+let amount = 0;
+
+function ownsCard(cardName){
+  if(!wallet || wallet.size === 0) return true; // 未設定なら全部表示
+  return [...wallet].some(w => cardName.includes(w) || w.includes(cardName.split("（")[0]));
+}
+
+// 会計金額を入れているとき、その還元率で何円戻るかを概算する
+function yenBack(card){
+  if(!amount) return null;
+  const v = rateValue(card);
+  if(!v) return null;
+  return Math.floor(amount * v / 100);
+}
+
+function isFav(storeName){ return favs.has(storeName); }
+function toggleFav(storeName){
+  if(favs.has(storeName)) favs.delete(storeName); else favs.add(storeName);
+  saveSet(FAV_KEY, favs);
+  renderStores();
+}
+
+
 // ========== AIでキャンペーンを取り込む ==========
 // キャンペーンページのURL（または説明文）を渡すと、Claudeがweb検索でその内容を
 // 調べ、このアプリのデータ形式に整えて返す。ブラウザから他サイトを直接読むのは
@@ -4387,58 +4440,6 @@ function maybeOnboard(){
 maybeOnboard();
 
 initTheme();
-
-// ========== 保有カード・お気に入り・金額 ==========
-const WALLET_KEY = "kangenchou_wallet";
-const FAV_KEY    = "kangenchou_favs";
-
-// 選択肢として出す決済手段。データ中のカード名と部分一致で照合する。
-const WALLET_OPTIONS = [
-  // 汎用の高還元カード
-  "三井住友カード / Olive", "三井住友カード ゴールド（NL）",
-  "三菱UFJカード", "JCBオリジナルシリーズ", "JCB CARD W", "JCBゴールド",
-  "dカード", "セゾンゴールドプレミアム", "セゾンパール・アメックス",
-  // 店舗系カード
-  "イオンカード", "セブンカード・プラス", "ビックカメラSuicaカード", "ローソンPontaプラス",
-  // スマホ決済・共通ポイント
-  "楽天カード", "楽天ポイントカード提示", "PayPay", "PayPayカード ゴールド",
-  "楽天ペイ", "d払い", "auPAY", "FamiPay", "AEON Pay",
-];
-
-function loadSet(key){
-  try{
-    const raw = localStorage.getItem(key);
-    return raw ? new Set(JSON.parse(raw)) : null;
-  } catch { return null; }
-}
-function saveSet(key, set){
-  try{ localStorage.setItem(key, JSON.stringify([...set])); } catch {}
-}
-
-// null = 未設定（＝全部表示）。空Setとは意味が違うので区別する。
-let wallet = loadSet(WALLET_KEY);
-let favs   = loadSet(FAV_KEY) || new Set();
-let amount = 0;
-
-function ownsCard(cardName){
-  if(!wallet || wallet.size === 0) return true; // 未設定なら全部表示
-  return [...wallet].some(w => cardName.includes(w) || w.includes(cardName.split("（")[0]));
-}
-
-// 会計金額を入れているとき、その還元率で何円戻るかを概算する
-function yenBack(card){
-  if(!amount) return null;
-  const v = rateValue(card);
-  if(!v) return null;
-  return Math.floor(amount * v / 100);
-}
-
-function isFav(storeName){ return favs.has(storeName); }
-function toggleFav(storeName){
-  if(favs.has(storeName)) favs.delete(storeName); else favs.add(storeName);
-  saveSet(FAV_KEY, favs);
-  renderStores();
-}
 
 document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
 
