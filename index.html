@@ -699,6 +699,17 @@
   }
   .show-more-btn:hover{ background: var(--tint-2); }
 
+  .rpay-toggle{
+    display: flex; align-items: flex-start; gap: 8px;
+    flex-basis: 100%;
+    margin-top: 8px; padding: 9px 11px;
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: 11.5px; line-height: 1.5; color: var(--muted); cursor: pointer;
+  }
+  .rpay-toggle input{ margin-top: 2px; accent-color: var(--foil-2); flex-shrink: 0; }
+  .mypanel{ flex-wrap: wrap; }
+
   .cannot-use{
     padding: 10px 16px;
     border-top: 1px dashed var(--line);
@@ -1903,27 +1914,49 @@
     transition: border-color .18s ease;
   }
   .store-card:hover{ border-color: var(--dim); }
+  /* 店名は1行目・還元率は2行目。flexで横並びにすると幅が足りず
+     店名が1文字ずつ縦に折り返されてしまうため、gridで領域を明示する。 */
   .store-head{
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto auto;
+    grid-template-areas:
+      "dist fav name edit del toggle"
+      "rate rate rate rate rate rate";
     align-items: center;
-    gap: 10px;
-    padding: 15px 16px;
+    gap: 6px 8px;
+    padding: 14px 16px;
     cursor: pointer;
     transition: background .15s ease;
   }
   .store-head:hover{ background: var(--surface-2); }
+  .store-dist{ grid-area: dist; }
+  .fav-btn{ grid-area: fav; }
+  .edit-store-btn{ grid-area: edit; }
+  .delete-store-btn{ grid-area: del; }
+  .store-toggle{ grid-area: toggle; justify-self: end; }
   .store-name{
+    grid-area: name;
+    min-width: 0;
     font-family: "Archivo", "Zen Kaku Gothic New", sans-serif;
     font-weight: 700;
     font-size: 15.5px;
     letter-spacing: -0.01em;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .store-best-wrap{
+    grid-area: rate;
+    display: flex; align-items: baseline; gap: 8px;
+    min-width: 0;
   }
   .store-best-badge{
-    margin-left: auto;
     font-family: "JetBrains Mono", monospace;
     font-weight: 700;
-    font-size: 14.5px;
-    white-space: nowrap;
+    font-size: 13px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    min-width: 0;
     background: var(--foil);
     -webkit-background-clip: text;
     background-clip: text;
@@ -2107,6 +2140,10 @@
         <span class="mypanel-label">持っているカード</span>
         <span class="mypanel-val" id="walletSummary">すべて表示中</span>
       </button>
+      <label class="rpay-toggle">
+        <input type="checkbox" id="rpayChk">
+        <span>楽天ペイ：先月ポイントカードを規定回数提示した（1.5%になる）</span>
+      </label>
       <div class="amount-field">
         <span class="mypanel-label">会計金額</span>
         <div class="amount-input-wrap">
@@ -2139,13 +2176,7 @@
       <button id="sortToggleBtn" class="switch-btn" role="switch" aria-checked="false"><span class="switch-knob"></span></button>
       <span class="sort-toggle-label">還元率が高い順</span>
     </div>
-    <div class="mycard-box" id="myCardBox" style="display:none;">
-      <div class="mycard-head" id="myCardHead">
-        <span class="universal-title">💳 持っているカードの活かしどころ</span>
-        <span class="universal-toggle">▾</span>
-      </div>
-      <div class="universal-body" id="myCardBody"></div>
-    </div>
+
     <div class="mufg-box collapsed" id="mufgBox" style="display:none;">
       <div class="mufg-head" id="mufgHead">
         <span class="universal-title">🔢 三菱UFJカードの還元率を計算</span>
@@ -3553,7 +3584,7 @@ const CHARGE_ROUTES = [
       rate: "1.5%",
       method: "モバイルICOCAにJ-WESTカードからチャージして支払い"
     },
-    note: "関西在住なら最も素直に効くルート。経由が1段だけで手間が少ないのが利点。【重要】SMART ICOCAでのチャージは3倍の対象外で0.5%（ゴールドで1%）にとどまるため、必ずモバイル版（Android版またはApple PayのICOCA）を使うこと。モバイルICOCAアプリ内で「WESTER ID連携」を済ませていないとポイントが付かない点にも注意。なおSMART ICOCAのクイックチャージは2026年10月で終了予定のため、今のうちにモバイル版へ移行しておくのが安全。［確認日: 2026-08-09］",
+    note: "経由が1段だけで手間が少ないのが利点。WESTERポイントは全国のJR西日本系サービスやポイント交換で使えます。【重要】SMART ICOCAでのチャージは3倍の対象外で0.5%（ゴールドで1%）にとどまるため、必ずモバイル版（Android版またはApple PayのICOCA）を使うこと。モバイルICOCAアプリ内で「WESTER ID連携」を済ませていないとポイントが付かない点にも注意。なおSMART ICOCAのクイックチャージは2026年10月で終了予定のため、今のうちにモバイル版へ移行しておくのが安全。［確認日: 2026-08-09］",
     url: "https://wester.jr-odekake.net/j-west/point/",
     caution: "クレカチャージの上限額がネックになる場合がある。モバイルICOCAは1回2万円まで、深夜2〜4時はチャージ不可。"
   },
@@ -6316,7 +6347,28 @@ let storeState = { search: "", category: "all", sortByRate: false };
 // parseFloat では先頭に文字があると読めない。文字列中の最初の数値を拾い、
 // 「N倍」表記はJCB基本0.5%を掛けて実質の％に換算して比較する。
 // 三菱UFJカードは条件しだいで還元率が変わるので、シミュレーターの結果を反映する
+// 楽天ペイの還元率は、前月のポイントカード提示回数で1.0%か1.5%かが決まる。
+// 人によって変わるので、三菱UFJと同じく自分で設定できるようにする。
+const RPAY_KEY = "kangenchou_rpay";
+let rpayHigh = (()=>{ try{ return localStorage.getItem(RPAY_KEY) === "1"; } catch { return false; } })();
+
+function setRpay(v){
+  rpayHigh = v;
+  try{ localStorage.setItem(RPAY_KEY, v ? "1" : "0"); } catch {}
+  renderStores();
+}
+
+// 楽天ペイの表示を、設定に応じて書き換える
+function rpayRate(base){
+  if(/楽天ペイ/.test(base.name) && /1\.0〜1\.5%/.test(base.rate)){
+    return rpayHigh ? "1.5%（提示条件を達成済み）" : "1.0%（提示条件が未達成）";
+  }
+  return base.rate;
+}
+
 function displayRate(card){
+  const rp = rpayRate(card);
+  if(rp !== card.rate) return rp;
   if(/三菱UFJ/.test(card.name) && /7%（条件達成で最大20%）/.test(card.rate)){
     const r = mufgRate();
     return r > 7 ? `${r.toFixed(1)}%（あなたの条件）` : "7%（条件達成で最大20%）";
@@ -6482,7 +6534,7 @@ function buildStoreCardEl(store, distanceMeters){
   const LIMIT = 5;
   sorted.forEach((c, i)=>{
     const opt = document.createElement("div");
-    opt.className = "card-option" + (i === 0 ? " is-winner" : "") + (c.universal ? " is-universal" : "");
+    opt.className = "card-option" + (i === 0 ? " is-winner" : "") + (c.universal ? " is-universal" : "") + (i >= LIMIT ? " is-extra" : "");
     opt.innerHTML = `
       <div class="card-option-top">
         <span class="card-option-rank ${i===0 ? "rank-1" : ""}">${i+1}位</span>
@@ -6949,7 +7001,6 @@ document.getElementById("myCardHead")?.addEventListener("click", ()=>{
 function renderStores(){
   renderAnswer();
   renderEC();
-  renderMyCards();
   renderMufg();
   renderCategoryChips();
 
@@ -7607,8 +7658,8 @@ async function locateForAnswer(){
 
       if(!best){
         // 未登録の店にいる可能性が高いので、汎用の最適解に切り替える
-        document.getElementById("answerStore").value = "__other__";
-        st.textContent = "特約店が見つかりませんでした。どこでも使える決済で比較します。";
+        document.getElementById("answerStore").value = "";
+        st.textContent = "近くに登録済みのお店が見つかりませんでした。お店を選び直すか、「その他のお店」を選んでください。";
         renderAnswer();
         return;
       }
