@@ -87,7 +87,6 @@
     --hairline: rgba(0,0,0,.04);
   }
   *{ box-sizing: border-box; }
-  *{ min-width: 0; overflow-wrap: anywhere; }
   html, body{ margin:0; padding:0; }
   body{
     background: var(--bg);
@@ -231,8 +230,7 @@
     border-color: var(--foil-2);
     color: var(--text);
   }
-  .wallet-opt::before{ content: "✓ "; color: transparent; }
-  .wallet-opt.on::before{ color: var(--foil-2); }
+  .wallet-opt.on::before{ content: "✓ "; color: var(--foil-2); }
 
   /* ===== favorites & upgrade hint ===== */
   .fav-btn{
@@ -684,6 +682,13 @@
     font-weight: 700;
   }
 
+  .store-today{
+    padding: 10px 16px;
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+    border-bottom: 1px solid var(--line);
+    font-size: 12px; line-height: 1.7; color: var(--text);
+  }
+  .store-today b{ color: var(--amber); }
   .card-option.is-extra{ display: none; }
   .store-card.show-all .card-option.is-extra{ display: block; }
   .show-more-btn{
@@ -693,52 +698,6 @@
     font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
   }
   .show-more-btn:hover{ background: var(--tint-2); }
-  .store-today{
-    padding: 10px 16px;
-    background: color-mix(in srgb, var(--amber) 12%, transparent);
-    border-bottom: 1px solid var(--line);
-    font-size: 12px; line-height: 1.6; color: var(--text);
-  }
-  .store-today b{ color: var(--amber); }
-  .upgrade-hint{
-    margin-top: 9px;
-    padding: 9px 11px;
-    border: none;
-    border-left: 2px solid var(--dim);
-    border-radius: 0 6px 6px 0;
-    background: var(--surface-2);
-    font-size: 11.5px; line-height: 1.6; color: var(--muted);
-  }
-
-  #nearbyResults .store-name, #nearbyResults .store-head{ min-width: 0; }
-  #nearbyResults .store-name{ white-space: normal; word-break: auto-phrase; flex: 1; }
-  .store-head{ flex-wrap: nowrap; }
-  .store-name{ min-width: 0; }
-  .store-best-wrap{ flex-shrink: 0; }
-
-  .starter-picker{
-    padding: 12px 14px; margin-bottom: 14px;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-  }
-  .starter-picker .answer-select{ margin-top: 4px; }
-  .starter-note{
-    margin-top: 7px; font-size: 11.5px; line-height: 1.6; color: var(--muted);
-  }
-
-  .local-place{
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px; color: var(--dim); margin-bottom: 8px;
-  }
-
-  .rp-badge{
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 15px; height: 15px; margin-left: 6px;
-    border-radius: 3px;
-    background: #BF0000; color: #fff;
-    font-family: "Archivo", sans-serif; font-weight: 800; font-size: 9.5px;
-    vertical-align: 1px;
-  }
 
   .cannot-use{
     padding: 10px 16px;
@@ -2096,9 +2055,31 @@
 
   <div class="mode-switch" id="modeSwitch">
     <button class="mode-btn active" data-mode="stores">お店から探す</button>
+    <button class="mode-btn" data-mode="apps">決済アプリ別特典</button>
     <button class="mode-btn" data-mode="campaigns">今月のキャンペーン</button>
-    <button class="mode-btn" data-mode="routes">カード・ルート</button>
+    <button class="mode-btn" data-mode="cards">カード選び</button>
+    <button class="mode-btn" data-mode="routes">チャージルート</button>
     <button class="mode-btn" data-mode="invest">クレカ積立</button>
+  </div>
+
+  <div class="mode-panel" id="panel-apps">
+    <div class="controls">
+      <div class="tabs" id="tabs"></div>
+      <div class="search-box"><input id="search" type="text" placeholder="決済名・キャンペーン・対象店で検索"></div>
+      <div class="chip-toggle" id="entryChips"></div>
+    </div>
+    <div class="count-line" id="countLine"></div>
+
+    <div id="list"></div>
+
+    <div class="others">
+      <h2>その他のキャンペーン</h2>
+      <ul>
+        <li>ビックカメラで来店予約、楽天ポイントカード or ビックポイントカード提示で楽天市場SPU分 上乗せ</li>
+        <li>すき家、なか卯で来店回数によるポイントアップ　楽天ポイント・dポイント・Vポイントが対象（すき家のみPontaも対象）　5回来店で15倍　毎月開催</li>
+        <li>エディオンで共通ポイント（V・d・楽天）を「利用」すると、利用ポイント額の20%還元。利用ポイント額は購入金額の50%まで。8/1〜8/16</li>
+      </ul>
+    </div>
   </div>
 
   <div class="mode-panel active" id="panel-stores">
@@ -2158,7 +2139,27 @@
       <button id="sortToggleBtn" class="switch-btn" role="switch" aria-checked="false"><span class="switch-knob"></span></button>
       <span class="sort-toggle-label">還元率が高い順</span>
     </div>
-
+    <div class="mycard-box" id="myCardBox" style="display:none;">
+      <div class="mycard-head" id="myCardHead">
+        <span class="universal-title">💳 持っているカードの活かしどころ</span>
+        <span class="universal-toggle">▾</span>
+      </div>
+      <div class="universal-body" id="myCardBody"></div>
+    </div>
+    <div class="mufg-box collapsed" id="mufgBox" style="display:none;">
+      <div class="mufg-head" id="mufgHead">
+        <span class="universal-title">🔢 三菱UFJカードの還元率を計算</span>
+        <span class="mufg-rate-badge" id="mufgRate">7.0%</span>
+        <span class="universal-toggle">▾</span>
+      </div>
+      <div class="universal-body">
+        <p class="mufg-intro">
+          「最大20%」は条件の積み上げです。当てはまるものにチェックすると、いまのあなたの還元率が出ます。
+          （対象店舗での利用が前提。スペシャルポイントは月5万円の利用分まで）
+        </p>
+        <div id="mufgBody"></div>
+      </div>
+    </div>
     <div class="category-chip-row" id="categoryChipRow"></div>
     <div class="universal-box" id="universalBox">
       <label class="universal-toggle-row">
@@ -2210,28 +2211,20 @@
     <div id="investList"></div>
   </div>
 
-  <div class="mode-panel" id="panel-routes">
+  <div class="mode-panel" id="panel-cards">
     <div class="campaign-intro">
-      「結局どのカードを持てばいいか」と「経由して還元を重ねるルート」をまとめています。
-      まずは土台の1枚を決めて、余力があればルートを組む、という順番がおすすめです。
-    </div>
-    <div class="mufg-box collapsed" id="mufgBox" style="display:none;">
-      <div class="mufg-head" id="mufgHead">
-        <span class="universal-title">🔢 三菱UFJカードの還元率を計算</span>
-        <span class="mufg-rate-badge" id="mufgRate">7.0%</span>
-        <span class="universal-toggle">▾</span>
-      </div>
-      <div class="universal-body">
-        <p class="mufg-intro">
-          「最大20%」は条件の積み上げです。当てはまるものにチェックすると、いまのあなたの還元率が出ます。
-          （対象店舗での利用が前提。スペシャルポイントは月5万円の利用分まで）
-        </p>
-        <div id="mufgBody"></div>
-      </div>
+      「結局どのカードを持てばいいか」に答えるページです。
+      特約店の還元率は店ごとに変わりますが、土台になる1枚をどう選ぶかで日常の還元が決まります。
     </div>
     <div id="cardPickList"></div>
+  </div>
 
-    <div class="picks-divider"><span>経由して還元を重ねるルート</span></div>
+  <div class="mode-panel" id="panel-routes">
+    <div class="campaign-intro">
+      クレカから残高へ「経由」させて還元を積み上げる方法です。
+      まず起点にするカードを選ぶと、そのカードで実際にどのポイントがいくら貯まるかが分かります。
+      各社の規約変更で塞がれることが多いので、実行前に必ず最新情報を確認してください。
+    </div>
     <p class="line-intro">クレカから残高へ「経由」させて還元を積み上げる方法です。各社の規約変更で塞がれることが多いので、実行前に必ず最新情報を確認してください。</p>
     <div class="invest-calc">
       <span class="mypanel-label">この金額を通したら</span>
@@ -2250,21 +2243,6 @@
       終了日が設定されているキャンペーンだけを、終了が近い順に並べています。
       終了日を過ぎたものは自動で「終了」扱いになります。
     </div>
-    <div class="today-box" id="todayBox2" style="display:none;">
-      <div class="today-head">
-        <span class="today-badge" id="todayDate2"></span>
-        <span class="today-title">今日はこれがおトク</span>
-      </div>
-      <div id="todayList2"></div>
-    </div>
-
-    <div class="line-box">
-      <div class="line-head"><span class="universal-title">🗾 近くの自治体キャンペーンを探す</span></div>
-      <p class="line-intro">自治体の還元は率が高い一方、地域ごとにバラバラです。いまいる場所で実施中のものだけを表示します。</p>
-      <button id="localBtn" class="nearby-btn">📍 現在地の自治体で探す</button>
-      <div id="localResult" class="line-result"></div>
-    </div>
-
     <div class="picks-section">
       <div class="picks-head">
         <span class="picks-title">🔥 今月まず使うべき決済</span>
@@ -2858,6 +2836,124 @@ function matchesFilters(d){
   return true;
 }
 
+function render(){
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  let totalVisible = 0;
+
+  brandOrder.forEach(brand=>{
+    const rows = DATA.filter(d=>d.brand===brand && matchesFilters(d));
+    if(rows.length === 0) return;
+    totalVisible += rows.length;
+
+    const brandRow = DATA.find(d=>d.brand===brand);
+    const catOfBrand = brandRow.cat;
+    const brandUrl = brandRow.url;
+    const section = document.createElement("div");
+    section.className = "brand";
+
+    const head = document.createElement("div");
+    head.className = "brand-head";
+    head.innerHTML = `
+      <div class="brand-badge">${brand.slice(0,1)}</div>
+      <div>
+        <div class="brand-title">${brand}</div>
+        <div class="brand-sub">${catOfBrand === "card" ? "クレジットカード" : "スマホ決済"} ／ ${rows.length}件のキャンペーン</div>
+      </div>
+      ${brandUrl ? `<a class="src-link brand-link" href="${brandUrl}" target="_blank" rel="noopener noreferrer" title="公式ページを開く">公式 ↗</a>` : ""}
+      ${affiliateFor(brand) ? `<a class="src-link brand-link apply-link" href="${affiliateFor(brand)}" target="_blank" rel="sponsored noopener noreferrer">申込 ↗</a>` : ""}
+      <div class="brand-toggle">▾</div>
+    `;
+    head.addEventListener("click", (e)=>{
+      if(e.target.closest(".brand-link")) return; // リンクは開閉させない
+      section.classList.toggle("collapsed");
+    });
+
+    const rowHead = document.createElement("div");
+    rowHead.className = "row-head";
+    rowHead.innerHTML = `<div>キャンペーン</div><div>還元内容</div><div>上限</div><div>対象店・支払い</div><div>エントリー</div>`;
+
+    const rowsWrap = document.createElement("div");
+    rowsWrap.className = "rows";
+    rowsWrap.appendChild(rowHead);
+
+    rows.forEach(d=>{
+      const tag = entryLabel(d.entry);
+      const row = document.createElement("div");
+      row.className = "row";
+      row.innerHTML = `
+        <div class="campaign">${d.campaign}<span class="period">期間：${d.period}</span></div>
+        <div class="rate">${d.rate}</div>
+        <div class="limits"><span class="lbl">1回：</span>${d.perUse}<br><span class="lbl">期間：</span>${d.periodLimit}</div>
+        <div class="target">${d.target}<br><span style="color:#b3a97f">${d.method}</span></div>
+        <div class="entry-cell"><span class="entry-tag ${tag.cls}">${tag.text}</span></div>
+        ${d.note ? `<div class="note">${d.note}</div>` : ""}
+      `;
+      rowsWrap.appendChild(row);
+    });
+
+    section.appendChild(head);
+    section.appendChild(rowsWrap);
+    list.appendChild(section);
+  });
+
+  document.getElementById("countLine").textContent = `全${DATA.length}件中 ${totalVisible}件を表示`;
+
+  if(totalVisible === 0){
+    list.innerHTML = `<div class="empty-state">該当するキャンペーンが見つかりませんでした</div>`;
+  }
+}
+
+function buildTabs(){
+  const tabs = [
+    {key:"all", label:"すべて"},
+    {key:"card", label:"クレジットカード"},
+    {key:"smartphone", label:"スマホ決済"},
+  ];
+  const wrap = document.getElementById("tabs");
+  tabs.forEach(t=>{
+    const btn = document.createElement("button");
+    btn.className = "tab-btn" + (state.cat===t.key ? " active" : "");
+    btn.textContent = t.label;
+    btn.addEventListener("click", ()=>{
+      state.cat = t.key;
+      [...wrap.children].forEach(c=>c.classList.remove("active"));
+      btn.classList.add("active");
+      render();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function buildEntryChips(){
+  const chips = [
+    {key:"all", label:"すべて"},
+    {key:"fuyou", label:"エントリー不要のみ"},
+    {key:"hitsuyo", label:"エントリー必要あり"},
+  ];
+  const wrap = document.getElementById("entryChips");
+  chips.forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "chip" + (state.entry===c.key ? " active" : "");
+    el.textContent = c.label;
+    el.addEventListener("click", ()=>{
+      state.entry = c.key;
+      [...wrap.children].forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      render();
+    });
+    wrap.appendChild(el);
+  });
+}
+
+document.getElementById("search").addEventListener("input", (e)=>{
+  state.search = e.target.value.trim();
+  render();
+});
+
+buildTabs();
+buildEntryChips();
+render();
 
 // ========== 店舗から探す（β） ==========
 // 各社の還元プログラムの「事実」（対象カード・還元率・支払い方法の条件）を
@@ -2894,6 +2990,18 @@ const CATEGORY_LIST = [
 // stores.json と同じく、これは初期データ。実際の表示は picks.json →
 // localStorage → この初期値、の順で読み込む。
 const DEFAULT_PICKS = [
+  {
+    "name": "スマホのタッチ決済で乗車 最大8%還元（常設）",
+    "rate": "最大8%",
+    "period": "常設（2026/4/13〜）",
+    "how": [
+      "Apple Pay または Google Pay に三井住友カード / Olive を登録する",
+      "改札の専用リーダーに「スマホ」をかざして乗車する（カード現物は対象外）",
+      "対象は全国の鉄道に加え、主要な路線バス・高速バスも含む"
+    ],
+    "note": "期間限定ではなく常設の特典。通勤・通学で毎月交通費がかかる人ほど効果が大きい。【最も間違えやすい点】カード現物でのタッチ決済は対象外で、必ずスマホをかざす必要がある。関西ではOsaka Metro全駅、近鉄、阪急、阪神、南海、神戸市営地下鉄などが対応済み。［確認日: 2026-08-09／出典: 三井住友カード公式・報道各社］",
+    "url": "https://www.smbc-card.com/"
+  },
   {
     "name": "VポイントPay ポイント優先払いで10%還元",
     "rate": "10%還元",
@@ -2934,6 +3042,20 @@ const DEFAULT_PICKS = [
     "url": "https://www.vpoint.net/scm1"
   },
   {
+    "name": "【要対応】PayPay 他社クレカの直接利用が8月末で終了",
+    "rate": "放置すると使えなくなる",
+    "period": "2026年8月末まで",
+    "expires": "2026-08-31",
+    "how": [
+      "PayPayアプリを最新版に更新する",
+      "登録しているカードの発行会社を確認する（三井住友カード発行なら対応不要）",
+      "それ以外のカードは、アプリで「他社カード利用券」を購入する方式に切り替える",
+      "カード登録と利用券購入には3Dセキュア認証が必要なので、事前に設定を済ませておく"
+    ],
+    "note": "2018年から続いた「他社カードを登録してそのまま払う」方式が8月末で終了します。以降も他社カードを使うには、事前に利用券（1万円単位、最大25万円）を購入する必要があります。購入・利用に追加料金はかかりません。対応ブランドは引き続きVisa／Mastercardのみ。【例外】三井住友カード発行の個人向けカード（ANAカード、Amazon Mastercardなどの提携カード含む）は、連携施策により従来方式のまま使えます。ただしPayPayステップの対象外になる点は変わりません。［確認日: 2026-08-09／出典: PayPay公式・報道各社］",
+    "url": "https://paypay.ne.jp/notice/20260701/c-card_voucher/"
+  },
+  {
     "name": "自治体キャンペーン（地域限定の高還元）",
     "rate": "最大10〜30%還元",
     "period": "地域ごとに異なる",
@@ -2958,6 +3080,17 @@ const DEFAULT_PICKS = [
     ],
     "note": "買い物をしなくても、持っているポイントを交換するだけで増えるのが特徴。ポイントサイトを使っている人には交換の絶好機。【注意】元の交換レートが100%でないポイントは目減りするため要確認（例：永久不滅ポイントはdポイントへ90%＝1P→4.5Pなので直接交換は不利。他社ポイントを経由すればほぼ100%で交換できる）。付与されるのは期間限定ポイントなので、使い道を決めてから交換すること。なお2026年夏は例年より増量レートが低めという評価もある。［確認日: 2026-08-09／出典: dポイント公式・比較メディア複数］",
     "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
+  },
+  {
+    "name": "住信SBIネット銀行がドコモ系へ移行 — dカード引き落としで最大4.5%",
+    "rate": "dカード還元が最大4.5%に",
+    "period": "2026年8月20日 連携開始",
+    "how": [
+      "dカードの引き落とし口座を住信SBIネット銀行に設定する",
+      "連携開始（8/20）以降、dカードの還元率が上乗せされる"
+    ],
+    "note": "住信SBIネット銀行が「どこもSMTBネット銀行」へ移行することに伴う新特典。dカード プラチナで最大4.5%、ゴールドで最大3.5%、一般で最大2.75%まで上がる。【あわせて注意】同じ住信SBIのV NEOBANKデビットは2026年11月1日から還元率1.25%へ引き下げ、かつ他社決済サービスへのチャージがポイント対象外になる。住信SBIを軸にしている人は、この2つの変更をセットで確認しておくこと。［確認日: 2026-08-09／出典: 報道各社］",
+    "url": "https://www.netbk.co.jp/"
   }
 ];
 
@@ -3044,7 +3177,7 @@ const CARD_PICKS = [
         detail: "基本0.5%なので「土台」としては弱く、対象店専用の1枚と考えるのが正しい。リクルートカードなど基本還元率の高いカードと2枚持ちするのが定石。カード現物のタッチ決済は対象外で、必ずスマホをかざす必要がある。［確認日: 2026-08-09］",
         good: "コンビニ・対象飲食店をよく使う人（2枚目として）",
         url: "https://www.smbc-card.com/"
-      },
+      }
     ]
   },
   {
@@ -3076,7 +3209,7 @@ const CARD_PICKS = [
         detail: "以前あった「+0.5%上乗せ」は2026年6月2日で廃止。代わりに年100万円以上の決済で11,000ポイント（年会費相当）が付与される特典が新設された。実質的な価値はソフトバンク・ワイモバイル契約者向けの割引に寄っているため、キャリアが違う人はメリットが薄い。ソフトバンクの新プラン（ペイトク2など）に変更すると通信料の付与率が10%→1%に下がる点にも注意。［確認日: 2026-08-09］",
         good: "ソフトバンク／ワイモバイル利用者で年100万円使う人",
         url: "https://paypay.ne.jp/card-gold/"
-      },
+      }
     ]
   },
   {
@@ -3101,16 +3234,16 @@ const CARD_PICKS = [
         url: "https://www.netbk.co.jp/"
       },
       {
-        name: "デビットカード Point＋（住信SBI）",
+        name: "デビットカード Point＋（住信SBIネット銀行）",
         rate: "1.25〜2.0%",
         fee: "年会費無料",
-        why: "スマプロランクに応じて還元率が上がる。V NEOBANKの改定後の移行先候補。",
-        detail: "基本1.25%に、残高や取引条件で決まるスマプロランクに応じて最大+0.75%。給与・年金の受け取り設定で1.5%になる。判定月末のランクが翌々月から適用される。［確認日: 2026-08-09］",
+        why: "住信SBIネット銀行が2025年に始めた新しいデビットカード。残高や取引状況に応じて還元率が上がります。",
+        detail: "【どんなカードか】住信SBIネット銀行の口座から即時引き落としで支払うMastercardのデビットカード。年会費無料・審査なしで、15歳以上なら口座があれば作れます。■【還元率】基本1.25%。銀行の「スマプロランク」（円普通預金＋SBIハイブリッド預金の残高、または給与受取などの取引条件で決まる4段階）に応じて最大+0.75%が上乗せされ、最大2.0%になります。給与・年金の受け取り設定だけでも1.5%に届きます。■【V NEOBANKとの違い】同じ住信SBIですが別のカードです。V NEOBANKデビットは2026年11月に還元率1.25%へ引き下げ＋他社チャージが対象外になるため、その移行先として検討する価値があります。■ランクは判定月末の状態が翌々月から適用されるため、上げてもすぐには反映されません。［確認日: 2026-08-09］",
         good: "住信SBIをメインバンクにしている人",
         url: "https://www.netbk.co.jp/contents/lp/debit/pointplus/"
-      },
+      }
     ]
-  },
+  }
 ];
 
 // ========== クレカ積立 ==========
@@ -3171,110 +3304,160 @@ const INVEST_PLANS = [
 
 const CHARGE_ROUTES = [
   {
-    name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
-    howto: {
-      prep: [
-        "エポスカード（できればゴールド）を発行する",
-        "ANA Payアプリをインストールし、ANAマイレージクラブ会員番号で登録する",
-        "楽天Edy機能付きの楽天カード（プラスチックの現物）を用意する ※iPhoneの場合は必須",
-        "楽天ペイアプリをインストールし、楽天IDでログインする"
-      ],
-      flow: [
-        "ANA Payアプリでエポスカードからチャージする（本人確認済みなら1日10万円・月30万円まで）",
-        "ANA Payの残高を楽天Edyへ移す",
-        "楽天ペイアプリで楽天Edy残高を楽天キャッシュに交換する（月1万円まで）",
-        "お店で楽天ペイの「楽天キャッシュ」を選んで支払う"
-      ],
-      time: "初回の準備に1〜2週間（カード発行を含む）。慣れれば毎月の作業は10分程度"
-    },
-    split: [
-      {
-        pt: "エポスポイント",
-        rate: 1.5,
-        note: "クレカ→ANA Payチャージ分（年間利用ボーナス込み）"
-      },
-      {
-        pt: "ANAマイル",
-        rate: 0.5,
-        note: "ANA Pay→楽天Edy移行分"
-      },
-      {
-        pt: "楽天ポイント",
-        rate: 1,
-        note: "楽天ペイ決済分"
-      }
-    ],
-    starter: "【選択肢は複数あります】①エポスゴールド／JQ CARDエポスゴールド…年50万円利用で翌年以降無料。最大1.5%。②V NEOBANKデビット（住信SBI）…年会費も審査もなしで1.5%。ANA Payへのチャージも対象なので、カードを増やしたくない人はこちらでも同じ還元率が取れます（ただし2026年11月から他社チャージが対象外になる見込み）。③リクルートカード…年会費無料で1.2%。電子マネーチャージにポイントが付く数少ないカード。※三井住友カード（NL）は、ANA Payを含む他社チャージがポイント対象外なので起点には向きません。",
+    name: "V NEOBANKデビット → au PAY → VポイントPay",
     pays: [
-      "楽天ペイ",
-      "ANA Pay",
-      "楽天Edy"
+      "VポイントPay",
+      "au PAY"
     ],
-    total: "合計 約2.5%",
+    total: "合計 2.5%（月5万円まで）",
     steps: [
-      "対象クレカ",
-      "ANA Pay",
-      "楽天Edy",
-      "楽天キャッシュ",
-      "楽天ペイで支払い"
+      "V NEOBANKデビット",
+      "au PAY",
+      "VポイントPay",
+      "Visaタッチで支払い"
     ],
     gains: [
-      "クレカ→ANA Pay チャージ：最大1.5%（エポスゴールド等、年100万円利用時）",
-      "ANA Pay→楽天Edy：ANAマイル0.5%",
-      "楽天ペイ支払い：楽天ポイント約1%"
+      "V NEOBANK→au PAYチャージ：Vポイント1.5%",
+      "au PAY→VポイントPayチャージ：Pontaポイント0.5%",
+      "VポイントPay決済：Vポイント0.5%"
+    ],
+    split: [
+      {
+        pt: "Vポイント",
+        rate: 2,
+        note: "チャージ1.5%＋決済0.5%"
+      },
+      {
+        pt: "Pontaポイント",
+        rate: 0.5,
+        note: "au PAY経由分"
+      }
     ],
     atStore: {
       rate: "2.5%",
-      method: "楽天ペイで支払い（事前にANA Pay→楽天Edy→楽天キャッシュへ移しておく）"
+      method: "VポイントPayをVisaタッチ決済で支払い（事前にau PAY経由でチャージ）"
     },
-    note: "現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月1万円まで（以前の10万円から引き下げられたため、このルートで動かせる金額はかなり小さくなっている）。［確認日: 2026-08-09］",
-    url: "https://cash.rakuten.co.jp/",
-    caution: "楽天Edy→楽天キャッシュの交換上限が月1万円になったため、このルートで回せるのは月1万円分まで。少額しか動かせない点を踏まえて手間に見合うか判断を。なおANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外（エポスゴールド・JQ CARDエポスゴールドは対象）。"
-  },
-  {
-    name: "J-WESTカード → モバイルICOCA",
+    starter: "V NEOBANKデビット（住信SBI・年会費無料・審査なし）。エポスゴールドのような年会費や修行が不要で、口座開設だけで始められます。",
     howto: {
       prep: [
-        "J-WESTカードを発行する（一般 年1,100円／ゴールド 11,000円）",
-        "モバイルICOCAをインストール（AndroidアプリまたはiPhoneのウォレットに追加）",
-        "モバイルICOCAアプリで「WESTER ID連携」を必ず済ませる ※これを忘れるとポイントが付きません"
+        "住信SBIネット銀行でV NEOBANK口座を開設し、デビットを発行する",
+        "au PAYアプリをインストールする",
+        "VポイントPayアプリをインストールしてVポイントIDでログインする"
       ],
       flow: [
-        "モバイルICOCAアプリでJ-WESTカードを登録する",
-        "アプリからチャージする（1回2万円まで、深夜2〜4時は不可）",
-        "改札やお店でICOCAとして使う"
+        "au PAYにV NEOBANKデビットからチャージする（月5万円まで）",
+        "au PAY残高（Apple Pay経由）でVポイントPayにチャージする",
+        "お店でVisaのタッチ決済として支払う"
       ],
-      time: "カード発行後、設定は15分ほど。以降はチャージするだけ"
+      time: "口座開設に数日。以降の作業は月10分ほど"
+    },
+    note: "年会費も審査もなしで2.5%に届き、しかも月5万円まで回せるのが強み。楽天ペイルート（月1万円）より実際に得られる額が大きいため、まずはこちらを検討する価値があります。VポイントPayはVisaタッチとして全国で使えるので汎用性も高い。【重要】V NEOBANKデビットは2026年11月1日から他社決済サービスへのチャージがポイント対象外になる予定のため、このルートは10月末までの可能性が高い。［確認日: 2026-08-09］",
+    url: "https://www.netbk.co.jp/contents/lp/vneobank/",
+    caution: "2026年11月以降はV NEOBANKからのチャージが還元対象外になる見込み。実行前に最新の条件を確認すること。"
+  },
+  {
+    name: "V NEOBANKデビット → モバイルWAON（イオンでの買い物）",
+    pays: [
+      "WAON",
+      "イオン"
+    ],
+    total: "合計 2.5%",
+    onlyAt: [
+      "イオン",
+      "マックスバリュ",
+      "ミニストップ",
+      "ザ・ビッグ"
+    ],
+    steps: [
+      "V NEOBANKデビット",
+      "モバイルWAON（Apple Pay）",
+      "イオン・ミニストップで支払い"
+    ],
+    gains: [
+      "V NEOBANK→WAONチャージ：Vポイント1.5%",
+      "イオングループ・ミニストップでのWAON決済：1.0%（要WAON会員登録）"
+    ],
+    split: [
+      {
+        pt: "Vポイント",
+        rate: 1.5,
+        note: "チャージ分"
+      },
+      {
+        pt: "WAON POINT",
+        rate: 1,
+        note: "イオン・ミニストップは2倍"
+      }
+    ],
+    starter: "V NEOBANKデビット（年会費無料・審査なし）。",
+    howto: {
+      prep: [
+        "V NEOBANKデビットを発行する",
+        "Apple PayにモバイルWAONを追加する",
+        "【必須】WAONの会員登録を済ませる ※未登録だと0.5%に半減します"
+      ],
+      flow: [
+        "モバイルWAONにV NEOBANKデビットからチャージする",
+        "イオン・マックスバリュ・ミニストップで支払う"
+      ],
+      time: "設定20分ほど。イオンをよく使うなら効果が大きい"
+    },
+    note: "【イオングループ限定のルートです】イオン・マックスバリュ・ミニストップではWAONがいつでもポイント2倍のため、通常0.5%が1.0%になります。他の店では2倍にならないので、このルートの旨みはイオン系だけ。【必ず会員登録を】WAON会員登録をしていないと0.5%のままで合計2.0%に下がります。毎月20日・30日の5%OFFとは別枠なので、感謝デーに使えばさらに有利。［確認日: 2026-08-09］",
+    url: "https://www.waon.net/",
+    caution: "WAON会員登録を忘れると還元率が半減する。",
+    atStore: {
+      rate: "2.5%",
+      method: "モバイルWAONで支払い（事前にV NEOBANKデビットからチャージ・要WAON会員登録）"
+    }
+  },
+  {
+    name: "ファミペイ → POSAカード → モバイルSuica等",
+    howto: {
+      prep: [
+        "ファミペイアプリをインストールする",
+        "ファミペイにチャージできてポイントが付くクレカを用意する ※PayPayカードは2026年6月から対象外",
+        "チャージ先（モバイルSuicaなど）を準備しておく"
+      ],
+      flow: [
+        "「1・5・0のつく日」にファミリーマート店頭へ行く",
+        "アプリで当日の対象POSAカード（バニラVisaギフトカードなど）を確認する",
+        "レジでPOSAカードをファミペイで購入する",
+        "買ったギフトカードの番号を使って、モバイルSuicaなどにチャージする"
+      ],
+      time: "店頭に行く必要があるため、他のルートより手間がかかる。まとめ買い向き"
     },
     split: [
       {
-        pt: "WESTERポイント",
-        rate: 1.5,
-        note: "モバイルICOCAへのチャージ分（ゴールドは3.0%）"
+        pt: "ファミペイボーナス",
+        rate: 3,
+        note: "1・5・0のつく日のPOSAカード購入特典"
       }
     ],
-    starter: "J-WESTカード（一般 年1,100円／ゴールド 11,000円）。ゴールドなら3.0%まで上がる。",
     pays: [
-      "ICOCA",
+      "ファミペイ",
+      "Suica",
       "交通系"
     ],
-    total: "1.5%（ゴールドは3.0%）",
+    total: "実質 3%以上",
     steps: [
-      "J-WESTカード",
-      "モバイルICOCA",
-      "改札・買い物で利用"
+      "対象クレカ",
+      "ファミペイ",
+      "POSAカード購入",
+      "Suica等にチャージ"
     ],
     gains: [
-      "モバイルICOCAへのチャージ：WESTERポイントが3倍（基本ポイント含む）",
-      "J-WESTゴールドならさらに上乗せで3.0%"
+      "1・5・0のつく日にファミペイでPOSAカード（バニラVisaギフトカードなど）を購入",
+      "購入時のボーナス還元で実質3%以上",
+      "買ったギフトカードをモバイルSuicaなどにチャージ"
     ],
+    starter: "ファミペイへのチャージでポイントが付くカードが必要。PayPayカードからのファミペイチャージは2026年6月1日でポイント対象外になったため、別のカードを用意すること。",
     atStore: {
-      rate: "1.5%",
-      method: "モバイルICOCAにJ-WESTカードからチャージして支払い"
+      rate: "3.0%",
+      method: "POSAカード経由でチャージしたSuica等で支払い"
     },
-    note: "関西在住なら最も素直に効くルート。経由が1段だけで手間が少ないのが利点。【重要】SMART ICOCAでのチャージは3倍の対象外で0.5%（ゴールドで1%）にとどまるため、必ずモバイル版（Android版またはApple PayのICOCA）を使うこと。モバイルICOCAアプリ内で「WESTER ID連携」を済ませていないとポイントが付かない点にも注意。なおSMART ICOCAのクイックチャージは2026年10月で終了予定のため、今のうちにモバイル版へ移行しておくのが安全。［確認日: 2026-08-09］",
-    url: "https://wester.jr-odekake.net/j-west/point/",
-    caution: "クレカチャージの上限額がネックになる場合がある。モバイルICOCAは1回2万円まで、深夜2〜4時はチャージ不可。"
+    note: "ファミリーマート店頭でのPOSAカード購入を挟むのが特徴で、他のルートより手間はかかるが還元率は高い。日付が「1・5・0のつく日」に限られるため、まとめ買いする運用になる。ファミペイの対象カードは年々減っており、条件も変わりやすい。［確認日: 2026-08-09］",
+    url: "https://www.family.co.jp/services/famipay.html",
+    caution: "対象となるPOSAカードの種類やキャンペーン条件は頻繁に変わる。実行前にファミペイアプリ内で当日の対象商品を必ず確認すること。"
   },
   {
     name: "クレカ → ANA Pay → モバイルSuica",
@@ -3330,6 +3513,51 @@ const CHARGE_ROUTES = [
     caution: "Suicaへのチャージは月5万円までの制限がある。また三井住友カードからJAL Pay・au PAYへのチャージは2026年3月以降ポイント対象外になっており、以前の定番ルートは使えない。"
   },
   {
+    name: "J-WESTカード → モバイルICOCA",
+    howto: {
+      prep: [
+        "J-WESTカードを発行する（一般 年1,100円／ゴールド 11,000円）",
+        "モバイルICOCAをインストール（AndroidアプリまたはiPhoneのウォレットに追加）",
+        "モバイルICOCAアプリで「WESTER ID連携」を必ず済ませる ※これを忘れるとポイントが付きません"
+      ],
+      flow: [
+        "モバイルICOCAアプリでJ-WESTカードを登録する",
+        "アプリからチャージする（1回2万円まで、深夜2〜4時は不可）",
+        "改札やお店でICOCAとして使う"
+      ],
+      time: "カード発行後、設定は15分ほど。以降はチャージするだけ"
+    },
+    split: [
+      {
+        pt: "WESTERポイント",
+        rate: 1.5,
+        note: "モバイルICOCAへのチャージ分（ゴールドは3.0%）"
+      }
+    ],
+    starter: "J-WESTカード（一般 年1,100円／ゴールド 11,000円）。ゴールドなら3.0%まで上がる。",
+    pays: [
+      "ICOCA",
+      "交通系"
+    ],
+    total: "1.5%（ゴールドは3.0%）",
+    steps: [
+      "J-WESTカード",
+      "モバイルICOCA",
+      "改札・買い物で利用"
+    ],
+    gains: [
+      "モバイルICOCAへのチャージ：WESTERポイントが3倍（基本ポイント含む）",
+      "J-WESTゴールドならさらに上乗せで3.0%"
+    ],
+    atStore: {
+      rate: "1.5%",
+      method: "モバイルICOCAにJ-WESTカードからチャージして支払い"
+    },
+    note: "関西在住なら最も素直に効くルート。経由が1段だけで手間が少ないのが利点。【重要】SMART ICOCAでのチャージは3倍の対象外で0.5%（ゴールドで1%）にとどまるため、必ずモバイル版（Android版またはApple PayのICOCA）を使うこと。モバイルICOCAアプリ内で「WESTER ID連携」を済ませていないとポイントが付かない点にも注意。なおSMART ICOCAのクイックチャージは2026年10月で終了予定のため、今のうちにモバイル版へ移行しておくのが安全。［確認日: 2026-08-09］",
+    url: "https://wester.jr-odekake.net/j-west/point/",
+    caution: "クレカチャージの上限額がネックになる場合がある。モバイルICOCAは1回2万円まで、深夜2〜4時はチャージ不可。"
+  },
+  {
     name: "クレカ → VポイントPay",
     howto: {
       prep: [
@@ -3378,53 +3606,106 @@ const CHARGE_ROUTES = [
     caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。また、チャージ元にV NEOBANKデビットを使っている場合、2026年11月1日から他社決済サービスへのチャージがポイント対象外になるため、このルートは実質的に使えなくなる。"
   },
   {
-    name: "ファミペイ → POSAカード → モバイルSuica等",
+    name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
     howto: {
       prep: [
-        "ファミペイアプリをインストールする",
-        "ファミペイにチャージできてポイントが付くクレカを用意する ※PayPayカードは2026年6月から対象外",
-        "チャージ先（モバイルSuicaなど）を準備しておく"
+        "エポスカード（できればゴールド）を発行する",
+        "ANA Payアプリをインストールし、ANAマイレージクラブ会員番号で登録する",
+        "楽天Edy機能付きの楽天カード（プラスチックの現物）を用意する ※iPhoneの場合は必須",
+        "楽天ペイアプリをインストールし、楽天IDでログインする"
       ],
       flow: [
-        "「1・5・0のつく日」にファミリーマート店頭へ行く",
-        "アプリで当日の対象POSAカード（バニラVisaギフトカードなど）を確認する",
-        "レジでPOSAカードをファミペイで購入する",
-        "買ったギフトカードの番号を使って、モバイルSuicaなどにチャージする"
+        "ANA Payアプリでエポスカードからチャージする（本人確認済みなら1日10万円・月30万円まで）",
+        "ANA Payの残高を楽天Edyへ移す",
+        "楽天ペイアプリで楽天Edy残高を楽天キャッシュに交換する（月1万円まで）",
+        "お店で楽天ペイの「楽天キャッシュ」を選んで支払う"
       ],
-      time: "店頭に行く必要があるため、他のルートより手間がかかる。まとめ買い向き"
+      time: "初回の準備に1〜2週間（カード発行を含む）。慣れれば毎月の作業は10分程度"
     },
     split: [
       {
-        pt: "ファミペイボーナス",
-        rate: 3,
-        note: "1・5・0のつく日のPOSAカード購入特典"
+        pt: "エポスポイント",
+        rate: 1.5,
+        note: "クレカ→ANA Payチャージ分（年間利用ボーナス込み）"
+      },
+      {
+        pt: "ANAマイル",
+        rate: 0.5,
+        note: "ANA Pay→楽天Edy移行分"
+      },
+      {
+        pt: "楽天ポイント",
+        rate: 1,
+        note: "楽天ペイ決済分"
       }
     ],
+    starter: "エポスゴールド / JQ CARDエポスゴールド（年50万円利用で翌年以降無料）。三井住友・Oliveのゴールドと違い、ANA Payチャージが100万円修行の対象外にならないのが利点。",
     pays: [
-      "ファミペイ",
-      "Suica",
-      "交通系"
+      "楽天ペイ",
+      "ANA Pay",
+      "楽天Edy"
     ],
-    total: "実質 3%以上",
+    total: "合計 約2.5%（月1万円まで）",
     steps: [
       "対象クレカ",
-      "ファミペイ",
-      "POSAカード購入",
-      "Suica等にチャージ"
+      "ANA Pay",
+      "楽天Edy",
+      "楽天キャッシュ",
+      "楽天ペイで支払い"
     ],
     gains: [
-      "1・5・0のつく日にファミペイでPOSAカード（バニラVisaギフトカードなど）を購入",
-      "購入時のボーナス還元で実質3%以上",
-      "買ったギフトカードをモバイルSuicaなどにチャージ"
+      "クレカ→ANA Pay チャージ：最大1.5%（エポスゴールド等、年100万円利用時）",
+      "ANA Pay→楽天Edy：ANAマイル0.5%",
+      "楽天ペイ支払い：楽天ポイント約1%"
     ],
-    starter: "ファミペイへのチャージでポイントが付くカードが必要。PayPayカードからのファミペイチャージは2026年6月1日でポイント対象外になったため、別のカードを用意すること。",
     atStore: {
-      rate: "3.0%",
-      method: "POSAカード経由でチャージしたSuica等で支払い"
+      rate: "2.5%",
+      method: "楽天ペイで支払い（事前にANA Pay→楽天Edy→楽天キャッシュへ移しておく）"
     },
-    note: "ファミリーマート店頭でのPOSAカード購入を挟むのが特徴で、他のルートより手間はかかるが還元率は高い。日付が「1・5・0のつく日」に限られるため、まとめ買いする運用になる。ファミペイの対象カードは年々減っており、条件も変わりやすい。［確認日: 2026-08-09］",
-    url: "https://www.family.co.jp/services/famipay.html",
-    caution: "対象となるPOSAカードの種類やキャンペーン条件は頻繁に変わる。実行前にファミペイアプリ内で当日の対象商品を必ず確認すること。"
+    note: "【回せる金額が小さい】楽天Edy→楽天キャッシュの交換上限が月1万円のため、還元率は高くても実際に得られるのは月250円程度。上限が月5万円のVポイントPayルートの方が実利が大きいことが多いです。現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月1万円まで（以前の10万円から引き下げられたため、このルートで動かせる金額はかなり小さくなっている）。［確認日: 2026-08-09］",
+    url: "https://cash.rakuten.co.jp/",
+    caution: "楽天Edy→楽天キャッシュの交換上限が月1万円になったため、このルートで回せるのは月1万円分まで。少額しか動かせない点を踏まえて手間に見合うか判断を。なおANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外（エポスゴールド・JQ CARDエポスゴールドは対象）。"
+  },
+  {
+    name: "V NEOBANKデビット → au PAY → 請求書払い（税金・公共料金）",
+    pays: [
+      "au PAY",
+      "税金・公共料金"
+    ],
+    total: "1.5%",
+    steps: [
+      "V NEOBANKデビット",
+      "au PAY",
+      "au PAY請求書払い"
+    ],
+    gains: [
+      "V NEOBANK→au PAYチャージ：Vポイント1.5%",
+      "請求書払い自体には還元なし"
+    ],
+    split: [
+      {
+        pt: "Vポイント",
+        rate: 1.5,
+        note: "チャージ分のみ"
+      }
+    ],
+    starter: "V NEOBANKデビット。",
+    howto: {
+      prep: [
+        "V NEOBANKデビットを発行する",
+        "au PAYアプリをインストールする",
+        "支払う請求書（納付書）にバーコードがあるか確認する"
+      ],
+      flow: [
+        "au PAYにV NEOBANKデビットからチャージする（月5万円まで）",
+        "au PAYアプリの「請求書支払い」でバーコードを読み取る",
+        "支払いを確定する"
+      ],
+      time: "初回設定後は1件あたり1分ほど"
+    },
+    note: "通常はポイントがつかない税金・公共料金でも、チャージ段階の1.5%を確保できるのが要点。V NEOBANKデビットで直接払うと税金は対象外（0.3%）になるため、au PAYを挟む意味があります。【注意】請求書払い自体にはPontaポイントが付きません。バーコードのない納付書は対象外。［確認日: 2026-08-09］",
+    url: "https://aupay.wallet.auone.jp/",
+    caution: "au PAYへのチャージ上限は月5万円。2026年11月からV NEOBANKのチャージが対象外になる見込み。"
   },
   {
     name: "Revolut 経由（三井住友カードの代替ルート）",
@@ -3501,225 +3782,115 @@ const CHARGE_ROUTES = [
     note: "JALとANA両方のマイルを同時に貯めたい人向け。かつて主流だった「JAL Pay→ANA Pay」ルートは、JAL Pay側の制度改定で他社Payへのチャージ時のマイル還元率が大きく下がったため、その代替として使われている。［確認日: 2026-08-09］",
     url: null,
     caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。また楽天Edy→楽天キャッシュの交換上限が月1万円のため、回せる金額は小さい。"
-  },
-  {
-    name: "V NEOBANKデビット → au PAY → VポイントPay",
-    pays: [
-      "VポイントPay",
-      "au PAY"
-    ],
-    total: "合計 2.5%",
-    steps: [
-      "V NEOBANKデビット",
-      "au PAY",
-      "VポイントPay",
-      "Visaタッチで支払い"
-    ],
-    gains: [
-      "V NEOBANK→au PAYチャージ：Vポイント1.5%",
-      "au PAY→VポイントPayチャージ：Pontaポイント0.5%",
-      "VポイントPay決済：Vポイント0.5%"
-    ],
-    split: [
-      {
-        pt: "Vポイント",
-        rate: 2,
-        note: "チャージ1.5%＋決済0.5%"
-      },
-      {
-        pt: "Pontaポイント",
-        rate: 0.5,
-        note: "au PAY経由分"
-      }
-    ],
-    atStore: {
-      rate: "2.5%",
-      method: "VポイントPayをVisaタッチ決済で支払い（事前にau PAY経由でチャージ）"
-    },
-    starter: "V NEOBANKデビット（住信SBI・年会費無料・審査なし）。エポスゴールドのような年会費や修行が不要で、口座開設だけで始められるのが利点。",
-    howto: {
-      prep: [
-        "住信SBIネット銀行でV NEOBANK口座を開設し、デビットを発行する",
-        "au PAYアプリをインストールする",
-        "VポイントPayアプリをインストールしてVポイントIDでログインする"
-      ],
-      flow: [
-        "au PAYにV NEOBANKデビットからチャージする（月5万円まで）",
-        "au PAY残高（Apple Pay経由）でVポイントPayにチャージする",
-        "お店でVisaのタッチ決済として支払う"
-      ],
-      time: "口座開設に数日。以降の作業は月10分ほど"
-    },
-    note: "年会費も審査もなしで2.5%に届く、費用対効果の高いルート。VポイントPayになるためiD・Visaタッチとして全国で使え、汎用性も高い。【上限】au PAYへのクレカ/デビットチャージは月5万円まで。【重要】V NEOBANKデビットは2026年11月1日から他社決済サービスへのチャージがポイント対象外になる予定のため、このルートは10月末までの可能性が高い。［確認日: 2026-08-09］",
-    url: "https://www.netbk.co.jp/contents/lp/vneobank/",
-    caution: "2026年11月以降はV NEOBANKからのチャージが還元対象外になる見込み。実行前に最新の条件を確認すること。"
-  },
-  {
-    name: "V NEOBANKデビット → モバイルWAON（イオンでの買い物）",
-    pays: [
-      "WAON",
-      "イオン"
-    ],
-    total: "合計 2.5%",
-    steps: [
-      "V NEOBANKデビット",
-      "モバイルWAON（Apple Pay）",
-      "イオン・ミニストップで支払い"
-    ],
-    gains: [
-      "V NEOBANK→WAONチャージ：Vポイント1.5%",
-      "イオングループ・ミニストップでのWAON決済：1.0%（要WAON会員登録）"
-    ],
-    split: [
-      {
-        pt: "Vポイント",
-        rate: 1.5,
-        note: "チャージ分"
-      },
-      {
-        pt: "WAON POINT",
-        rate: 1,
-        note: "イオン・ミニストップは2倍"
-      }
-    ],
-    atStore: {
-      rate: "2.5%",
-      method: "モバイルWAONで支払い（事前にV NEOBANKデビットからチャージ）"
-    },
-    starter: "V NEOBANKデビット（年会費無料・審査なし）。",
-    howto: {
-      prep: [
-        "V NEOBANKデビットを発行する",
-        "Apple PayにモバイルWAONを追加する",
-        "【必須】WAONの会員登録を済ませる ※未登録だと0.5%に半減します"
-      ],
-      flow: [
-        "モバイルWAONにV NEOBANKデビットからチャージする",
-        "イオン・マックスバリュ・ミニストップで支払う"
-      ],
-      time: "設定20分ほど。イオンをよく使うなら効果が大きい"
-    },
-    note: "イオングループとミニストップはWAONがいつでもポイント2倍のため、通常0.5%が1.0%になる。【必ず会員登録を】WAON会員登録をしていないと0.5%のままで、合計2.0%に下がる。毎月20日・30日の5%OFFとは別枠なので、感謝デーに使えばさらに有利。［確認日: 2026-08-09］",
-    url: "https://www.waon.net/",
-    caution: "WAON会員登録を忘れると還元率が半減する。"
-  },
-  {
-    name: "V NEOBANKデビット → au PAY → 請求書払い（税金・公共料金）",
-    pays: [
-      "au PAY",
-      "税金・公共料金"
-    ],
-    total: "1.5%",
-    steps: [
-      "V NEOBANKデビット",
-      "au PAY",
-      "au PAY請求書払い"
-    ],
-    gains: [
-      "V NEOBANK→au PAYチャージ：Vポイント1.5%",
-      "請求書払い自体には還元なし"
-    ],
-    split: [
-      {
-        pt: "Vポイント",
-        rate: 1.5,
-        note: "チャージ分のみ"
-      }
-    ],
-    starter: "V NEOBANKデビット。",
-    howto: {
-      prep: [
-        "V NEOBANKデビットを発行する",
-        "au PAYアプリをインストールする",
-        "支払う請求書（納付書）にバーコードがあるか確認する"
-      ],
-      flow: [
-        "au PAYにV NEOBANKデビットからチャージする（月5万円まで）",
-        "au PAYアプリの「請求書支払い」でバーコードを読み取る",
-        "支払いを確定する"
-      ],
-      time: "初回設定後は1件あたり1分ほど"
-    },
-    note: "通常はポイントがつかない税金・公共料金でも、チャージ段階の1.5%を確保できるのが要点。V NEOBANKデビットで直接払うと税金は対象外（0.3%など）になるため、au PAYを挟む意味がある。【注意】請求書払い自体にはPontaポイントが付かない。バーコードのない納付書は対象外。［確認日: 2026-08-09］",
-    url: "https://aupay.wallet.auone.jp/",
-    caution: "au PAYへのチャージ上限は月5万円。2026年11月からV NEOBANKのチャージが対象外になる見込み。"
   }
 ];
 
 const UNIVERSAL_PAYMENTS = [
   {
-    name: "PayPay（残高払い）", universal: true, url: "https://paypay.ne.jp/event/paypaystep/",
+    name: "PayPay（残高払い）",
+    universal: true,
+    url: "https://paypay.ne.jp/event/paypaystep/",
     rate: "0.5%（PayPayステップ達成で1.0%）",
     method: "PayPay残高でのコード決済",
     note: "前月に「200円以上の決済を月30回」かつ「支払い合計10万円以上」の両方を満たすと、翌月+0.5%。2026年6月2日以降、PayPayポイントで支払った分はステップ付与の対象外（回数・金額のカウントには引き続き含まれる）。公共料金や金券など一部対象外の支払いあり。［確認日: 2026-08-09／出典: PayPay公式ヘルプ・PayPayステップ公式］"
   },
   {
-    name: "PayPay（PayPayクレジット／PayPayカード）", universal: true, url: "https://www.paypay-card.co.jp/service/benefit/point/",
+    name: "PayPay（PayPayクレジット／PayPayカード）",
+    universal: true,
+    url: "https://www.paypay-card.co.jp/service/benefit/point/",
     rate: "1.0%（ステップ達成で1.5%）",
     method: "PayPayクレジット、またはPayPayカードでの決済",
     note: "残高払いより還元率が高い。2026年6月2日にPayPayカード特典がPayPayステップへ統合されたため、PayPayカードをPayPayアプリに登録していないとポイントが付かない点に注意。【2026年8月末で変更】PayPayカード以外の他社クレカを直接ひも付ける方式は8月末で終了し、以降は「他社カード利用券」を事前購入する方式になる（三井住友カード発行の個人カードは例外的に従来方式のまま。ただしPayPayステップの対象外）。［確認日: 2026-08-09／出典: PayPay公式・報道各社］"
   },
   {
-    name: "PayPayカード ゴールド", universal: true, url: "https://paypay.ne.jp/card-gold/",
+    name: "PayPayカード ゴールド",
+    universal: true,
+    url: "https://paypay.ne.jp/card-gold/",
     rate: "1.0%（年100万円利用で年会費相当を回収）",
     method: "PayPayカード ゴールドでの決済、またはPayPayアプリ連携",
     note: "年会費11,000円。2026年6月2日の改定で「+0.5%上乗せ」は廃止され、基本の付与率は年会費無料のPayPayカードと同じ1.0%になった。代わりに年100万円以上の決済で11,000ポイント（年会費相当）が付与される特典が新設。実質的な価値はソフトバンク・ワイモバイル契約者向けの割引と上乗せに寄っているため、キャリアが違う人はメリットが薄い。ソフトバンクの新プラン（ペイトク2など）に変更すると通信料の付与率が10%→1%に下がる点にも注意。［確認日: 2026-08-09／出典: PayPayカード公式・報道各社］"
   },
   {
-    name: "V NEOBANKデビット（住信SBI）", universal: true, url: "https://www.netbk.co.jp/contents/lp/vneobank/",
+    name: "V NEOBANKデビット（住信SBI）",
+    universal: true,
+    url: "https://www.netbk.co.jp/contents/lp/vneobank/",
     rate: "1.5%（2026/11/1から1.25%）",
     method: "V NEOBANKデビット（Mastercard）での決済。月間合計1,000円以上の利用が条件",
     expires: "2026-10-31",
     note: "年会費無料で常時1.5%。ただし1,000円未満の端数は切り捨てで計算されるため、少額決済が多いと実質還元率は下がる。【2026年11月1日から大幅改定】①還元率が1.25%に引き下げ ②他社決済サービスへのチャージ（VポイントPay・ANA Pay・au PAY・Revolut・交通系IC・コード決済など）が軒並みポイント対象外に ③鉄道・公共料金・税金・病院なども対象外に ④円普通預金の月50pt特典が廃止 ⑤他行からの被振込ポイントが20pt→10ptに半減。チャージルートの起点として使っていた場合、11月以降はその用途では還元されなくなる点に注意。［確認日: 2026-08-09／出典: 公式発表・報道各社］"
   },
   {
-    name: "デビットカード Point＋（住信SBI）", universal: true, url: "https://www.netbk.co.jp/contents/lp/debit/pointplus/",
+    name: "デビットカード Point＋（住信SBI）",
+    universal: true,
+    url: "https://www.netbk.co.jp/contents/lp/debit/pointplus/",
     rate: "1.25〜2.0%（スマプロランクで変動）",
     method: "デビットカード Point＋（Mastercard）での決済",
     note: "年会費無料。基本1.25%に、スマプロランクに応じて最大+0.75%が上乗せされる。ランクは円普通預金＋SBIハイブリッド預金の残高、または残高以外の条件で決まり、判定月末のランクが翌々月から適用される。給与・年金の受け取り設定で1.5%になる。V NEOBANKデビットが2026年11月に改定されるため、その移行先として比較検討する価値がある。［確認日: 2026-08-09／出典: 住信SBIネット銀行公式・比較メディア複数］"
   },
   {
-    name: "楽天カード", universal: true, url: "https://www.rakuten-card.co.jp/",
+    name: "楽天カード",
+    universal: true,
+    url: "https://www.rakuten-card.co.jp/",
     rate: "1.0%",
     method: "楽天カードでのクレジット決済（タッチ決済・差し込みどちらでも）",
     note: "どこで使っても1.0%の安定した還元。楽天ポイントカードが使えない店や、コード決済に対応していないレジでは、これが確実な選択肢になる。楽天ポイントカード提示に対応した店なら、楽天ペイとの併用（二重取り）の方が有利になりやすい。［確認日: 2026-08-09／出典: 楽天カード公式・比較メディア複数］"
   },
   {
-    name: "楽天ペイ（ポイントカード提示との併用）", universal: true, url: "https://pointcard.rakuten.co.jp/",
-    rate: "合計 最大2.5%（提示1.0% ＋ 楽天ペイ1.5%）",
+    name: "楽天ペイ（ポイントカード提示との併用）",
+    universal: true,
+    url: "https://pointcard.rakuten.co.jp/",
+    rate: "合計 最大2.5%（このお店は加盟店です）",
     method: "会計前に楽天ペイアプリ内の楽天ポイントカードを提示し、そのうえで楽天ペイで支払う",
-    note: "楽天ポイントカードと楽天ペイの両方に対応した加盟店であることが前提。プラスチックのポイントカード提示は対象外で、必ずアプリ内のカードを提示する必要がある。楽天ペイ側を1.5%にするには、カウント期間中に楽天ポイントカードを規定回数以上提示してポイントを獲得している必要があり、条件を満たせないと1.0%止まり。この提示回数の条件は改定が続いているため、最新条件は公式で確認を。［確認日: 2026-08-09／出典: 楽天公式・比較メディア複数］"
+    note: "このお店は楽天ポイントカードの加盟店なので、提示と支払いの二重取りができます。会計前に楽天ペイアプリ内の楽天ポイントカードを提示し、そのうえで楽天ペイで支払ってください。【注意】プラスチックのポイントカード提示は対象外で、必ずアプリ内のカードを提示する必要があります。楽天ペイ側を1.5%にするには、カウント期間中に規定回数以上の提示が必要で、条件を満たせないと1.0%止まりです。［確認日: 2026-08-09］"
   },
   {
-    name: "楽天ペイ", universal: true, url: "https://pay.rakuten.co.jp/",
-    rate: "1.0%前後（条件により最大2.5%）",
+    name: "楽天ペイ",
+    universal: true,
+    url: "https://pay.rakuten.co.jp/",
+    rate: "1.0〜1.5%（加盟店では最大2.5%）",
     method: "楽天ペイアプリでのコード決済（チャージ元は楽天カード／楽天キャッシュなど）",
-    note: "2026年3月に制度変更があり、還元率まわりの情報が錯綜している。最大2.5%は「楽天ポイントカード対応店でアプリ内ポイントカードを提示し、楽天ペイ残高で支払う」など複数条件を満たした場合の合計値で、どこでも自動的に出る数字ではない。郵便局やOKストアなど対象外店舗もある。利用前に楽天ペイ公式で現在の条件を確認するのが安全。［確認日: 2026-08-09／出典: 比較メディア複数（公式での再確認を推奨）］"
+    note: "加盟店でポイントカードを提示すれば二重取りで最大2.5%になりますが、提示に対応していない店では1.0〜1.5%です。2026年3月に制度変更があり情報が錯綜しているため、利用前に楽天ペイ公式で現在の条件を確認するのが安全。郵便局やOKストアなど対象外店舗もあります。［確認日: 2026-08-09］"
   },
   {
-    name: "d払い", universal: true, url: "https://service.smt.docomo.ne.jp/keitai_payment/",
+    name: "d払い",
+    universal: true,
+    url: "https://service.smt.docomo.ne.jp/keitai_payment/",
     rate: "0.5%（街のお店）／1.0%（ネット）",
     method: "d払いアプリでのコード決済",
     note: "支払い方法をdカードに設定すると還元率が上がる。ドコモのランク制度により最大4.0%まで上がる仕組みもある。［確認日: 2026-08-09／出典: 比較メディア複数］"
   },
   {
-    name: "auPAY", universal: true, url: "https://aupay.wallet.auone.jp/",
+    name: "auPAY",
+    universal: true,
+    url: "https://aupay.wallet.auone.jp/",
     rate: "0.5%",
     method: "auPAYアプリでのコード決済",
     note: "「auマネ活プラン」加入で最大1.5〜2.0%まで上がる。トモズ・Vドラッグ・ノジマ・オリジン・エディオンなどでは0.5〜1%が上乗せされる。［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］"
   },
   {
-    name: "FamiPay", universal: true, url: "https://www.family.co.jp/famipay.html",
+    name: "FamiPay",
+    universal: true,
+    url: "https://www.family.co.jp/famipay.html",
     rate: "0.5%",
     method: "FamiPayアプリでのコード決済",
     note: "［確認日: 2026-08-09／出典: 決済アプリ別特典タブと同一データ］"
   },
   {
-    name: "AEON Pay", universal: true, url: "https://www.aeon.co.jp/aeonpay/",
+    name: "AEON Pay",
+    universal: true,
+    url: "https://www.aeon.co.jp/aeonpay/",
     rate: "0.5%",
     method: "AEON Payでのスマホ決済",
     note: "イオン系列では毎月20日・30日のお客さま感謝デーで5%OFFの対象決済にもなる。［確認日: 2026-08-09／出典: イオン公式］"
   },
+  {
+    name: "リクルートカード",
+    universal: true,
+    url: "https://recruit-card.jp/",
+    rate: "1.2%",
+    method: "リクルートカードでのクレジット決済（どこでも一律）",
+    note: "特約店を気にせず、どこで使っても1.2%。年会費無料カードでは最高水準の基本還元率で、公共料金や携帯料金の支払いでも1.2%が付きます（多くのカードは公共料金だと還元率が下がります）。貯まるリクルートポイントはPontaポイント・dポイントへ1:1で交換可能。［確認日: 2026-08-09］"
+  }
 ];
 
 // ---------- 期間限定キャンペーンの期限判定 ----------
@@ -3860,8 +4031,7 @@ const DEFAULT_STORES = [
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ファミリーマート",
@@ -3908,8 +4078,7 @@ const DEFAULT_STORES = [
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ミニストップ",
@@ -3929,8 +4098,7 @@ const DEFAULT_STORES = [
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ローソン",
@@ -4020,8 +4188,7 @@ const DEFAULT_STORES = [
         "expires": "2026-08-31",
         "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "かっぱ寿司",
@@ -4068,8 +4235,7 @@ const DEFAULT_STORES = [
       "emoney",
       "transit"
     ],
-    "acceptNote": "使えるもの：クレジットカード（Visa/MC/JCB/AMEX/Diners/Discover・タッチ決済含む）、QRコード決済（PayPay・楽天ペイ・d払い・au PAYなど）、現金。※Suica・ICOCAなどの交通系ICを含む、すべての電子マネーが使えません。テイクアウトのオンライン決済はVisa/MastercardとQR決済のみ。",
-    "rakutenPoint": true
+    "acceptNote": "使えるもの：クレジットカード（Visa/MC/JCB/AMEX/Diners/Discover・タッチ決済含む）、QRコード決済（PayPay・楽天ペイ・d払い・au PAYなど）、現金。※Suica・ICOCAなどの交通系ICを含む、すべての電子マネーが使えません。テイクアウトのオンライン決済はVisa/MastercardとQR決済のみ。"
   },
   {
     "name": "ケンタッキーフライドチキン",
@@ -4109,8 +4275,7 @@ const DEFAULT_STORES = [
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "サイゼリヤ",
@@ -4163,8 +4328,7 @@ const DEFAULT_STORES = [
         "expires": "2026-08-31",
         "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ジョナサン",
@@ -4198,8 +4362,7 @@ const DEFAULT_STORES = [
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "すき家",
@@ -4243,8 +4406,7 @@ const DEFAULT_STORES = [
         "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
     ],
-    "acceptNote": "使えるもの：クレカ（タッチ決済含む）、電子マネー（iD・QUICPay・楽天Edy・交通系IC）、QR決済（PayPay・楽天ペイ・d払い・au PAY・メルペイなど）、ポイントカード（d・V・楽天・Ponta）。※nanaco・WAONは原則使えません（イオンモール内店舗は例外あり）。",
-    "rakutenPoint": true
+    "acceptNote": "使えるもの：クレカ（タッチ決済含む）、電子マネー（iD・QUICPay・楽天Edy・交通系IC）、QR決済（PayPay・楽天ペイ・d払い・au PAY・メルペイなど）、ポイントカード（d・V・楽天・Ponta）。※nanaco・WAONは原則使えません（イオンモール内店舗は例外あり）。"
   },
   {
     "name": "スシロー",
@@ -4278,8 +4440,7 @@ const DEFAULT_STORES = [
         "note": "店頭決済および公式アプリのモバイルオーダーでのクレジット決済が対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。【ブランド注意】一部店舗ではアメリカン・エキスプレスが優遇対象外のため、対象店をもれなくカバーするならVisa/Mastercard/JCBを選ぶこと。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "デニーズ",
@@ -4354,8 +4515,7 @@ const DEFAULT_STORES = [
         "expires": "2026-08-31",
         "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "はま寿司",
@@ -4375,8 +4535,7 @@ const DEFAULT_STORES = [
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ピザハットオンライン",
@@ -4457,8 +4616,7 @@ const DEFAULT_STORES = [
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "モスバーガー",
@@ -4491,8 +4649,7 @@ const DEFAULT_STORES = [
         "note": "ゼッテリアと同系列。店頭決済および公式アプリのモバイルオーダーが対象。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要。複合商業施設内・駅ビル内・ガソリンスタンド併設の店舗は対象外の場合あり。【ブランド注意】一部店舗ではアメリカン・エキスプレスが優遇対象外のため、対象店をもれなくカバーするならVisa/Mastercard/JCBを選ぶこと。［確認日: 2026-08-09／出典: 三菱UFJニコス公式］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "丸亀製麺",
@@ -4505,8 +4662,7 @@ const DEFAULT_STORES = [
         "note": "特約店としての上乗せは確認できていないため、全店共通の決済のなかから選ぶのが基本。［確認日: 2026-08-09］",
         "url": null
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "吉野家",
@@ -4567,8 +4723,7 @@ const DEFAULT_STORES = [
         "note": "松のや・マイカリー食堂も対象。店舗券売機・セルフレジでの決済のほか、松弁ネット・松屋モバイルオーダー・松弁デリバリーも対象（ステーキ屋松・松軒中華食堂・すし松なども含む）。松屋公式オンラインショップと高速SA・PA内店舗は対象外。 7%の内訳は基本0.5%＋スペシャルポイント6.5%。スペシャルポイント対象は月5万円まで。最大20%にするには、支払口座を三菱UFJ銀行に設定してMDCアプリからエントリーが必要（アプリログイン・楽Pay登録・給与受取などの条件を積み上げる方式）。複合商業施設内の店舗は対象外の場合あり。【ブランド注意】一部店舗ではアメリカン・エキスプレスが優遇対象外のため、対象店をもれなくカバーするならVisa/Mastercard/JCBを選ぶこと。［確認日: 2026-08-09／出典: 三菱UFJニコス公式「対象店舗のご利用分が最大20％還元」］",
         "url": "https://www.cr.mufg.jp/apply/card/mucard/pup/index03.html"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "夢庵",
@@ -4588,8 +4743,7 @@ const DEFAULT_STORES = [
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "UCC Cafe Plaza",
@@ -4668,8 +4822,7 @@ const DEFAULT_STORES = [
         "note": "フランチャイズ店が多く、店舗ごとに使える決済が異なる。KOMECA（プリペイド）へのチャージでポイントが付く場合がある。［確認日: 2026-08-09］",
         "url": null
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "サンマルクカフェ",
@@ -4689,8 +4842,7 @@ const DEFAULT_STORES = [
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "スターバックス",
@@ -4785,8 +4937,7 @@ const DEFAULT_STORES = [
         "note": "対象店での還元率は通常の三井住友カード（NL）と同じ。ゴールドの差は、年間100万円利用で10,000ポイント付与＋翌年以降の年会費永年無料、空港ラウンジ、保険といった別枠の特典にある。［確認日: 2026-08-09］",
         "url": "https://www.smbc-card.com/mem/cardinfo/23/cardinfo9001629.jsp"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "上島珈琲店",
@@ -5852,8 +6003,7 @@ const DEFAULT_STORES = [
         "note": "J-POINTパートナーの倍率はJCBオリジナルシリーズ共通。ゴールドの差は、空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）など。USJやU-NEXTなど一部の優待店は「プレミアムカードでおトク」区分でゴールド以上が有利になる。［確認日: 2026-08-09］",
         "url": "https://j-pointpartner.jcb.co.jp/"
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ウェルパーク",
@@ -5972,8 +6122,7 @@ const DEFAULT_STORES = [
         "note": "ウエルシアは毎月20日の「ウエル活」（Vポイント1.5倍で使える）が有名。詳しくは「ウエルシア」の項目を参照。［確認日: 2026-08-09］",
         "url": null
       }
-    ],
-    "rakutenPoint": true
+    ]
   },
   {
     "name": "ハッピー・ドラッグ",
@@ -6131,7 +6280,7 @@ async function refreshAffiliatesFromGithubPages(){
     if(data && typeof data === "object" && !Array.isArray(data)){
       affiliates = data;
       saveAffiliates();
-      renderStores(); renderInvest(); renderRoutes();
+      renderStores(); render(); renderInvest(); renderRoutes();
     }
   } catch(e){
     console.info("affiliates.json の取得をスキップしました", e.message);
@@ -6209,24 +6358,19 @@ function isExcluded(store, cardName){
 function combinedCards(store){
   const own = visibleCards(store);
   let all = own;
-  // ネット通販や交通系IC自体は「店」ではないので、全店共通の決済やチャージルートを
-  // 混ぜると「ECサイトで楽天ペイのポイントカード提示」のような不自然な提案になる。
-  const noUni = store.category === "ネット通販" || store.category === "交通";
-  if(showUniversal && !noUni){
+  if(showUniversal){
     const ownNames = own.map(c => c.name);
-    const extras = UNIVERSAL_PAYMENTS.filter(u => {
-      if(ownNames.some(n => n.includes(u.name.split("（")[0]))) return false;
-      // 「ポイントカード提示との併用」は加盟店でしか成立しないので、
-      // 楽天ポイントカードが使える店だけに出す。
-      if(/ポイントカード提示/.test(u.name) && !store.rakutenPoint) return false;
-      return true;
-    });
+    const extras = UNIVERSAL_PAYMENTS.filter(u =>
+      !ownNames.some(n => n.includes(u.name.split("（")[0]))
+    );
     all = own.concat(extras);
 
     // チャージルートの終着点は店頭で使える決済手段なので、比較対象に加える。
     // 「楽天ペイ単体で1%」と「経由すれば2.5%」を並べて見比べられるようにする。
     const routeEntries = CHARGE_ROUTES
       .filter(r => r.atStore)
+      // onlyAt があるルートは、その店でだけ出す（例：WAONルートはイオン系のみ）
+      .filter(r => !r.onlyAt || r.onlyAt.some(n => store.name.includes(n)))
       .map(r => ({
         name: r.name,
         rate: r.atStore.rate,
@@ -6298,13 +6442,11 @@ function buildStoreCardEl(store, distanceMeters){
 
   const head = document.createElement("div");
   head.className = "store-head";
-  // その店に今日の特典があれば、1位の上に出す（見逃し防止）
-  const todays = todayDeals().filter(x => x.where && (x.where.includes(store.name) || store.name.includes(x.where.split("・")[0])));
   const topYen = sorted[0] ? yenBack(sorted[0]) : null;
   head.innerHTML = `
     ${distBadge}
     <button class="fav-btn${isFav(store.name) ? " on" : ""}" title="よく行く店にする">${isFav(store.name) ? "★" : "☆"}</button>
-    <div class="store-name">${store.name}${store.rakutenPoint ? '<span class="rp-badge">R</span>' : ""}</div>
+    <div class="store-name">${store.name}</div>
     <div class="store-best-wrap">
       <div class="store-best-badge">最大 ${sorted[0] ? sorted[0].rate : "—"}</div>
       ${topYen !== null ? `<div class="store-best-yen">${topYen.toLocaleString()}円分</div>` : ""}
@@ -6318,15 +6460,23 @@ function buildStoreCardEl(store, distanceMeters){
     if(e.target.closest(".fav-btn")){ toggleFav(store.name); return; }
     card.classList.toggle("collapsed");
   });
-  head.querySelector(".edit-store-btn")?.addEventListener("click", ()=> openStoreModal(store));
-  head.querySelector(".delete-store-btn")?.addEventListener("click", ()=> deleteStore(store));
+  head.querySelector(".edit-store-btn").addEventListener("click", ()=> openStoreModal(store));
+  head.querySelector(".delete-store-btn").addEventListener("click", ()=> deleteStore(store));
 
   const options = document.createElement("div");
   options.className = "card-options";
-  if(todays.length){
+
+  // 今日の特典と、開催中のクーポンを1位の上にまとめて出す（見逃し防止）
+  const todays = todayDeals().filter(x => x.where &&
+    (x.where.includes(store.name) || store.name.includes(x.where.split("・")[0])));
+  const live = visibleCards(store).filter(c => c.expires && campaignStatus(c).kind !== "expired");
+  if(todays.length || live.length){
     const t = document.createElement("div");
     t.className = "store-today";
-    t.innerHTML = todays.map(x => `<b>今日は${x.rate}</b>　${x.name}`).join("<br>");
+    t.innerHTML = [
+      ...todays.map(x => `<b>今日は${x.rate}</b>　${x.name}`),
+      ...live.map(x => `<b>クーポン開催中 ${x.rate}</b>　${x.name}`)
+    ].join("<br>");
     options.appendChild(t);
   }
   const LIMIT = 5;
@@ -6353,30 +6503,18 @@ function buildStoreCardEl(store, distanceMeters){
       // 共通決済は店舗データではないので、この場では編集させない
       opt.querySelectorAll(".icon-btn").forEach(b => b.remove());
     } else {
-      if(i === 0){
-      const up = bestUnowned(store);
-      if(up){
-        const y = yenBack(up);
-        const hint = document.createElement("div");
-        hint.className = "upgrade-hint";
-        hint.innerHTML = `持っていないカードなら <b>${up.name}</b> が <b>${displayRate(up)}</b>${y !== null ? `（${y.toLocaleString()}円分）` : ""}`;
-        opt.appendChild(hint);
-      }
-    }
-    opt.querySelector(".edit-card-btn")?.addEventListener("click", ()=> openCardModal(store, c));
-      opt.querySelector(".delete-card-btn")?.addEventListener("click", ()=> deleteCard(store, c));
+      opt.querySelector(".edit-card-btn").addEventListener("click", ()=> openCardModal(store, c));
+      opt.querySelector(".delete-card-btn").addEventListener("click", ()=> deleteCard(store, c));
     }
     options.appendChild(opt);
   });
 
+  // 決済一覧の直後に置く（「使えません」や追加ボタンより前）
   if(sorted.length > LIMIT){
     const more = document.createElement("button");
     more.className = "show-more-btn";
     more.textContent = `ほか${sorted.length - LIMIT}件の決済方法を見る`;
-    more.addEventListener("click", ()=>{
-      card.classList.add("show-all");
-      more.remove();
-    });
+    more.addEventListener("click", ()=>{ card.classList.add("show-all"); more.remove(); });
     options.appendChild(more);
   }
 
@@ -6397,6 +6535,14 @@ function buildStoreCardEl(store, distanceMeters){
     options.appendChild(note);
   }
 
+  const up = bestUnowned(store);
+  if(up){
+    const hint = document.createElement("div");
+    hint.className = "upgrade-hint";
+    const y = yenBack(up);
+    hint.innerHTML = `持っていないカードなら <b>${up.name}</b> が <b>${up.rate}</b>${y !== null ? `（${y.toLocaleString()}円分）` : ""}`;
+    options.appendChild(hint);
+  }
 
   card.appendChild(head);
   card.appendChild(options);
@@ -6570,16 +6716,16 @@ function todayDeals(){
   return DAY_DEALS.filter(x => x.match(d));
 }
 
-function renderTodayDeals(id2){
-  const box = document.getElementById(id2 ? "todayBox2" : "todayBox");
-  const list = document.getElementById(id2 ? "todayList2" : "todayList");
+function renderTodayDeals(){
+  const box = document.getElementById("todayBox");
+  const list = document.getElementById("todayList");
   if(!box || !list) return;
   const deals = todayDeals();
   if(deals.length === 0){ box.style.display = "none"; return; }
   box.style.display = "";
 
   const now = new Date();
-  document.getElementById(id2 ? "todayDate2" : "todayDate").textContent =
+  document.getElementById("todayDate").textContent =
     `${now.getMonth() + 1}月${now.getDate()}日`;
 
   list.innerHTML = "";
@@ -6803,6 +6949,7 @@ document.getElementById("myCardHead")?.addEventListener("click", ()=>{
 function renderStores(){
   renderAnswer();
   renderEC();
+  renderMyCards();
   renderMufg();
   renderCategoryChips();
 
@@ -6868,13 +7015,13 @@ function renderStores(){
   });
 }
 
-document.getElementById("sortToggleBtn")?.addEventListener("click", ()=>{
+document.getElementById("sortToggleBtn").addEventListener("click", ()=>{
   storeState.sortByRate = !storeState.sortByRate;
   document.getElementById("sortToggleBtn").setAttribute("aria-checked", String(storeState.sortByRate));
   renderStores();
 });
 
-document.getElementById("storeSearch")?.addEventListener("input", (e)=>{
+document.getElementById("storeSearch").addEventListener("input", (e)=>{
   storeState.search = e.target.value.trim();
   renderStores();
 });
@@ -6888,7 +7035,7 @@ document.querySelectorAll(".mode-btn").forEach(btn=>{
   });
 });
 
-document.getElementById("showUniversalChk")?.addEventListener("change", (e)=>{
+document.getElementById("showUniversalChk").addEventListener("change", (e)=>{
   showUniversal = e.target.checked;
   renderStores();
 });
@@ -6984,7 +7131,7 @@ function renderEntryChecks(){
       </div>
       ${i.url ? `<a class="src-link" href="${i.url}" target="_blank" rel="noopener noreferrer">開く ↗</a>` : ""}
     `;
-    el.querySelector(".entry-check")?.addEventListener("click", ()=>{
+    el.querySelector(".entry-check").addEventListener("click", ()=>{
       if(entryDone.has(i.key)) entryDone.delete(i.key); else entryDone.add(i.key);
       saveSet(ENTRY_DONE_KEY, entryDone);
       renderEntryChecks();
@@ -7017,8 +7164,8 @@ function renderPicks(){
       <div class="card-option-note">${formatNote(p.note)}</div>
       ${linkRowHtml(p.url, p.name)}
     `;
-    el.querySelector(".edit-pick-btn")?.addEventListener("click", ()=> openPickModal(p));
-    el.querySelector(".delete-pick-btn")?.addEventListener("click", ()=> deletePick(p));
+    el.querySelector(".edit-pick-btn").addEventListener("click", ()=> openPickModal(p));
+    el.querySelector(".delete-pick-btn").addEventListener("click", ()=> deletePick(p));
     list.appendChild(el);
   });
 }
@@ -7133,20 +7280,28 @@ function renderRouteChips(){
 
 // ルートを通したとき、どのポイントに何ポイント入るかを分けて出す。
 // 「合計2.5%」だけだと、ANAマイルと楽天ポイントが混ざっていることが見えないため。
-// ========== 起点カードを選んでルートの還元率を計算 ==========
-// 同じルートでも起点のカードで還元率が変わる。「NLだと付かない」まで分かる形にする。
+// ========== チャージの起点カード ==========
+// 同じルートでも起点のカードで還元率も貯まるポイントも変わる。
+// 「NLだと付かない」まで分かる形にするための一覧。
 const STARTER_CARDS = [
-  { name: "指定なし（基準）", rate: null },
-  { name: "V NEOBANKデビット（住信SBI）", rate: 1.5, note: "年会費・審査なし。ただし2026年11月から他社チャージが対象外になる見込み" },
-  { name: "エポスゴールド", rate: 1.5, note: "年50万円利用で翌年以降無料。ANA Payチャージが対象" },
-  { name: "リクルートカード", rate: 1.2, note: "年会費無料。電子マネーチャージにポイントが付く数少ないカード" },
-  { name: "楽天カード", rate: 1.0, note: "チャージ先によっては対象外のことがある" },
-  { name: "三井住友カード（NL）", rate: 0, note: "ANA Pay・au PAY・JAL Pay等へのチャージはポイント対象外。起点には向きません" },
-  { name: "PayPayカード", rate: 0, note: "ファミペイへのチャージは2026年6月から対象外" },
+  { name: "指定なし（基準）", rate: null, pt: "" },
+  { name: "V NEOBANKデビット（住信SBI）", rate: 1.5, pt: "Vポイント",
+    note: "年会費・審査なしで作れます。ただし2026年11月から他社決済サービスへのチャージが対象外になる見込みです。" },
+  { name: "エポスゴールド", rate: 1.5, pt: "エポスポイント",
+    note: "年50万円利用で翌年以降の年会費が無料になります。ANA Payチャージが対象です。" },
+  { name: "リクルートカード", rate: 1.2, pt: "リクルートポイント",
+    note: "年会費無料。電子マネーチャージにポイントが付く数少ないカードですが、月間の付与上限があります。" },
+  { name: "J-WESTカード ゴールド", rate: 3.0, pt: "WESTERポイント",
+    note: "モバイルICOCAへのチャージ限定で3倍です。他のチャージ先では通常還元にとどまります。" },
+  { name: "楽天カード", rate: 1.0, pt: "楽天ポイント",
+    note: "チャージ先によっては対象外になることがあります。" },
+  { name: "三井住友カード（NL）", rate: 0, pt: "Vポイント",
+    note: "ANA Pay・au PAY・JAL Pay等へのチャージはポイント対象外です。起点には向きません。" },
+  { name: "PayPayカード", rate: 0, pt: "PayPayポイント",
+    note: "ファミペイへのチャージは2026年6月から対象外になりました。" },
 ];
 let starterIdx = 0;
 
-// 起点を差し替えたときの合計還元率。splitの1段目（チャージ分）を置き換えて計算する。
 function routeTotalWithStarter(route){
   if(!route.split || !route.split.length) return null;
   const st = STARTER_CARDS[starterIdx];
@@ -7156,19 +7311,54 @@ function routeTotalWithStarter(route){
 }
 
 function starterPickerHtml(){
+  const st = STARTER_CARDS[starterIdx];
   return `<div class="starter-picker">
     <span class="mypanel-label">チャージの起点にするカード</span>
     <select id="starterSel" class="answer-select">
       ${STARTER_CARDS.map((c,i)=>`<option value="${i}" ${i===starterIdx?"selected":""}>${c.name}</option>`).join("")}
     </select>
-    ${STARTER_CARDS[starterIdx].note ? `<div class="starter-note">${STARTER_CARDS[starterIdx].note}</div>` : ""}
+    ${st.note ? `<div class="starter-note">${st.note}</div>` : ""}
+  </div>`;
+}
+
+// 選んだ起点カードの名前で「クレカ」などの一般名を置き換える。
+// どのルートでも、いま自分が使うカード名で読めるようにするため。
+function withStarterName(text){
+  const st = STARTER_CARDS[starterIdx];
+  if(!st || st.rate === null) return text;
+  const short = st.name.replace(/（.*?）/g, "");
+  return String(text)
+    .replace(/対象クレカ|高還元クレカ|^クレカ$|クレカ(?=から|の|→|で)/g, short)
+    .replace(/Visa\/Mastercardブランドのクレカ/g, short);
+}
+
+// 起点カードで実際にどのポイントが貯まるかを示す
+function starterGainHtml(route){
+  const st = STARTER_CARDS[starterIdx];
+  if(!st || st.rate === null) return "";
+  const amt = Math.max(0, parseInt(document.getElementById("routeAmount")?.value, 10) || 0);
+  const got = amt ? Math.floor(amt * st.rate / 100) : null;
+  if(st.rate === 0){
+    return `<div class="starter-gain is-zero">
+      <span class="starter-gain-label">${st.name}を起点にした場合</span>
+      このルートのチャージ分にはポイントが付きません。${st.note || ""}
+    </div>`;
+  }
+  return `<div class="starter-gain">
+    <span class="starter-gain-label">${st.name}を起点にした場合</span>
+    チャージ段階で <b>${st.pt}が${st.rate}%</b>${got !== null ? `（${amt.toLocaleString()}円で${got.toLocaleString()}pt）` : ""} 貯まります。${st.note || ""}
   </div>`;
 }
 
 function splitHtml(route){
   if(!route.split || !route.split.length) return "";
   const amt = Math.max(0, parseInt(document.getElementById("routeAmount")?.value, 10) || 0);
-  const rows = route.split.map(s => {
+  const st = STARTER_CARDS[starterIdx];
+  const rows = route.split.map((s, si) => {
+    // 1段目（チャージ分）は、選んだ起点カードのポイント種別・還元率で置き換える
+    if(si === 0 && st && st.rate !== null){
+      s = { pt: st.pt, rate: st.rate, note: `${st.name}でのチャージ分` };
+    }
     const got = amt ? Math.floor(amt * s.rate / 100) : null;
     return `<div class="split-row">
       <span class="split-pt">${s.pt}</span>
@@ -7177,8 +7367,7 @@ function splitHtml(route){
       <span class="split-note">${s.note}</span>
     </div>`;
   }).join("");
-  const withStarter = routeTotalWithStarter(route);
-  const total = withStarter ? withStarter.total : route.split.reduce((a,s)=> a + s.rate, 0);
+  const total = route.split.reduce((a,s)=> a + s.rate, 0);
   const totalGot = amt ? Math.floor(amt * total / 100) : null;
   return `<div class="split-box">
     <div class="split-head">貯まるポイントの内訳${amt ? `　<span class="split-amt">${amt.toLocaleString()}円を通した場合</span>` : ""}</div>
@@ -7187,7 +7376,7 @@ function splitHtml(route){
       <span class="split-pt">合計</span>
       <span class="split-rate">${total.toFixed(1)}%</span>
       ${totalGot !== null ? `<span class="split-got">${totalGot.toLocaleString()}</span>` : ""}
-      <span class="split-note">${withStarter ? `${withStarter.starter.name}を起点にした場合${withStarter.starter.rate===0?"（チャージ分にポイントが付きません）":""}` : "※ポイントの種類が異なるため、そのまま合算はできません"}</span>
+      <span class="split-note">※ポイントの種類が異なるため、そのまま合算はできません</span>
     </div>
   </div>`;
 }
@@ -7238,7 +7427,7 @@ function renderRoutes(){
     const el = document.createElement("div");
     el.className = "route-card";
     const chain = r.steps.map((s, i) =>
-      `<span class="route-step${i === r.steps.length - 1 ? " is-end" : ""}">${s}</span>`
+      `<span class="route-step${i === r.steps.length - 1 ? " is-end" : ""}">${withStarterName(s)}</span>`
     ).join(`<span class="route-arrow">→</span>`);
 
     el.innerHTML = `
@@ -7248,6 +7437,7 @@ function renderRoutes(){
       </div>
       <div class="route-chain">${chain}</div>
       <ul class="route-gains">${r.gains.map(g => `<li>${g}</li>`).join("")}</ul>
+      ${starterGainHtml(r)}
       ${splitHtml(r)}
       ${r.starter ? `<div class="route-starter"><span class="route-starter-label">起点カード</span>${r.starter}</div>` : ""}
       ${howtoHtml(r, ri)}
@@ -7301,64 +7491,6 @@ document.getElementById("requestUrlBtn")?.addEventListener("click", ()=>{
 
 applyRequestUrl();
 
-// ========== 自治体キャンペーン（位置情報から近いものを出す） ==========
-// 全国分を小さい文字で並べても読まれないので、いまいる自治体のものだけ出す。
-const LOCAL_CAMPAIGNS = [
-  { area: "千葉県", match: /千葉/, rate: "最大10%（千葉市はさらに+5%）", period: "8/7〜8/30", pay: "PayPay・au PAY・d払いなど" },
-  { area: "岩手県", match: /岩手/, rate: "最大20%", period: "8/17〜9/18", pay: "PayPay・au PAY・d払いなど" },
-  { area: "神奈川県", match: /神奈川/, rate: "中小店舗20%・大手10%", period: "実施中", pay: "対象のスマホ決済" },
-  { area: "岐阜市", match: /岐阜/, rate: "20%", period: "8/1〜", pay: "対象のスマホ決済" },
-  { area: "松原市（大阪）", match: /松原|大阪/, rate: "最大20%", period: "8/1〜", pay: "PayPay" },
-  { area: "秋田県湯沢市", match: /秋田|湯沢/, rate: "10%", period: "9/30まで", pay: "対象のスマホ決済" },
-];
-
-async function findLocalCampaigns(){
-  const btn = document.getElementById("localBtn");
-  const out = document.getElementById("localResult");
-  if(!btn || !out) return;
-  if(!("geolocation" in navigator)){ out.textContent = "この端末は位置情報に対応していません。"; return; }
-  btn.disabled = true;
-  out.textContent = "現在地を確認中…";
-
-  navigator.geolocation.getCurrentPosition(async (pos)=>{
-    const { latitude, longitude } = pos.coords;
-    out.textContent = "地域を調べています…";
-    try{
-      // 逆ジオコーディングで都道府県・市区町村を取得する
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ja&zoom=10`,
-        { headers: { "Accept": "application/json" } });
-      if(!res.ok) throw new Error(`地域の判定に失敗（HTTP ${res.status}）`);
-      const data = await res.json();
-      const a = data.address || {};
-      const place = [a.province, a.state, a.city, a.town, a.county].filter(Boolean).join(" ");
-      const hits = LOCAL_CAMPAIGNS.filter(c => c.match.test(place));
-
-      if(!hits.length){
-        out.innerHTML = `<div class="line-empty">${place || "現在地"}で実施中のキャンペーンは、このアプリには登録されていません。<br>
-          お使いの決済アプリ内の「キャンペーン」欄で、地域限定の還元がないか確認してみてください。</div>`;
-        return;
-      }
-      out.innerHTML = `<div class="local-place">${place}</div>` + hits.map(c => `
-        <div class="line-item">
-          <span class="line-dist">${c.rate}</span>
-          <div class="line-body">
-            <div class="line-name">${c.area}</div>
-            <div class="line-note">${c.period}　${c.pay}</div>
-          </div>
-        </div>`).join("");
-    } catch(err){
-      out.textContent = `検索に失敗しました：${err.message || err}`;
-    } finally { btn.disabled = false; }
-  }, (err)=>{
-    btn.disabled = false;
-    out.textContent = err.code === err.PERMISSION_DENIED
-      ? "位置情報が許可されませんでした。" : "位置情報を取得できませんでした。";
-  }, { enableHighAccuracy: false, timeout: 10000 });
-}
-
-document.getElementById("localBtn")?.addEventListener("click", findLocalCampaigns);
-
 // ========== 近くの駅・路線を調べる ==========
 // クレカ乗車の対応事業者は全国に約190あり、全部並べても自分に関係ないものばかり。
 // 位置情報から周辺の駅を拾い、実際に使う路線だけを見せる。
@@ -7395,8 +7527,7 @@ async function findNearbyLines(){
       const query = `
         [out:json][timeout:15];
         (
-          nwr(around:2000,${latitude},${longitude})["railway"~"^(station|halt)$"];
-          nwr(around:2000,${latitude},${longitude})["public_transport"="station"];
+          node(around:2000,${latitude},${longitude})["railway"="station"];
         );
         out center;`;
       const data = await queryOverpassWithFallback(query);
@@ -7404,11 +7535,9 @@ async function findNearbyLines(){
       const found = new Map();
       (data.elements || []).forEach(el => {
         const t = el.tags || {};
-        const text = [t.name, t["name:ja"], t.operator, t["operator:ja"], t.network, t.line].filter(Boolean).join(" ");
-        const la = el.lat ?? (el.center && el.center.lat);
-        const lo = el.lon ?? (el.center && el.center.lon);
-        if(!text || la == null) return;
-        const dist = haversineMeters(latitude, longitude, la, lo);
+        const text = [t.name, t.operator, t["operator:ja"], t.network].filter(Boolean).join(" ");
+        if(!text || el.lat == null) return;
+        const dist = haversineMeters(latitude, longitude, el.lat, el.lon);
         TOUCH_OPERATORS.forEach(op => {
           if(!op.key.test(text)) return;
           const prev = found.get(op.name);
@@ -7460,13 +7589,12 @@ async function locateForAnswer(){
     const { latitude, longitude } = pos.coords;
     st.textContent = "近くのお店を探しています…";
     try{
-      const query = buildOverpassQuery(latitude, longitude, 700, STORES.map(s => s.name));
+      const query = buildOverpassQuery(latitude, longitude, 400, STORES.map(s => s.name));
       const data = await queryOverpassWithFallback(query);
 
       let best = null;
       (data.elements || []).forEach(el => {
-        const tg = el.tags || {};
-        const tag = [tg.name, tg.brand, tg.operator, tg['brand:ja']].filter(Boolean).join(' ');
+        const tag = (el.tags && (el.tags.name || el.tags.brand)) || "";
         if(!tag) return;
         const sd = findStoreDataByName(tag);
         if(!sd) return;
@@ -7500,12 +7628,12 @@ async function locateForAnswer(){
   }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
-document.getElementById("answerLocBtn")?.addEventListener("click", locateForAnswer);
+document.getElementById("answerLocBtn").addEventListener("click", locateForAnswer);
 
 function openPrivacyModal(){ document.getElementById("privacyBtn").click(); }
 
 // 位置情報の扱いを説明する。事実だけを書き、安心させる言い方はしない。
-document.getElementById("privacyBtn")?.addEventListener("click", ()=>{
+document.getElementById("privacyBtn").addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   document.getElementById("modalBox").innerHTML = `
     <div class="modal-title">位置情報の扱いについて</div>
@@ -7531,7 +7659,7 @@ document.getElementById("privacyBtn")?.addEventListener("click", ()=>{
     </div>
   `;
   overlay.style.display = "flex";
-  document.getElementById("privacyCloseBtn")?.addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("privacyCloseBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
 });
 
 document.getElementById("privacyBtn2")?.addEventListener("click", openPrivacyModal);
@@ -7555,7 +7683,7 @@ function initTheme(){
   applyTheme(saved || (prefersLight ? "light" : "dark"));
 }
 
-document.getElementById("themeBtn")?.addEventListener("click", ()=>{
+document.getElementById("themeBtn").addEventListener("click", ()=>{
   const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
   applyTheme(next);
   try{ localStorage.setItem(THEME_KEY, next); } catch {}
@@ -7570,7 +7698,7 @@ const WALLET_OPTIONS = [
   // 汎用の高還元カード
   "三井住友カード / Olive", "三井住友カード ゴールド（NL）",
   "三菱UFJカード", "JCBオリジナルシリーズ", "JCB CARD W", "JCBゴールド",
-  "dカード", "セゾンゴールドプレミアム", "セゾンパール・アメックス",
+  "dカード", "リクルートカード", "セゾンゴールドプレミアム", "セゾンパール・アメックス",
   // 店舗系カード
   "イオンカード", "セブンカード・プラス", "ビックカメラSuicaカード", "ローソンPontaプラス",
   // 交通系
@@ -7767,7 +7895,7 @@ async function runAiImport(input, statusEl, previewEl, saveBtn){
   }
 }
 
-document.getElementById("aiImportBtn")?.addEventListener("click", ()=>{
+document.getElementById("aiImportBtn").addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   const box = document.getElementById("modalBox");
   box.innerHTML = `
@@ -7791,8 +7919,8 @@ document.getElementById("aiImportBtn")?.addEventListener("click", ()=>{
   const previewEl = document.getElementById("aiPreview");
   const saveBtn = document.getElementById("aiSaveBtn");
 
-  document.getElementById("aiCancelBtn")?.addEventListener("click", ()=>{ overlay.style.display = "none"; });
-  document.getElementById("aiRunBtn")?.addEventListener("click", ()=>{
+  document.getElementById("aiCancelBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("aiRunBtn").addEventListener("click", ()=>{
     const v = document.getElementById("aiInput").value.trim();
     if(!v){ alert("URLまたはキャンペーンの内容を入力してください"); return; }
     statusEl.style.display = "block";
@@ -7801,7 +7929,7 @@ document.getElementById("aiImportBtn")?.addEventListener("click", ()=>{
 });
 
 // --- 紹介リンクの管理画面 ---
-document.getElementById("affiliateBtn")?.addEventListener("click", ()=>{
+document.getElementById("affiliateBtn").addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   const box = document.getElementById("modalBox");
 
@@ -7829,8 +7957,8 @@ document.getElementById("affiliateBtn")?.addEventListener("click", ()=>{
   `;
   overlay.style.display = "flex";
 
-  document.getElementById("affCancelBtn")?.addEventListener("click", ()=>{ overlay.style.display = "none"; });
-  document.getElementById("affSaveBtn")?.addEventListener("click", ()=>{
+  document.getElementById("affCancelBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("affSaveBtn").addEventListener("click", ()=>{
     const next = {};
     box.querySelectorAll(".aff-input").forEach(inp => {
       const v = inp.value.trim();
@@ -7840,6 +7968,7 @@ document.getElementById("affiliateBtn")?.addEventListener("click", ()=>{
     saveAffiliates();
     pushAffiliatesToGithub();
     renderStores();
+    render();
     renderInvest();
     renderRoutes();
     overlay.style.display = "none";
@@ -7860,7 +7989,7 @@ function updateWalletSummary(){
   el.textContent = arr.length <= 2 ? arr.join("、") : `${arr[0]} ほか${arr.length - 1}件`;
 }
 
-document.getElementById("walletBtn")?.addEventListener("click", ()=>{
+document.getElementById("walletBtn").addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   const box = document.getElementById("modalBox");
   const cur = wallet || new Set();
@@ -7885,11 +8014,11 @@ document.getElementById("walletBtn")?.addEventListener("click", ()=>{
       else { picked.add(o); b.classList.add("on"); }
     });
   });
-  document.getElementById("walletClearBtn")?.addEventListener("click", ()=>{
+  document.getElementById("walletClearBtn").addEventListener("click", ()=>{
     picked.clear();
     box.querySelectorAll(".wallet-opt").forEach(b => b.classList.remove("on"));
   });
-  document.getElementById("walletSaveBtn")?.addEventListener("click", ()=>{
+  document.getElementById("walletSaveBtn").addEventListener("click", ()=>{
     wallet = picked.size ? picked : null;
     saveSet(WALLET_KEY, picked);
     updateWalletSummary();
@@ -7898,12 +8027,12 @@ document.getElementById("walletBtn")?.addEventListener("click", ()=>{
   });
 });
 
-document.getElementById("amountInput")?.addEventListener("input", (e)=>{
+document.getElementById("amountInput").addEventListener("input", (e)=>{
   amount = Math.max(0, parseInt(e.target.value, 10) || 0);
   renderStores();
   renderAnswer();
 });
-document.getElementById("answerStore")?.addEventListener("change", renderAnswer);
+document.getElementById("answerStore").addEventListener("change", renderAnswer);
 
 updateWalletSummary();
 
@@ -7941,8 +8070,8 @@ function showOnboarding(){
     overlay.style.display = "none";
   };
 
-  document.getElementById("onboardDoneBtn")?.addEventListener("click", ()=> finish(true));
-  document.getElementById("onboardSkipBtn")?.addEventListener("click", ()=> finish(false));
+  document.getElementById("onboardDoneBtn").addEventListener("click", ()=> finish(true));
+  document.getElementById("onboardSkipBtn").addEventListener("click", ()=> finish(false));
   overlay.style.display = "flex";
 }
 
@@ -7958,12 +8087,11 @@ maybeOnboard();
 
 initTheme();
 
-document.getElementById("showExpiredChk")?.addEventListener("change", renderCampaigns);
-document.getElementById("investAmount")?.addEventListener("input", renderInvest);
+document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
+document.getElementById("investAmount").addEventListener("input", renderInvest);
 document.getElementById("routeAmount")?.addEventListener("input", renderRoutes);
 
 renderTodayDeals();
-renderTodayDeals(true);
 renderEC();
 renderPicks();
 renderEntryChecks();
@@ -8081,14 +8209,11 @@ function buildOverpassQuery(lat, lon, radiusMeters, names){
   // mapped as points, not ways) — cuts server-side work roughly in half
   // compared to also searching ways, which matters a lot on congested
   // public instances.
-  // name/brand/operator のいずれかで拾い、way（建物として登録された店）も対象にする。
-  // ファミリーマートなどは brand や operator にしか名前が入っていないことがある。
   return `
-    [out:json][timeout:15];
+    [out:json][timeout:10];
     (
-      nwr(around:${radiusMeters},${lat},${lon})["name"~"${pattern}",i];
-      nwr(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
-      nwr(around:${radiusMeters},${lat},${lon})["operator"~"${pattern}",i];
+      node(around:${radiusMeters},${lat},${lon})["name"~"${pattern}",i];
+      node(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
     );
     out center;
   `;
@@ -8182,8 +8307,7 @@ async function searchNearby(){
       const matches = [];
       const seen = new Set();
       (data.elements || []).forEach(el => {
-        const t = el.tags || {};
-        const tagName = [t.name, t.brand, t.operator, t['brand:ja'], t['name:ja']].filter(Boolean).join(' ');
+        const tagName = (el.tags && (el.tags.name || el.tags.brand)) || "";
         if(!tagName) return;
         const storeData = findStoreDataByName(tagName);
         if(!storeData) return;
@@ -8234,7 +8358,7 @@ async function searchNearby(){
   }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
-document.getElementById("nearbyBtn")?.addEventListener("click", searchNearby);
+document.getElementById("nearbyBtn").addEventListener("click", searchNearby);
 
 // ========== 編集モード：モーダル＆CRUD ==========
 
@@ -8267,10 +8391,10 @@ function showModal(title, fields, onSave, onDelete){
 
   const close = () => { overlay.style.display = "none"; };
 
-  document.getElementById("modalCancelBtn")?.addEventListener("click", close);
+  document.getElementById("modalCancelBtn").addEventListener("click", close);
   overlay.addEventListener("click", (e)=>{ if(e.target === overlay) close(); }, { once: true });
 
-  document.getElementById("modalSaveBtn")?.addEventListener("click", ()=>{
+  document.getElementById("modalSaveBtn").addEventListener("click", ()=>{
     const values = {};
     fields.forEach(f => {
       const el = box.querySelector(`[data-key="${f.key}"]`);
@@ -8285,7 +8409,7 @@ function showModal(title, fields, onSave, onDelete){
   });
 
   if(onDelete){
-    document.getElementById("modalDeleteBtn")?.addEventListener("click", ()=>{
+    document.getElementById("modalDeleteBtn").addEventListener("click", ()=>{
       if(confirm("本当に削除しますか？")){
         onDelete();
         close();
@@ -8412,7 +8536,7 @@ function deleteCard(store, card){
 
 // ---- 編集モードのON/OFF、追加ボタン、リセット ----
 
-document.getElementById("editModeBtn")?.addEventListener("click", ()=>{
+document.getElementById("editModeBtn").addEventListener("click", ()=>{
   editMode = !editMode;
   document.getElementById("editModeBtn").classList.toggle("on", editMode);
   document.getElementById("panel-stores").classList.toggle("edit-mode", editMode);
@@ -8421,10 +8545,10 @@ document.getElementById("editModeBtn")?.addEventListener("click", ()=>{
   renderPicks();
 });
 
-document.getElementById("addStoreBtn")?.addEventListener("click", ()=> openStoreModal(null));
-document.getElementById("addPickBtn")?.addEventListener("click", ()=> openPickModal(null));
+document.getElementById("addStoreBtn").addEventListener("click", ()=> openStoreModal(null));
+document.getElementById("addPickBtn").addEventListener("click", ()=> openPickModal(null));
 
-document.getElementById("resetStoresBtn")?.addEventListener("click", ()=>{
+document.getElementById("resetStoresBtn").addEventListener("click", ()=>{
   if(!confirm("この端末で編集した内容をすべて削除し、初期データに戻します。よろしいですか？")) return;
   STORES = JSON.parse(JSON.stringify(DEFAULT_STORES));
   persistStores();
@@ -8512,7 +8636,7 @@ function persistStores(){
 
 // ---- GitHub連携の設定モーダル ----
 
-document.getElementById("githubSettingsBtn")?.addEventListener("click", ()=>{
+document.getElementById("githubSettingsBtn").addEventListener("click", ()=>{
   const cfg = loadGithubConfig() || {};
   showModal(
     "GitHub連携の設定",
