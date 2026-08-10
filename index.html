@@ -2858,124 +2858,6 @@ function matchesFilters(d){
   return true;
 }
 
-function render(){
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-  let totalVisible = 0;
-
-  brandOrder.forEach(brand=>{
-    const rows = DATA.filter(d=>d.brand===brand && matchesFilters(d));
-    if(rows.length === 0) return;
-    totalVisible += rows.length;
-
-    const brandRow = DATA.find(d=>d.brand===brand);
-    const catOfBrand = brandRow.cat;
-    const brandUrl = brandRow.url;
-    const section = document.createElement("div");
-    section.className = "brand";
-
-    const head = document.createElement("div");
-    head.className = "brand-head";
-    head.innerHTML = `
-      <div class="brand-badge">${brand.slice(0,1)}</div>
-      <div>
-        <div class="brand-title">${brand}</div>
-        <div class="brand-sub">${catOfBrand === "card" ? "クレジットカード" : "スマホ決済"} ／ ${rows.length}件のキャンペーン</div>
-      </div>
-      ${brandUrl ? `<a class="src-link brand-link" href="${brandUrl}" target="_blank" rel="noopener noreferrer" title="公式ページを開く">公式 ↗</a>` : ""}
-      ${affiliateFor(brand) ? `<a class="src-link brand-link apply-link" href="${affiliateFor(brand)}" target="_blank" rel="sponsored noopener noreferrer">申込 ↗</a>` : ""}
-      <div class="brand-toggle">▾</div>
-    `;
-    head.addEventListener("click", (e)=>{
-      if(e.target.closest(".brand-link")) return; // リンクは開閉させない
-      section.classList.toggle("collapsed");
-    });
-
-    const rowHead = document.createElement("div");
-    rowHead.className = "row-head";
-    rowHead.innerHTML = `<div>キャンペーン</div><div>還元内容</div><div>上限</div><div>対象店・支払い</div><div>エントリー</div>`;
-
-    const rowsWrap = document.createElement("div");
-    rowsWrap.className = "rows";
-    rowsWrap.appendChild(rowHead);
-
-    rows.forEach(d=>{
-      const tag = entryLabel(d.entry);
-      const row = document.createElement("div");
-      row.className = "row";
-      row.innerHTML = `
-        <div class="campaign">${d.campaign}<span class="period">期間：${d.period}</span></div>
-        <div class="rate">${d.rate}</div>
-        <div class="limits"><span class="lbl">1回：</span>${d.perUse}<br><span class="lbl">期間：</span>${d.periodLimit}</div>
-        <div class="target">${d.target}<br><span style="color:#b3a97f">${d.method}</span></div>
-        <div class="entry-cell"><span class="entry-tag ${tag.cls}">${tag.text}</span></div>
-        ${d.note ? `<div class="note">${d.note}</div>` : ""}
-      `;
-      rowsWrap.appendChild(row);
-    });
-
-    section.appendChild(head);
-    section.appendChild(rowsWrap);
-    list.appendChild(section);
-  });
-
-  document.getElementById("countLine").textContent = `全${DATA.length}件中 ${totalVisible}件を表示`;
-
-  if(totalVisible === 0){
-    list.innerHTML = `<div class="empty-state">該当するキャンペーンが見つかりませんでした</div>`;
-  }
-}
-
-function buildTabs(){
-  const tabs = [
-    {key:"all", label:"すべて"},
-    {key:"card", label:"クレジットカード"},
-    {key:"smartphone", label:"スマホ決済"},
-  ];
-  const wrap = document.getElementById("tabs");
-  tabs.forEach(t=>{
-    const btn = document.createElement("button");
-    btn.className = "tab-btn" + (state.cat===t.key ? " active" : "");
-    btn.textContent = t.label;
-    btn.addEventListener("click", ()=>{
-      state.cat = t.key;
-      [...wrap.children].forEach(c=>c.classList.remove("active"));
-      btn.classList.add("active");
-      render();
-    });
-    wrap.appendChild(btn);
-  });
-}
-
-function buildEntryChips(){
-  const chips = [
-    {key:"all", label:"すべて"},
-    {key:"fuyou", label:"エントリー不要のみ"},
-    {key:"hitsuyo", label:"エントリー必要あり"},
-  ];
-  const wrap = document.getElementById("entryChips");
-  chips.forEach(c=>{
-    const el = document.createElement("div");
-    el.className = "chip" + (state.entry===c.key ? " active" : "");
-    el.textContent = c.label;
-    el.addEventListener("click", ()=>{
-      state.entry = c.key;
-      [...wrap.children].forEach(x=>x.classList.remove("active"));
-      el.classList.add("active");
-      render();
-    });
-    wrap.appendChild(el);
-  });
-}
-
-document.getElementById("search").addEventListener("input", (e)=>{
-  state.search = e.target.value.trim();
-  render();
-});
-
-buildTabs();
-buildEntryChips();
-render();
 
 // ========== 店舗から探す（β） ==========
 // 各社の還元プログラムの「事実」（対象カード・還元率・支払い方法の条件）を
@@ -6249,7 +6131,7 @@ async function refreshAffiliatesFromGithubPages(){
     if(data && typeof data === "object" && !Array.isArray(data)){
       affiliates = data;
       saveAffiliates();
-      renderStores(); render(); renderInvest(); renderRoutes();
+      renderStores(); renderInvest(); renderRoutes();
     }
   } catch(e){
     console.info("affiliates.json の取得をスキップしました", e.message);
@@ -6436,8 +6318,8 @@ function buildStoreCardEl(store, distanceMeters){
     if(e.target.closest(".fav-btn")){ toggleFav(store.name); return; }
     card.classList.toggle("collapsed");
   });
-  head.querySelector(".edit-store-btn").addEventListener("click", ()=> openStoreModal(store));
-  head.querySelector(".delete-store-btn").addEventListener("click", ()=> deleteStore(store));
+  head.querySelector(".edit-store-btn")?.addEventListener("click", ()=> openStoreModal(store));
+  head.querySelector(".delete-store-btn")?.addEventListener("click", ()=> deleteStore(store));
 
   const options = document.createElement("div");
   options.className = "card-options";
@@ -6481,8 +6363,8 @@ function buildStoreCardEl(store, distanceMeters){
         opt.appendChild(hint);
       }
     }
-    opt.querySelector(".edit-card-btn").addEventListener("click", ()=> openCardModal(store, c));
-      opt.querySelector(".delete-card-btn").addEventListener("click", ()=> deleteCard(store, c));
+    opt.querySelector(".edit-card-btn")?.addEventListener("click", ()=> openCardModal(store, c));
+      opt.querySelector(".delete-card-btn")?.addEventListener("click", ()=> deleteCard(store, c));
     }
     options.appendChild(opt);
   });
@@ -6986,13 +6868,13 @@ function renderStores(){
   });
 }
 
-document.getElementById("sortToggleBtn").addEventListener("click", ()=>{
+document.getElementById("sortToggleBtn")?.addEventListener("click", ()=>{
   storeState.sortByRate = !storeState.sortByRate;
   document.getElementById("sortToggleBtn").setAttribute("aria-checked", String(storeState.sortByRate));
   renderStores();
 });
 
-document.getElementById("storeSearch").addEventListener("input", (e)=>{
+document.getElementById("storeSearch")?.addEventListener("input", (e)=>{
   storeState.search = e.target.value.trim();
   renderStores();
 });
@@ -7006,7 +6888,7 @@ document.querySelectorAll(".mode-btn").forEach(btn=>{
   });
 });
 
-document.getElementById("showUniversalChk").addEventListener("change", (e)=>{
+document.getElementById("showUniversalChk")?.addEventListener("change", (e)=>{
   showUniversal = e.target.checked;
   renderStores();
 });
@@ -7102,7 +6984,7 @@ function renderEntryChecks(){
       </div>
       ${i.url ? `<a class="src-link" href="${i.url}" target="_blank" rel="noopener noreferrer">開く ↗</a>` : ""}
     `;
-    el.querySelector(".entry-check").addEventListener("click", ()=>{
+    el.querySelector(".entry-check")?.addEventListener("click", ()=>{
       if(entryDone.has(i.key)) entryDone.delete(i.key); else entryDone.add(i.key);
       saveSet(ENTRY_DONE_KEY, entryDone);
       renderEntryChecks();
@@ -7135,8 +7017,8 @@ function renderPicks(){
       <div class="card-option-note">${formatNote(p.note)}</div>
       ${linkRowHtml(p.url, p.name)}
     `;
-    el.querySelector(".edit-pick-btn").addEventListener("click", ()=> openPickModal(p));
-    el.querySelector(".delete-pick-btn").addEventListener("click", ()=> deletePick(p));
+    el.querySelector(".edit-pick-btn")?.addEventListener("click", ()=> openPickModal(p));
+    el.querySelector(".delete-pick-btn")?.addEventListener("click", ()=> deletePick(p));
     list.appendChild(el);
   });
 }
@@ -7338,7 +7220,7 @@ function renderRoutes(){
   const sb = document.getElementById("starterBox");
   if(sb){
     sb.innerHTML = starterPickerHtml();
-    document.getElementById("starterSel").addEventListener("change", (e)=>{
+    document.getElementById("starterSel")?.addEventListener("change", (e)=>{
       starterIdx = parseInt(e.target.value, 10) || 0;
       renderRoutes();
     });
@@ -7618,12 +7500,12 @@ async function locateForAnswer(){
   }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
-document.getElementById("answerLocBtn").addEventListener("click", locateForAnswer);
+document.getElementById("answerLocBtn")?.addEventListener("click", locateForAnswer);
 
 function openPrivacyModal(){ document.getElementById("privacyBtn").click(); }
 
 // 位置情報の扱いを説明する。事実だけを書き、安心させる言い方はしない。
-document.getElementById("privacyBtn").addEventListener("click", ()=>{
+document.getElementById("privacyBtn")?.addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   document.getElementById("modalBox").innerHTML = `
     <div class="modal-title">位置情報の扱いについて</div>
@@ -7649,7 +7531,7 @@ document.getElementById("privacyBtn").addEventListener("click", ()=>{
     </div>
   `;
   overlay.style.display = "flex";
-  document.getElementById("privacyCloseBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("privacyCloseBtn")?.addEventListener("click", ()=>{ overlay.style.display = "none"; });
 });
 
 document.getElementById("privacyBtn2")?.addEventListener("click", openPrivacyModal);
@@ -7673,7 +7555,7 @@ function initTheme(){
   applyTheme(saved || (prefersLight ? "light" : "dark"));
 }
 
-document.getElementById("themeBtn").addEventListener("click", ()=>{
+document.getElementById("themeBtn")?.addEventListener("click", ()=>{
   const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
   applyTheme(next);
   try{ localStorage.setItem(THEME_KEY, next); } catch {}
@@ -7885,7 +7767,7 @@ async function runAiImport(input, statusEl, previewEl, saveBtn){
   }
 }
 
-document.getElementById("aiImportBtn").addEventListener("click", ()=>{
+document.getElementById("aiImportBtn")?.addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   const box = document.getElementById("modalBox");
   box.innerHTML = `
@@ -7909,8 +7791,8 @@ document.getElementById("aiImportBtn").addEventListener("click", ()=>{
   const previewEl = document.getElementById("aiPreview");
   const saveBtn = document.getElementById("aiSaveBtn");
 
-  document.getElementById("aiCancelBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
-  document.getElementById("aiRunBtn").addEventListener("click", ()=>{
+  document.getElementById("aiCancelBtn")?.addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("aiRunBtn")?.addEventListener("click", ()=>{
     const v = document.getElementById("aiInput").value.trim();
     if(!v){ alert("URLまたはキャンペーンの内容を入力してください"); return; }
     statusEl.style.display = "block";
@@ -7919,7 +7801,7 @@ document.getElementById("aiImportBtn").addEventListener("click", ()=>{
 });
 
 // --- 紹介リンクの管理画面 ---
-document.getElementById("affiliateBtn").addEventListener("click", ()=>{
+document.getElementById("affiliateBtn")?.addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   const box = document.getElementById("modalBox");
 
@@ -7947,8 +7829,8 @@ document.getElementById("affiliateBtn").addEventListener("click", ()=>{
   `;
   overlay.style.display = "flex";
 
-  document.getElementById("affCancelBtn").addEventListener("click", ()=>{ overlay.style.display = "none"; });
-  document.getElementById("affSaveBtn").addEventListener("click", ()=>{
+  document.getElementById("affCancelBtn")?.addEventListener("click", ()=>{ overlay.style.display = "none"; });
+  document.getElementById("affSaveBtn")?.addEventListener("click", ()=>{
     const next = {};
     box.querySelectorAll(".aff-input").forEach(inp => {
       const v = inp.value.trim();
@@ -7958,7 +7840,6 @@ document.getElementById("affiliateBtn").addEventListener("click", ()=>{
     saveAffiliates();
     pushAffiliatesToGithub();
     renderStores();
-    render();
     renderInvest();
     renderRoutes();
     overlay.style.display = "none";
@@ -7979,7 +7860,7 @@ function updateWalletSummary(){
   el.textContent = arr.length <= 2 ? arr.join("、") : `${arr[0]} ほか${arr.length - 1}件`;
 }
 
-document.getElementById("walletBtn").addEventListener("click", ()=>{
+document.getElementById("walletBtn")?.addEventListener("click", ()=>{
   const overlay = document.getElementById("modalOverlay");
   const box = document.getElementById("modalBox");
   const cur = wallet || new Set();
@@ -8004,11 +7885,11 @@ document.getElementById("walletBtn").addEventListener("click", ()=>{
       else { picked.add(o); b.classList.add("on"); }
     });
   });
-  document.getElementById("walletClearBtn").addEventListener("click", ()=>{
+  document.getElementById("walletClearBtn")?.addEventListener("click", ()=>{
     picked.clear();
     box.querySelectorAll(".wallet-opt").forEach(b => b.classList.remove("on"));
   });
-  document.getElementById("walletSaveBtn").addEventListener("click", ()=>{
+  document.getElementById("walletSaveBtn")?.addEventListener("click", ()=>{
     wallet = picked.size ? picked : null;
     saveSet(WALLET_KEY, picked);
     updateWalletSummary();
@@ -8017,12 +7898,12 @@ document.getElementById("walletBtn").addEventListener("click", ()=>{
   });
 });
 
-document.getElementById("amountInput").addEventListener("input", (e)=>{
+document.getElementById("amountInput")?.addEventListener("input", (e)=>{
   amount = Math.max(0, parseInt(e.target.value, 10) || 0);
   renderStores();
   renderAnswer();
 });
-document.getElementById("answerStore").addEventListener("change", renderAnswer);
+document.getElementById("answerStore")?.addEventListener("change", renderAnswer);
 
 updateWalletSummary();
 
@@ -8060,8 +7941,8 @@ function showOnboarding(){
     overlay.style.display = "none";
   };
 
-  document.getElementById("onboardDoneBtn").addEventListener("click", ()=> finish(true));
-  document.getElementById("onboardSkipBtn").addEventListener("click", ()=> finish(false));
+  document.getElementById("onboardDoneBtn")?.addEventListener("click", ()=> finish(true));
+  document.getElementById("onboardSkipBtn")?.addEventListener("click", ()=> finish(false));
   overlay.style.display = "flex";
 }
 
@@ -8077,8 +7958,8 @@ maybeOnboard();
 
 initTheme();
 
-document.getElementById("showExpiredChk").addEventListener("change", renderCampaigns);
-document.getElementById("investAmount").addEventListener("input", renderInvest);
+document.getElementById("showExpiredChk")?.addEventListener("change", renderCampaigns);
+document.getElementById("investAmount")?.addEventListener("input", renderInvest);
 document.getElementById("routeAmount")?.addEventListener("input", renderRoutes);
 
 renderTodayDeals();
@@ -8353,7 +8234,7 @@ async function searchNearby(){
   }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
-document.getElementById("nearbyBtn").addEventListener("click", searchNearby);
+document.getElementById("nearbyBtn")?.addEventListener("click", searchNearby);
 
 // ========== 編集モード：モーダル＆CRUD ==========
 
@@ -8386,10 +8267,10 @@ function showModal(title, fields, onSave, onDelete){
 
   const close = () => { overlay.style.display = "none"; };
 
-  document.getElementById("modalCancelBtn").addEventListener("click", close);
+  document.getElementById("modalCancelBtn")?.addEventListener("click", close);
   overlay.addEventListener("click", (e)=>{ if(e.target === overlay) close(); }, { once: true });
 
-  document.getElementById("modalSaveBtn").addEventListener("click", ()=>{
+  document.getElementById("modalSaveBtn")?.addEventListener("click", ()=>{
     const values = {};
     fields.forEach(f => {
       const el = box.querySelector(`[data-key="${f.key}"]`);
@@ -8404,7 +8285,7 @@ function showModal(title, fields, onSave, onDelete){
   });
 
   if(onDelete){
-    document.getElementById("modalDeleteBtn").addEventListener("click", ()=>{
+    document.getElementById("modalDeleteBtn")?.addEventListener("click", ()=>{
       if(confirm("本当に削除しますか？")){
         onDelete();
         close();
@@ -8531,7 +8412,7 @@ function deleteCard(store, card){
 
 // ---- 編集モードのON/OFF、追加ボタン、リセット ----
 
-document.getElementById("editModeBtn").addEventListener("click", ()=>{
+document.getElementById("editModeBtn")?.addEventListener("click", ()=>{
   editMode = !editMode;
   document.getElementById("editModeBtn").classList.toggle("on", editMode);
   document.getElementById("panel-stores").classList.toggle("edit-mode", editMode);
@@ -8540,10 +8421,10 @@ document.getElementById("editModeBtn").addEventListener("click", ()=>{
   renderPicks();
 });
 
-document.getElementById("addStoreBtn").addEventListener("click", ()=> openStoreModal(null));
-document.getElementById("addPickBtn").addEventListener("click", ()=> openPickModal(null));
+document.getElementById("addStoreBtn")?.addEventListener("click", ()=> openStoreModal(null));
+document.getElementById("addPickBtn")?.addEventListener("click", ()=> openPickModal(null));
 
-document.getElementById("resetStoresBtn").addEventListener("click", ()=>{
+document.getElementById("resetStoresBtn")?.addEventListener("click", ()=>{
   if(!confirm("この端末で編集した内容をすべて削除し、初期データに戻します。よろしいですか？")) return;
   STORES = JSON.parse(JSON.stringify(DEFAULT_STORES));
   persistStores();
@@ -8631,7 +8512,7 @@ function persistStores(){
 
 // ---- GitHub連携の設定モーダル ----
 
-document.getElementById("githubSettingsBtn").addEventListener("click", ()=>{
+document.getElementById("githubSettingsBtn")?.addEventListener("click", ()=>{
   const cfg = loadGithubConfig() || {};
   showModal(
     "GitHub連携の設定",
