@@ -7717,7 +7717,8 @@ async function locateForAnswer(){
     const { latitude, longitude, accuracy } = pos.coords;
     // 商業施設の中では衛星が届かず、Wi-Fi/基地局測位になって誤差が数百mに広がる。
     // GPSの誤差(accuracy)に応じて検索半径を広げないと、目の前の店すら拾えない。
-    const radius = Math.min(1500, Math.max(400, Math.round((accuracy || 0) * 2 + 300)));
+    // 屋内は誤差が大きいが、広げすぎると遠くの店を拾うので上限は控えめにする
+    const radius = Math.min(900, Math.max(350, Math.round((accuracy || 0) * 1.5 + 250)));
     st.textContent = `近くのお店を探しています…（測位誤差 約${Math.round(accuracy || 0)}m）`;
     try{
       const query = buildOverpassQuery(latitude, longitude, radius, searchableStoreNames());
@@ -8390,7 +8391,7 @@ function buildOverpassQuery(lat, lon, radiusMeters, names){
       nwr(around:${radiusMeters},${lat},${lon})["amenity"]["brand"~"${pattern}",i];
       nwr(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
     );
-    out center ${radiusMeters > 1000 ? 300 : 150};
+    out center;
   `;
 }
 
