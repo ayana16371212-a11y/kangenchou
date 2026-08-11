@@ -719,6 +719,16 @@
   .err-detail{ margin-top: 6px; font-size: 10.5px; color: var(--dim); }
   .err-detail summary{ cursor: pointer; }
 
+  .answer-filter{
+    width: 100%; padding: 8px 11px; margin-bottom: 6px;
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text);
+    font-family: inherit; font-size: 13px; outline: none;
+  }
+  .answer-filter:focus{ border-color: var(--foil-2); }
+  .answer-head{ flex-wrap: wrap; }
+  .answer-head .answer-select{ flex: 1 1 100%; }
+
   .loc-alts{ margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .loc-alt{
     padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px;
@@ -2144,6 +2154,7 @@
     <div class="answer-box" id="answerBox">
       <div class="answer-head">
         <span class="answer-label">今すぐ払う</span>
+        <input id="answerFilter" class="answer-filter" type="text" placeholder="店名で絞り込む">
         <select id="answerStore" class="answer-select"></select>
         <button id="answerLocBtn" class="answer-loc-btn" title="現在地から店を特定する">📍</button>
       </div>
@@ -6401,7 +6412,12 @@ function setRpay(v){
 
 // 楽天ペイの表示を、設定に応じて書き換える
 function rpayRate(base){
-  if(/楽天ペイ/.test(base.name) && /1\.0〜1\.5%/.test(base.rate)){
+  if(!/楽天ペイ/.test(base.name)) return base.rate;
+  // 提示との併用（加盟店）＝ 提示分1.0% ＋ 楽天ペイ側（1.0 または 1.5）
+  if(/提示との併用/.test(base.name)){
+    return rpayHigh ? "合計 2.5%（提示1.0%＋支払い1.5%）" : "合計 2.0%（提示1.0%＋支払い1.0%）";
+  }
+  if(/1\.0〜1\.5%/.test(base.rate)){
     return rpayHigh ? "1.5%（提示条件を達成済み）" : "1.0%（提示条件が未達成）";
   }
   return base.rate;
@@ -6451,11 +6467,17 @@ function isExcluded(store, cardName){
 function combinedCards(store){
   const own = visibleCards(store);
   let all = own;
-  if(showUniversal){
+  // ネット通販と交通は「お店」ではないため、全店共通の決済やチャージルートを
+  // 混ぜない。改札で楽天ペイは使えないし、ECサイトでポイントカード提示もできない。
+  const noUni = store.category === "ネット通販" || store.category === "交通";
+  if(showUniversal && !noUni){
     const ownNames = own.map(c => c.name);
-    const extras = UNIVERSAL_PAYMENTS.filter(u =>
-      !ownNames.some(n => n.includes(u.name.split("（")[0]))
-    );
+    const extras = UNIVERSAL_PAYMENTS.filter(u => {
+      if(ownNames.some(n => n.includes(u.name.split("（")[0]))) return false;
+      // 提示との併用は楽天ポイントカード加盟店でのみ成立する
+      if(/ポイントカード提示/.test(u.name) && !store.rakutenPoint) return false;
+      return true;
+    });
     all = own.concat(extras);
 
     // チャージルートの終着点は店頭で使える決済手段なので、比較対象に加える。
@@ -6857,13 +6879,21 @@ function renderAnswer(){
   const rest = STORES.filter(s => !isFav(s.name));
   const ordered = [...favList, ...rest];
 
-  if(sel.options.length !== ordered.length + 1 || sel.dataset.stamp !== String(favs.size)){
+  const stamp = `${ordered.length}:${favs.size}:${document.getElementById("answerFilter")?.value || ""}`;
+  if(sel.dataset.stamp !== stamp){
     const cur = sel.value;
-    sel.innerHTML = `<option value="">お店を選ぶ…</option>` +
-      `<option value="__other__">その他のお店（特約なし）</option>` +
-      ordered.map(s => `<option value="${escapeAttr(s.name)}">${
-        (isFav(s.name) ? "★ " : "") + escapeHtml(s.name)}</option>`).join("");
-    sel.dataset.stamp = String(favs.size);
+    sel.dataset.stamp = stamp;
+    const q = (document.getElementById("answerFilter")?.value || "").trim().toLowerCase();
+    const list = q ? ordered.filter(s => s.name.toLowerCase().includes(q)) : ordered;
+    const favList2 = list.filter(s => isFav(s.name));
+    const byCat = {};
+    list.filter(s => !isFav(s.name)).forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
+    const opt = s => `<option value="${escapeAttr(s.name)}">${escapeHtml(s.name)}</option>`;
+    sel.innerHTML = `<option value="">お店を選ぶ…</option>`
+      + `<option value="__other__">その他のお店（特約なし）</option>`
+      + (favList2.length ? `<optgroup label="★ よく行く店">${favList2.map(opt).join("")}</optgroup>` : "")
+      + CATEGORY_LIST.filter(c => byCat[c])
+          .map(c => `<optgroup label="${c}">${byCat[c].map(opt).join("")}</optgroup>`).join("");
     if(cur) sel.value = cur;
   }
 
