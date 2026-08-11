@@ -7604,6 +7604,17 @@ function howtoHtml(route, idx){
   </div>`;
 }
 
+// ルート見出しの合計表示。起点カードを選んでいれば、そのカードでの実数を出す。
+// 「約2.7%（カードによる）」ではなく「2.5%（楽天カード起点）」と具体的に示す。
+function routeTotalLabel(route){
+  const w = routeWithStarter(route);
+  if(w.total != null && w.starter){
+    const short = w.starter.name.replace(/（.*?）/g, "");
+    return `${w.total.toFixed(1)}%（${short}起点）`;
+  }
+  return route.total;
+}
+
 function renderRoutes(){
   renderRouteChips();
   const sb = document.getElementById("starterBox");
@@ -7647,7 +7658,7 @@ function renderRoutes(){
     el.innerHTML = `
       <div class="route-top">
         <span class="route-name">${r.name}</span>
-        <span class="route-total">${r.total}</span>
+        <span class="route-total">${routeTotalLabel(r)}</span>
       </div>
       <div class="route-chain">${chain}</div>
       <ul class="route-gains">${r.gains.map(g => `<li>${g}</li>`).join("")}</ul>
