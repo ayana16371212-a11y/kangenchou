@@ -710,6 +710,20 @@
   .rpay-toggle input{ margin-top: 2px; accent-color: var(--foil-2); flex-shrink: 0; }
   .mypanel{ flex-wrap: wrap; }
 
+  .route-hidden-note{
+    padding: 10px 13px; margin-bottom: 12px;
+    border: 1px dashed var(--line); border-radius: var(--radius-sm);
+    font-size: 11.5px; line-height: 1.6; color: var(--dim);
+  }
+
+  .loc-alts{ margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .loc-alt{
+    padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--bg); color: var(--muted);
+    font-family: inherit; font-size: 11px; cursor: pointer;
+  }
+  .loc-alt:hover{ border-color: var(--foil-2); color: var(--foil-2); }
+
   .cannot-use{
     padding: 10px 16px;
     border-top: 1px dashed var(--line);
@@ -3022,16 +3036,16 @@ const CATEGORY_LIST = [
 // localStorage → この初期値、の順で読み込む。
 const DEFAULT_PICKS = [
   {
-    "name": "スマホのタッチ決済で乗車 最大8%還元（常設）",
-    "rate": "最大8%",
-    "period": "常設（2026/4/13〜）",
+    "name": "クレカのタッチ決済で乗車 最大10.5%（常設）",
+    "rate": "JCB 10.5%／三井住友 8%",
+    "period": "常設（JCBは2027/5/15まで）",
     "how": [
-      "Apple Pay または Google Pay に三井住友カード / Olive を登録する",
-      "改札の専用リーダーに「スマホ」をかざして乗車する（カード現物は対象外）",
-      "対象は全国の鉄道に加え、主要な路線バス・高速バスも含む"
+      "【JCB（最大10.5%）】J-POINTパートナーで事前にポイントアップ登録する",
+      "JCBカード本体、またはJCBを設定したスマホを改札にかざす（カード現物でも対象）",
+      "【三井住友（最大8%）】Apple Pay / Google Payに登録し、必ずスマホをかざす（カード現物は対象外）"
     ],
-    "note": "期間限定ではなく常設の特典。通勤・通学で毎月交通費がかかる人ほど効果が大きい。【最も間違えやすい点】カード現物でのタッチ決済は対象外で、必ずスマホをかざす必要がある。関西ではOsaka Metro全駅、近鉄、阪急、阪神、南海、神戸市営地下鉄などが対応済み。［確認日: 2026-08-09／出典: 三井住友カード公式・報道各社］",
-    "url": "https://www.smbc-card.com/"
+    "note": "還元率はJCBの方が高く、JCB CARD W / W plus L / Biz ONE なら10.5%、その他のJCBオリジナルシリーズで10%。全国約190事業者で、電車・バス・フェリー・ロープウェイまで対象です。三井住友カードは最大8%ですが、対象がスマホのタッチ決済に限られます。【両者共通】JRは対象外なので、JR区間はICOCA・Suicaを使う方がおトクです。［確認日: 2026-08-09］",
+    "url": "https://j-pointpartner.jcb.co.jp/"
   },
   {
     "name": "VポイントPay ポイント優先払いで10%還元",
@@ -3073,20 +3087,6 @@ const DEFAULT_PICKS = [
     "url": "https://www.vpoint.net/scm1"
   },
   {
-    "name": "【要対応】PayPay 他社クレカの直接利用が8月末で終了",
-    "rate": "放置すると使えなくなる",
-    "period": "2026年8月末まで",
-    "expires": "2026-08-31",
-    "how": [
-      "PayPayアプリを最新版に更新する",
-      "登録しているカードの発行会社を確認する（三井住友カード発行なら対応不要）",
-      "それ以外のカードは、アプリで「他社カード利用券」を購入する方式に切り替える",
-      "カード登録と利用券購入には3Dセキュア認証が必要なので、事前に設定を済ませておく"
-    ],
-    "note": "2018年から続いた「他社カードを登録してそのまま払う」方式が8月末で終了します。以降も他社カードを使うには、事前に利用券（1万円単位、最大25万円）を購入する必要があります。購入・利用に追加料金はかかりません。対応ブランドは引き続きVisa／Mastercardのみ。【例外】三井住友カード発行の個人向けカード（ANAカード、Amazon Mastercardなどの提携カード含む）は、連携施策により従来方式のまま使えます。ただしPayPayステップの対象外になる点は変わりません。［確認日: 2026-08-09／出典: PayPay公式・報道各社］",
-    "url": "https://paypay.ne.jp/notice/20260701/c-card_voucher/"
-  },
-  {
     "name": "自治体キャンペーン（地域限定の高還元）",
     "rate": "最大10〜30%還元",
     "period": "地域ごとに異なる",
@@ -3111,17 +3111,6 @@ const DEFAULT_PICKS = [
     ],
     "note": "買い物をしなくても、持っているポイントを交換するだけで増えるのが特徴。ポイントサイトを使っている人には交換の絶好機。【注意】元の交換レートが100%でないポイントは目減りするため要確認（例：永久不滅ポイントはdポイントへ90%＝1P→4.5Pなので直接交換は不利。他社ポイントを経由すればほぼ100%で交換できる）。付与されるのは期間限定ポイントなので、使い道を決めてから交換すること。なお2026年夏は例年より増量レートが低めという評価もある。［確認日: 2026-08-09／出典: dポイント公式・比較メディア複数］",
     "url": "https://dpoint.docomo.ne.jp/campaign/index.html"
-  },
-  {
-    "name": "住信SBIネット銀行がドコモ系へ移行 — dカード引き落としで最大4.5%",
-    "rate": "dカード還元が最大4.5%に",
-    "period": "2026年8月20日 連携開始",
-    "how": [
-      "dカードの引き落とし口座を住信SBIネット銀行に設定する",
-      "連携開始（8/20）以降、dカードの還元率が上乗せされる"
-    ],
-    "note": "住信SBIネット銀行が「どこもSMTBネット銀行」へ移行することに伴う新特典。dカード プラチナで最大4.5%、ゴールドで最大3.5%、一般で最大2.75%まで上がる。【あわせて注意】同じ住信SBIのV NEOBANKデビットは2026年11月1日から還元率1.25%へ引き下げ、かつ他社決済サービスへのチャージがポイント対象外になる。住信SBIを軸にしている人は、この2つの変更をセットで確認しておくこと。［確認日: 2026-08-09／出典: 報道各社］",
-    "url": "https://www.netbk.co.jp/"
   }
 ];
 
@@ -3384,7 +3373,10 @@ const CHARGE_ROUTES = [
     },
     note: "年会費も審査もなしで2.5%に届き、しかも月5万円まで回せるのが強み。楽天ペイルート（月1万円）より実際に得られる額が大きいため、まずはこちらを検討する価値があります。VポイントPayはVisaタッチとして全国で使えるので汎用性も高い。【重要】V NEOBANKデビットは2026年11月1日から他社決済サービスへのチャージがポイント対象外になる予定のため、このルートは10月末までの可能性が高い。［確認日: 2026-08-09］",
     url: "https://www.netbk.co.jp/contents/lp/vneobank/",
-    caution: "2026年11月以降はV NEOBANKからのチャージが還元対象外になる見込み。実行前に最新の条件を確認すること。"
+    caution: "2026年11月以降はV NEOBANKからのチャージが還元対象外になる見込み。実行前に最新の条件を確認すること。",
+    starters: {
+      "V NEOBANKデビット（住信SBI）": 1.5
+    }
   },
   {
     name: "V NEOBANKデビット → モバイルWAON（イオンでの買い物）",
@@ -3439,6 +3431,9 @@ const CHARGE_ROUTES = [
     atStore: {
       rate: "2.5%",
       method: "モバイルWAONで支払い（事前にV NEOBANKデビットからチャージ・要WAON会員登録）"
+    },
+    starters: {
+      "V NEOBANKデビット（住信SBI）": 1.5
     }
   },
   {
@@ -3459,8 +3454,13 @@ const CHARGE_ROUTES = [
     },
     split: [
       {
+        pt: "チャージ元カードのポイント",
+        rate: 1.2,
+        note: "ファミペイへのチャージ分（カードによる）"
+      },
+      {
         pt: "ファミペイボーナス",
-        rate: 3,
+        rate: 1.5,
         note: "1・5・0のつく日のPOSAカード購入特典"
       }
     ],
@@ -3469,7 +3469,7 @@ const CHARGE_ROUTES = [
       "Suica",
       "交通系"
     ],
-    total: "実質 3%以上",
+    total: "合計 約2.7%（カードによる）",
     steps: [
       "対象クレカ",
       "ファミペイ",
@@ -3488,7 +3488,13 @@ const CHARGE_ROUTES = [
     },
     note: "ファミリーマート店頭でのPOSAカード購入を挟むのが特徴で、他のルートより手間はかかるが還元率は高い。日付が「1・5・0のつく日」に限られるため、まとめ買いする運用になる。ファミペイの対象カードは年々減っており、条件も変わりやすい。［確認日: 2026-08-09］",
     url: "https://www.family.co.jp/services/famipay.html",
-    caution: "対象となるPOSAカードの種類やキャンペーン条件は頻繁に変わる。実行前にファミペイアプリ内で当日の対象商品を必ず確認すること。"
+    caution: "対象となるPOSAカードの種類やキャンペーン条件は頻繁に変わる。実行前にファミペイアプリ内で当日の対象商品を必ず確認すること。",
+    starters: {
+      "V NEOBANKデビット（住信SBI）": 1.5,
+      "リクルートカード": 1.2,
+      "楽天カード": 1,
+      "PayPayカード": 0
+    }
   },
   {
     name: "クレカ → ANA Pay → モバイルSuica",
@@ -3541,7 +3547,14 @@ const CHARGE_ROUTES = [
     },
     note: "SuicaはICOCA・SUGOCA・TOICAなど全国の交通系ICと相互利用でき、関西でもそのまま使える。貯まるのがANAマイルなので、マイルの使い道がある人ほど価値が上がる（1マイル2円以上で使えることも）。ANAダイナース（年会費33,000円）なら直接チャージで1.6%相当のANAマイル。［確認日: 2026-08-09］",
     url: null,
-    caution: "Suicaへのチャージは月5万円までの制限がある。また三井住友カードからJAL Pay・au PAYへのチャージは2026年3月以降ポイント対象外になっており、以前の定番ルートは使えない。"
+    caution: "Suicaへのチャージは月5万円までの制限がある。また三井住友カードからJAL Pay・au PAYへのチャージは2026年3月以降ポイント対象外になっており、以前の定番ルートは使えない。",
+    starters: {
+      "リクルートカード": 1.2,
+      "エポスゴールド": 1.5,
+      "V NEOBANKデビット（住信SBI）": 1.5,
+      "楽天カード": 1,
+      "三井住友カード（NL）": 0
+    }
   },
   {
     name: "J-WESTカード → モバイルICOCA",
@@ -3586,7 +3599,10 @@ const CHARGE_ROUTES = [
     },
     note: "経由が1段だけで手間が少ないのが利点。WESTERポイントは全国のJR西日本系サービスやポイント交換で使えます。【重要】SMART ICOCAでのチャージは3倍の対象外で0.5%（ゴールドで1%）にとどまるため、必ずモバイル版（Android版またはApple PayのICOCA）を使うこと。モバイルICOCAアプリ内で「WESTER ID連携」を済ませていないとポイントが付かない点にも注意。なおSMART ICOCAのクイックチャージは2026年10月で終了予定のため、今のうちにモバイル版へ移行しておくのが安全。［確認日: 2026-08-09］",
     url: "https://wester.jr-odekake.net/j-west/point/",
-    caution: "クレカチャージの上限額がネックになる場合がある。モバイルICOCAは1回2万円まで、深夜2〜4時はチャージ不可。"
+    caution: "クレカチャージの上限額がネックになる場合がある。モバイルICOCAは1回2万円まで、深夜2〜4時はチャージ不可。",
+    starters: {
+      "J-WESTカード ゴールド": 3
+    }
   },
   {
     name: "クレカ → VポイントPay",
@@ -3634,7 +3650,14 @@ const CHARGE_ROUTES = [
     },
     note: "2025年11月のアップデートで、Visa/Mastercardブランドかつ3Dセキュア対応のカードなら種類を問わず手数料無料でチャージできるようになった。一方で、三井住友カード発行カードからのチャージ特典0.25%は同時に廃止されている。チャージ上限は本人確認またはOlive連携で月100万円。［確認日: 2026-08-09］",
     url: "https://www.smbc-card.com/nyukai/magazine/tips/Vpoint-method.jsp",
-    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。また、チャージ元にV NEOBANKデビットを使っている場合、2026年11月1日から他社決済サービスへのチャージがポイント対象外になるため、このルートは実質的に使えなくなる。"
+    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。また、チャージ元にV NEOBANKデビットを使っている場合、2026年11月1日から他社決済サービスへのチャージがポイント対象外になるため、このルートは実質的に使えなくなる。",
+    starters: {
+      "リクルートカード": 1.2,
+      "V NEOBANKデビット（住信SBI）": 1.5,
+      "エポスゴールド": 1.5,
+      "楽天カード": 1,
+      "三井住友カード（NL）": 0
+    }
   },
   {
     name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
@@ -3693,9 +3716,16 @@ const CHARGE_ROUTES = [
       rate: "2.5%",
       method: "楽天ペイで支払い（事前にANA Pay→楽天Edy→楽天キャッシュへ移しておく）"
     },
-    note: "【回せる金額が小さい】楽天Edy→楽天キャッシュの交換上限が月1万円のため、還元率は高くても実際に得られるのは月250円程度。上限が月5万円のVポイントPayルートの方が実利が大きいことが多いです。現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月1万円まで（以前の10万円から引き下げられたため、このルートで動かせる金額はかなり小さくなっている）。［確認日: 2026-08-09］",
+    note: "【回せる金額に上限があります】楽天Edy→楽天キャッシュの交換上限は月1万円です。還元率自体は他のルートと同水準ですが、月に動かせる金額が小さいため、まとまった額を回したい場合は上限が月5万円のルートと併用するとよいでしょう。現在もっとも還元率が高いとされる定番ルート。2026年2月からiPhoneの楽天ペイアプリでもEdy残高を楽天キャッシュに移せるようになり、Androidだけの手段ではなくなった（楽天Edyカードが必要）。ANA Payのチャージ上限は本人確認済みで1日10万円・月30万円。楽天Edy→楽天キャッシュの交換は月1万円まで（以前の10万円から引き下げられたため、このルートで動かせる金額はかなり小さくなっている）。［確認日: 2026-08-09］",
     url: "https://cash.rakuten.co.jp/",
-    caution: "楽天Edy→楽天キャッシュの交換上限が月1万円になったため、このルートで回せるのは月1万円分まで。少額しか動かせない点を踏まえて手間に見合うか判断を。なおANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外（エポスゴールド・JQ CARDエポスゴールドは対象）。"
+    caution: "楽天Edy→楽天キャッシュの交換上限が月1万円になったため、このルートで回せるのは月1万円分まで。少額しか動かせない点を踏まえて手間に見合うか判断を。なおANA Payは三井住友カード・Oliveゴールドの100万円修行の対象外（エポスゴールド・JQ CARDエポスゴールドは対象）。",
+    starters: {
+      "エポスゴールド": 1.5,
+      "V NEOBANKデビット（住信SBI）": 1.5,
+      "リクルートカード": 1.2,
+      "楽天カード": 1,
+      "三井住友カード（NL）": 0
+    }
   },
   {
     name: "V NEOBANKデビット → au PAY → 請求書払い（税金・公共料金）",
@@ -3736,7 +3766,10 @@ const CHARGE_ROUTES = [
     },
     note: "通常はポイントがつかない税金・公共料金でも、チャージ段階の1.5%を確保できるのが要点。V NEOBANKデビットで直接払うと税金は対象外（0.3%）になるため、au PAYを挟む意味があります。【注意】請求書払い自体にはPontaポイントが付きません。バーコードのない納付書は対象外。［確認日: 2026-08-09］",
     url: "https://aupay.wallet.auone.jp/",
-    caution: "au PAYへのチャージ上限は月5万円。2026年11月からV NEOBANKのチャージが対象外になる見込み。"
+    caution: "au PAYへのチャージ上限は月5万円。2026年11月からV NEOBANKのチャージが対象外になる見込み。",
+    starters: {
+      "V NEOBANKデビット（住信SBI）": 1.5
+    }
   },
   {
     name: "Revolut 経由（三井住友カードの代替ルート）",
@@ -3755,7 +3788,11 @@ const CHARGE_ROUTES = [
     ],
     note: "2026年3月1日から、JAL Pay・au PAY・Kyash・バンドルカードへのチャージが三井住友カードの年間利用金額の集計対象外になった。その結果、100万円修行を進めながら経由できる手段としてはRevolutがほぼ唯一の選択肢になっている。【手数料に注意】Mastercardブランドのクレカ、またはVisaブランドのデビットなら手数料無料だが、Visaブランドのクレジットカードとブランド問わずビジネスカードは1.7%の手数料が発生するため、還元率を上回って損になる場合がある。［確認日: 2026-08-09］",
     url: null,
-    caution: "Visaブランドの三井住友カードはチャージ不可・還元対象外の経路が多い。"
+    caution: "Visaブランドの三井住友カードはチャージ不可・還元対象外の経路が多い。",
+    starters: {
+      "三井住友カード（NL）": 0.5,
+      "リクルートカード": 1.2
+    }
   },
   {
     name: "JALカードSuica → ANA Pay（二刀流）",
@@ -3812,7 +3849,8 @@ const CHARGE_ROUTES = [
     },
     note: "JALとANA両方のマイルを同時に貯めたい人向け。かつて主流だった「JAL Pay→ANA Pay」ルートは、JAL Pay側の制度改定で他社Payへのチャージ時のマイル還元率が大きく下がったため、その代替として使われている。［確認日: 2026-08-09］",
     url: null,
-    caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。また楽天Edy→楽天キャッシュの交換上限が月1万円のため、回せる金額は小さい。"
+    caution: "マイル重視の構成。現金換算での効率は他ルートに劣る場合がある。また楽天Edy→楽天キャッシュの交換上限が月1万円のため、回せる金額は小さい。",
+    starters: {}
   }
 ];
 
@@ -6423,15 +6461,21 @@ function combinedCards(store){
       .filter(r => r.atStore)
       // onlyAt があるルートは、その店でだけ出す（例：WAONルートはイオン系のみ）
       .filter(r => !r.onlyAt || r.onlyAt.some(n => store.name.includes(n)))
-      .map(r => ({
+      // 起点カードを選んでいるなら、そのカードで組めるルートだけ出す
+      .filter(r => routeWithStarter(r).usable)
+      .map(r => {
+        // 起点カードでの実際の還元率に置き換える
+        const w = routeWithStarter(r);
+        return {
         name: r.name,
-        rate: r.atStore.rate,
+        rate: w.total != null ? `${w.total.toFixed(1)}%` : r.atStore.rate,
         method: r.atStore.method,
         note: r.note,
         url: r.url,
         universal: true,
         isRoute: true
-      }));
+      };
+      });
     all = all.concat(routeEntries);
   }
   // その店で使えない決済は除外する（使えないものを勧めない）
@@ -7353,12 +7397,24 @@ const STARTER_CARDS = [
 ];
 let starterIdx = 0;
 
-function routeTotalWithStarter(route){
-  if(!route.split || !route.split.length) return null;
+// 選んだ起点カードで、このルートが実行できるか／いくらになるかを返す。
+// starters に載っていないカードでは、そもそもそのルートを組めない。
+function routeWithStarter(route){
   const st = STARTER_CARDS[starterIdx];
-  if(!st || st.rate === null) return null;
-  const rest = route.split.slice(1).reduce((a,s)=> a + s.rate, 0);
-  return { total: st.rate + rest, starter: st };
+  if(!st || st.rate === null) return { usable: true, base: null };   // 指定なし＝全部表示
+  if(!route.starters) return { usable: false };
+  const rate = route.starters[st.name];
+  if(rate === undefined) return { usable: false };                    // このカードでは組めない
+  const rest = (route.split || []).slice(1).reduce((a,s)=> a + s.rate, 0);
+  return { usable: true, base: rate, total: rate + rest, starter: st };
+}
+
+// 並べ替え用。起点を選んでいるときは、その起点での合計で比較する。
+function routeSortValue(route){
+  const w = routeWithStarter(route);
+  if(w.total != null) return w.total;
+  const m = String(route.total || "").match(/(\d+(?:\.\d+)?)/);
+  return m ? parseFloat(m[1]) : 0;
 }
 
 function starterPickerHtml(){
@@ -7385,30 +7441,30 @@ function withStarterName(text){
 
 // 起点カードで実際にどのポイントが貯まるかを示す
 function starterGainHtml(route){
-  const st = STARTER_CARDS[starterIdx];
-  if(!st || st.rate === null) return "";
+  const w = routeWithStarter(route);
+  if(!w.starter) return "";
   const amt = Math.max(0, parseInt(document.getElementById("routeAmount")?.value, 10) || 0);
-  const got = amt ? Math.floor(amt * st.rate / 100) : null;
-  if(st.rate === 0){
+  const got = amt ? Math.floor(amt * w.base / 100) : null;
+  if(w.base === 0){
     return `<div class="starter-gain is-zero">
-      <span class="starter-gain-label">${st.name}を起点にした場合</span>
-      このルートのチャージ分にはポイントが付きません。${st.note || ""}
+      <span class="starter-gain-label">${w.starter.name}を起点にした場合</span>
+      このルートのチャージ分にはポイントが付きません。${w.starter.note || ""}
     </div>`;
   }
   return `<div class="starter-gain">
-    <span class="starter-gain-label">${st.name}を起点にした場合</span>
-    チャージ段階で <b>${st.pt}が${st.rate}%</b>${got !== null ? `（${amt.toLocaleString()}円で${got.toLocaleString()}pt）` : ""} 貯まります。${st.note || ""}
+    <span class="starter-gain-label">${w.starter.name}を起点にした場合</span>
+    チャージ段階で <b>${w.starter.pt}が${w.base}%</b>${got !== null ? `（${amt.toLocaleString()}円で${got.toLocaleString()}pt）` : ""} 貯まります。
   </div>`;
 }
 
 function splitHtml(route){
   if(!route.split || !route.split.length) return "";
   const amt = Math.max(0, parseInt(document.getElementById("routeAmount")?.value, 10) || 0);
-  const st = STARTER_CARDS[starterIdx];
+  const w = routeWithStarter(route);
+  // 起点カードを選んでいれば、1段目（チャージ分）をそのカードの率とポイントに差し替える
   const rows = route.split.map((s, si) => {
-    // 1段目（チャージ分）は、選んだ起点カードのポイント種別・還元率で置き換える
-    if(si === 0 && st && st.rate !== null){
-      s = { pt: st.pt, rate: st.rate, note: `${st.name}でのチャージ分` };
+    if(si === 0 && w.base != null && w.starter){
+      s = { pt: w.starter.pt, rate: w.base, note: `${w.starter.name}でのチャージ分` };
     }
     const got = amt ? Math.floor(amt * s.rate / 100) : null;
     return `<div class="split-row">
@@ -7418,8 +7474,11 @@ function splitHtml(route){
       <span class="split-note">${s.note}</span>
     </div>`;
   }).join("");
-  const total = route.split.reduce((a,s)=> a + s.rate, 0);
+
+  const total = route.split.reduce((a, s, si) =>
+    a + ((si === 0 && w.base != null) ? w.base : s.rate), 0);
   const totalGot = amt ? Math.floor(amt * total / 100) : null;
+
   return `<div class="split-box">
     <div class="split-head">貯まるポイントの内訳${amt ? `　<span class="split-amt">${amt.toLocaleString()}円を通した場合</span>` : ""}</div>
     ${rows}
@@ -7427,7 +7486,7 @@ function splitHtml(route){
       <span class="split-pt">合計</span>
       <span class="split-rate">${total.toFixed(1)}%</span>
       ${totalGot !== null ? `<span class="split-got">${totalGot.toLocaleString()}</span>` : ""}
-      <span class="split-note">※ポイントの種類が異なるため、そのまま合算はできません</span>
+      <span class="split-note">${w.starter ? `${w.starter.name}を起点にした場合` : "各段階の合計"}</span>
     </div>
   </div>`;
 }
@@ -7467,8 +7526,22 @@ function renderRoutes(){
   }
   const list = document.getElementById("routeList");
   list.innerHTML = "";
-  const shown = CHARGE_ROUTES.filter(r =>
+  let shown = CHARGE_ROUTES.filter(r =>
     routeFilter === "all" || (r.pays || []).includes(routeFilter));
+  // 起点カードを選んでいるときは、そのカードで実行できるルートだけを、
+  // そのカードでの還元率が高い順に並べる。
+  const st0 = STARTER_CARDS[starterIdx];
+  if(st0 && st0.rate !== null){
+    const hidden = shown.filter(r => !routeWithStarter(r).usable);
+    shown = shown.filter(r => routeWithStarter(r).usable);
+    if(hidden.length){
+      const note = document.createElement("div");
+      note.className = "route-hidden-note";
+      note.textContent = `${st0.name}では組めないルート${hidden.length}件を非表示にしています（${hidden.map(h=>h.name.split("（")[0].slice(0,18)).join("、")}）`;
+      list.appendChild(note);
+    }
+  }
+  shown.sort((a,b)=> routeSortValue(b) - routeSortValue(a));
 
   if(shown.length === 0){
     list.innerHTML = `<div class="store-empty-note">該当するルートがありません。</div>`;
@@ -7629,23 +7702,29 @@ document.getElementById("lineLocBtn")?.addEventListener("click", findNearbyLines
 async function locateForAnswer(){
   const btn = document.getElementById("answerLocBtn");
   const st = document.getElementById("answerLocStatus");
+  if(!st) return;
   if(!("geolocation" in navigator)){
     st.textContent = "この端末は位置情報に対応していません。";
     return;
   }
-  btn.disabled = true;
+  if(btn) btn.disabled = true;
   st.textContent = "現在地を確認中…";
 
   navigator.geolocation.getCurrentPosition(async (pos)=>{
-    const { latitude, longitude } = pos.coords;
-    st.textContent = "近くのお店を探しています…";
+    const { latitude, longitude, accuracy } = pos.coords;
+    // 商業施設の中では衛星が届かず、Wi-Fi/基地局測位になって誤差が数百mに広がる。
+    // GPSの誤差(accuracy)に応じて検索半径を広げないと、目の前の店すら拾えない。
+    const radius = Math.min(1500, Math.max(400, Math.round((accuracy || 0) * 2 + 300)));
+    st.textContent = `近くのお店を探しています…（測位誤差 約${Math.round(accuracy || 0)}m）`;
     try{
-      const query = buildOverpassQuery(latitude, longitude, 400, STORES.map(s => s.name));
+      const query = buildOverpassQuery(latitude, longitude, radius, STORES.map(s => s.name));
       const data = await queryOverpassWithFallback(query);
 
-      let best = null;
+      const found = [];
       (data.elements || []).forEach(el => {
-        const tag = (el.tags && (el.tags.name || el.tags.brand)) || "";
+        const t = el.tags || {};
+        // 商業施設内のテナントは name より brand / operator にしか名前が無いことがある
+        const tag = [t.name, t["name:ja"], t.brand, t["brand:ja"], t.operator].filter(Boolean).join(" ");
         if(!tag) return;
         const sd = findStoreDataByName(tag);
         if(!sd) return;
@@ -7653,30 +7732,50 @@ async function locateForAnswer(){
         const lon = el.lon ?? (el.center && el.center.lon);
         if(lat == null || lon == null) return;
         const dist = haversineMeters(latitude, longitude, lat, lon);
-        if(!best || dist < best.dist) best = { store: sd, dist };
+        if(!found.some(f => f.store.name === sd.name && Math.abs(f.dist - dist) < 30)){
+          found.push({ store: sd, dist });
+        }
       });
+      found.sort((a,b)=> a.dist - b.dist);
 
-      if(!best){
-        // 未登録の店にいる可能性が高いので、汎用の最適解に切り替える
+      if(!found.length){
         document.getElementById("answerStore").value = "";
-        st.textContent = "近くに登録済みのお店が見つかりませんでした。お店を選び直すか、「その他のお店」を選んでください。";
+        st.textContent = `半径${radius}m以内に登録済みのお店が見つかりませんでした。お店を手動で選ぶか、「その他のお店」を選んでください。`;
         renderAnswer();
         return;
       }
+
+      // 一番近い店を選びつつ、候補が複数あれば選び直せるようにする。
+      // 商業施設内では複数店が同じくらいの距離に並ぶため、決め打ちだと外れる。
+      const best = found[0];
       document.getElementById("answerStore").value = best.store.name;
-      st.textContent = `${best.store.name}（約${Math.round(best.dist)}m）を選びました`;
       renderAnswer();
+
+      const others = found.slice(1, 5);
+      st.innerHTML = `${best.store.name}（約${Math.round(best.dist)}m）を選びました`
+        + (others.length ? `<div class="loc-alts">近くの候補：${others.map(o =>
+            `<button class="loc-alt" data-store="${escapeAttr(o.store.name)}">${o.store.name} ${Math.round(o.dist)}m</button>`
+          ).join("")}</div>` : "");
+
+      st.querySelectorAll(".loc-alt").forEach(b => {
+        b.addEventListener("click", ()=>{
+          document.getElementById("answerStore").value = b.dataset.store;
+          renderAnswer();
+        });
+      });
     } catch(err){
       st.textContent = `検索に失敗しました：${err.message || err}`;
     } finally {
-      btn.disabled = false;
+      if(btn) btn.disabled = false;
     }
   }, (err)=>{
-    btn.disabled = false;
+    if(btn) btn.disabled = false;
     st.textContent = err.code === err.PERMISSION_DENIED
       ? "位置情報が許可されませんでした。お店は手動でも選べます。"
-      : "位置情報を取得できませんでした。お店は手動でも選べます。";
-  }, { enableHighAccuracy: true, timeout: 10000 });
+      : "位置情報を取得できませんでした（建物の中では取得しにくいことがあります）。お店は手動でも選べます。";
+  // 屋内では高精度測位を待つと失敗しやすいので、待ち時間を長めにし、
+  // 直前の測位結果(最大1分)も使えるようにする
+  }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 });
 }
 
 document.getElementById("answerLocBtn").addEventListener("click", locateForAnswer);
@@ -8347,12 +8446,14 @@ async function searchNearby(){
   resultBox.innerHTML = "";
 
   navigator.geolocation.getCurrentPosition(async (pos)=>{
-    const { latitude, longitude } = pos.coords;
-    statusEl.textContent = "周辺のお店を検索中…";
+    const { latitude, longitude, accuracy } = pos.coords;
+    // 商業施設の中は衛星が届かず測位誤差が広がるので、それに応じて半径を広げる
+    const radius = Math.min(2000, Math.max(800, Math.round((accuracy || 0) * 2 + 600)));
+    statusEl.textContent = `周辺のお店を検索中…（測位誤差 約${Math.round(accuracy || 0)}m）`;
 
     try{
       const names = STORES.map(s => s.name);
-      const query = buildOverpassQuery(latitude, longitude, 800, names);
+      const query = buildOverpassQuery(latitude, longitude, radius, names);
       const data = await queryOverpassWithFallback(query);
 
       const matches = [];
@@ -8377,7 +8478,7 @@ async function searchNearby(){
       matches.sort((a,b)=> a.dist - b.dist);
 
       if(matches.length === 0){
-        statusEl.textContent = "近くに登録済みのお店が見つかりませんでした。特約のないお店なら、上の「今すぐ払う」で『その他のお店』を選ぶと、どこでも使える決済を比較できます。";
+        statusEl.textContent = `半径${radius}m以内に登録済みのお店が見つかりませんでした。特約のないお店なら、上の「今すぐ払う」で『その他のお店』を選ぶと、どこでも使える決済を比較できます。`;
         return;
       }
 
@@ -8451,7 +8552,8 @@ function showModal(title, fields, onSave, onDelete){
       const el = box.querySelector(`[data-key="${f.key}"]`);
       values[f.key] = el.value.trim();
     });
-    if(!values[fields[0].key]){
+    // 1つ目がセレクトのときは必須チェックの対象にしない（下の欄に直接入力する運用があるため）
+    if(fields[0].type !== "select" && !values[fields[0].key]){
       alert(`${fields[0].label}は必須です`);
       return;
     }
@@ -8546,7 +8648,10 @@ function openCardModal(store, card){
   showModal(
     isNew ? `${store.name} にカードを追加` : `${store.name} のカード情報を編集`,
     [
-      { key: "name", label: "カード名（例：三井住友カード）", value: card ? card.name : "" },
+      { key: "preset", label: "決済手段を選ぶ（一覧にない場合は下の欄に直接入力）", type: "select",
+        options: ["（下の欄に入力する）"].concat(WALLET_OPTIONS),
+        value: (card && WALLET_OPTIONS.includes(card.name)) ? card.name : "（下の欄に入力する）" },
+      { key: "name", label: "カード名（上で選んだ場合は空欄でOK）", value: card ? card.name : "" },
       { key: "rate", label: "還元率（例：7%＋α）", value: card ? card.rate : "" },
       { key: "method", label: "対象の支払い方法", value: card ? card.method : "" },
       { key: "expires", label: "終了日（期間限定の場合のみ。例：2026-08-31／常設なら空欄）", value: card ? card.expires : "" },
@@ -8554,6 +8659,10 @@ function openCardModal(store, card){
       { key: "note", label: "補足・注意点（任意）", type: "textarea", value: card ? card.note : "" },
     ],
     (vals)=>{
+      // 一覧から選んでいればその名前を使う（表記ゆれで保有カード判定が効かなくなるのを防ぐ）
+      const cardName = (vals.preset && !vals.preset.startsWith("（")) ? vals.preset : vals.name;
+      if(!cardName){ alert("決済手段を選ぶか、カード名を入力してください"); return; }
+      vals.name = cardName;
       if(isNew){
         store.cards.push({ name: vals.name, rate: vals.rate, method: vals.method, note: vals.note,
                            expires: vals.expires || undefined, url: vals.url || undefined });
