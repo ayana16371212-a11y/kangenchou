@@ -716,6 +716,9 @@
     font-size: 11.5px; line-height: 1.6; color: var(--dim);
   }
 
+  .err-detail{ margin-top: 6px; font-size: 10.5px; color: var(--dim); }
+  .err-detail summary{ cursor: pointer; }
+
   .loc-alts{ margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .loc-alt{
     padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px;
@@ -7764,7 +7767,8 @@ async function locateForAnswer(){
         });
       });
     } catch(err){
-      st.textContent = `検索に失敗しました：${err.message || err}`;
+      st.innerHTML = `地図サーバーが混み合っています。少し待ってからもう一度お試しください。`
+        + `<div class="err-detail"><details><summary>詳細</summary>${escapeHtml(String(err.message || err))}</details></div>`;
     } finally {
       if(btn) btn.disabled = false;
     }
@@ -8372,20 +8376,21 @@ function searchableStoreNames(){
 }
 
 function buildOverpassQuery(lat, lon, radiusMeters, names){
-  // 正規表現として特別な意味を持つ文字を無効化する
   const escaped = (names || []).map(n => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   const pattern = escaped.join("|");
-  // name だけでなく brand / operator も見る。商業施設内のテナントは
-  // name が「フードコート」等で、brand にしかチェーン名が無いことがある。
-  // way（建物として登録された店舗）も対象にするため nwr を使う。
+  // 【重要】名前だけで全要素を舐めると重すぎてタイムアウトするため、
+  // まず「店舗・飲食店などの種別を持つ要素」に絞ってから名前で照合する。
+  // これでショッピングモール内のテナント（shop/amenity付き）も拾える。
   return `
     [out:json][timeout:25];
     (
-      nwr(around:${radiusMeters},${lat},${lon})["name"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["shop"]["name"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["shop"]["brand"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["amenity"]["name"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["amenity"]["brand"~"${pattern}",i];
       nwr(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
-      nwr(around:${radiusMeters},${lat},${lon})["operator"~"${pattern}",i];
     );
-    out center;
+    out center ${radiusMeters > 1000 ? 300 : 150};
   `;
 }
 
@@ -8439,7 +8444,7 @@ async function queryOverpassWithFallback(query){
   // faster in the common case, and we only wait as long as the slowest
   // *successful* response instead of stacking up multiple timeouts.
   const attempts = OVERPASS_ENDPOINTS.map(endpoint =>
-    fetchWithTimeout(endpoint, { method: "POST", body: query }, 15000)
+    fetchWithTimeout(endpoint, { method: "POST", body: query }, 25000)
       .then(async (res) => {
         if(!res.ok){
           throw new Error(`${endpoint.replace("https://","")} が HTTP ${res.status} を返しました`);
@@ -8455,7 +8460,7 @@ async function queryOverpassWithFallback(query){
       .catch(err => {
         // Normalize abort errors into a readable Japanese message.
         if(err.name === "AbortError"){
-          throw new Error(`${endpoint.replace("https://","")} が15秒以内に応答しませんでした`);
+          throw new Error(`${endpoint.replace("https://","")} が25秒以内に応答しませんでした`);
         }
         throw err;
       })
@@ -8532,8 +8537,10 @@ async function searchNearby(){
       // be screenshotted and reported without needing browser dev tools.
       // Public Overpass servers get congested at busy times — most
       // failures here are server-side, not a bug in this page.
-      statusEl.textContent =
-        `検索サーバーが混み合っているようです（30秒ほど待ってからもう一度お試しください）\n詳細：${err.message || err}`;
+      // 詳細な技術メッセージは畳んでおき、まず再試行を促す
+      statusEl.innerHTML =
+        `地図サーバーが混み合っています。少し待ってから、もう一度ボタンを押してください。`
+        + `<div class="err-detail"><details><summary>詳細</summary>${escapeHtml(String(err.message || err))}</details></div>`;
       console.error(err);
     } finally {
       btn.disabled = false;
