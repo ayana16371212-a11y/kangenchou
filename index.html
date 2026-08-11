@@ -7717,7 +7717,7 @@ async function locateForAnswer(){
     const radius = Math.min(1500, Math.max(400, Math.round((accuracy || 0) * 2 + 300)));
     st.textContent = `近くのお店を探しています…（測位誤差 約${Math.round(accuracy || 0)}m）`;
     try{
-      const query = buildOverpassQuery(latitude, longitude, radius, STORES.map(s => s.name));
+      const query = buildOverpassQuery(latitude, longitude, radius, searchableStoreNames());
       const data = await queryOverpassWithFallback(query);
 
       const found = [];
@@ -8351,27 +8351,67 @@ function haversineMeters(lat1, lon1, lat2, lon2){
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
+// 地図検索に使う店名を作る。
+// 「ガスト（すかいらーくグループ）」のような補足付きの名前をそのまま検索すると
+// 地図上の「ガスト」に一致しないため、括弧以降を落として検索語にする。
+// また、地図には載っていない項目（決済手段やECサイト）は検索対象から除く。
+function searchableStoreNames(){
+  const SKIP = ["ネット通販", "交通"];
+  const out = new Set();
+  STORES.forEach(s => {
+    if(SKIP.includes(s.category)) return;
+    const base = s.name.replace(/[（(].*?[）)]/g, "").replace(/／.*$/, "").trim();
+    if(base.length >= 2){
+      out.add(base);
+      // ハイフンの有無は地図側の登録によって揺れるため、両方を検索語に入れる
+      const noHyphen = base.replace(/[-‐‑–—]/g, "");
+      if(noHyphen !== base && noHyphen.length >= 2) out.add(noHyphen);
+    }
+  });
+  return [...out];
+}
+
 function buildOverpassQuery(lat, lon, radiusMeters, names){
-  // Escape names minimally for use inside a regex alternation.
-  const escaped = names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  // 正規表現として特別な意味を持つ文字を無効化する
+  const escaped = (names || []).map(n => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   const pattern = escaped.join("|");
-  // Node-only search (convenience/chain stores in Japan are almost always
-  // mapped as points, not ways) — cuts server-side work roughly in half
-  // compared to also searching ways, which matters a lot on congested
-  // public instances.
+  // name だけでなく brand / operator も見る。商業施設内のテナントは
+  // name が「フードコート」等で、brand にしかチェーン名が無いことがある。
+  // way（建物として登録された店舗）も対象にするため nwr を使う。
   return `
-    [out:json][timeout:10];
+    [out:json][timeout:25];
     (
-      node(around:${radiusMeters},${lat},${lon})["name"~"${pattern}",i];
-      node(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["name"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["brand"~"${pattern}",i];
+      nwr(around:${radiusMeters},${lat},${lon})["operator"~"${pattern}",i];
     );
     out center;
   `;
 }
 
+// 地図から返ってきた名前と、登録店舗を突き合わせる。
+// 「ガスト（すかいらーく…）」のような補足は無視して比べる。
+// 地図から返ってきた名前と、登録店舗を突き合わせる。
+// 「ガスト（すかいらーく…）」のような補足や、ハイフン・中黒・空白の
+// 有無といった表記ゆれ（セブン-イレブン / セブンイレブン）を吸収する。
+function normalizeName(s){
+  return String(s || "")
+    .replace(/[（(].*?[）)]/g, "")
+    .replace(/／.*$/, "")
+    .replace(/[-‐‑–—ー・･\s]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 function findStoreDataByName(rawName){
-  const name = rawName.toLowerCase();
-  return STORES.find(s => name.includes(s.name.toLowerCase()) || s.name.toLowerCase().includes(name));
+  const name = normalizeName(rawName);
+  if(!name) return null;
+  const cand = STORES
+    .map(s => ({ s, key: normalizeName(s.name) }))
+    .filter(x => x.key.length >= 2 && (name.includes(x.key) || x.key.includes(name)))
+    // 「セブンイレブン」と「セブン」のような部分一致では、長い方を優先する
+    .sort((a, b) => b.key.length - a.key.length);
+  return cand.length ? cand[0].s : null;
 }
 
 // Public Overpass API is a shared free service. As of 2026, the original
@@ -8452,8 +8492,7 @@ async function searchNearby(){
     statusEl.textContent = `周辺のお店を検索中…（測位誤差 約${Math.round(accuracy || 0)}m）`;
 
     try{
-      const names = STORES.map(s => s.name);
-      const query = buildOverpassQuery(latitude, longitude, radius, names);
+      const query = buildOverpassQuery(latitude, longitude, radius, searchableStoreNames());
       const data = await queryOverpassWithFallback(query);
 
       const matches = [];
