@@ -745,6 +745,13 @@
   .line-card.is-top .line-card-name{ color: var(--text); font-weight: 600; }
   @media (max-width: 520px){ .line-cards{ padding-left: 0; } }
 
+  .split-warn{
+    margin-bottom: 8px; padding: 7px 10px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--alert) 14%, transparent);
+    color: var(--alert); font-size: 11px; line-height: 1.5;
+  }
+
   .loc-alts{ margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .loc-alt{
     padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px;
@@ -2308,9 +2315,16 @@
         <span class="amount-yen">円</span>
       </div>
     </div>
+    <div class="edit-toggle-row">
+      <button id="addRouteBtn" class="add-store-btn">＋ ルートを追加</button>
+    </div>
+    <div class="edit-mode-hint">編集モード中です。ルート右上の✎で編集（JSON形式）、🗑で削除できます。GitHub連携を設定していれば、変更は自動でリポジトリにも保存されます。</div>
     <div id="starterBox"></div>
     <div class="category-chip-row" id="routeChipRow"></div>
     <div id="routeList"></div>
+    <div style="margin-top:18px;">
+      <button id="resetRoutesBtn" style="background:none;border:none;color:#9a8f6f;font-size:11px;text-decoration:underline;cursor:pointer;padding:0;">初期データにリセット</button>
+    </div>
   </div>
 
   <div class="mode-panel" id="panel-campaigns">
@@ -3353,7 +3367,7 @@ const INVEST_PLANS = [
   },
 ];
 
-const CHARGE_ROUTES = [
+const DEFAULT_ROUTES = [
   {
     name: "V NEOBANKデビット → au PAY → VポイントPay",
     pays: [
@@ -3375,13 +3389,18 @@ const CHARGE_ROUTES = [
     split: [
       {
         pt: "Vポイント",
-        rate: 2,
-        note: "チャージ1.5%＋決済0.5%"
+        rate: 1.5,
+        note: "V NEOBANK→au PAYチャージ分"
       },
       {
         pt: "Pontaポイント",
         rate: 0.5,
-        note: "au PAY経由分"
+        note: "au PAY→VポイントPayチャージ分"
+      },
+      {
+        pt: "Vポイント",
+        rate: 0.5,
+        note: "VポイントPayでの決済分"
       }
     ],
     atStore: {
@@ -3468,66 +3487,6 @@ const CHARGE_ROUTES = [
     }
   },
   {
-    name: "ファミペイ → POSAカード → モバイルSuica等",
-    howto: {
-      prep: [
-        "ファミペイアプリをインストールする",
-        "ファミペイにチャージできてポイントが付くクレカを用意する ※PayPayカードは2026年6月から対象外",
-        "チャージ先（モバイルSuicaなど）を準備しておく"
-      ],
-      flow: [
-        "「1・5・0のつく日」にファミリーマート店頭へ行く",
-        "アプリで当日の対象POSAカード（バニラVisaギフトカードなど）を確認する",
-        "レジでPOSAカードをファミペイで購入する",
-        "買ったギフトカードの番号を使って、モバイルSuicaなどにチャージする"
-      ],
-      time: "店頭に行く必要があるため、他のルートより手間がかかる。まとめ買い向き"
-    },
-    split: [
-      {
-        pt: "チャージ元カードのポイント",
-        rate: 1.2,
-        note: "ファミペイへのチャージ分（カードによる）"
-      },
-      {
-        pt: "ファミペイボーナス",
-        rate: 1.5,
-        note: "1・5・0のつく日のPOSAカード購入特典"
-      }
-    ],
-    pays: [
-      "ファミペイ",
-      "Suica",
-      "交通系"
-    ],
-    total: "合計 約2.7%（カードによる）",
-    steps: [
-      "対象クレカ",
-      "ファミペイ",
-      "POSAカード購入",
-      "Suica等にチャージ"
-    ],
-    gains: [
-      "1・5・0のつく日にファミペイでPOSAカード（バニラVisaギフトカードなど）を購入",
-      "購入時のボーナス還元で実質3%以上",
-      "買ったギフトカードをモバイルSuicaなどにチャージ"
-    ],
-    starter: "ファミペイへのチャージでポイントが付くカードが必要。PayPayカードからのファミペイチャージは2026年6月1日でポイント対象外になったため、別のカードを用意すること。",
-    atStore: {
-      rate: "3.0%",
-      method: "POSAカード経由でチャージしたSuica等で支払い"
-    },
-    note: "ファミリーマート店頭でのPOSAカード購入を挟むのが特徴で、他のルートより手間はかかるが還元率は高い。日付が「1・5・0のつく日」に限られるため、まとめ買いする運用になる。ファミペイの対象カードは年々減っており、条件も変わりやすい。［確認日: 2026-08-09］",
-    url: "https://www.family.co.jp/services/famipay.html",
-    caution: "対象となるPOSAカードの種類やキャンペーン条件は頻繁に変わる。実行前にファミペイアプリ内で当日の対象商品を必ず確認すること。",
-    starters: {
-      "V NEOBANKデビット（住信SBI）": 1.5,
-      "リクルートカード": 1.2,
-      "楽天カード": 1,
-      "PayPayカード": 0
-    }
-  },
-  {
     name: "クレカ → ANA Pay → モバイルSuica",
     howto: {
       prep: [
@@ -3544,9 +3503,9 @@ const CHARGE_ROUTES = [
     },
     split: [
       {
-        pt: "リクルートポイント",
+        pt: "クレカのポイント",
         rate: 1.2,
-        note: "リクルートカード→ANA Payチャージ分"
+        note: "クレカ→ANA Payチャージ分（起点カードによる）"
       },
       {
         pt: "ANAマイル",
@@ -3560,7 +3519,7 @@ const CHARGE_ROUTES = [
       "ANA Pay",
       "交通系"
     ],
-    total: "合計 約2.0〜2.7%",
+    total: "合計 1.7%（起点カードによる）",
     steps: [
       "高還元クレカ",
       "ANA Pay",
@@ -3711,7 +3670,7 @@ const CHARGE_ROUTES = [
       {
         pt: "エポスポイント",
         rate: 1.5,
-        note: "クレカ→ANA Payチャージ分（年間利用ボーナス込み）"
+        note: "クレカ→ANA Payチャージ分（起点カードによる）"
       },
       {
         pt: "ANAマイル",
@@ -3721,7 +3680,7 @@ const CHARGE_ROUTES = [
       {
         pt: "楽天ポイント",
         rate: 1,
-        note: "楽天ペイ決済分"
+        note: "楽天ペイでの決済分"
       }
     ],
     starter: "エポスゴールド / JQ CARDエポスゴールド（年50万円利用で翌年以降無料）。三井住友・Oliveのゴールドと違い、ANA Payチャージが100万円修行の対象外にならないのが利点。",
@@ -3730,7 +3689,7 @@ const CHARGE_ROUTES = [
       "ANA Pay",
       "楽天Edy"
     ],
-    total: "合計 約2.5%（月1万円まで）",
+    total: "合計 3.0%（月1万円まで）",
     steps: [
       "対象クレカ",
       "ANA Pay",
@@ -3852,8 +3811,8 @@ const CHARGE_ROUTES = [
       },
       {
         pt: "楽天ポイント",
-        rate: 1.5,
-        note: "楽天ペイ決済分"
+        rate: 1,
+        note: "楽天ペイでの決済分"
       }
     ],
     pays: [
@@ -3861,7 +3820,7 @@ const CHARGE_ROUTES = [
       "ANA Pay",
       "Suica"
     ],
-    total: "JAL 1.0% ＋ ANA 0.5% ＋ 楽天 1.5%",
+    total: "合計 2.5%（月1万円まで）",
     steps: [
       "JALカードSuica",
       "ANA Pay",
@@ -3926,6 +3885,14 @@ const UNIVERSAL_PAYMENTS = [
     rate: "1.25〜2.0%（スマプロランクで変動）",
     method: "デビットカード Point＋（Mastercard）での決済",
     note: "年会費無料。基本1.25%に、スマプロランクに応じて最大+0.75%が上乗せされる。ランクは円普通預金＋SBIハイブリッド預金の残高、または残高以外の条件で決まり、判定月末のランクが翌々月から適用される。給与・年金の受け取り設定で1.5%になる。V NEOBANKデビットが2026年11月に改定されるため、その移行先として比較検討する価値がある。［確認日: 2026-08-09／出典: 住信SBIネット銀行公式・比較メディア複数］"
+  },
+  {
+    name: "第一生命NEOBANKデビット Premium",
+    universal: true,
+    url: "https://www.netbk.co.jp/",
+    rate: "1.5%",
+    method: "第一生命NEOBANKデビット Premium（Mastercard）での決済。月間合計1,000円以上の利用が条件",
+    note: "2026年3月24日のリニューアルで還元率1.5%になった、住信SBIネット銀行グループのデビットカード（第一生命支店）。年会費無料でリアルカードも発行できる点がV NEOBANKデビットとの違い。貯まったポイントは500ポイント以上から現金化もできる。【弱点】鉄道・チャージ・公共料金・税金・病院などは対象外取引で還元率が0.3%に下がるため、他ルートの起点（チャージ用）には向かない。V NEOBANKデビットが2026年11月に改定・弱体化するため、その代替の一つとして選ばれることが増えている。［確認日: 2026-08-11／出典: 住信SBIネット銀行公式・比較メディア複数］"
   },
   {
     name: "楽天カード",
@@ -6384,8 +6351,36 @@ function saveGithubConfig(cfg){
 }
 
 let STORES = loadStoresFromCache();
+
+// ---------- チャージルートの読み込み（店舗データと同じ3段階の優先順位） ----------
+const ROUTES_STORAGE_KEY = "kangenchou_routes_v1";
+const ROUTES_JSON_PATH = "routes.json"; // 同じフォルダに置く想定
+
+function loadRoutesFromCache(){
+  try{
+    const raw = localStorage.getItem(ROUTES_STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(Array.isArray(parsed)) return parsed;
+    }
+  } catch(e){
+    console.warn("チャージルートの読み込みに失敗、初期データを使用します", e);
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_ROUTES)); // deep copy
+}
+
+function saveRoutesToCache(){
+  try{
+    localStorage.setItem(ROUTES_STORAGE_KEY, JSON.stringify(CHARGE_ROUTES));
+  } catch(e){
+    console.warn("チャージルートの保存に失敗しました", e);
+  }
+}
+
+let CHARGE_ROUTES = loadRoutesFromCache();
 let editMode = false;
 let syncPending = false; // 直近の保存がGitHubへのpushに失敗し、再送待ちかどうか
+let routesSyncPending = false; // ルートデータ版
 
 function setSyncStatus(text, kind){
   const el = document.getElementById("syncStatus");
@@ -6428,6 +6423,24 @@ async function refreshFromGithubPages(){
   } catch(e){
     // オフライン時やfile://表示時は取得できないのが正常なので、静かに無視
     console.info("stores.json の取得をスキップしました", e.message);
+  }
+}
+
+async function refreshRoutesFromGithubPages(){
+  try{
+    const res = await fetch(`${ROUTES_JSON_PATH}?t=${Date.now()}`, { cache: "no-store" });
+    if(!res.ok) return; // routes.jsonがまだ存在しない場合は静かに無視
+    const data = await res.json();
+    if(!Array.isArray(data)) return;
+    if(routesSyncPending){
+      // 未送信のローカル編集がある間は、リモートで上書きしない
+      return;
+    }
+    CHARGE_ROUTES = data;
+    saveRoutesToCache();
+    renderRoutes();
+  } catch(e){
+    console.info("routes.json の取得をスキップしました", e.message);
   }
 }
 
@@ -7040,6 +7053,11 @@ function renderMufg(){
   const body = document.getElementById("mufgBody");
   if(!box || !body) return;
 
+  // 三菱UFJカードを持っている人にだけ、還元率シミュレーターを出す
+  // （旧「持っているカード」パネル削除時にここの表示切替が連動して壊れていたため、ここで直接判定する。
+  //   wallet は null＝未設定（全カード表示）を意味するので、その場合は出さない）
+  box.style.display = (wallet && [...wallet].some(w => /三菱UFJ/.test(w))) ? "" : "none";
+
   const rate = mufgRate();
   document.getElementById("mufgRate").textContent = rate.toFixed(1) + "%";
 
@@ -7547,6 +7565,19 @@ function starterGainHtml(route){
   </div>`;
 }
 
+// データの整合性チェック。内訳の合計と見出しの数字がズレていたら画面に警告を出す。
+// 人が目視で突き合わせるのは現実的でないので、機械に見張らせる。
+function splitMismatch(route){
+  if(!route.split || !route.split.length) return null;
+  const sum = route.split.reduce((a,s)=> a + s.rate, 0);
+  const m = String(route.total || "").match(/(\d+(?:\.\d+)?)/);
+  if(!m) return null;
+  const shown = parseFloat(m[1]);
+  return Math.abs(sum - shown) > 0.05
+    ? `内訳の合計（${sum.toFixed(1)}%）と表示（${shown}%）が一致していません`
+    : null;
+}
+
 function splitHtml(route){
   if(!route.split || !route.split.length) return "";
   const amt = Math.max(0, parseInt(document.getElementById("routeAmount")?.value, 10) || 0);
@@ -7569,7 +7600,9 @@ function splitHtml(route){
     a + ((si === 0 && w.base != null) ? w.base : s.rate), 0);
   const totalGot = amt ? Math.floor(amt * total / 100) : null;
 
+  const warn = splitMismatch(route);
   return `<div class="split-box">
+    ${warn ? `<div class="split-warn">⚠ ${warn}</div>` : ""}
     <div class="split-head">貯まるポイントの内訳${amt ? `　<span class="split-amt">${amt.toLocaleString()}円を通した場合</span>` : ""}</div>
     ${rows}
     <div class="split-row is-total">
@@ -7659,6 +7692,8 @@ function renderRoutes(){
       <div class="route-top">
         <span class="route-name">${r.name}</span>
         <span class="route-total">${routeTotalLabel(r)}</span>
+        <button class="icon-btn edit-route-btn" title="ルートを編集（JSON）">✎</button>
+        <button class="icon-btn delete-route-btn" title="ルートを削除">🗑</button>
       </div>
       <div class="route-chain">${chain}</div>
       <ul class="route-gains">${r.gains.map(g => `<li>${g}</li>`).join("")}</ul>
@@ -7670,6 +7705,15 @@ function renderRoutes(){
       <div class="card-option-note">${formatNote(r.note)}</div>
       ${linkRowHtml(r.url, r.name)}
     `;
+    el.querySelector(".edit-route-btn")?.addEventListener("click", (e)=>{ e.stopPropagation(); openRouteModal(r); });
+    el.querySelector(".delete-route-btn")?.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      if(!confirm(`「${r.name}」を削除しますか？`)) return;
+      const idx = CHARGE_ROUTES.indexOf(r);
+      if(idx >= 0) CHARGE_ROUTES.splice(idx, 1);
+      persistRoutes();
+      renderRoutes();
+    });
     list.appendChild(el);
   });
 
@@ -7974,7 +8018,7 @@ const WALLET_OPTIONS = [
   // 交通系
   "J-WESTカード", "ビューカード", "Wesmo!",
   // デビットカード
-  "V NEOBANKデビット", "デビットカード Point＋",
+  "V NEOBANKデビット", "デビットカード Point＋", "第一生命NEOBANKデビット Premium",
   // スマホ決済・共通ポイント
   "楽天カード", "PayPay", "PayPayカード ゴールド",
   "楽天ペイ", "d払い", "auPAY", "FamiPay", "AEON Pay",
@@ -8740,6 +8784,73 @@ function escapeAttr(str){
   return String(str).replace(/&/g,"&amp;").replace(/"/g,"&quot;");
 }
 
+// ---- チャージルートの追加・編集・削除 ----
+// 構造が複雑（howto/split/starters等のネスト）なため、店舗編集のような項目別フォームではなく
+// JSON全体を直接編集する方式にしている。使い慣れた人が自分で直せるようにするための割り切り。
+
+const NEW_ROUTE_TEMPLATE = {
+  name: "",
+  howto: { prep: [], flow: [], time: "" },
+  split: [],
+  pays: [],
+  total: "",
+  steps: [],
+  gains: [],
+  starter: "",
+  atStore: { rate: "", method: "" },
+  note: "",
+  url: "",
+  caution: "",
+  starters: {}
+};
+
+function openRouteModal(route){
+  const isNew = route === null;
+  showModal(
+    isNew ? "新しいルートを追加（JSON形式）" : "ルートを編集（JSON形式）",
+    [
+      { key: "json", label: "ルートデータ（JSON）。name・steps・gains は必須です。", type: "textarea",
+        value: JSON.stringify(isNew ? NEW_ROUTE_TEMPLATE : route, null, 2) }
+    ],
+    (vals)=>{
+      let parsed;
+      try{
+        parsed = JSON.parse(vals.json);
+      } catch(e){
+        alert("JSONの形式が正しくありません：" + e.message);
+        return;
+      }
+      if(!parsed || typeof parsed !== "object" || !parsed.name){
+        alert("nameは必須です");
+        return;
+      }
+      if(isNew){
+        CHARGE_ROUTES.push(parsed);
+      } else {
+        const idx = CHARGE_ROUTES.indexOf(route);
+        if(idx >= 0) CHARGE_ROUTES[idx] = parsed;
+      }
+      persistRoutes();
+      renderRoutes();
+    },
+    isNew ? null : ()=>{
+      const idx = CHARGE_ROUTES.indexOf(route);
+      if(idx >= 0) CHARGE_ROUTES.splice(idx, 1);
+      persistRoutes();
+      renderRoutes();
+    }
+  );
+}
+
+document.getElementById("addRouteBtn")?.addEventListener("click", ()=> openRouteModal(null));
+
+document.getElementById("resetRoutesBtn")?.addEventListener("click", ()=>{
+  if(!confirm("この端末で編集したチャージルートをすべて削除し、初期データに戻します。よろしいですか？")) return;
+  CHARGE_ROUTES = JSON.parse(JSON.stringify(DEFAULT_ROUTES));
+  persistRoutes();
+  renderRoutes();
+});
+
 // ---- お店の追加・編集・削除 ----
 
 function openStoreModal(store){
@@ -8858,13 +8969,58 @@ function deleteCard(store, card){
 
 // ---- 編集モードのON/OFF、追加ボタン、リセット ----
 
-document.getElementById("editModeBtn").addEventListener("click", ()=>{
+// ========== 編集モードのパスワード保護 ==========
+// GitHubのPersonal Access Tokenを紛失したのをきっかけに追加。
+// トークンは書き込み権限を持つため埋め込むと危険（過去に却下済み）だが、
+// このパスワードは「編集モードのボタン類を見せるかどうか」を制御するだけで、
+// 実際にGitHubへ保存するには別途GitHub連携（PAT）の設定が必要なので、
+// ソースに平文ではなくハッシュ値を埋め込む形にしてある。
+//
+// パスワードを変更したいときは、ブラウザのコンソール（F12）で次を実行してハッシュを再計算し、
+// 出てきた64文字の値で下のEDITOR_PASSWORD_HASHを書き換えてください：
+//   await crypto.subtle.digest("SHA-256", new TextEncoder().encode("新しいパスワード"))
+//     .then(b => [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join(""))
+const EDITOR_PASSWORD_HASH = ""; // ← 64文字のハッシュ値を入れる。未設定のままだと誰でも編集モードに入れてしまいます
+const EDITOR_AUTH_KEY = "kangenchou_editor_ok";
+
+async function sha256Hex(str){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// 同じタブでの再入力を防ぐため、認証済みかどうかはタブが開いている間だけ覚える（sessionStorage）
+async function ensureEditorAuth(){
+  if(!EDITOR_PASSWORD_HASH){
+    console.warn("EDITOR_PASSWORD_HASHが未設定のため、編集モードは誰でも入れる状態です。");
+    return true;
+  }
+  try{
+    if(sessionStorage.getItem(EDITOR_AUTH_KEY) === "1") return true;
+  } catch {}
+  const pw = prompt("編集モードのパスワードを入力してください");
+  if(pw === null) return false; // キャンセル
+  const hash = await sha256Hex(pw);
+  if(hash !== EDITOR_PASSWORD_HASH){
+    alert("パスワードが違います");
+    return false;
+  }
+  try{ sessionStorage.setItem(EDITOR_AUTH_KEY, "1"); } catch {}
+  return true;
+}
+
+document.getElementById("editModeBtn").addEventListener("click", async ()=>{
+  if(!editMode){
+    const ok = await ensureEditorAuth();
+    if(!ok) return;
+  }
   editMode = !editMode;
   document.getElementById("editModeBtn").classList.toggle("on", editMode);
   document.getElementById("panel-stores").classList.toggle("edit-mode", editMode);
   document.getElementById("panel-campaigns").classList.toggle("edit-mode", editMode);
+  document.getElementById("panel-routes").classList.toggle("edit-mode", editMode);
   renderStores();
   renderPicks();
+  renderRoutes();
 });
 
 document.getElementById("addStoreBtn").addEventListener("click", ()=> openStoreModal(null));
@@ -8951,9 +9107,19 @@ async function pushAffiliatesToGithub(){
   await pushJsonToGithub(AFFILIATES_JSON_PATH, affiliates, "紹介リンク");
 }
 
+async function pushRoutesToGithub(){
+  const ok = await pushJsonToGithub(ROUTES_JSON_PATH, CHARGE_ROUTES, "チャージルート");
+  routesSyncPending = !ok && !!loadGithubConfig();
+}
+
 function persistStores(){
   saveStoresToCache();
   pushStoresToGithub(); // 非同期。設定が無ければ内部で何もしない
+}
+
+function persistRoutes(){
+  saveRoutesToCache();
+  pushRoutesToGithub(); // 非同期。設定が無ければ内部で何もしない
 }
 
 // ---- GitHub連携の設定モーダル ----
@@ -8979,6 +9145,7 @@ document.getElementById("githubSettingsBtn").addEventListener("click", ()=>{
 refreshFromGithubPages();
 refreshAffiliatesFromGithubPages();
 refreshPicksFromGithubPages();
+refreshRoutesFromGithubPages();
 </script>
 </body>
 </html>
