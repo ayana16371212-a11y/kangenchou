@@ -334,6 +334,54 @@
     background: var(--foil);
     border-radius: 8px;
   }
+  .diag-q{
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .diag-back-btn{
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 11.5px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0 0 10px;
+    display: block;
+  }
+  .diag-result-lead{
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .diag-pick{
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    margin-bottom: 8px;
+  }
+  .diag-pick-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .diag-pick-name{ font-size: 13px; font-weight: 700; }
+  .diag-pick-rate{ font-size: 13px; font-weight: 700; color: var(--good); white-space: nowrap; }
+  .diag-pick-reason{ font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .diag-restart-btn{
+    margin-top: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 12px;
+    color: var(--text);
+    cursor: pointer;
+  }
 
   /* ===== AI import ===== */
   .ai-btn{
@@ -576,6 +624,23 @@
     border-radius: var(--radius-sm);
   }
   .route-card.is-top{ border-color: var(--foil-2); }
+  .invest-conds{
+    padding: 8px 12px 10px;
+    margin: 4px 0 6px;
+    background: var(--tint-2);
+    border-radius: 8px;
+  }
+  .invest-conds-label{
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .invest-conds-result{
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .invest-conds-result b{ color: var(--good); font-size: 14px; }
   .invest-result{
     display: flex;
     gap: 18px;
@@ -2331,6 +2396,7 @@
         <span class="amount-yen">円 / 月</span>
       </div>
     </div>
+    <div class="category-chip-row" id="investChipRow"></div>
     <div id="investList"></div>
   </div>
 
@@ -2341,12 +2407,7 @@
     </div>
     <div class="card-diag" id="cardDiag">
       <div class="card-diag-title">あなたはどのタイプ？</div>
-      <div class="card-diag-opts">
-        <button class="card-diag-btn" data-diag="base">年会費なしでシンプルに使いたい</button>
-        <button class="card-diag-btn" data-diag="gold">年100万円以上を1枚に集約したい</button>
-        <button class="card-diag-btn" data-diag="debit">使いすぎが心配・審査なしで作りたい</button>
-      </div>
-      <div class="card-diag-result" id="cardDiagResult"></div>
+      <div id="cardDiagBody"></div>
     </div>
     <div id="cardPickList"></div>
   </div>
@@ -2502,10 +2563,19 @@ function linkRowHtml(officialUrl, cardName){
 // 参照元サイトのジャンル分けに合わせた固定カテゴリ一覧。
 // 新しいお店を追加するときは、必ずこの中から選ぶ形にしている。
 const CATEGORY_LIST = [
-  "コンビニ", "ファストフード", "牛丼・定食", "ファミレス", "回転寿司", "飲食店",
+  "コンビニ", "飲食店（すべて）", "ファストフード", "牛丼・定食", "ファミレス", "回転寿司", "飲食店",
   "カフェ", "スーパー", "ドラッグストア", "自販機", "エンタメ", "トラベル",
   "ホームセンター", "ファッション", "ネット通販", "交通", "その他"
 ];
+
+// 「飲食店（すべて）」は親カテゴリ。カテゴリ絞り込みで選んだとき、
+// 飲食系のサブカテゴリすべてを含めて表示する。
+const FOOD_SUBCATEGORIES = ["ファストフード", "牛丼・定食", "ファミレス", "回転寿司", "飲食店", "カフェ"];
+function matchesCategory(storeCategory, filterCategory){
+  if(filterCategory === "all") return true;
+  if(filterCategory === "飲食店（すべて）") return FOOD_SUBCATEGORIES.includes(storeCategory);
+  return storeCategory === filterCategory;
+}
 
 // スマホ決済（PayPay・楽天ペイなど）は「どの加盟店でも同じ還元率」が基本なので、
 // 店舗データ側には重複して持たせず、ここに一元管理する。
@@ -2781,15 +2851,22 @@ const INVEST_PLANS = [
   },
   {
     broker: "SBI証券", card: "三井住友カード ゴールド（NL）",
-    rate: 1.0, rateLabel: "最大1.0%（前年の利用額しだい）",
+    rate: 0, rateLabel: "最大1.0%（前年の利用額しだい）",
     fee: "年会費5,500円（年100万円利用で翌年以降無料）",
+    conds: [
+      { label: "前年の年間利用額が10万円以上", v: 0.25 },
+      { label: "前年の年間利用額が100万円以上", v: 0.75, hint: "10万円以上の条件と合算で1.0%になります" }
+    ],
     note: "【注意】前年のカード利用額で還元率が決まる方式。年100万円以上で1.0%だが、10万円未満だと還元率0%になる。メインカードとして日常的に使う前提の設計。100万円修行を達成すれば年会費も永年無料になるため、条件を満たせる人には強い。［確認日: 2026-08-09］",
     url: "https://www.sbisec.co.jp/"
   },
   {
     broker: "SBI証券", card: "三井住友カード（NL）",
-    rate: 0.5, rateLabel: "0.5%（前年10万円以上の利用が条件）",
+    rate: 0, rateLabel: "最大0.5%（前年10万円以上の利用が条件）",
     fee: "年会費無料",
+    conds: [
+      { label: "前年の年間利用額が10万円以上", v: 0.5, hint: "未達成だと還元率0%になります" }
+    ],
     note: "【注意】前年のカード年間利用額が10万円未満だとポイント付与が停止される。クレカ積立のためだけに作って普段使わない、という使い方だと還元を受けられない点に注意。［確認日: 2026-08-09］",
     url: "https://www.sbisec.co.jp/"
   },
@@ -2809,8 +2886,12 @@ const INVEST_PLANS = [
   },
   {
     broker: "SBI証券", card: "三井住友カード プラチナプリファード",
-    rate: 1.0, rateLabel: "1.0〜3.0%（年間利用額しだい）",
+    rate: 0.5, rateLabel: "1.0〜3.0%（年間利用額しだい）",
     fee: "年会費33,000円",
+    conds: [
+      { label: "前年の年間利用額が300万円以上", v: 1.0, hint: "合算で1.5%（300万円以上のティア）" },
+      { label: "前年の年間利用額が500万円以上", v: 1.5, hint: "合算で3.0%（最大ティア）" }
+    ],
     note: "【年会費は高いが積立額と別枠で回収しやすい】年間カード利用額に応じてクレカ積立の還元率が上がる仕組みで、年500万円以上の利用で3.0%に到達する。年会費33,000円でも、月10万円の積立を続ければ積立分だけで年3.6万ポイント（3.0%到達時）になり、年会費以上を積立ポイントだけで回収できる可能性がある。日常の買い物でも「リワードアップ」対象店で還元が上乗せされるため、メインカードとして使う前提なら有力な選択肢。年間利用額が500万円に届かない場合の還元率は三井住友カードの通常のティア（0.5〜1.0%）に準じる。［確認日: 2026-08-11／出典: 三井住友カード公式・比較メディア複数］",
     url: "https://www.smbc-card.com/nyukai/pt/index.jsp"
   },
@@ -2818,6 +2899,9 @@ const INVEST_PLANS = [
     broker: "マネックス証券", card: "マネックスカード",
     rate: 0, rateLabel: "0〜1.1%（2026年10月〜改定）",
     fee: "年会費無料",
+    conds: [
+      { label: "月5万円以上のショッピング利用（2026/10〜の新条件）", v: 0.6, hint: "さらに月7万円以上で0.8%、月10万円以上で1.1%に" }
+    ],
     note: "【2026年10月から改定】これまでは条件なしで一律の還元率だったが、2026年10月分の積立から、ショッピング利用額に応じた変動制（0〜1.1%）に変わる予定。同じマネックス証券でもdカードなら引き続き条件なしで1.1%（月5万円まで）が続く見込みのため、10月以降はdカードとの差が開く可能性がある。改定の詳細はマネックス証券の告知で必ず確認すること。［確認日: 2026-08-11／出典: マネックス証券公式］",
     url: "https://www.monex.co.jp/"
   },
@@ -2825,6 +2909,10 @@ const INVEST_PLANS = [
     broker: "三菱UFJ eスマート証券", card: "JCBカード",
     rate: 0, rateLabel: "0〜1.0%",
     fee: "カードにより異なる",
+    conds: [
+      { label: "JCBゴールド以上のランク", v: 0.5 },
+      { label: "JCB GOLD PREMIUM / JCB ザ・クラス", v: 0.5, hint: "ゴールド以上と合算で1.0%" }
+    ],
     note: "JCBカードでの積立に対応。還元率はJCBのカードランク・条件によって0〜1.0%の幅がある。年会費無料のJCBオリジナルシリーズ一般カードだと下限に近く、上位カードほど上振れしやすい。正確な還元率は保有カードのランクごとにJCB・三菱UFJ eスマート証券の公式ページで確認すること。［確認日: 2026-08-11］",
     url: "https://kabu.com/"
   },
@@ -2839,6 +2927,10 @@ const INVEST_PLANS = [
     broker: "SBI証券", card: "JCBカード",
     rate: 0, rateLabel: "0〜1.0%",
     fee: "カードにより異なる",
+    conds: [
+      { label: "JCBゴールド以上のランク", v: 0.5 },
+      { label: "JCB GOLD PREMIUM / JCB ザ・クラス", v: 0.5, hint: "ゴールド以上と合算で1.0%" }
+    ],
     note: "SBI証券でもJCBカードでの積立に対応。還元率はカードランクにより0〜1.0%。JCBカードは複数の証券会社（SBI証券・松井証券・三菱UFJ eスマート証券）で積立に使えるが、対応するカードの種類や還元率は証券会社ごとに異なるため、自分が使っている証券口座での対応状況を確認すること。［確認日: 2026-08-11］",
     url: "https://www.sbisec.co.jp/"
   },
@@ -2881,6 +2973,10 @@ const INVEST_PLANS = [
     broker: "松井証券", card: "JCBカード",
     rate: 0, rateLabel: "0〜1.0%",
     fee: "カードにより異なる",
+    conds: [
+      { label: "JCBゴールド以上のランク", v: 0.5 },
+      { label: "JCB GOLD PREMIUM / JCB ザ・クラス", v: 0.5, hint: "ゴールド以上と合算で1.0%" }
+    ],
     note: "松井証券でもJCBカードでの積立に対応。還元率はカードランクにより0〜1.0%。松井証券は投資信託の保有ポイントなど独自の還元制度もあるため、クレカ積立分だけでなく合わせて比較するとよい。［確認日: 2026-08-11］",
     url: "https://www.matsui.co.jp/"
   },
@@ -6103,6 +6199,18 @@ function isExcluded(store, cardName){
   return false;
 }
 
+// 起点カードを指定していない（＝基準）ときでも、楽天ペイの提示条件チェックなど
+// split側の調整は反映したいので、静的なatStore.rateにそのまま頼らず算出する。
+function routeCurrentRate(route){
+  const w = routeWithStarter(route);
+  if(w.total != null) return `${w.total.toFixed(1)}%`;
+  if(route.split && route.split.length){
+    const sum = route.split.reduce((a, s) => a + effectiveSplitRate(s), 0);
+    return `${sum.toFixed(1)}%`;
+  }
+  return route.atStore ? route.atStore.rate : "";
+}
+
 function combinedCards(store){
   const own = visibleCards(store);
   let all = own;
@@ -6118,7 +6226,7 @@ function combinedCards(store){
       .map(r => {
         const w = routeWithStarter(r);
         return { name: r.name,
-          rate: w.total != null ? `${w.total.toFixed(1)}%` : (r.atStore ? r.atStore.rate : r.total),
+          rate: routeCurrentRate(r),
           method: r.atStore ? r.atStore.method : "チャージして交通系ICとして利用",
           note: r.note, url: r.url, universal: true, isRoute: true };
       });
@@ -6144,10 +6252,9 @@ function combinedCards(store){
       .filter(r => routeWithStarter(r).usable)
       .map(r => {
         // 起点カードでの実際の還元率に置き換える
-        const w = routeWithStarter(r);
         return {
         name: r.name,
-        rate: w.total != null ? `${w.total.toFixed(1)}%` : r.atStore.rate,
+        rate: routeCurrentRate(r),
         method: r.atStore.method,
         note: r.note,
         url: r.url,
@@ -6346,7 +6453,9 @@ function renderCategoryChips(){
   row.appendChild(allChip);
 
   CATEGORY_LIST.forEach(cat => {
-    const count = STORES.filter(s => s.category === cat).length;
+    const count = cat === "飲食店（すべて）"
+      ? STORES.filter(s => FOOD_SUBCATEGORIES.includes(s.category)).length
+      : STORES.filter(s => s.category === cat).length;
     if(count === 0) return; // データが無いカテゴリは表示しない
     const chip = document.createElement("button");
     chip.className = "category-chip" + (storeState.category === cat ? " active" : "");
@@ -6489,6 +6598,14 @@ const DAY_DEALS = [
     match: d => [8, 18, 28].includes(d.date),
     note: "毎月8のつく日（8日・18日・28日）。セブンカード・プラスでの支払いが条件。",
     url: "https://www.7card.co.jp/"
+  },
+  {
+    name: "ウエルシア お客様感謝デー（ウエル活）",
+    rate: "WAON POINTが1pt→1.5円相当で使える",
+    where: "ウエルシア",
+    match: d => d.date === 20,
+    note: "毎月20日。WAON POINTを200ポイント以上使って支払うと、1ポイント=1.5円相当で使える。例：1,000ポイント消化で1,500円分の買い物ができる。事前にWAON POINTを貯めておく必要がある。還元率ではなくポイント消費時の優遇なので、ポイントが貯まっている人向け。",
+    url: "https://www.welcia.co.jp/"
   },
 ];
 
@@ -6695,7 +6812,7 @@ function renderStores(){
 
   const q = storeState.search.toLowerCase();
   let filtered = STORES.filter(s =>
-    (storeState.category === "all" || s.category === storeState.category) &&
+    (storeState.category === "all" || matchesCategory(s.category, storeState.category)) &&
     (!q || s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q))
   );
 
@@ -7054,6 +7171,9 @@ function routeWithStarter(route){
 function routeSortValue(route){
   const w = routeWithStarter(route);
   if(w.total != null) return w.total;
+  if(route.split && route.split.length){
+    return route.split.reduce((a, s) => a + effectiveSplitRate(s), 0);
+  }
   const m = String(route.total || "").match(/(\d+(?:\.\d+)?)/);
   return m ? parseFloat(m[1]) : 0;
 }
@@ -7178,6 +7298,11 @@ function routeTotalLabel(route){
   if(w.total != null && w.starter){
     const short = w.starter.name.replace(/（.*?）/g, "");
     return `${w.total.toFixed(1)}%（${short}起点）`;
+  }
+  // 起点未指定でも、楽天ペイの提示条件チェックなどsplit側の調整があれば反映する
+  if(route.split && route.split.length && route.split.some(s => effectiveSplitRate(s) !== s.rate)){
+    const sum = route.split.reduce((a, s) => a + effectiveSplitRate(s), 0);
+    return String(route.total || "").replace(/[\d.]+%/, `${sum.toFixed(1)}%`);
   }
   return route.total;
 }
@@ -7953,8 +8078,25 @@ renderPicks();
 renderEntryChecks();
 renderCampaigns();
 // 段階制（tiers）があるものは階層ごとに計算し、無ければ一律の還元率で計算する
+// クレカ積立の条件チェック状態を保存する。
+// キーは "broker|card|condIndex" の組み合わせ。三菱UFJカード計算機と同じ仕組み。
+const INVEST_COND_KEY = "kangenchou_invest_conds";
+let investCondChecked = loadSet(INVEST_COND_KEY) || new Set();
+
+function investCondKey(plan, i){ return `${plan.broker}|${plan.card}|${i}`; }
+
+function investEffectiveRate(plan){
+  if(!plan.conds || !plan.conds.length) return plan.rate;
+  let r = plan.rate;
+  plan.conds.forEach((c, i) => {
+    if(investCondChecked.has(investCondKey(plan, i))) r += c.v;
+  });
+  return r;
+}
+
 function monthlyPoints(plan, monthly){
-  if(!plan.tiers) return monthly * plan.rate / 100;
+  const rate = investEffectiveRate(plan);
+  if(!plan.tiers) return monthly * rate / 100;
   let remaining = monthly, prev = 0, pts = 0;
   for(const [cap, r] of plan.tiers){
     const band = Math.max(0, Math.min(remaining, cap - prev));
@@ -7997,24 +8139,64 @@ function renderCardPicks(){
   });
 }
 
+let investFilter = "all";
+
+function renderInvestChips(){
+  const row = document.getElementById("investChipRow");
+  if(!row) return;
+  const counts = {};
+  INVEST_PLANS.forEach(p => counts[p.broker] = (counts[p.broker]||0)+1);
+
+  row.innerHTML = "";
+  const mk = (key, label, count) => {
+    const b = document.createElement("button");
+    b.className = "category-chip" + (investFilter === key ? " active" : "");
+    b.innerHTML = `${label} <span class="chip-count">${count}</span>`;
+    b.addEventListener("click", ()=>{ investFilter = key; renderInvest(); });
+    row.appendChild(b);
+  };
+  mk("all", "すべて", INVEST_PLANS.length);
+  Object.keys(counts).sort((a,b)=> counts[b]-counts[a]).forEach(b => mk(b, b, counts[b]));
+}
+
 function renderInvest(){
+  renderInvestChips();
   const list = document.getElementById("investList");
   if(!list) return;
   const monthly = Math.max(0, parseInt(document.getElementById("investAmount").value, 10) || 0);
   list.innerHTML = "";
 
-  const sorted = [...INVEST_PLANS].sort((a,b) => monthlyPoints(b, monthly) - monthlyPoints(a, monthly));
+  const filtered = investFilter === "all" ? INVEST_PLANS : INVEST_PLANS.filter(p => p.broker === investFilter);
+  const sorted = [...filtered].sort((a,b) => monthlyPoints(b, monthly) - monthlyPoints(a, monthly));
 
   sorted.forEach((p, i) => {
+    const effectiveRate = investEffectiveRate(p);
     const mp = Math.floor(monthlyPoints(p, monthly));
     const yearly = mp * 12;
     const el = document.createElement("div");
     el.className = "route-card" + (i === 0 ? " is-top" : "");
+
+    const condsHtml = (p.conds && p.conds.length) ? `
+      <div class="invest-conds">
+        <div class="invest-conds-label">あなたの条件（チェックで還元率が変わります）</div>
+        ${p.conds.map((c, ci) => {
+          const k = investCondKey(p, ci);
+          const on = investCondChecked.has(k);
+          return `<label class="mufg-item${on ? " on" : ""}">
+            <input type="checkbox" data-invest-cond="${k}" ${on ? "checked" : ""}>
+            <span class="mufg-label">${c.label}${c.hint ? `<span class="mufg-hint">${c.hint}</span>` : ""}</span>
+            <span class="mufg-v">+${c.v}%</span>
+          </label>`;
+        }).join("")}
+        <div class="invest-conds-result">あなたの還元率：<b>${effectiveRate.toFixed(1)}%</b></div>
+      </div>` : "";
+
     el.innerHTML = `
       <div class="route-top">
         <span class="route-name">${p.broker} × ${p.card}</span>
         <span class="route-total">${p.rateLabel}</span>
       </div>
+      ${condsHtml}
       <div class="invest-result">
         <div class="invest-result-item">
           <span class="invest-result-label">毎月</span>
@@ -8032,6 +8214,17 @@ function renderInvest(){
       <div class="card-option-note">${formatNote(p.note)}</div>
       ${linkRowHtml(p.url, p.card)}
     `;
+
+    el.querySelectorAll("[data-invest-cond]").forEach(chk => {
+      chk.addEventListener("change", ()=>{
+        const k = chk.dataset.investCond;
+        if(investCondChecked.has(k)) investCondChecked.delete(k);
+        else investCondChecked.add(k);
+        saveSet(INVEST_COND_KEY, investCondChecked);
+        renderInvest();
+      });
+    });
+
     list.appendChild(el);
   });
 }
@@ -8041,35 +8234,168 @@ renderInvest();
 renderCardPicks();
 
 // ---- カード選び診断（あなたはどのタイプ？） ----
-const CARD_DIAG = {
-  base: {
-    group: "土台の1枚（どこでも安定して高還元）",
-    text: "年会費なしで、どこで払っても気にせず使える1枚が向いています。基本還元率が高いカードを1枚決めて、それを軸にするのがシンプルです。下の「土台の1枚」を見てください。"
+// 2〜3問に答えると、カード・積立・チャージルートから2〜3件おすすめを出す。
+// 個別データを重複して持たず、実在するCARD_PICKS/CHARGE_ROUTES/INVEST_PLANSから
+// 名前で引いてくることで、還元率や注記が本体側の更新と自動で揃うようにしている。
+function findCardPick(name){
+  for(const g of CARD_PICKS){
+    const item = g.items.find(i => i.name === name);
+    if(item) return item;
+  }
+  return null;
+}
+function findRoute(name){
+  return CHARGE_ROUTES.find(r => r.name === name) || null;
+}
+function findInvest(broker, card){
+  return INVEST_PLANS.find(p => p.broker === broker && p.card === card) || null;
+}
+
+function diagPickHtml(pick){
+  if(pick.kind === "card"){
+    const c = findCardPick(pick.name);
+    if(!c) return "";
+    return `<div class="diag-pick">
+      <div class="diag-pick-top"><span class="diag-pick-name">${c.name}</span><span class="diag-pick-rate">${c.rate}</span></div>
+      <div class="diag-pick-reason">${pick.reason || c.why}</div>
+      ${linkRowHtml(c.url, c.name)}
+    </div>`;
+  }
+  if(pick.kind === "route"){
+    const r = findRoute(pick.name);
+    if(!r) return "";
+    return `<div class="diag-pick">
+      <div class="diag-pick-top"><span class="diag-pick-name">${r.name}</span><span class="diag-pick-rate">${r.total}</span></div>
+      <div class="diag-pick-reason">${pick.reason || (r.starter || "")}</div>
+      ${linkRowHtml(r.url, r.name)}
+    </div>`;
+  }
+  if(pick.kind === "invest"){
+    const p = findInvest(pick.broker, pick.card);
+    if(!p) return "";
+    return `<div class="diag-pick">
+      <div class="diag-pick-top"><span class="diag-pick-name">${p.broker} × ${p.card}</span><span class="diag-pick-rate">${p.rateLabel}</span></div>
+      <div class="diag-pick-reason">${pick.reason || p.fee}</div>
+      ${linkRowHtml(p.url, p.card)}
+    </div>`;
+  }
+  return "";
+}
+
+const CARD_QUIZ = {
+  start: "effort",
+  nodes: {
+    effort: {
+      q: "めんどうな手順を踏んでまで、少しでも高い還元を追求したい？",
+      options: [
+        { label: "はい、手間をかけてもいい", next: "effortFee" },
+        { label: "いいえ、シンプルに使いたい", next: "simpleAmount" }
+      ]
+    },
+    effortFee: {
+      q: "年会費を払ってでも、還元率をさらに上げたい？",
+      options: [
+        { label: "はい（年会費を払ってもいい）", next: "resultEffortFee" },
+        { label: "いいえ（年会費は無料がいい）", next: "resultEffortFree" }
+      ]
+    },
+    simpleAmount: {
+      q: "年間のカード利用額は100万円を超えそう？",
+      options: [
+        { label: "超えそう", next: "resultSimpleGold" },
+        { label: "超えなそう", next: "resultSimpleBase" }
+      ]
+    }
   },
-  gold: {
-    group: "ゴールド以上（年会費を払う価値があるか）",
-    text: "年間の利用額が多いなら、年会費以上のポイント還元や特典（保険・ラウンジなど）を回収できます。特に「年100万円利用で翌年以降無料」になるカードは、達成できる見込みがあるなら検討価値が高いです。下の「ゴールド以上」を見てください。"
-  },
-  debit: {
-    group: "デビットカード（使いすぎを防ぎたい／審査なしで作りたい）",
-    text: "口座残高の範囲でしか使えないので使いすぎを防げて、審査もありません。年会費無料でも還元率1.5%前後のものがあるので、クレカに抵抗がある人でも十分な還元を狙えます。下の「デビットカード」を見てください。"
+  results: {
+    resultEffortFee: {
+      lead: "手間も年会費もかけていいなら、積立・チャージ両方で上位ランクを狙うのが向いています。",
+      picks: [
+        { kind: "invest", broker: "SBI証券", card: "三井住友カード プラチナプリファード",
+          reason: "年会費33,000円だが、年500万円以上の利用でクレカ積立が3.0%になり、積立分だけで年会費を回収しやすい。" },
+        { kind: "route", name: "V NEOBANKデビット → au PAY → VポイントPay",
+          reason: "年会費・審査なしで組めるルートの中では還元率・上限額ともに優秀。エポスゴールドなど起点カードを工夫すればさらに上がる。" }
+      ]
+    },
+    resultEffortFree: {
+      lead: "手間はかけてもいいけど年会費は避けたいなら、無料で組めるチャージルートが向いています。",
+      picks: [
+        { kind: "route", name: "V NEOBANKデビット → au PAY → VポイントPay",
+          reason: "年会費・審査なしで作れるV NEOBANKデビットを起点に、月5万円まで2.5%を狙える。" },
+        { kind: "route", name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
+          reason: "回せる金額は月1万円までと小さいが、還元率は最高水準。エポスゴールドなど起点カード次第でさらに上がる。" }
+      ]
+    },
+    resultSimpleGold: {
+      lead: "年100万円以上使うなら、年会費以上のメリットを回収しやすいゴールドクラスが向いています。",
+      picks: [
+        { kind: "card", name: "三井住友カード ゴールド（NL）",
+          reason: "年100万円利用で翌年以降の年会費が永年無料になり、実質年会費なしで持てる。" },
+        { kind: "invest", broker: "SBI証券", card: "三井住友カード ゴールド（NL）",
+          reason: "同じカードでクレカ積立も1.0%になり、日常利用と積立を1枚にまとめられる。" }
+      ]
+    },
+    resultSimpleBase: {
+      lead: "シンプルに、年会費なしで基本還元率が高い1枚を持つのがおすすめです。",
+      picks: [
+        { kind: "card", name: "リクルートカード",
+          reason: "特約店を気にせず、どこで使っても1.2%。年会費無料カードでは最高水準。" },
+        { kind: "invest", broker: "マネックス証券", card: "dカード",
+          reason: "同じ発行元のdカードなら、条件なし・年会費無料でクレカ積立も1.1%とバランスがよい。" }
+      ]
+    }
   }
 };
 
-document.querySelectorAll(".card-diag-btn").forEach(btn => {
-  btn.addEventListener("click", ()=>{
-    document.querySelectorAll(".card-diag-btn").forEach(b => b.classList.remove("on"));
-    btn.classList.add("on");
-    const key = btn.dataset.diag;
-    const d = CARD_DIAG[key];
-    document.getElementById("cardDiagResult").innerHTML = `<b>${d.group}</b><br>${d.text}`;
-    document.querySelectorAll(".picks-divider").forEach(el => {
-      el.classList.toggle("diag-highlight", el.dataset.group === d.group);
+let diagPath = [];
+
+function renderDiagNode(){
+  const body = document.getElementById("cardDiagBody");
+  if(!body) return;
+  const key = diagPath.length ? diagPath[diagPath.length - 1] : CARD_QUIZ.start;
+  const node = CARD_QUIZ.nodes[key];
+
+  if(node){
+    body.innerHTML = `
+      ${diagPath.length ? `<button class="diag-back-btn" id="diagBackBtn">← 一つ前に戻る</button>` : ""}
+      <div class="diag-q">${node.q}</div>
+      <div class="card-diag-opts">
+        ${node.options.map((o,i) => `<button class="card-diag-btn" data-next="${o.next}">${o.label}</button>`).join("")}
+      </div>
+    `;
+    body.querySelector("#diagBackBtn")?.addEventListener("click", ()=>{
+      diagPath.pop();
+      renderDiagNode();
     });
-    const target = [...document.querySelectorAll(".picks-divider")].find(el => el.dataset.group === d.group);
-    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    body.querySelectorAll(".card-diag-btn").forEach(btn => {
+      btn.addEventListener("click", ()=>{
+        diagPath.push(btn.dataset.next);
+        renderDiagNode();
+      });
+    });
+    return;
+  }
+
+  // 質問ノードでなければ結果
+  const result = CARD_QUIZ.results[key];
+  if(!result) return;
+  body.innerHTML = `
+    <button class="diag-back-btn" id="diagBackBtn">← 一つ前に戻る</button>
+    <div class="diag-result-lead">${result.lead}</div>
+    ${result.picks.map(diagPickHtml).join("")}
+    <button class="diag-restart-btn" id="diagRestartBtn">はじめからやり直す</button>
+  `;
+  body.querySelector("#diagBackBtn").addEventListener("click", ()=>{
+    diagPath.pop();
+    renderDiagNode();
   });
-});
+  body.querySelector("#diagRestartBtn").addEventListener("click", ()=>{
+    diagPath = [];
+    renderDiagNode();
+  });
+}
+
+renderDiagNode();
 renderStores();
 
 // ========== 現在地から探す ==========
