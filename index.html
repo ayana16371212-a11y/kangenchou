@@ -1736,6 +1736,17 @@
     border-color: var(--foil-3);
     color: var(--foil-3);
   }
+
+  /* ヘッダー内の編集ボタン */
+  .masthead .edit-toggle-btn{
+    padding: 4px 8px;
+    font-size: 14px;
+    border-radius: 8px;
+    line-height: 1;
+  }
+  .masthead .edit-toggle-btn.on{
+    box-shadow: 0 0 0 2px var(--foil-3);
+  }
   .add-store-btn{
     display: none;
     padding: 8px 15px;
@@ -2260,12 +2271,13 @@
   <header class="masthead">
     <h1>還元帳<small>レジの前で、どれで払うか決める</small></h1>
     <div class="masthead-right">
+      <button id="editModeBtn" class="edit-toggle-btn" title="編集モード">✏️</button>
       <button id="themeBtn" class="theme-btn" title="表示テーマを切り替える" aria-label="表示テーマを切り替える">
         <span id="themeIcon">☾</span>
       </button>
       <div class="dateline">
         出典 — 各社公式<br>
-        更新 — 2026.08.09
+        更新 — 2026.08.12
       </div>
     </div>
   </header>
@@ -2328,7 +2340,6 @@
       <div id="nearbyResults"></div>
     </div>
     <div class="edit-toggle-row">
-      <button id="editModeBtn" class="edit-toggle-btn">✏️ 編集モード</button>
       <button id="addStoreBtn" class="add-store-btn">＋ 新しいお店を追加</button>
       <button id="aiImportBtn" class="add-store-btn ai-btn">✨ リンクから取り込む</button>
       <button id="affiliateBtn" class="add-store-btn">🔗 紹介リンク管理</button>
