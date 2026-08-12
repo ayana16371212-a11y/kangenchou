@@ -2823,6 +2823,15 @@ const CARD_PICKS = [
         url: "https://www.netbk.co.jp/"
       },
       {
+        name: "カテエネBANKデビット",
+        rate: "1.0〜2.0%（月末残高200万円以上で2.0%）",
+        fee: "年会費無料・残高200万円の維持が実質条件",
+        why: "2026年11月のV NEOBANK改悪後の最有力代替起点。月末200万円を維持できればV NEOBANKの1.5%を上回る2.0%になる。中部電力の契約は不要。カテエネポイントはVポイント・楽天・dポイント・Pontaへ等価交換可能。",
+        good: "200万円の手元資金がある方、V NEOBANKからの移行先を探している方",
+        detail: "住信SBIネット銀行の「カテエネBANK支店」のデビットカード。月末（末日）の円普通預金＋SBIハイブリッド預金の合計残高が200万円以上なら翌月は2.0%、200万円未満なら1.0%になる。中部電力ミライズとの電気・ガス契約は不要で誰でも口座開設可能。年会費無料・審査なし（デビットカード）。チャージルートの起点として：カテエネBANKデビット→au PAY→VポイントPayで合計3.0%（月5万円まで）になり、V NEOBANKルートの後継として最有力。なお、ルートとしてはV NEOBANKと完全に入れ替え可能なため、au PAYを普段使いしている方はそのままルートを引き継げる。200万円の維持が難しい場合は第一生命NEOBANKデビット Premium（条件なし1.5%）が代替になる。チャージ対象外取引については2026年8月時点では設定されていない（V NEOBANKのような改悪がないことを確認済み）。今後の改定情報はカテエネBANK公式で確認すること。［確認日: 2026-08-12／出典: カテエネBANK公式・各種情報サイト複数］",
+        url: "https://katene.chuden.jp/clubkatene/p/lp/katenebank/"
+      },
+      {
         name: "デビットカード Point＋（住信SBIネット銀行）",
         rate: "1.25〜2.0%",
         fee: "年会費無料",
@@ -3243,7 +3252,8 @@ const DEFAULT_ROUTES = [
     caution: "Suicaへのチャージは月5万円までの制限がある。また三井住友カードからJAL Pay・au PAYへのチャージは2026年3月以降ポイント対象外になっており、以前の定番ルートは使えない。",
     starters: {
       "リクルートカード": 1.2,
-      "エポスゴールド": 1.5,
+      "カテエネBANKデビット": 2.0,
+      "エポスゴールド": 0,
       "V NEOBANKデビット（住信SBI）": 1.5,
       "楽天カード": 1,
       "三井住友カード（NL）": 0
@@ -3343,11 +3353,12 @@ const DEFAULT_ROUTES = [
     },
     note: "2025年11月のアップデートで、Visa/Mastercardブランドかつ3Dセキュア対応のカードなら種類を問わず手数料無料でチャージできるようになった。一方で、三井住友カード発行カードからのチャージ特典0.25%は同時に廃止されている。チャージ上限は本人確認またはOlive連携で月100万円。［確認日: 2026-08-09］",
     url: "https://www.smbc-card.com/nyukai/magazine/tips/Vpoint-method.jsp",
-    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。また、チャージ元にV NEOBANKデビットを使っている場合、2026年11月1日から他社決済サービスへのチャージがポイント対象外になるため、このルートは実質的に使えなくなる。",
+    caution: "三井住友カードからVポイントPayへのチャージ分は、100万円修行の集計対象外。エポスゴールドは2026年8月1日からVポイントPay等へのチャージがポイント対象外（0%）のため起点として使用不可。V NEOBANKデビットからのチャージは2026年11月1日からポイント対象外になる予定。",
     starters: {
       "リクルートカード": 1.2,
+      "カテエネBANKデビット": 2.0,
       "V NEOBANKデビット（住信SBI）": 1.5,
-      "エポスゴールド": 1.5,
+      "エポスゴールド": 0,
       "楽天カード": 1,
       "三井住友カード（NL）": 0
     }
@@ -6354,7 +6365,7 @@ function combinedCards(store){
         return { name: r.name,
           rate: routeCurrentRate(r),
           method: r.atStore ? r.atStore.method : "チャージして交通系ICとして利用",
-          note: r.note, url: r.url, universal: true, isRoute: true };
+          note: r.note, url: r.url, universal: true, isRoute: true, shutdownWarn: r.shutdownWarn || null };
       });
     all = own.concat(transitRoutes);
   }
@@ -6385,7 +6396,8 @@ function combinedCards(store){
         note: r.note,
         url: r.url,
         universal: true,
-        isRoute: true
+        isRoute: true,
+        shutdownWarn: r.shutdownWarn || null
       };
       });
     all = all.concat(routeEntries);
@@ -6518,6 +6530,7 @@ function buildStoreCardEl(store, distanceMeters){
         <button class="icon-btn delete-card-btn" title="削除">🗑</button>
       </div>
       <div class="card-option-method">${c.method || ""}</div>
+      ${c.shutdownWarn ? `<div class="route-shutdown-warn" style="margin:4px 0 2px;"><b>⚠️ 終了予定</b>　${c.shutdownWarn.replace('⚠️ ', '').replace(/^終了予定。/, '')}</div>` : ""}
       ${/【変動が大きい案件】/.test(c.note || "") ? `<div class="volatile-flag">📈 還元率の変動が大きい案件です。購入直前に必ず現在の値を確認してください。</div>` : ""}
       ${c.note ? `<div class="card-option-note">${formatNote(c.note)}</div>` : ""}
       ${freshnessHtml(c.note)}
@@ -6597,7 +6610,7 @@ function bestUniversalCards(){
   const pool = UNIVERSAL_PAYMENTS.concat(
     CHARGE_ROUTES.filter(r => r.atStore).map(r => ({
       name: r.name, rate: r.atStore.rate, method: r.atStore.method,
-      note: r.note, url: r.url, universal: true, isRoute: true
+      note: r.note, url: r.url, universal: true, isRoute: true, shutdownWarn: r.shutdownWarn || null
     }))
   );
   const mine = pool.filter(c => ownsCard(c.name));
