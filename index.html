@@ -2394,35 +2394,36 @@ document.addEventListener("click", function(e){
   }
   .switch-btn[aria-checked="true"] .switch-knob{ left: 21px; background: var(--on-foil); }
   .sort-toggle-label{ font-size: 13px; font-weight: 600; color: var(--muted); }
-  .category-chip-row{ display: flex; overflow-x: auto; gap: 8px; margin-bottom: 16px; padding-bottom: 4px; scrollbar-width: none; }
+  .category-chip-row{ display: flex; overflow-x: auto; gap: 8px; margin-bottom: 16px; padding-bottom: 6px; scrollbar-width: none; align-items: flex-start; }
   .category-chip-row::-webkit-scrollbar{ display: none; }
   .category-chip{
     flex: 0 0 auto;
-    padding: 8px 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 10px 12px;
+    min-width: 56px;
     border: 1px solid var(--line);
-    border-radius: 9px;
+    border-radius: 12px;
     background: var(--surface);
     color: var(--muted);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
-    white-space: nowrap;
     cursor: pointer;
     transition: all .15s ease;
+    line-height: 1.3;
   }
+  .category-chip svg{ width: 18px; height: 18px; }
   .category-chip:hover{ color: var(--text); border-color: var(--dim); }
-  .category-chip .chip-count{
-    margin-left: 5px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10.5px;
-    color: var(--dim);
-  }
+  .category-chip .chip-count{ display: none; }
   .category-chip.active{
-    background: var(--surface-2);
-    border-color: var(--foil-2);
-    color: var(--text);
+    background: #3B82F6;
+    border-color: #3B82F6;
+    color: #fff;
   }
-  .category-chip.active .chip-count{ color: var(--foil-2); }
+  .category-chip.active .chip-count{ color: #fff; }
 
   /* ===== expiry badges & campaigns ===== */
   .expiry-badge{
@@ -8380,11 +8381,9 @@ function buildStoreCardEl(store, distanceMeters){
   const rateUnit = bestRate.includes("OFF") ? "%OFF" : "%";
   const ratePrefix = /最大/.test(bestRate) ? "最大" : "還元率";
 
-  // タグ（上位3カード名）
-  const tagCards = sorted.slice(0, 3);
-  const moreCount = sorted.length - 3;
-  const tagsHtml = tagCards.map(c => `<span class="store-tag">${c.name}</span>`).join("")
-    + (moreCount > 0 ? `<span class="store-tag more">+${moreCount}</span>` : "");
+  // タグ：チャージルートを除いたカード名のみ上位3件
+  const tagCards = sorted.filter(c => !c.isRoute).slice(0, 3);
+  const tagsHtml = tagCards.map(c => `<span class="store-tag">${c.name}</span>`).join("");
 
   const head = document.createElement("div");
   head.className = "store-head";
@@ -8543,13 +8542,54 @@ function storeBestRate(store){
   return store.cards.reduce((max, c) => Math.max(max, rateValue(c)), 0);
 }
 
+// カテゴリ → アイコンSVGパス のマッピング
+const CATEGORY_CHIP_ICONS = {
+  "すべて":           `<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>`,
+  "コンビニ":         `<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/>`,
+  "飲食店（すべて）": `<path d="M18 3v18"/><path d="M15 3v6a3 3 0 0 0 6 0V3"/><path d="M6 3v6a3 3 0 0 1-6 0"/><path d="M3 3v18"/>`,
+  "ファストフード":   `<path d="M4 10h16"/><path d="M5 10a7 7 0 0 1 14 0"/><path d="M3 14h18"/><path d="M4 14l1 6h14l1-6"/>`,
+  "牛丼・定食":       `<path d="M4 12a8 4 0 0 0 16 0"/><path d="M4 12V9a8 4 0 0 1 16 0v3"/><path d="M2 12h20"/>`,
+  "ファミレス":       `<path d="M18 3v18"/><path d="M15 3v6a3 3 0 0 0 6 0V3"/><path d="M6 3v6a3 3 0 0 1-6 0"/><path d="M3 3v18"/>`,
+  "回転寿司":         `<ellipse cx="12" cy="14" rx="9" ry="4"/><path d="M12 10V4"/><path d="M9 6h6"/>`,
+  "飲食店（その他）": `<path d="M18 3v18"/><path d="M15 3v6a3 3 0 0 0 6 0V3"/><path d="M6 3v6a3 3 0 0 1-6 0"/><path d="M3 3v18"/>`,
+  "カフェ":           `<path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2"/><path d="M6 2v2M10 2v2M14 2v2"/>`,
+  "スーパー":         `<circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/>`,
+  "ドラッグストア":   `<path d="m10.5 20.5 8-8a4.95 4.95 0 1 0-7-7l-8 8a4.95 4.95 0 1 0 7 7Z"/><path d="M8.5 8.5l7 7"/>`,
+  "自販機":           `<rect x="6" y="2" width="12" height="20" rx="1"/><rect x="8" y="5" width="8" height="6"/><circle cx="10" cy="15" r="1" fill="currentColor"/><circle cx="14" cy="15" r="1" fill="currentColor"/>`,
+  "エンタメ":         `<path d="M12 3v18"/><path d="m7 8 5-5 5 5"/><path d="M4 15a8 8 0 0 0 16 0"/>`,
+  "トラベル":         `<path d="m17.8 19.2 1-1-3.4-2.7-.1-4.1c0-1.4-.6-2.7-1.6-3.7L9.5 3.5a1 1 0 0 0-1.7.7v4.2L3.1 6.9a1 1 0 0 0-1.1.2l-.4.4a1 1 0 0 0 .1 1.5l4.1 3.2H2.4a1 1 0 0 0-.7 1.7l3.5 3.5c1 1 2.3 1.6 3.7 1.6l4.1.1 2.7 3.4 1-1-1-4Z"/>`,
+  "ホームセンター":   `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>`,
+  "ファッション":     `<path d="M20.4 14.5 16 10l4-4-3-3-5 5-5-5-3 3 4 4-4.4 4.5c-.4.4-.4 1 0 1.4l2.6 2.6c.4.4 1 .4 1.4 0L11 15v7h6v-7l3.4 3.5c.4.4 1 .4 1.4 0l2.6-2.6c.4-.4.4-1 0-1.4Z"/>`,
+  "ネット通販":       `<circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/>`,
+  "交通":             `<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/><circle cx="8.5" cy="15.5" r="0.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="0.5" fill="currentColor"/>`,
+  "その他":           `<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>`,
+};
+
+// カテゴリ表示名（長いものは改行あり）
+const CATEGORY_CHIP_LABELS = {
+  "飲食店（すべて）": "飲食店",
+  "飲食店（その他）": "飲食店\nその他",
+  "ファストフード":   "ファスト\nフード",
+  "牛丼・定食":       "牛丼\n定食",
+  "ホームセンター":   "ホーム\nセンター",
+  "ドラッグストア":   "ドラッグ\nストア",
+  "ネット通販":       "ネット\n通販",
+};
+
+function categoryChipIcon(cat){
+  const path = CATEGORY_CHIP_ICONS[cat] || CATEGORY_CHIP_ICONS["その他"];
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;display:block;">${path}</svg>`;
+}
+
 function renderCategoryChips(){
   const row = document.getElementById("categoryChipRow");
   row.innerHTML = "";
 
+  // 「すべて」チップ
   const allChip = document.createElement("button");
   allChip.className = "category-chip" + (storeState.category === "all" ? " active" : "");
-  allChip.innerHTML = `すべて <span class="chip-count">${STORES.length}</span>`;
+  allChip.innerHTML = `${categoryChipIcon("すべて")}<span style="margin-top:2px;">すべて</span>`;
+  allChip.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;min-width:56px;";
   allChip.addEventListener("click", ()=>{ storeState.category = "all"; renderStores(); });
   row.appendChild(allChip);
 
@@ -8557,10 +8597,12 @@ function renderCategoryChips(){
     const count = cat === "飲食店（すべて）"
       ? STORES.filter(s => FOOD_SUBCATEGORIES.includes(s.category)).length
       : STORES.filter(s => s.category === cat).length;
-    if(count === 0) return; // データが無いカテゴリは表示しない
+    if(count === 0) return;
+    const label = CATEGORY_CHIP_LABELS[cat] || cat;
     const chip = document.createElement("button");
     chip.className = "category-chip" + (storeState.category === cat ? " active" : "");
-    chip.innerHTML = `${cat} <span class="chip-count">${count}</span>`;
+    chip.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;min-width:56px;";
+    chip.innerHTML = `${categoryChipIcon(cat)}<span style="margin-top:2px;white-space:pre-line;text-align:center;">${label}</span>`;
     chip.addEventListener("click", ()=>{ storeState.category = cat; renderStores(); });
     row.appendChild(chip);
   });
