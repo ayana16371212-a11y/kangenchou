@@ -9685,22 +9685,19 @@ function toggleVerified(key){
 // 確認済みバッジ／編集モード時のチェックボックスHTML
 function verifyBadgeHtml(key){
   const on = isVerified(key);
-  return `<span class="verify-badge${on ? " verified" : ""}" data-verify-key="${key}" title="目視確認済み">${on ? "✓ 確認済" : "○ 未確認"}</span>`;
+  return `<button type="button" class="verify-badge${on ? " verified" : ""}" data-verify-key="${key}" title="目視確認済み">${on ? "✓ 確認済" : "○ 未確認"}</button>`;
 }
-// 全体にイベント委譲でチェック切替
+// 確認状態はDOMだけをその場で更新。大きな一覧を再描画しないので軽快に切り替わる。
 document.addEventListener("click", (e)=>{
   const el = e.target.closest("[data-verify-key]");
-  if(!el) return;
-  // 編集モード中のみ切替可能
-  if(!editMode) return;
+  if(!el || !editMode) return;
   e.preventDefault();
   e.stopPropagation();
-  toggleVerified(el.dataset.verifyKey);
-  // カード全体を再描画するため、対応するrender関数を呼ぶ
-  if(el.dataset.verifyKey.startsWith("route:")) renderRoutes();
-  else if(el.dataset.verifyKey.startsWith("invest:")) renderInvest();
-  else if(el.dataset.verifyKey.startsWith("cardpick:")) renderCardPicks();
-  else if(el.dataset.verifyKey.startsWith("store:")) renderStores();
+  const key = el.dataset.verifyKey;
+  toggleVerified(key);
+  const on = isVerified(key);
+  el.textContent = on ? "✓ 確認済" : "○ 未確認";
+  el.classList.toggle("verified", on);
 });
 
 // カード名の包含関係。上位カテゴリのエントリーも「自分のカード」として扱う。
