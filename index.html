@@ -2749,6 +2749,23 @@ document.addEventListener("click", function(e){
   .bottom-nav-item.active{ color: #3B82F6; }
   .bottom-nav-item svg{ width: 22px; height: 22px; }
 
+  .route-fav-btn{
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; margin-left: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .route-fav-btn svg{ width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+  .route-fav-btn:hover{ color: var(--foil-2); border-color: var(--foil-2); }
+  .route-fav-btn.is-fav{ color: #F5B82E; border-color: #F5B82E; background: rgba(245,184,46,.08); }
+  .route-fav-btn.is-fav svg{ fill: currentColor; }
+
   /* ===== trust banner ===== */
   .trust-banner{
     display: flex;
@@ -3388,6 +3405,12 @@ document.addEventListener("click", function(e){
   .nav-sheet-title{font-size:17px;font-weight:800;margin:0;}
   .nav-sheet-close{border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:9px;width:34px;height:34px;cursor:pointer;font-size:18px;}
   .nav-sheet-desc{font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 14px;}
+  .nav-fav-section-title{
+    margin: 14px 4px 6px;
+    font-size: 11px; font-weight: 700; color: var(--dim);
+    letter-spacing: .04em;
+  }
+
   .nav-history-item,.nav-fav-item,.nav-guide-item{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
     width:100%; padding:12px; margin-bottom:8px;
@@ -4506,7 +4529,7 @@ const CARD_PICKS = [
       },
       {
         name: "JCB CARD W",
-        rate: "1.0%（優待店で最大10.5%）",
+        rate: "最大10.5%（基本1.0%）",
         fee: "年会費永年無料",
         why: "基本1.0%に加え、J-POINTパートナーの優待店で大きく跳ねる。クレカ乗車10.5%も強力。",
         detail: "【申込条件】18〜39歳限定。ただし39歳までに入会すれば40歳以降も年会費無料のまま使い続けられる（40歳以降の新規申込は不可）。■【ポイントの仕組み】JCBのポイントは2026年1月にOki Dokiポイントから「J-POINT」へ移行し、1ポイント=1円で使えるようになった。貯まり方は3階建てで、①通常ポイント（基本0.5%）②J-POINTパートナー（登録した対象店で最大10%）③J-POINTボーナス（年間50万円達成ごとにボーナス）。■【W会員の優遇】JCB CARD W / W plus L / Biz ONE は常時+1倍が加算されるため、同じ店でも他のオリジナルシリーズより1段高くなる。クレカ乗車なら10%→10.5%、Amazonなら3倍→実質2%相当。■【最も間違えやすい点】J-POINTパートナーの優待は、店舗ごとに事前のポイントアップ登録（無料）をしないと倍率が上がらない。多くは初回1度きりで以降は不要だが、登録していない店では通常ポイントしか付かない。2026年からは従来の「MyJチェック登録」は倍率に関係しなくなり、ポイントアップ登録だけで完結する方式に変わった。［確認日: 2026-08-09］",
@@ -9258,6 +9281,7 @@ function renderRoutes(){
   shown.forEach((r, ri) => {
     const el = document.createElement("div");
     el.className = "route-card";
+    el.dataset.routeName = r.name;
     const chain = r.steps.map((s, i) =>
       `<span class="route-step${i === r.steps.length - 1 ? " is-end" : ""}">${withStarterName(s)}</span>`
     ).join(`<span class="route-arrow">→</span>`);
@@ -9266,6 +9290,9 @@ function renderRoutes(){
       <div class="route-top">
         <span class="route-name">${r.name}${verifyBadgeHtml("route:" + r.name)}</span>
         <span class="route-total">${routeTotalLabel(r)}</span>
+        <button class="route-fav-btn${isRouteFav(r.name) ? " is-fav" : ""}" title="${isRouteFav(r.name) ? "お気に入りから外す" : "お気に入りに追加"}" aria-label="${isRouteFav(r.name) ? "お気に入りから外す" : "お気に入りに追加"}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.65 5.38 5.94.86-4.3 4.19 1.02 5.92L12 17.05l-5.31 2.8 1.02-5.92-4.3-4.19 5.94-.86L12 3.5z"/></svg>
+        </button>
         <button class="icon-btn edit-route-btn" title="ルートを編集（JSON）">✎</button>
         <button class="icon-btn delete-route-btn" title="ルートを削除">🗑</button>
       </div>
@@ -9280,6 +9307,10 @@ function renderRoutes(){
       <div class="card-option-note">${formatNote(r.note)}</div>
       ${linkRowHtml(r.url, r.name)}
     `;
+    el.querySelector(".route-fav-btn")?.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      toggleRouteFav(r.name);
+    });
     el.querySelector(".edit-route-btn")?.addEventListener("click", (e)=>{ e.stopPropagation(); openRouteModal(r); });
     el.querySelector(".delete-route-btn")?.addEventListener("click", (e)=>{
       e.stopPropagation();
@@ -9603,6 +9634,7 @@ fontSizeBtn.addEventListener("click", ()=>{
 // ========== 保有カード・お気に入り・金額 ==========
 const WALLET_KEY = "kangenchou_wallet";
 const FAV_KEY    = "kangenchou_favs";
+const ROUTE_FAV_KEY = "kangenchou_route_favs";
 
 // 選択肢として出す決済手段。データ中のカード名と部分一致で照合する。
 const WALLET_OPTIONS = [
@@ -9634,6 +9666,7 @@ function saveSet(key, set){
 // null = 未設定（＝全部表示）。空Setとは意味が違うので区別する。
 let wallet = loadSet(WALLET_KEY);
 let favs   = loadSet(FAV_KEY) || new Set();
+let routeFavs = loadSet(ROUTE_FAV_KEY) || new Set();
 let amount = 0;
 
 // ========== 目視確認チェック（編集モード限定） ==========
@@ -9704,6 +9737,13 @@ function toggleFav(storeName){
   if(favs.has(storeName)) favs.delete(storeName); else favs.add(storeName);
   saveSet(FAV_KEY, favs);
   renderStores();
+}
+
+function isRouteFav(routeName){ return routeFavs.has(routeName); }
+function toggleRouteFav(routeName){
+  if(routeFavs.has(routeName)) routeFavs.delete(routeName); else routeFavs.add(routeName);
+  saveSet(ROUTE_FAV_KEY, routeFavs);
+  renderRoutes();
 }
 
 
@@ -10449,9 +10489,22 @@ renderDiagNode();
     const bonusEl = document.getElementById("heroBonus");
 
     if(nameEl) nameEl.textContent = card.name;
-    // Extract numeric rate
-    const rateMatch = card.rate.match(/(\d+\.?\d*)/);
-    if(rateEl && rateMatch) rateEl.textContent = rateMatch[1];
+    // 大きく表示する還元率は「最大○%」や「○〜○%」がある場合は上限を優先。
+    // 例：0.5%（対象店7〜8%）→ 8%、0.5%（優待店で最大10%）→ 10%
+    function heroRateText(rate){
+      const s = String(rate || "");
+      let m = s.match(/最大\s*(\d+(?:\.\d+)?)%/);
+      if(m) return `最大${m[1]}%`;
+      // 「1.0〜3.0%」「対象店7〜8%」などは上限を表示
+      const ranges = [...s.matchAll(/(\d+(?:\.\d+)?)\s*[〜~\-–—]\s*(\d+(?:\.\d+)?)%/g)];
+      if(ranges.length) return `最大${ranges[ranges.length - 1][2]}%`;
+      // 「3.0%以上」のように明確な上振れ表現がある場合
+      m = s.match(/(\d+(?:\.\d+)?)%以上/);
+      if(m) return `最大${m[1]}%`;
+      m = s.match(/(\d+(?:\.\d+)?)%/);
+      return m ? `${m[1]}%` : s;
+    }
+    if(rateEl) rateEl.textContent = heroRateText(card.rate).replace(/%$/, "");
     if(descEl) descEl.textContent = card.why;
     if(baseEl){
       const base = card.rate.match(/(\d+\.?\d*%)/);
@@ -10515,8 +10568,18 @@ renderDiagNode();
         <div class="pt-other-group-label">${g.group}</div>
         <div class="pt-other-grid">`;
       items.forEach(c => {
-        const rateMatch = c.rate.match(/(\d+\.?\d*)/);
-        const rateNum = rateMatch ? rateMatch[1] : "";
+        // 候補カードも、最大還元率がある場合は上限を表示
+        const rateText = (()=>{
+          const s = String(c.rate || "");
+          let m = s.match(/最大\s*(\d+(?:\.\d+)?)%/);
+          if(m) return `最大${m[1]}%`;
+          const ranges = [...s.matchAll(/(\d+(?:\.\d+)?)\s*[〜~\-–—]\s*(\d+(?:\.\d+)?)%/g)];
+          if(ranges.length) return `最大${ranges[ranges.length - 1][2]}%`;
+          m = s.match(/(\d+(?:\.\d+)?)%以上/);
+          if(m) return `最大${m[1]}%`;
+          m = s.match(/(\d+(?:\.\d+)?)%/);
+          return m ? `${m[1]}%` : s;
+        })();
         otherHtml += `<div class="pt-other-card" data-card-name="${c.name}">
           <div class="pt-other-card-top">
             <div class="pt-other-card-icon">
@@ -10528,7 +10591,7 @@ renderDiagNode();
             </div>
           </div>
           <div class="pt-other-card-bottom">
-            <div><span class="pt-other-card-rate-num">${rateNum}%</span><span class="pt-other-card-rate-label">ポイント還元</span></div>
+            <div><span class="pt-other-card-rate-num">${rateText}</span><span class="pt-other-card-rate-label">ポイント還元</span></div>
             <span class="pt-other-card-arrow">›</span>
           </div>
         </div>`;
@@ -11364,7 +11427,7 @@ applyRoute();
     <span>比較履歴</span>
   </button>
   <button class="bottom-nav-item" data-nav="favorites">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3.5l2.65 5.38 5.94.86-4.3 4.19 1.02 5.92L12 17.05l-5.31 2.8 1.02-5.92-4.3-4.19 5.94-.86L12 3.5z"/></svg>
     <span>お気に入り</span>
   </button>
   <button class="bottom-nav-item" data-nav="guide">
@@ -11474,16 +11537,22 @@ applyRoute();
   }
 
   function showFavorites(){
-    const list=typeof favs !== "undefined" ? STORES.filter(s=>favs.has(s.name)) : [];
-    if(!list.length){
-      openSheet("お気に入り", `<p class="nav-sheet-empty">お気に入りのお店がまだありません。<br>お店一覧の♡をタップすると追加できます。</p>`);
+    const storeList=typeof favs !== "undefined" ? STORES.filter(s=>favs.has(s.name)) : [];
+    const routeList=typeof routeFavs !== "undefined" ? CHARGE_ROUTES.filter(r=>routeFavs.has(r.name)) : [];
+    if(!storeList.length && !routeList.length){
+      openSheet("お気に入り", `<p class="nav-sheet-empty">お気に入りがまだありません。<br>お店やチャージルートの☆をタップすると追加できます。</p>`);
       return;
     }
-    const html=list.map(s=>{
-      const safe=String(s.name).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
-      return `<button type="button" class="nav-fav-item" data-fav-store="${safe}"><span><strong>${safe}</strong><span class="nav-item-sub">${s.category||""}</span></span><span>›</span></button>`;
-    }).join("");
-    const overlay=openSheet("お気に入り", html);
+    const esc=v=>String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
+    const storeHtml=storeList.length ? `<div class="nav-fav-section-title">お店</div>` + storeList.map(s=>{
+      const safe=esc(s.name);
+      return `<button type="button" class="nav-fav-item" data-fav-store="${safe}"><span><strong>${safe}</strong><span class="nav-item-sub">${esc(s.category||"")}</span></span><span>›</span></button>`;
+    }).join("") : "";
+    const routeHtml=routeList.length ? `<div class="nav-fav-section-title">チャージルート</div>` + routeList.map(r=>{
+      const safe=esc(r.name);
+      return `<button type="button" class="nav-fav-item" data-fav-route="${safe}"><span><strong>${safe}</strong><span class="nav-item-sub">${esc(routeTotalLabel(r)||"")}・チャージルート</span></span><span>›</span></button>`;
+    }).join("") : "";
+    const overlay=openSheet("お気に入り", storeHtml + routeHtml);
     overlay.querySelectorAll("[data-fav-store]").forEach(btn=>{
       btn.addEventListener("click",()=>{
         const name=btn.dataset.favStore;
@@ -11494,6 +11563,18 @@ applyRoute();
           const opt=[...sel.options].find(o=>o.value===name);
           if(opt){ sel.value=name; sel.dispatchEvent(new Event("change",{bubbles:true})); }
         }
+      });
+    });
+    overlay.querySelectorAll("[data-fav-route]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const name=btn.dataset.favRoute;
+        closeSheet();
+        routeFilter="all";
+        activateMode("routes");
+        requestAnimationFrame(()=>{
+          const el=document.querySelector(`[data-route-name=\"${CSS.escape(name)}\"]`);
+          if(el) el.scrollIntoView({behavior:"smooth",block:"center"});
+        });
       });
     });
   }
