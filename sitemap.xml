@@ -16,6 +16,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://paytaku.github.io/#/odakyu-point</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://paytaku.github.io/#/about</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
