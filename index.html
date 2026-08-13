@@ -1699,86 +1699,121 @@ document.addEventListener("click", function(e){
   }
 
   /* ===== charge routes ===== */
+  /* ===== route card: new design matching mockup ===== */
   .route-card{
     position: relative;
-    padding: 17px 18px;
+    padding: 16px;
     margin-bottom: 12px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 12px;
     overflow: hidden;
   }
-  .route-card::before{
-    content: "";
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--foil);
-  }
+  .route-card:hover{ border-color: #3B82F6; }
+  .route-card.is-top{ border-color: #3B82F6; }
   .route-top{
-    display: flex; align-items: baseline; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 11px;
+    margin-bottom: 14px;
   }
   .route-name{
     font-family: "Noto Sans JP", system-ui, sans-serif;
     font-weight: 700;
-    font-size: 14.5px;
+    font-size: 15px;
     line-height: 1.45;
+    color: #F9FAFB;
+    flex: 1;
   }
   .route-total{
-    margin-left: auto;
-    font-family: "JetBrains Mono", monospace;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 22px;
+    color: #3B82F6;
     white-space: nowrap;
-    background: var(--foil);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
   }
+  /* ルートステップ：円形アイコン + 矢印の横並び */
   .route-chain{
-    display: flex; flex-wrap: wrap; align-items: center;
-    gap: 5px;
-    padding: 11px 12px;
-    margin-bottom: 11px;
-    border-radius: var(--radius-sm);
-    background: var(--surface-2);
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
   }
-  .route-step{
-    padding: 3px 9px;
-    border-radius: 6px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    font-size: 11.5px;
-    font-weight: 600;
-    white-space: nowrap;
+  .route-chain::-webkit-scrollbar{ display: none; }
+  .route-chain-step{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    width: 64px;
   }
-  .route-step.is-end{
-    border-color: transparent;
-    background: var(--foil);
-    color: var(--on-foil);
+  .route-chain-icon{
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: #0B1120;
+    border: 1px solid #334155;
+    display: flex; align-items: center; justify-content: center;
+    color: #F9FAFB;
   }
-  .route-arrow{
-    color: var(--dim);
-    font-size: 11px;
-    flex-shrink: 0;
+  .route-chain-icon svg{ width: 22px; height: 22px; }
+  .route-chain-label{
+    font-size: 10px;
+    color: #94A3B8;
+    text-align: center;
+    margin-top: 4px;
+    line-height: 1.3;
+    word-break: break-all;
   }
+  .route-chain-arrow{
+    flex: 0 0 auto;
+    width: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: #94A3B8;
+    margin-top: 13px;
+  }
+  .route-chain-arrow svg{ width: 14px; height: 14px; }
+  .route-step{ display: none; } /* 旧スタイル非表示 */
+  .route-arrow{ display: none; }
+  /* 合計還元率行 */
+  .route-rate-row{
+    display: flex; align-items: baseline; gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #334155;
+    margin-bottom: 12px;
+  }
+  .route-rate-row-label{
+    font-size: 12px; color: #94A3B8;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .route-rate-big{ font-size: 26px; font-weight: 700; color: #3B82F6; }
+  .route-rate-big span{ font-size: 14px; }
+  .route-rate-sub{ font-size: 11px; color: #94A3B8; }
+  /* gains をアコーディオン詳細として表示 */
   .route-gains{
     margin: 0 0 10px;
-    padding-left: 17px;
+    padding-left: 16px;
     font-size: 12px;
     line-height: 1.85;
-    color: var(--muted);
+    color: #94A3B8;
   }
   .route-caution{
-    margin-bottom: 9px;
+    margin-bottom: 10px;
     padding: 8px 11px;
-    border-left: 2px solid var(--amber);
+    border-left: 2px solid #F59E0B;
     border-radius: 0 6px 6px 0;
-    background: color-mix(in srgb, var(--amber) 12%, transparent);
+    background: rgba(245,158,11,0.08);
     font-size: 11.5px;
     line-height: 1.6;
-    color: var(--muted);
+    color: #94A3B8;
+  }
+  /* 保存ボタン（カード内） */
+  .route-save-btn{
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; height: 44px; margin-top: 12px;
+    border: none; border-radius: 8px;
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+    color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
   }
 
   /* ===== masthead ===== */
@@ -2359,8 +2394,10 @@ document.addEventListener("click", function(e){
   }
   .switch-btn[aria-checked="true"] .switch-knob{ left: 21px; background: var(--on-foil); }
   .sort-toggle-label{ font-size: 13px; font-weight: 600; color: var(--muted); }
-  .category-chip-row{ display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+  .category-chip-row{ display: flex; overflow-x: auto; gap: 8px; margin-bottom: 16px; padding-bottom: 4px; scrollbar-width: none; }
+  .category-chip-row::-webkit-scrollbar{ display: none; }
   .category-chip{
+    flex: 0 0 auto;
     padding: 8px 13px;
     border: 1px solid var(--line);
     border-radius: 9px;
@@ -2549,124 +2586,180 @@ document.addEventListener("click", function(e){
     text-transform: uppercase;
   }
   .store-category-label:first-child{ margin-top: 0; }
+  /* ===== store card: new card-style design ===== */
   .store-card{
     position: relative;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    margin-bottom: 10px;
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin-bottom: 12px;
     overflow: hidden;
     transition: border-color .18s ease;
   }
-  .store-card:hover{ border-color: var(--dim); }
-  /* 店名は1行目・還元率は2行目。flexで横並びにすると幅が足りず
-     店名が1文字ずつ縦に折り返されてしまうため、gridで領域を明示する。 */
+  .store-card:hover{ border-color: #3B82F6; }
   .store-head{
-    display: grid;
-    grid-template-columns: auto auto 1fr auto auto auto;
-    grid-template-areas:
-      "dist fav name edit del toggle"
-      "rate rate rate rate rate rate";
-    align-items: center;
-    gap: 6px 8px;
-    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
     cursor: pointer;
-    transition: background .15s ease;
   }
-  .store-head:hover{ background: var(--surface-2); }
-  .store-dist{ grid-area: dist; }
-  .fav-btn{ grid-area: fav; }
-  .edit-store-btn{ grid-area: edit; }
-  .delete-store-btn{ grid-area: del; }
-  .store-toggle{ grid-area: toggle; justify-self: end; }
+  .store-head-icon{
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: #334155;
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+    color: #F9FAFB;
+  }
+  .store-head-icon svg{ width: 22px; height: 22px; }
+  .store-head-mid{ flex: 1; min-width: 0; }
   .store-name{
-    grid-area: name;
-    min-width: 0;
     font-family: "Noto Sans JP", system-ui, sans-serif;
     font-weight: 700;
-    font-size: 15.5px;
-    letter-spacing: -0.01em;
-    white-space: normal;
-    word-break: keep-all;
-    overflow-wrap: break-word;
+    font-size: 16px;
+    color: #F9FAFB;
+    line-height: 1.3;
+    word-break: break-all;
   }
-  .store-best-wrap{
-    grid-area: rate;
-    display: flex; align-items: baseline; gap: 8px;
-    min-width: 0;
+  .store-sub{
+    font-size: 11px;
+    color: #94A3B8;
+    margin-top: 3px;
+    display: flex; align-items: center; gap: 6px;
   }
+  .store-head-right{ text-align: right; flex: 0 0 auto; }
+  .store-rate-label{ font-size: 11px; color: #94A3B8; }
   .store-best-badge{
-    font-family: "JetBrains Mono", monospace;
+    font-size: 26px;
     font-weight: 700;
-    font-size: 13px;
-    white-space: normal;
-    overflow-wrap: break-word;
-    min-width: 0;
-    color: var(--alert);
+    color: #F87171;
+    line-height: 1.1;
+    white-space: nowrap;
   }
-  .store-toggle{ color: var(--dim); font-size: 14px; transition: transform .2s ease; }
-  .store-card.collapsed .store-toggle{ transform: rotate(-90deg); }
+  .store-best-badge .rate-unit{ font-size: 13px; font-weight: 500; }
+  .store-best-yen{ display: none; }
+  .store-best-wrap{ display: flex; flex-direction: column; align-items: flex-end; }
+  .store-rate-bottom{ font-size: 11px; color: #94A3B8; }
+  .store-tags{
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 0 16px 12px;
+  }
+  .store-tag{
+    background: #1E3A8A; color: #BFDBFE;
+    font-size: 11px; padding: 4px 8px; border-radius: 4px;
+  }
+  .store-tag.more{
+    background: transparent; border: 1px solid #334155; color: #94A3B8;
+  }
+  .fav-btn{
+    background: none; border: none; color: #94A3B8;
+    cursor: pointer; font-size: 16px; padding: 0; margin-bottom: 4px;
+  }
+  .fav-btn.on{ color: #F87171; }
+  .edit-store-btn, .delete-store-btn{
+    background: none; border: none; color: #94A3B8;
+    cursor: pointer; font-size: 12px; padding: 2px 4px;
+    display: none;
+  }
+  .edit-mode .edit-store-btn,
+  .edit-mode .delete-store-btn{ display: inline-flex; }
+  .store-dist{ font-size: 11px; color: #94A3B8; }
+  .store-toggle{ display: none; }
+
+  /* collapsed → show detail on expand */
   .store-card.collapsed .card-options{ display: none; }
-  .card-options{ border-top: 1px solid var(--line); }
+
+  /* route box (best method summary) */
+  .store-route-box{
+    margin: 0 16px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  .store-route-box-label{ font-size: 10px; color: #94A3B8; margin-bottom: 2px; }
+  .store-route-box-val{ font-size: 12px; color: #F9FAFB; }
+  .store-route-box-chevron{
+    width: 16px; height: 16px; color: #94A3B8; flex: 0 0 auto;
+    transition: transform .2s;
+  }
+  .store-card:not(.collapsed) .store-route-box-chevron{ transform: rotate(90deg); }
+
+  /* CTA button */
+  .store-cta{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: calc(100% - 32px);
+    margin: 0 16px 16px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* card options (expanded detail) */
+  .card-options{ border-top: 1px solid #334155; }
   .card-option{
     position: relative;
-    padding: 14px 16px 14px 17px;
-    border-bottom: 1px solid var(--line);
+    padding: 12px 16px;
+    border-bottom: 1px solid #334155;
   }
   .card-option:last-child{ border-bottom: none; }
-  /* Signature: the winning option gets a foil rail down its left edge */
   .card-option.is-winner::before{
     content: "";
     position: absolute; left: 0; top: 0; bottom: 0;
     width: 3px;
-    background: var(--foil);
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
   }
   .card-option-top{
     display: flex;
-    align-items: baseline;
-    gap: 9px;
+    align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .card-option-rank{
     flex-shrink: 0;
     padding: 2px 7px;
-    border-radius: 5px;
-    background: var(--surface-2);
-    color: var(--dim);
-    font-family: "JetBrains Mono", monospace;
-    font-size: 9.5px;
+    border-radius: 4px;
+    background: #334155;
+    color: #94A3B8;
+    font-size: 10px;
     font-weight: 700;
   }
   .card-option-rank.rank-1{
-    background: var(--foil);
-    color: var(--on-foil);
+    background: #1E3A8A;
+    color: #BFDBFE;
   }
-  .card-option-name{ font-weight: 700; font-size: 13.5px; }
+  .card-option-name{ font-weight: 700; font-size: 13px; color: #F9FAFB; }
   .card-option-rate{
     margin-left: auto;
-    font-family: "JetBrains Mono", monospace;
     font-weight: 700;
-    font-size: 15px;
-    color: var(--alert);
+    font-size: 14px;
+    color: #F87171;
     white-space: nowrap;
   }
-  .card-option.is-winner .card-option-rate{
-    font-size: 17px;
-    background: var(--foil);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .card-option-method{ font-size: 11.5px; color: var(--muted); margin-bottom: 5px; line-height: 1.6; }
+  .card-option.is-winner .card-option-rate{ font-size: 15px; }
+  .card-option-method{ font-size: 11px; color: #94A3B8; margin-bottom: 4px; line-height: 1.6; }
   .card-option-note{
-    padding: 8px 11px;
-    border-left: 2px solid var(--foil-3);
+    padding: 6px 10px;
+    border-left: 2px solid #3B82F6;
     border-radius: 0 6px 6px 0;
-    background: var(--tint);
-    font-size: 11.5px;
-    line-height: 1.65;
-    color: var(--muted);
+    background: rgba(59,130,246,0.07);
+    font-size: 11px;
+    line-height: 1.6;
+    color: #94A3B8;
   }
   .store-empty-note,
   .empty-state{
@@ -2860,11 +2953,11 @@ document.addEventListener("click", function(e){
   
   /* Update category chip active */
   .category-chip.active{
-    background: rgba(59,130,246,0.1);
+    background: #3B82F6;
     border-color: #3B82F6;
-    color: var(--text);
+    color: #fff;
   }
-  .category-chip.active .chip-count{ color: #3B82F6; }
+  .category-chip.active .chip-count{ color: #fff; }
   
   /* Picks divider highlight */
   .picks-divider.diag-highlight{
@@ -8253,32 +8346,100 @@ function buildStoreCardEl(store, distanceMeters){
   card.className = "store-card collapsed";
   if(editMode) card.classList.add("edit-mode");
 
-  const distBadge = (typeof distanceMeters === "number")
-    ? `<div class="store-dist">${distanceMeters < 1000 ? Math.round(distanceMeters)+"m" : (distanceMeters/1000).toFixed(1)+"km"}</div>`
-    : "";
+  // ---- カテゴリアイコン（SVGパス） ----
+  const CAT_PATHS = {
+    "コンビニ": `<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/>`,
+    "ファストフード": `<path d="M4 10h16"/><path d="M5 10a7 7 0 0 1 14 0"/><path d="M3 14h18"/><path d="M4 14l1 6h14l1-6"/>`,
+    "牛丼・定食": `<path d="M4 12a8 4 0 0 0 16 0"/><path d="M4 12V9a8 4 0 0 1 16 0v3"/><path d="M2 12h20"/>`,
+    "ファミレス": `<path d="M18 3v18"/><path d="M15 3v6a3 3 0 0 0 6 0V3"/><path d="M6 3v6a3 3 0 0 1-6 0"/><path d="M3 3v18"/>`,
+    "回転寿司": `<ellipse cx="12" cy="14" rx="9" ry="4"/><path d="M12 10V4"/><path d="M9 6h6"/>`,
+    "飲食店（その他）": `<path d="M18 3v18"/><path d="M15 3v6a3 3 0 0 0 6 0V3"/><path d="M6 3v6a3 3 0 0 1-6 0"/><path d="M3 3v18"/>`,
+    "カフェ": `<path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2"/>`,
+    "スーパー": `<circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/>`,
+    "自販機": `<rect x="6" y="2" width="12" height="20" rx="1"/><rect x="8" y="5" width="8" height="6"/>`,
+    "エンタメ": `<path d="M12 3v18"/><path d="m7 8 5-5 5 5"/><path d="M4 15a8 8 0 0 0 16 0"/>`,
+    "トラベル": `<path d="m17.8 19.2 1-1-3.4-2.7-.1-4.1c0-1.4-.6-2.7-1.6-3.7L9.5 3.5a1 1 0 0 0-1.7.7v4.2L3.1 6.9a1 1 0 0 0-1.1.2l-.4.4a1 1 0 0 0 .1 1.5l4.1 3.2H2.4a1 1 0 0 0-.7 1.7l3.5 3.5c1 1 2.3 1.6 3.7 1.6l4.1.1 2.7 3.4 1-1-1-4Z"/>`,
+    "ホームセンター": `<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/>`,
+    "ファッション": `<path d="M20.4 14.5 16 10l4-4-3-3-5 5-5-5-3 3 4 4-4.4 4.5c-.4.4-.4 1 0 1.4l2.6 2.6c.4.4 1 .4 1.4 0L11 15v7h6v-7l3.4 3.5c.4.4 1 .4 1.4 0l2.6-2.6c.4-.4.4-1 0-1.4Z"/>`,
+    "ネット通販": `<circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/>`,
+    "交通": `<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/><circle cx="8.5" cy="15.5" r="0.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="0.5" fill="currentColor"/>`,
+    "ドラッグストア": `<path d="m10.5 20.5 8-8a4.95 4.95 0 1 0-7-7l-8 8a4.95 4.95 0 1 0 7 7Z"/>`,
+    "その他": `<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>`,
+  };
+  const catPath = CAT_PATHS[store.category] || CAT_PATHS["その他"];
+  const catIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${catPath}</svg>`;
+
+  const distText = (typeof distanceMeters === "number")
+    ? (distanceMeters < 1000 ? Math.round(distanceMeters)+"m" : (distanceMeters/1000).toFixed(1)+"km")
+    : null;
+
+  const bestRate = sorted[0] ? sorted[0].rate : "—";
+  // 数値だけ取り出して大きめに表示する
+  const rateMatch = bestRate.match(/(\d+(?:\.\d+)?)\s*[%％]/);
+  const rateNum = rateMatch ? rateMatch[1] : "—";
+  const rateUnit = bestRate.includes("OFF") ? "%OFF" : "%";
+  const ratePrefix = /最大/.test(bestRate) ? "最大" : "還元率";
+
+  // タグ（上位3カード名）
+  const tagCards = sorted.slice(0, 3);
+  const moreCount = sorted.length - 3;
+  const tagsHtml = tagCards.map(c => `<span class="store-tag">${c.name}</span>`).join("")
+    + (moreCount > 0 ? `<span class="store-tag more">+${moreCount}</span>` : "");
 
   const head = document.createElement("div");
   head.className = "store-head";
-  const topYen = sorted[0] ? yenBack(sorted[0]) : null;
   head.innerHTML = `
-    ${distBadge}
-    <button class="fav-btn${isFav(store.name) ? " on" : ""}" title="よく行く店にする">${isFav(store.name) ? "★" : "☆"}</button>
-    <div class="store-name">${store.name}${verifyBadgeHtml("store:" + store.name)}</div>
-    <div class="store-best-wrap">
-      <div class="store-best-badge">最大 ${sorted[0] ? sorted[0].rate : "—"}</div>
-      ${topYen !== null ? `<div class="store-best-yen">${topYen.toLocaleString()}円分</div>` : ""}
+    <div class="store-head-icon">${catIconSvg}</div>
+    <div class="store-head-mid">
+      <div class="store-name">${store.name}${verifyBadgeHtml("store:" + store.name)}</div>
+      <div class="store-sub">${store.category}${distText ? ` <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg> ${distText}` : ` · ${sorted.length}件のカード`}</div>
     </div>
-    <button class="icon-btn edit-store-btn" title="お店情報を編集">✎</button>
-    <button class="icon-btn delete-store-btn" title="お店を削除">🗑</button>
-    <div class="store-toggle">▾</div>
+    <div class="store-head-right">
+      <button class="fav-btn${isFav(store.name) ? " on" : ""}" title="よく行く店にする">${isFav(store.name) ? "♥" : "♡"}</button>
+      <div class="store-best-wrap">
+        <div class="store-rate-label">${ratePrefix}</div>
+        <div class="store-best-badge">${rateNum}<span class="rate-unit">${rateUnit}</span></div>
+        <div class="store-rate-bottom">ポイント還元</div>
+      </div>
+    </div>
   `;
   head.addEventListener("click", (e)=>{
-    if(e.target.closest(".icon-btn")) return; // don't toggle when clicking edit/delete
+    if(e.target.closest(".icon-btn")) return;
     if(e.target.closest(".fav-btn")){ toggleFav(store.name); return; }
     card.classList.toggle("collapsed");
   });
-  head.querySelector(".edit-store-btn").addEventListener("click", ()=> openStoreModal(store));
-  head.querySelector(".delete-store-btn").addEventListener("click", ()=> deleteStore(store));
+
+  // タグ行
+  const tagsEl = document.createElement("div");
+  tagsEl.className = "store-tags";
+  tagsEl.innerHTML = tagsHtml;
+
+  // ルートボックス（最もお得な決済方法を1行で表示）
+  const routeBox = document.createElement("div");
+  routeBox.className = "store-route-box";
+  routeBox.innerHTML = `
+    <div>
+      <div class="store-route-box-label">対応決済（一番お得なカード）</div>
+      <div class="store-route-box-val">${sorted[0] ? sorted[0].method || sorted[0].name : "—"}</div>
+    </div>
+    <svg class="store-route-box-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+  `;
+  routeBox.addEventListener("click", ()=> card.classList.toggle("collapsed"));
+
+  // CTAボタン
+  const ctaBtn = document.createElement("button");
+  ctaBtn.className = "store-cta";
+  ctaBtn.innerHTML = `このお店を比較する <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>`;
+
+  // 編集ボタン（編集モード時のみ表示）
+  const editBtns = document.createElement("div");
+  editBtns.style.cssText = "display:flex;gap:8px;padding:0 16px 12px;";
+  editBtns.innerHTML = `
+    <button class="icon-btn edit-store-btn" title="お店情報を編集" style="font-size:11px;padding:4px 10px;border:1px solid #334155;border-radius:6px;background:#1E293B;color:#94A3B8;">✎ 編集</button>
+    <button class="icon-btn delete-store-btn" title="お店を削除" style="font-size:11px;padding:4px 10px;border:1px solid #334155;border-radius:6px;background:#1E293B;color:#94A3B8;">🗑 削除</button>
+  `;
+  editBtns.querySelector(".edit-store-btn").addEventListener("click", ()=> openStoreModal(store));
+  editBtns.querySelector(".delete-store-btn").addEventListener("click", ()=> deleteStore(store));
 
   const options = document.createElement("div");
   options.className = "card-options";
@@ -8370,7 +8531,11 @@ function buildStoreCardEl(store, distanceMeters){
   }
 
   card.appendChild(head);
+  card.appendChild(tagsEl);
+  card.appendChild(routeBox);
   card.appendChild(options);
+  card.appendChild(ctaBtn);
+  if(editMode) card.appendChild(editBtns);
   return card;
 }
 
@@ -9282,30 +9447,75 @@ function renderRoutes(){
     const el = document.createElement("div");
     el.className = "route-card";
     el.dataset.routeName = r.name;
-    const chain = r.steps.map((s, i) =>
-      `<span class="route-step${i === r.steps.length - 1 ? " is-end" : ""}">${withStarterName(s)}</span>`
-    ).join(`<span class="route-arrow">→</span>`);
+
+    // ステップのアイコンSVGパス
+    const STEP_ICONS = {
+      "ANA Pay":       `<path d="m17.8 19.2 1-1-3.4-2.7-.1-4.1c0-1.4-.6-2.7-1.6-3.7L9.5 3.5a1 1 0 0 0-1.7.7v4.2L3.1 6.9a1 1 0 0 0-1.1.2l-.4.4a1 1 0 0 0 .1 1.5l4.1 3.2H2.4a1 1 0 0 0-.7 1.7l3.5 3.5c1 1 2.3 1.6 3.7 1.6l4.1.1 2.7 3.4 1-1-1-4Z"/>`,
+      "楽天Edy":        `<path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><rect x="16" y="12" width="6" height="5" rx="1"/>`,
+      "楽天キャッシュ":  `<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>`,
+      "楽天ペイ":        `<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/>`,
+      "au PAY":         `<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>`,
+      "Suica":          `<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>`,
+      "WAON":           `<circle cx="12" cy="9" r="4"/><path d="M9 12c-3 1-5 3-5 6h16c0-3-2-5-5-6"/>`,
+      "ICOCA":          `<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/>`,
+      "Revolut":        `<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a2.5 2.5 0 0 1 0 5H9m4 0 3 5"/>`,
+      "V NEOBank":      `<path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/>`,
+      "モバイルICOCA":  `<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/>`,
+    };
+    const DEFAULT_ICON = `<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>`;
+
+    // ルートのステップをチェーンビジュアルに変換
+    const steps = r.steps || [];
+    let chainHtml = "";
+    steps.forEach((s, i) => {
+      const label = withStarterName(s);
+      const iconPath = Object.keys(STEP_ICONS).find(k => label.includes(k));
+      const svg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${STEP_ICONS[iconPath] || DEFAULT_ICON}</svg>`;
+      chainHtml += `<div class="route-chain-step"><div class="route-chain-icon">${svg}</div><div class="route-chain-label">${label}</div></div>`;
+      if(i < steps.length - 1){
+        chainHtml += `<div class="route-chain-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>`;
+      }
+    });
+
+    // 合計還元率の数値を抽出
+    const totalStr = routeTotalLabel(r);
+    const totalMatch = totalStr.match(/(\d+(?:\.\d+)?)/);
+    const totalNum = totalMatch ? totalMatch[1] : "—";
+
+    // 金額ベースの獲得ポイント
+    const gainSection = starterGainHtml(r);
+    const gainsHtml = r.gains && r.gains.length ? `<ul class="route-gains">${r.gains.map(g=>`<li>${g}</li>`).join("")}</ul>` : "";
 
     el.innerHTML = `
       <div class="route-top">
         <span class="route-name">${r.name}${verifyBadgeHtml("route:" + r.name)}</span>
-        <span class="route-total">${routeTotalLabel(r)}</span>
-        <button class="route-fav-btn${isRouteFav(r.name) ? " is-fav" : ""}" title="${isRouteFav(r.name) ? "お気に入りから外す" : "お気に入りに追加"}" aria-label="${isRouteFav(r.name) ? "お気に入りから外す" : "お気に入りに追加"}">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.65 5.38 5.94.86-4.3 4.19 1.02 5.92L12 17.05l-5.31 2.8 1.02-5.92-4.3-4.19 5.94-.86L12 3.5z"/></svg>
+        <button class="route-fav-btn${isRouteFav(r.name) ? " is-fav" : ""}" title="${isRouteFav(r.name) ? "お気に入りから外す" : "お気に入りに追加"}">
+          <svg viewBox="0 0 24 24"><path d="M12 3.5l2.65 5.38 5.94.86-4.3 4.19 1.02 5.92L12 17.05l-5.31 2.8 1.02-5.92-4.3-4.19 5.94-.86L12 3.5z"/></svg>
         </button>
-        <button class="icon-btn edit-route-btn" title="ルートを編集（JSON）">✎</button>
+        <button class="icon-btn edit-route-btn" title="ルートを編集">✎</button>
         <button class="icon-btn delete-route-btn" title="ルートを削除">🗑</button>
       </div>
       ${r.shutdownWarn ? `<div class="route-shutdown-warn"><b>⚠️ 終了予定</b>　${r.shutdownWarn.replace('⚠️ ', '')}</div>` : ""}
-      <div class="route-chain">${chain}</div>
-      <ul class="route-gains">${r.gains.map(g => `<li>${g}</li>`).join("")}</ul>
-      ${starterGainHtml(r)}
+      <div class="route-chain">${chainHtml}</div>
+      <div class="route-rate-row">
+        <span class="route-rate-row-label">合計還元率
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+        </span>
+        <span class="route-rate-big">${totalNum}<span>%</span></span>
+        <span class="route-rate-sub">${gainSection ? "" : totalStr.replace(/[\d.]+%/, "").trim()}</span>
+      </div>
+      ${gainSection}
+      ${gainsHtml}
       ${splitHtml(r)}
       ${r.starter ? `<div class="route-starter"><span class="route-starter-label">起点カード</span>${r.starter}</div>` : ""}
       ${howtoHtml(r, ri)}
       ${r.caution ? `<div class="route-caution">${r.caution}</div>` : ""}
       <div class="card-option-note">${formatNote(r.note)}</div>
       ${linkRowHtml(r.url, r.name)}
+      <button class="route-save-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg>
+        このルートを保存する
+      </button>
     `;
     el.querySelector(".route-fav-btn")?.addEventListener("click", (e)=>{
       e.stopPropagation();
