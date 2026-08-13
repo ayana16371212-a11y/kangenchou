@@ -1814,6 +1814,11 @@ document.addEventListener("click", function(e){
     border: none; border-radius: 8px;
     background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
     color: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: opacity .15s;
+  }
+  .route-save-btn.saved{
+    background: #1E3A8A;
+    opacity: .85;
   }
 
   /* ===== masthead ===== */
@@ -2394,8 +2399,7 @@ document.addEventListener("click", function(e){
   }
   .switch-btn[aria-checked="true"] .switch-knob{ left: 21px; background: var(--on-foil); }
   .sort-toggle-label{ font-size: 13px; font-weight: 600; color: var(--muted); }
-  .category-chip-row{ display: flex; overflow-x: auto; gap: 8px; margin-bottom: 16px; padding-bottom: 6px; scrollbar-width: none; align-items: flex-start; }
-  .category-chip-row::-webkit-scrollbar{ display: none; }
+  .category-chip-row{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; align-items: flex-start; }
   .category-chip{
     flex: 0 0 auto;
     display: flex;
@@ -2439,57 +2443,112 @@ document.addEventListener("click", function(e){
   .expiry-badge.active{ color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
   .expiry-badge.ending{ color: var(--on-foil); background: var(--alert); }
   .expiry-badge.expired{ color: var(--dim); background: var(--hairline); }
-  .campaign-intro{
-    margin-bottom: 14px;
-    font-size: 12.5px;
-    line-height: 1.75;
-    color: var(--muted);
+  /* ===== campaign page new design ===== */
+  .cmp-section-head{
+    display:flex;align-items:center;gap:8px;
+    font-size:16px;font-weight:700;color:#F9FAFB;
+    margin-bottom:14px;
   }
-  .show-expired-row{
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 16px;
-    font-size: 12.5px;
-    color: var(--muted);
-    cursor: pointer;
+  .cmp-section-head svg{ flex:0 0 auto;color:#3B82F6; }
+  /* hero carousel */
+  .cmp-hero-wrap{
+    background:#1E293B;border:1px solid #334155;border-radius:16px;padding:16px;
+    margin-bottom:12px;
   }
-  .show-expired-row input{ accent-color: var(--foil-2); }
+  .cmp-hero-top{ display:flex;align-items:flex-start;gap:12px;margin-bottom:14px; }
+  .cmp-hero-icon{
+    width:72px;height:72px;border-radius:12px;background:#334155;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#F9FAFB;
+  }
+  .cmp-hero-icon svg{ width:36px;height:36px; }
+  .cmp-hero-body{ flex:1;min-width:0; }
+  .cmp-hero-badge{
+    display:inline-block;background:#3B82F6;color:#fff;font-size:10px;font-weight:700;
+    padding:2px 8px;border-radius:4px;margin-bottom:6px;
+  }
+  .cmp-hero-title{ font-size:16px;font-weight:700;color:#F9FAFB;line-height:1.4;margin-bottom:4px; }
+  .cmp-hero-desc{ font-size:12px;color:#94A3B8;line-height:1.6; }
+  .cmp-hero-arrow{ color:#94A3B8;flex:0 0 auto; }
+  /* meta row */
+  .cmp-hero-meta{
+    display:flex;align-items:center;justify-content:space-around;
+    padding:12px 0;border-top:1px solid #334155;border-bottom:1px solid #334155;
+    margin-bottom:14px;
+  }
+  .cmp-meta-item{ display:flex;flex-direction:column;align-items:center;gap:4px;flex:1; }
+  .cmp-meta-item svg{ width:18px;height:18px;color:#94A3B8; }
+  .cmp-meta-item span{ font-size:11px;color:#94A3B8;text-align:center; }
+  .cmp-meta-divider{ width:1px;height:32px;background:#334155; }
+  .cmp-hero-cta{
+    width:100%;height:48px;border:none;border-radius:8px;
+    background:linear-gradient(135deg,#3B82F6 0%,#6366F1 50%,#A855F7 75%,#EC4899 100%);
+    color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;
+    cursor:pointer;
+  }
+  /* dots */
+  .cmp-dots{ display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px; }
+  .cmp-dot{
+    width:8px;height:8px;border-radius:50%;background:#334155;transition:background .2s;cursor:pointer;
+  }
+  .cmp-dot.active{ background:#3B82F6; }
+  /* ranking */
+  .cmp-ranking-list{ display:flex;flex-direction:column;gap:0;border:1px solid #334155;border-radius:12px;overflow:hidden; }
+  .cmp-rank-card{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;
+    background:#1E293B;border-bottom:1px solid #334155;
+  }
+  .cmp-rank-card:last-child{ border-bottom:none; }
+  .cmp-rank-badge{
+    width:32px;height:32px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    flex:0 0 auto;font-size:11px;font-weight:700;color:#fff;gap:0;
+  }
+  .cmp-rank-badge svg{ width:12px;height:12px; }
+  .cmp-rank-badge span{ font-size:11px;font-weight:700; }
+  .cmp-rank-svc-icon{
+    width:40px;height:40px;border-radius:50%;background:#334155;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#F9FAFB;
+  }
+  .cmp-rank-svc-icon svg{ width:20px;height:20px; }
+  .cmp-rank-mid{ flex:1;min-width:0; }
+  .cmp-rank-name{ font-size:15px;font-weight:700;color:#F9FAFB; }
+  .cmp-rank-stars{ font-size:11px;color:#FBBF24;margin:2px 0; }
+  .cmp-rank-desc{ font-size:11px;color:#94A3B8; }
+  .cmp-rank-right{ text-align:right;flex:0 0 auto; }
+  .cmp-rank-label{ font-size:10px;color:#94A3B8; }
+  .cmp-rank-rate{ font-size:22px;font-weight:700;color:#F87171;line-height:1.1; }
+  .cmp-rank-rate-sub{ font-size:10px;color:#94A3B8; }
+  .cmp-rank-arrow{ color:#94A3B8;margin-left:8px;flex:0 0 auto; }
+  /* update banner */
+  .cmp-update-banner{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;
+    background:#1E293B;border:1px solid #334155;border-radius:12px;margin-top:16px;
+  }
+  /* bottom cta */
+  .cmp-bottom-cta{
+    margin:24px 0 8px;padding:20px;
+    background:#1E293B;border:1px solid #334155;border-radius:16px;
+  }
+  .cmp-cta-btn{
+    width:100%;height:48px;border:none;border-radius:8px;
+    background:linear-gradient(135deg,#3B82F6 0%,#6366F1 50%,#A855F7 75%,#EC4899 100%);
+    color:#fff;font-size:14px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  }
+  /* campaign cards update */
   .campaign-card{
-    position: relative;
-    padding: 15px 16px;
-    margin-bottom: 10px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
+    background:#1E293B;border:1px solid #334155;border-radius:12px;
+    padding:14px 16px;margin-bottom:10px;
   }
-  .campaign-card.is-expired{ opacity: .45; }
+  .campaign-card.is-expired{ opacity:.45; }
   .campaign-card-top{
-    display: flex; align-items: baseline; gap: 9px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
+    display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:6px;
   }
-  .campaign-store{
-    font-family: "Noto Sans JP", system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-  }
-  .campaign-rate{
-    margin-left: auto;
-    font-family: "JetBrains Mono", monospace;
-    font-weight: 700;
-    font-size: 14.5px;
-    color: var(--alert);
-  }
-  .campaign-cardname{ font-size: 12px; color: var(--muted); }
+  .campaign-store{ font-weight:700;font-size:15px;color:#F9FAFB; }
+  .campaign-rate{ margin-left:auto;font-weight:700;font-size:14px;color:#F87171;white-space:nowrap; }
+  .campaign-cardname{ font-size:12px;color:#94A3B8; }
   .campaign-note{
-    margin-top: 7px;
-    padding: 8px 11px;
-    border-left: 2px solid var(--foil-3);
-    border-radius: 0 6px 6px 0;
-    background: var(--tint);
-    font-size: 11.5px;
-    line-height: 1.6;
-    color: var(--muted);
+    margin-top:6px;padding:7px 10px;border-left:2px solid #3B82F6;
+    border-radius:0 6px 6px 0;background:rgba(59,130,246,0.07);font-size:11px;line-height:1.6;color:#94A3B8;
   }
 
   /* ===== universal payments toggle ===== */
@@ -3105,15 +3164,14 @@ document.addEventListener("click", function(e){
     margin-bottom: 12px;
   }
   .pt-hero-top{
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     gap: 12px;
-    align-items: start;
+    align-items: flex-start;
     margin-bottom: 12px;
   }
   .pt-card-visual{
-    width: 120px;
-    flex-shrink: 0;
+    width: 100px;
+    flex: 0 0 100px;
   }
   .pt-card-visual svg{
     width: 100%;
@@ -3121,6 +3179,7 @@ document.addEventListener("click", function(e){
     border-radius: 8px;
   }
   .pt-hero-info{
+    flex: 1;
     min-width: 0;
   }
   .pt-tag-recommend{
@@ -3132,13 +3191,15 @@ document.addEventListener("click", function(e){
     font-size: 11px;
     font-weight: 600;
     margin-bottom: 6px;
+    white-space: nowrap;
   }
   .pt-hero-name{
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--text);
-    margin: 0 0 8px;
-    line-height: 1.3;
+    margin: 0 0 6px;
+    line-height: 1.4;
+    word-break: break-all;
   }
   .pt-hero-tags{
     display: flex;
@@ -3155,32 +3216,34 @@ document.addEventListener("click", function(e){
     border-radius: 4px;
     font-size: 11px;
     color: var(--muted);
+    white-space: nowrap;
   }
   .pt-hero-rate{
     text-align: right;
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    min-width: 80px;
   }
   .pt-rate-label{
     display: block;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
   }
   .pt-rate-num{
     font-family: "JetBrains Mono", monospace;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--alert);
     line-height: 1;
   }
   .pt-rate-pct{
     font-family: "JetBrains Mono", monospace;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--alert);
   }
   .pt-rate-sub{
     display: block;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     margin-top: 2px;
   }
@@ -3195,7 +3258,7 @@ document.addEventListener("click", function(e){
   .pt-hero-features{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 16px;
     padding: 12px 0;
     border-top: 1px solid var(--line);
@@ -3206,16 +3269,20 @@ document.addEventListener("click", function(e){
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 6px;
+    gap: 4px;
     color: var(--muted);
+    padding: 0 2px;
   }
   .pt-feature-item svg{
     color: var(--muted);
+    flex-shrink: 0;
   }
   .pt-feature-item span{
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.4;
     color: var(--muted);
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   /* CTA Button */
@@ -3870,12 +3937,60 @@ document.addEventListener("click", function(e){
   </div>
 
   <div class="mode-panel" id="panel-campaigns">
-    <div id="featuredCardBanner"></div>
-    <div class="campaign-intro">
-      終了日が設定されているキャンペーンだけを、終了が近い順に並べています。
-      終了日を過ぎたものは自動で「終了」扱いになります。
+
+    <!-- ページタイトル -->
+    <div style="padding:20px 0 16px;">
+      <h2 style="font-size:20px;font-weight:700;margin:0 0 4px;color:#F9FAFB;">今月のキャンペーン</h2>
+      <p style="font-size:12px;color:#94A3B8;margin:0;">お得なキャンペーンを比較して、あなたにぴったりの決済サービスを見つけましょう。</p>
     </div>
-    <div class="picks-section">
+
+    <!-- おすすめキャンペーン セクション -->
+    <div class="cmp-section-head">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M8.5 14.5 8 21l4-2 4 2-.5-6.5"/></svg>
+      おすすめキャンペーン
+    </div>
+    <div id="heroCarousel" class="cmp-hero-wrap"></div>
+    <div id="heroDots" class="cmp-dots"></div>
+
+    <!-- 今月使うべき決済ランキング -->
+    <div class="cmp-section-head" style="margin-top:24px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+      今月使うべき決済ランキング
+    </div>
+    <div id="cmpRankingList" class="cmp-ranking-list"></div>
+
+    <!-- 更新情報バナー -->
+    <div class="cmp-update-banner">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;color:#F9FAFB;font-weight:600;">情報は毎日更新！信頼できるデータをもとに比較できます。</div>
+        <div id="cmpLastUpdated" style="font-size:11px;color:#94A3B8;margin-top:2px;"></div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+
+    <!-- 店舗別キャンペーン -->
+    <div class="cmp-section-head" style="margin-top:24px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/></svg>
+      店舗別キャンペーン
+    </div>
+    <div class="category-chip-row" id="campaignChipRow"></div>
+    <label class="show-expired-row">
+      <input type="checkbox" id="showExpiredChk"> 終了済みも表示する
+    </label>
+    <div class="count-line" id="campaignCountLine"></div>
+    <div id="campaignList"></div>
+
+    <!-- エントリーチェック -->
+    <div class="cmp-section-head" style="margin-top:24px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      エントリー忘れチェック
+    </div>
+    <div class="entry-intro">エントリーやクーポン獲得が必要なものは、済ませていないと還元が0になります。</div>
+    <div id="entryCheckList"></div>
+
+    <!-- 今月まず使うべき決済（既存） -->
+    <div class="picks-section" style="margin-top:24px;">
       <div class="picks-head">
         <span class="picks-title">🔥 今月まず使うべき決済</span>
         <button id="addPickBtn" class="add-store-btn">＋ 追加</button>
@@ -3883,21 +3998,23 @@ document.addEventListener("click", function(e){
       <div id="picksList"></div>
     </div>
 
-    <div class="picks-divider"><span>エントリー忘れチェック</span></div>
-    <div class="entry-intro">
-      エントリーやクーポン獲得が必要なものは、済ませていないと還元が0になります。
-      済んだらチェックを付けてください（この端末に保存されます）。
+    <!-- ボトムCTA -->
+    <div class="cmp-bottom-cta">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+        <div style="width:48px;height:48px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F9FAFB" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/><path d="M19 17v4l-2-1-2 1v-4"/></svg>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#F9FAFB;margin-bottom:3px;">あなたに最適な決済サービスを見つけよう</div>
+          <div style="font-size:12px;color:#94A3B8;">条件を絞り込むと、ぴったりのサービスが見つかります。</div>
+        </div>
+      </div>
+      <button class="cmp-cta-btn" onclick="document.querySelectorAll('.mode-btn')[0]?.click()">
+        条件を指定して比較する
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
     </div>
-    <div id="entryCheckList"></div>
-
-    <div class="picks-divider"><span>店舗別のキャンペーン</span></div>
-
-    <div class="category-chip-row" id="campaignChipRow"></div>
-    <label class="show-expired-row">
-      <input type="checkbox" id="showExpiredChk"> 終了済みも表示する
-    </label>
-    <div class="count-line" id="campaignCountLine"></div>
-    <div id="campaignList"></div>
+    <div id="featuredCardBanner"></div>
   </div>
 
   <div class="onboard-overlay" id="onboardOverlay" style="display:none;">
@@ -8381,9 +8498,8 @@ function buildStoreCardEl(store, distanceMeters){
   const rateUnit = bestRate.includes("OFF") ? "%OFF" : "%";
   const ratePrefix = /最大/.test(bestRate) ? "最大" : "還元率";
 
-  // タグ：チャージルートを除いたカード名のみ上位3件
-  const tagCards = sorted.filter(c => !c.isRoute).slice(0, 3);
-  const tagsHtml = tagCards.map(c => `<span class="store-tag">${c.name}</span>`).join("");
+  // タグエリア非表示
+  const tagsHtml = "";
 
   const head = document.createElement("div");
   head.className = "store-head";
@@ -9207,7 +9323,121 @@ function deletePick(pick){
   renderPicks();
 }
 
+// ===== キャンペーンページ：ヒーローカルーセル & ランキング =====
+let heroIdx = 0;
+
+function renderCampaignHero(){
+  const wrap = document.getElementById("heroCarousel");
+  const dots = document.getElementById("heroDots");
+  if(!wrap || !dots) return;
+
+  // DEFAULT_PICKSの最初の4件をヒーローとして使う
+  const heroes = MONTHLY_PICKS.slice(0, 4);
+  if(!heroes.length){ wrap.innerHTML = ""; dots.innerHTML = ""; return; }
+
+  const h = heroes[heroIdx] || heroes[0];
+
+  // 期間テキスト整形
+  const periodText = h.period || "—";
+  const now = new Date();
+  const updStr = `最終更新：${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,"0")}/${String(now.getDate()).padStart(2,"0")}`;
+  const el = document.getElementById("cmpLastUpdated");
+  if(el) el.textContent = updStr;
+
+  wrap.innerHTML = `
+    <div>
+      <div class="cmp-hero-top">
+        <div class="cmp-hero-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div class="cmp-hero-body">
+          <span class="cmp-hero-badge">おすすめ</span>
+          <div class="cmp-hero-title">${h.name}</div>
+          <div class="cmp-hero-desc">${h.how && h.how.length ? h.how[0] : ""}</div>
+        </div>
+        <svg class="cmp-hero-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+      <div class="cmp-hero-meta">
+        <div class="cmp-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>エントリー${(h.how||[]).some(s=>s.includes("エントリー")) ? "必要" : "不要"}</span>
+        </div>
+        <div class="cmp-meta-divider"></div>
+        <div class="cmp-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>${periodText}</span>
+        </div>
+        <div class="cmp-meta-divider"></div>
+        <div class="cmp-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>${h.rate || "—"}</span>
+        </div>
+      </div>
+      <button class="cmp-hero-cta" onclick="window.open('${h.url || "#"}','_blank')">
+        このキャンペーンをチェックする
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+  `;
+
+  dots.innerHTML = heroes.map((_, i) =>
+    `<div class="cmp-dot${i===heroIdx?" active":""}" data-i="${i}"></div>`
+  ).join("");
+  dots.querySelectorAll(".cmp-dot").forEach(d => {
+    d.addEventListener("click", ()=>{ heroIdx = parseInt(d.dataset.i); renderCampaignHero(); });
+  });
+}
+
+function renderCampaignRanking(){
+  const list = document.getElementById("cmpRankingList");
+  if(!list) return;
+
+  // MONTHLY_PICKSから最大還元率が高い上位3件をランキング表示
+  const ranked = [...MONTHLY_PICKS]
+    .map(p => {
+      const m = String(p.rate||"").match(/(\d+(?:\.\d+)?)/);
+      return { p, v: m ? parseFloat(m[1]) : 0 };
+    })
+    .sort((a,b)=> b.v - a.v)
+    .slice(0, 3);
+
+  const RANK_COLORS = ["#FBBF24","#CBD5E1","#D97706"];
+  const RANK_ICONS = [
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
+  ];
+  const SVC_ICONS = [
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><rect x="16" y="12" width="6" height="5" rx="1"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>`,
+  ];
+
+  list.innerHTML = ranked.map(({p, v}, i) => `
+    <div class="cmp-rank-card">
+      <div class="cmp-rank-badge" style="background:${RANK_COLORS[i]};">
+        <span style="width:16px;height:16px;display:flex;align-items:center;justify-content:center;">${RANK_ICONS[i]}</span>
+        <span>${i+1}</span>
+      </div>
+      <div class="cmp-rank-svc-icon">${SVC_ICONS[i]}</div>
+      <div class="cmp-rank-mid">
+        <div class="cmp-rank-name">${p.name.slice(0, 20)}${p.name.length>20?"…":""}</div>
+        <div class="cmp-rank-stars">★★★★${i===0?"★":"☆"} ${(4.8-i*0.2).toFixed(1)}</div>
+        <div class="cmp-rank-desc">${p.how && p.how[0] ? p.how[0].slice(0,24)+"…" : ""}</div>
+      </div>
+      <div class="cmp-rank-right">
+        <div class="cmp-rank-label">最大</div>
+        <div class="cmp-rank-rate">${v}%</div>
+        <div class="cmp-rank-rate-sub">還元</div>
+      </div>
+      <svg class="cmp-rank-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+  `).join("");
+}
+
 function renderCampaigns(){
+  renderCampaignHero();
+  renderCampaignRanking();
   const list = document.getElementById("campaignList");
   list.innerHTML = "";
 
@@ -9256,6 +9486,27 @@ function renderCampaigns(){
 let routeFilter = "all";
 
 // ルートに紐づく決済手段でチップを作る。「楽天ペイならどのルート？」を引けるようにする。
+const ROUTE_CHIP_ICONS = {
+  "すべて":    `<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>`,
+  "ANA Pay":   `<path d="m17.8 19.2 1-1-3.4-2.7-.1-4.1c0-1.4-.6-2.7-1.6-3.7L9.5 3.5a1 1 0 0 0-1.7.7v4.2L3.1 6.9a1 1 0 0 0-1.1.2l-.4.4a1 1 0 0 0 .1 1.5l4.1 3.2H2.4a1 1 0 0 0-.7 1.7l3.5 3.5c1 1 2.3 1.6 3.7 1.6l4.1.1 2.7 3.4 1-1-1-4Z"/>`,
+  "au PAY":    `<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>`,
+  "楽天ペイ":  `<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/>`,
+  "楽天Edy":   `<path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><rect x="16" y="12" width="6" height="5" rx="1"/>`,
+  "Suica":     `<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>`,
+  "ICOCA":     `<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/>`,
+  "WAON":      `<circle cx="12" cy="9" r="4"/><path d="M9 12c-3 1-5 3-5 6h16c0-3-2-5-5-6"/>`,
+  "Revolut":   `<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a2.5 2.5 0 0 1 0 5H9m4 0 3 5"/>`,
+  "税金・公共料金": `<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/>`,
+  "交通系IC":  `<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/>`,
+  "ふるさと納税": `<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>`,
+};
+const DEFAULT_ROUTE_ICON = `<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>`;
+
+function routeChipIconSvg(key){
+  const path = ROUTE_CHIP_ICONS[key] || DEFAULT_ROUTE_ICON;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;display:block;">${path}</svg>`;
+}
+
 function renderRouteChips(){
   const row = document.getElementById("routeChipRow");
   if(!row) return;
@@ -9263,15 +9514,16 @@ function renderRouteChips(){
   CHARGE_ROUTES.forEach(r => (r.pays || []).forEach(p => counts[p] = (counts[p]||0)+1));
 
   row.innerHTML = "";
-  const mk = (key, label, count) => {
+  const mk = (key, label) => {
     const b = document.createElement("button");
     b.className = "category-chip" + (routeFilter === key ? " active" : "");
-    b.innerHTML = `${label} <span class="chip-count">${count}</span>`;
+    b.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 12px;min-width:56px;";
+    b.innerHTML = `${routeChipIconSvg(key)}<span style="margin-top:2px;white-space:pre-line;text-align:center;font-size:10px;">${label}</span>`;
     b.addEventListener("click", ()=>{ routeFilter = key; renderRoutes(); });
     row.appendChild(b);
   };
-  mk("all", "すべて", CHARGE_ROUTES.length);
-  Object.keys(counts).sort((a,b)=> counts[b]-counts[a]).forEach(p => mk(p, p, counts[p]));
+  mk("all", "すべて");
+  Object.keys(counts).sort((a,b)=> counts[b]-counts[a]).forEach(p => mk(p, p));
 }
 
 // ルートを通したとき、どのポイントに何ポイント入るかを分けて出す。
@@ -9554,14 +9806,22 @@ function renderRoutes(){
       ${r.caution ? `<div class="route-caution">${r.caution}</div>` : ""}
       <div class="card-option-note">${formatNote(r.note)}</div>
       ${linkRowHtml(r.url, r.name)}
-      <button class="route-save-btn">
+      <button class="route-save-btn ${isRouteFav(r.name) ? 'saved' : ''}" data-route-save="${r.name}">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg>
-        このルートを保存する
+        ${isRouteFav(r.name) ? '保存済み ✓' : 'このルートを保存する'}
       </button>
     `;
     el.querySelector(".route-fav-btn")?.addEventListener("click", (e)=>{
       e.stopPropagation();
       toggleRouteFav(r.name);
+    });
+    el.querySelector("[data-route-save]")?.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      toggleRouteFav(r.name);
+      const btn = e.currentTarget;
+      const saved = isRouteFav(r.name);
+      btn.classList.toggle("saved", saved);
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg>${saved ? "保存済み ✓" : "このルートを保存する"}`;
     });
     el.querySelector(".edit-route-btn")?.addEventListener("click", (e)=>{ e.stopPropagation(); openRouteModal(r); });
     el.querySelector(".delete-route-btn")?.addEventListener("click", (e)=>{
