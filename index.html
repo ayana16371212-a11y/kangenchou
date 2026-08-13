@@ -3226,20 +3226,68 @@ document.addEventListener("click", function(e){
     color: var(--dim);
   }
 
-  /* Other cards collapsible */
+  /* Other cards: compact candidate cards */
   .pt-other-cards{
-    margin-bottom: 20px;
+    margin: 14px 0 20px;
+    padding: 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .pt-other-cards-head{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-bottom:12px;
+  }
+  .pt-other-cards-title{
+    font-size:13px; font-weight:700; color:var(--text);
+  }
+  .pt-other-cards-sub{
+    font-size:10.5px; color:var(--muted);
+  }
+  .pt-other-group{ margin-top:12px; }
+  .pt-other-group:first-of-type{ margin-top:0; }
+  .pt-other-group-label{
+    display:inline-flex; align-items:center;
+    padding:4px 8px; margin-bottom:7px;
+    border-radius:999px; background:var(--surface);
+    border:1px solid var(--line); color:var(--muted);
+    font-size:10px; font-weight:700;
+  }
+  .pt-other-grid{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;
   }
   .pt-other-card{
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: border-color .15s ease;
+    display:flex; flex-direction:column; justify-content:space-between;
+    min-height:92px; box-sizing:border-box;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; padding:11px 11px 10px;
+    cursor:pointer; transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;
   }
-  .pt-other-card:hover{ border-color: #3B82F6; }
+  .pt-other-card:hover{ border-color:#3B82F6; box-shadow:0 3px 10px rgba(15,23,42,.07); transform:translateY(-1px); }
+  .pt-other-card-top{ display:flex; align-items:center; gap:8px; min-width:0; }
+  .pt-other-card-icon{
+    width:28px; height:18px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    border-radius:4px; background:var(--surface-2); color:var(--muted);
+  }
+  .pt-other-card-icon svg{ width:17px; height:17px; }
+  .pt-other-card-info{ min-width:0; flex:1; }
+  .pt-other-card-name{
+    font-size:11.5px; font-weight:700; line-height:1.35; color:var(--text);
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .pt-other-card-fee{ font-size:9.5px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .pt-other-card-bottom{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:6px; margin-top:9px;
+  }
+  .pt-other-card-rate-num{ font-family:"JetBrains Mono",monospace; font-size:16px; font-weight:800; color:#3B82F6; }
+  .pt-other-card-rate-label{ display:block; font-size:8.5px; color:var(--muted); }
+  .pt-other-card-arrow{ color:var(--dim); font-size:13px; line-height:1; }
+  @media (max-width:420px){
+    .pt-other-cards{ padding:12px; }
+    .pt-other-grid{ gap:7px; }
+    .pt-other-card{ padding:10px; min-height:88px; }
+    .pt-other-card-name{ font-size:11px; }
+  }
   .pt-other-card-top{
     display: flex;
     align-items: center;
@@ -3319,6 +3367,36 @@ document.addEventListener("click", function(e){
     margin-top: 8px;
   }
 
+</style>
+
+<style>
+  /* ===== Bottom navigation behavior ===== */
+  .nav-sheet-overlay{
+    position:fixed; inset:0; z-index:180; display:none;
+    align-items:flex-end; justify-content:center;
+    background:rgba(0,0,0,.45);
+  }
+  .nav-sheet-overlay.open{display:flex;}
+  .nav-sheet{
+    width:min(600px,100%); max-height:78vh; overflow:auto;
+    background:var(--surface); color:var(--text);
+    border:1px solid var(--line); border-bottom:none;
+    border-radius:20px 20px 0 0; padding:20px 16px 28px;
+    box-shadow:0 -10px 40px rgba(0,0,0,.25);
+  }
+  .nav-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+  .nav-sheet-title{font-size:17px;font-weight:800;margin:0;}
+  .nav-sheet-close{border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:9px;width:34px;height:34px;cursor:pointer;font-size:18px;}
+  .nav-sheet-desc{font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 14px;}
+  .nav-history-item,.nav-fav-item,.nav-guide-item{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    width:100%; padding:12px; margin-bottom:8px;
+    border:1px solid var(--line);border-radius:10px;background:var(--surface-2);
+    color:var(--text);font:inherit;text-align:left;
+  }
+  button.nav-fav-item,button.nav-guide-item{cursor:pointer;}
+  .nav-item-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+  .nav-sheet-empty{padding:28px 12px;text-align:center;color:var(--dim);font-size:13px;}
 </style>
 </head>
 <body>
@@ -10423,30 +10501,39 @@ renderDiagNode();
         : '他のカードも見る <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>';
     });
 
-    // Populate other cards
-    let otherHtml = "";
+    // Populate other cards as compact candidate cards instead of a long list
+    let otherHtml = `<div class="pt-other-cards-head">
+      <div>
+        <div class="pt-other-cards-title">他にも候補があります</div>
+        <div class="pt-other-cards-sub">カードをタップすると、この位置のおすすめが切り替わります</div>
+      </div>
+    </div>`;
     CARD_PICKS.forEach(g => {
-      otherHtml += `<div style="margin:14px 0 8px;font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.04em;">${g.group}</div>`;
-      g.items.forEach(c => {
-        if(c.name === defaultCard.name) return;
+      const items = g.items.filter(c => c.name !== defaultCard.name);
+      if(!items.length) return;
+      otherHtml += `<div class="pt-other-group">
+        <div class="pt-other-group-label">${g.group}</div>
+        <div class="pt-other-grid">`;
+      items.forEach(c => {
         const rateMatch = c.rate.match(/(\d+\.?\d*)/);
         const rateNum = rateMatch ? rateMatch[1] : "";
         otherHtml += `<div class="pt-other-card" data-card-name="${c.name}">
           <div class="pt-other-card-top">
             <div class="pt-other-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             </div>
             <div class="pt-other-card-info">
               <div class="pt-other-card-name">${c.name}</div>
               <div class="pt-other-card-fee">${c.fee}</div>
             </div>
-            <div class="pt-other-card-rate">
-              <span class="pt-other-card-rate-num">${rateNum}%</span>
-              <span class="pt-other-card-rate-label">ポイント還元</span>
-            </div>
+          </div>
+          <div class="pt-other-card-bottom">
+            <div><span class="pt-other-card-rate-num">${rateNum}%</span><span class="pt-other-card-rate-label">ポイント還元</span></div>
+            <span class="pt-other-card-arrow">›</span>
           </div>
         </div>`;
       });
+      otherHtml += `</div></div>`;
     });
     otherList.innerHTML = otherHtml;
     otherList.querySelectorAll(".pt-other-card").forEach(el => {
@@ -11285,5 +11372,163 @@ applyRoute();
     <span>ガイド</span>
   </button>
 </nav>
+<script>
+// ========== Bottom navigation ==========
+// 下部ナビは見た目だけでなく、既存の「モード切替」と連動させる。
+(function(){
+  const nav = document.getElementById("bottomNav");
+  if(!nav) return;
+
+  const HISTORY_KEY = "paytaku_compare_history_v1";
+
+  function loadHistory(){
+    try{
+      const raw = localStorage.getItem(HISTORY_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveHistory(list){
+    try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0,20))); }catch(e){}
+  }
+
+  function rememberStore(name){
+    if(!name) return;
+    const list = loadHistory().filter(x => x.name !== name);
+    list.unshift({name, time: new Date().toISOString()});
+    saveHistory(list);
+  }
+
+  // 店舗選択を比較履歴として保存
+  document.getElementById("answerStore")?.addEventListener("change", e => {
+    rememberStore(e.target.value);
+  });
+
+  function closeSheet(){
+    const overlay=document.getElementById("navSheetOverlay");
+    if(overlay) overlay.classList.remove("open");
+  }
+
+  function openSheet(title, html){
+    let overlay=document.getElementById("navSheetOverlay");
+    if(!overlay){
+      overlay=document.createElement("div");
+      overlay.id="navSheetOverlay";
+      overlay.className="nav-sheet-overlay";
+      overlay.innerHTML=`<div class="nav-sheet" role="dialog" aria-modal="true">
+        <div class="nav-sheet-head"><h2 class="nav-sheet-title"></h2><button class="nav-sheet-close" type="button" aria-label="閉じる">×</button></div>
+        <div class="nav-sheet-content"></div>
+      </div>`;
+      document.body.appendChild(overlay);
+      overlay.addEventListener("click", e=>{ if(e.target===overlay) closeSheet(); });
+      overlay.querySelector(".nav-sheet-close").addEventListener("click", closeSheet);
+    }
+    overlay.querySelector(".nav-sheet-title").textContent=title;
+    overlay.querySelector(".nav-sheet-content").innerHTML=html;
+    overlay.classList.add("open");
+    return overlay;
+  }
+
+  function activateMode(mode, scrollTarget){
+    // LPを表示中なら通常アプリへ戻す
+    if(typeof showMain === "function") showMain();
+    if(window.location.hash) history.pushState(null,"",window.location.pathname);
+
+    const btn=document.querySelector(`.mode-btn[data-mode="${mode}"]`);
+    if(btn) btn.click();
+    document.querySelectorAll(".bottom-nav-item").forEach(b=>b.classList.remove("active"));
+
+    requestAnimationFrame(()=>{
+      if(scrollTarget){
+        const el=document.getElementById(scrollTarget);
+        if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+      }else{
+        window.scrollTo({top:0,behavior:"smooth"});
+      }
+    });
+  }
+
+  function showHistory(){
+    const list=loadHistory();
+    if(!list.length){
+      openSheet("比較履歴", `<p class="nav-sheet-empty">まだ比較履歴がありません。<br>「お店から選ぶ」でお店を選ぶと、ここに履歴が表示されます。</p>`);
+      return;
+    }
+    const html=list.map(item=>{
+      const d=new Date(item.time);
+      const when=Number.isNaN(d.getTime()) ? "" : d.toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"});
+      return `<button type="button" class="nav-history-item" data-history-store="${String(item.name).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;")}"><span><strong>${String(item.name).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</strong><span class="nav-item-sub">${when}</span></span><span>›</span></button>`;
+    }).join("");
+    const overlay=openSheet("比較履歴", html);
+    overlay.querySelectorAll("[data-history-store]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const name=btn.dataset.historyStore;
+        closeSheet();
+        activateMode("stores","answerBox");
+        const sel=document.getElementById("answerStore");
+        if(sel){
+          const opt=[...sel.options].find(o=>o.value===name);
+          if(opt){ sel.value=name; sel.dispatchEvent(new Event("change",{bubbles:true})); }
+        }
+      });
+    });
+  }
+
+  function showFavorites(){
+    const list=typeof favs !== "undefined" ? STORES.filter(s=>favs.has(s.name)) : [];
+    if(!list.length){
+      openSheet("お気に入り", `<p class="nav-sheet-empty">お気に入りのお店がまだありません。<br>お店一覧の♡をタップすると追加できます。</p>`);
+      return;
+    }
+    const html=list.map(s=>{
+      const safe=String(s.name).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
+      return `<button type="button" class="nav-fav-item" data-fav-store="${safe}"><span><strong>${safe}</strong><span class="nav-item-sub">${s.category||""}</span></span><span>›</span></button>`;
+    }).join("");
+    const overlay=openSheet("お気に入り", html);
+    overlay.querySelectorAll("[data-fav-store]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const name=btn.dataset.favStore;
+        closeSheet();
+        activateMode("stores","answerBox");
+        const sel=document.getElementById("answerStore");
+        if(sel){
+          const opt=[...sel.options].find(o=>o.value===name);
+          if(opt){ sel.value=name; sel.dispatchEvent(new Event("change",{bubbles:true})); }
+        }
+      });
+    });
+  }
+
+  function showGuide(){
+    const html=`
+      <p class="nav-sheet-desc">ペイ択では、目的に合わせて下のモードから支払い方法を探せます。</p>
+      <button type="button" class="nav-guide-item" data-guide-mode="stores"><span><strong>お店から探す</strong><span class="nav-item-sub">店名・カテゴリから一番おトクな払い方を比較</span></span><span>›</span></button>
+      <button type="button" class="nav-guide-item" data-guide-mode="campaigns"><span><strong>今月のキャンペーン</strong><span class="nav-item-sub">期間限定のキャンペーンを確認</span></span><span>›</span></button>
+      <button type="button" class="nav-guide-item" data-guide-mode="cards"><span><strong>カード選び</strong><span class="nav-item-sub">質問に答えておすすめカードを確認</span></span><span>›</span></button>
+      <button type="button" class="nav-guide-item" data-guide-mode="routes"><span><strong>チャージルート</strong><span class="nav-item-sub">カードから残高へ経由するルートを比較</span></span><span>›</span></button>
+      <button type="button" class="nav-guide-item" data-guide-mode="invest"><span><strong>クレカ積立</strong><span class="nav-item-sub">証券会社のクレカ積立を比較</span></span><span>›</span></button>`;
+    const overlay=openSheet("ペイ択ガイド", html);
+    overlay.querySelectorAll("[data-guide-mode]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const mode=btn.dataset.guideMode;
+        closeSheet();
+        activateMode(mode);
+      });
+    });
+  }
+
+  nav.querySelectorAll(".bottom-nav-item").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const type=btn.dataset.nav;
+      nav.querySelectorAll(".bottom-nav-item").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      if(type==="home") activateMode("stores");
+      else if(type==="stores") activateMode("stores","answerBox");
+      else if(type==="history") showHistory();
+      else if(type==="favorites") showFavorites();
+      else if(type==="guide") showGuide();
+    });
+  });
+})();
+</script>
 </body>
 </html>
