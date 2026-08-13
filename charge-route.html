@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>チャージルート | ペイ択（PayTaku）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120;
+    --card:#1E293B;
+    --border:#334155;
+    --primary:#3B82F6;
+    --accent:#F87171;
+    --tag-bg:#1E3A8A;
+    --tag-text:#BFDBFE;
+    --text:#F9FAFB;
+    --muted:#94A3B8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Noto Sans JP',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    max-width:430px;
+    margin:0 auto;
+    min-height:100vh;
+    position:relative;
+    padding-bottom:96px;
+  }
+  /* ===== Header ===== */
+  .masthead{
+    height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;background:var(--bg);z-index:20;
+  }
+  .logo-wrap{display:flex;align-items:center;gap:8px;}
+  .logo-mark{width:26px;height:26px;color:var(--primary);}
+  .logo-text{font-weight:900;font-size:17px;}
+  .head-actions{display:flex;align-items:center;gap:18px;}
+  .head-icon{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text);font-size:10px;}
+  .head-icon svg{width:20px;height:20px;}
+
+  /* ===== Title ===== */
+  .title-area{padding:20px 16px 0;}
+  .title-row{display:flex;align-items:center;justify-content:space-between;}
+  .title-left{display:flex;align-items:center;gap:8px;}
+  .back-arrow{width:22px;height:22px;color:var(--text);}
+  .page-title{font-size:20px;font-weight:700;margin:0;}
+  .guide-link{font-size:12px;color:var(--primary);white-space:nowrap;display:flex;align-items:center;gap:3px;}
+  .sub-copy{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  /* ===== Section wrapper ===== */
+  .section{margin:24px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+  .section-label{font-size:13px;color:var(--muted);margin-bottom:10px;}
+
+  /* ===== Amount input ===== */
+  .amount-input{
+    height:56px;background:var(--bg);border:1px solid var(--border);border-radius:12px;
+    display:flex;align-items:center;justify-content:space-between;padding:0 16px;
+  }
+  .amount-input input{
+    background:transparent;border:none;outline:none;color:var(--text);font-size:24px;font-weight:700;width:70%;
+  }
+  .amount-input .unit{font-size:14px;color:var(--muted);}
+  .hint{font-size:12px;color:var(--muted);margin-top:8px;}
+
+  /* ===== Service grid ===== */
+  .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .service-btn{
+    background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px 6px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    color:var(--text);cursor:pointer;
+  }
+  .service-btn svg{width:24px;height:24px;}
+  .service-btn span{font-size:12px;}
+  .service-btn.selected{background:var(--tag-bg);border-color:var(--primary);color:var(--tag-text);}
+  .service-note{font-size:11px;color:var(--muted);margin-top:12px;}
+
+  /* ===== Route section ===== */
+  .route-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;}
+  .route-title{font-size:16px;font-weight:700;}
+  .route-updated{font-size:11px;color:var(--muted);}
+  .route-visual{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px;}
+  .route-step{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;width:78px;}
+  .route-icon{
+    width:56px;height:56px;border-radius:50%;background:var(--bg);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;color:var(--text);
+  }
+  .route-icon svg{width:26px;height:26px;}
+  .route-step-name{font-size:11px;text-align:center;margin-top:6px;line-height:1.3;}
+  .route-step-role{font-size:10px;color:var(--muted);text-align:center;}
+  .route-arrow{width:64px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--muted);margin-top:22px;}
+  .route-arrow svg{width:18px;height:18px;}
+  .total-rate-row{
+    display:flex;align-items:baseline;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);
+  }
+  .total-rate-label{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+  .total-rate-num{font-size:28px;font-weight:700;color:var(--primary);}
+  .total-rate-num span{font-size:16px;}
+  .total-rate-sub{font-size:12px;color:var(--muted);}
+
+  /* ===== Step detail accordion ===== */
+  .steps-heading{font-size:16px;font-weight:700;margin:24px 16px 12px;}
+  .steps-list{display:flex;flex-direction:column;gap:12px;padding:0 16px;}
+  .step-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .step-row{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;}
+  .step-num{
+    width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .step-icon{width:24px;height:24px;color:var(--text);flex:0 0 auto;}
+  .step-mid{flex:1;min-width:0;}
+  .step-name{font-size:14px;font-weight:700;}
+  .step-amount{font-size:12px;color:var(--muted);margin-top:2px;}
+  .step-tag{background:var(--tag-bg);color:var(--tag-text);font-size:12px;padding:4px 10px;border-radius:4px;white-space:nowrap;}
+  .step-chevron{width:16px;height:16px;color:var(--muted);flex:0 0 auto;transition:transform .2s;}
+  .step-card.open .step-chevron{transform:rotate(180deg);}
+  .step-detail{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .step-card.open .step-detail{max-height:200px;}
+  .step-detail-inner{padding:0 16px 16px 54px;font-size:12px;color:var(--muted);line-height:1.6;}
+
+  /* ===== Note ===== */
+  .caution{font-size:12px;color:var(--muted);margin:20px 16px 0;line-height:1.6;}
+
+  /* ===== Save button ===== */
+  .save-btn{
+    width:calc(100% - 32px);margin:20px 16px 0;height:48px;border:none;border-radius:8px;color:#fff;
+    background:linear-gradient(135deg,#3B82F6 0%,#6366F1 100%);
+    display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:700;
+  }
+  .save-btn svg{width:18px;height:18px;}
+
+  /* ===== Bottom nav ===== */
+  .bottom-nav{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:64px;
+    background:#0F172A;border-top:1px solid var(--border);display:flex;z-index:30;
+  }
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);font-size:10px;}
+  .nav-item svg{width:20px;height:20px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 1. ヘッダー -->
+  <header class="masthead">
+    <div class="logo-wrap">
+      <svg class="logo-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v18"/><path d="M5 7h14"/>
+        <path d="M5 7L2 13a3 3 0 0 0 6 0L5 7Z"/>
+        <path d="M19 7l-3 6a3 3 0 0 0 6 0l-3-6Z"/>
+        <path d="M8 21h8"/>
+      </svg>
+      <span class="logo-text">ペイ択</span>
+    </div>
+    <div class="head-actions">
+      <div class="head-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+        <span>お気に入り</span>
+      </div>
+      <div class="head-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>メニュー</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. ページタイトル -->
+  <div class="title-area">
+    <div class="title-row">
+      <div class="title-left">
+        <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+        <h1 class="page-title">チャージルート</h1>
+      </div>
+      <a href="#" class="guide-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+        使い方ガイド
+      </a>
+    </div>
+    <p class="sub-copy">最もお得なチャージルートを確認しましょう</p>
+  </div>
+
+  <!-- 3. チャージ金額入力欄 -->
+  <div class="section">
+    <div class="section-label">チャージ金額</div>
+    <div class="amount-input">
+      <input type="text" id="amountInput" value="10,000" inputmode="numeric">
+      <span class="unit">円</span>
+    </div>
+    <p class="hint">1,000円以上から入力できます</p>
+  </div>
+
+  <!-- 4. チャージ起点サービス選択 -->
+  <div class="section">
+    <div class="section-label">チャージの起点となるサービス選択</div>
+    <div class="service-grid" id="serviceGrid">
+      <!-- JSで生成 -->
+    </div>
+    <p class="service-note">※ 最適なルートを見つけるため、複数のサービスを自動で調べています。</p>
+  </div>
+
+  <!-- 5. おすすめチャージルート -->
+  <div class="section">
+    <div class="route-head">
+      <span class="route-title">おすすめチャージルート</span>
+      <span class="route-updated">最終更新 2026/08/12 09:00</span>
+    </div>
+    <div class="route-visual" id="routeVisual"></div>
+    <div class="total-rate-row">
+      <span class="total-rate-label">
+        合計還元率
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+      </span>
+      <span class="total-rate-num">3.0<span>%</span></span>
+      <span class="total-rate-sub">（最大 300円相当・月1万円まで）</span>
+    </div>
+  </div>
+
+  <!-- 6. 各ステップの詳細 -->
+  <div class="steps-heading">各ステップの詳細</div>
+  <div class="steps-list" id="stepsList"></div>
+
+  <!-- 7. 注意書き -->
+  <p class="caution">
+    還元率は変更される場合があります。楽天Edy→楽天キャッシュの交換上限は2026年8月から月1万円に縮小されました。エポスゴールドは現在チャージ起点として使用できません（2026年8月改定）。最新情報は各カード会社の公式サイトでご確認ください。
+  </p>
+
+  <!-- 8. 保存ボタン -->
+  <button class="save-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg>
+    このルートを保存する
+  </button>
+
+  <!-- 9. ボトムナビゲーション -->
+  <nav class="bottom-nav">
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5Z"/></svg>
+      ホーム
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/></svg>
+      お店から選ぶ
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      比較履歴
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      お気に入り
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      ガイド
+    </div>
+  </nav>
+
+</div>
+
+<script>
+/* =========================================================
+   実際のペイ択サイト（DEFAULT_ROUTES / チャージルートDB）から
+   抽出した本物のルートデータを使用しています。
+   採用ルート：「ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ」
+   （2026-08-12時点のサイトデータより）
+========================================================= */
+
+// アイコン定義（他社ロゴは使わず汎用アイコンのみ）
+const ICONS = {
+  plane: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17.8 19.2 1-1-3.4-2.7-.1-4.1c0-1.4-.6-2.7-1.6-3.7L9.5 3.5a1 1 0 0 0-1.7.7v4.2L3.1 6.9a1 1 0 0 0-1.1.2l-.4.4a1 1 0 0 0 .1 1.5l4.1 3.2H2.4a1 1 0 0 0-.7 1.7l3.5 3.5c1 1 2.3 1.6 3.7 1.6l4.1.1 2.7 3.4 1-1-1-4Z"/></svg>`,
+  bank: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 14v3"/><path d="M12 14v3"/><path d="M16 14v3"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>`,
+  card: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`,
+  train: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16"/><circle cx="8.5" cy="15.5" r="0.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="0.5" fill="currentColor"/><path d="m8 21-2 2M16 21l2 2"/></svg>`,
+  pRakuten: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 8h3.5a2.5 2.5 0 0 1 0 5H9V8Zm0 5 4 4"/></svg>`,
+  waon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="4"/><path d="M9 12c-3 1-5 3-5 6h16c0-3-2-5-5-6"/><path d="M9 6c1-1 2-1 3-1M15 6c-1-1-2-1-3-1"/></svg>`,
+  cart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/></svg>`,
+  eCircle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 8H9v8h6M9 12h5"/></svg>`,
+  wallet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><rect x="16" y="12" width="6" height="5" rx="1"/><circle cx="18.5" cy="14.5" r="0.5" fill="currentColor"/></svg>`,
+  doc: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>`,
+  rBadge: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a2.5 2.5 0 0 1 0 5H9m4 0 3 5"/></svg>`,
+  store: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 21v-6h6v6"/></svg>`,
+};
+
+// チャージ起点サービス（実際のペイ択サイトに掲載の対象サービス）
+const SERVICES = [
+  { key:"ANA Pay", icon:ICONS.plane },
+  { key:"V NEOBank", icon:ICONS.bank },
+  { key:"au PAY", icon:ICONS.phone },
+  { key:"Suica", icon:ICONS.card },
+  { key:"交通系", icon:ICONS.train },
+  { key:"楽天ペイ", icon:ICONS.pRakuten },
+  { key:"WAON", icon:ICONS.waon },
+  { key:"イオン", icon:ICONS.cart },
+  { key:"ICOCA", icon:ICONS.eCircle },
+  { key:"楽天Edy", icon:ICONS.wallet },
+  { key:"税金・公共料金", icon:ICONS.doc },
+  { key:"Revolut", icon:ICONS.rBadge },
+];
+
+// 実データ（DEFAULT_ROUTES より「ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ」）
+const ROUTE = {
+  name: "ANA Pay → 楽天Edy → 楽天キャッシュ → 楽天ペイ",
+  totalRate: "3.0",
+  totalNote: "（最大 300円相当・月1万円まで）",
+  visualSteps: [
+    { label:"対象クレカ/デビット", role:"起点", icon:ICONS.card },
+    { label:"ANA Pay", role:"中継", icon:ICONS.plane },
+    { label:"楽天Edy", role:"中継", icon:ICONS.wallet },
+    { label:"楽天キャッシュ", role:"中継", icon:ICONS.eCircle },
+    { label:"楽天ペイ", role:"決済", icon:ICONS.store },
+  ],
+  steps: [
+    {
+      name: "ANA Pay へチャージ",
+      amount: "10,000円",
+      rate: "最大2.0%",
+      icon: ICONS.plane,
+      detail: "リクルートカード（1.2%）、カテエネBANKデビット（月末残高200万円で2.0%）、第一生命NEOBANK Premium（1.5%）などからチャージ。エポスゴールドは2026年8月からチャージ対象外のため起点に使えません。"
+    },
+    {
+      name: "楽天Edy へチャージ",
+      amount: "10,000円",
+      rate: "0.5%",
+      icon: ICONS.wallet,
+      detail: "ANA Payの残高を楽天Edyへ移行するとANAマイル0.5%が付与されます。iPhoneの場合は楽天Edy機能付きの物理カードが必要です。"
+    },
+    {
+      name: "楽天キャッシュ へチャージ",
+      amount: "10,000円",
+      rate: "1.0%",
+      icon: ICONS.eCircle,
+      detail: "楽天ペイアプリで楽天Edy残高を楽天キャッシュへ交換します。2026年8月の改定により交換上限が月10万円→月1万円に縮小されています。"
+    },
+    {
+      name: "楽天ペイ で支払い",
+      amount: "10,000円",
+      rate: "約1.0%",
+      icon: ICONS.store,
+      detail: "お店で楽天ペイの「楽天キャッシュ」払いを選択して支払うと楽天ポイントが約1%付与されます。"
+    }
+  ]
+};
+
+function renderServices(){
+  const grid = document.getElementById('serviceGrid');
+  grid.innerHTML = SERVICES.map(s => `
+    <button class="service-btn ${s.key==='ANA Pay' ? 'selected' : ''}" data-key="${s.key}">
+      ${s.icon}
+      <span>${s.key}</span>
+    </button>
+  `).join('');
+  grid.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.service-btn');
+    if(!btn) return;
+    btn.classList.toggle('selected');
+  });
+}
+
+function renderRouteVisual(){
+  const wrap = document.getElementById('routeVisual');
+  const parts = [];
+  ROUTE.visualSteps.forEach((s, idx) => {
+    parts.push(`
+      <div class="route-step">
+        <div class="route-icon">${s.icon}</div>
+        <div class="route-step-name">${s.label}</div>
+        <div class="route-step-role">${s.role}</div>
+      </div>
+    `);
+    if(idx < ROUTE.visualSteps.length - 1){
+      parts.push(`<div class="route-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>`);
+    }
+  });
+  wrap.innerHTML = parts.join('');
+}
+
+function renderSteps(){
+  const wrap = document.getElementById('stepsList');
+  wrap.innerHTML = ROUTE.steps.map((s, i) => `
+    <div class="step-card" data-idx="${i}">
+      <div class="step-row">
+        <div class="step-num">${i+1}</div>
+        <div class="step-icon">${s.icon}</div>
+        <div class="step-mid">
+          <div class="step-name">${s.name}</div>
+          <div class="step-amount">${s.amount}</div>
+        </div>
+        <div class="step-tag">${s.rate}</div>
+        <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">${s.detail}</div></div>
+    </div>
+  `).join('');
+  wrap.addEventListener('click', (e)=>{
+    const row = e.target.closest('.step-row');
+    if(!row) return;
+    row.parentElement.classList.toggle('open');
+  });
+}
+
+renderServices();
+renderRouteVisual();
+renderSteps();
+</script>
+</body>
+</html>
