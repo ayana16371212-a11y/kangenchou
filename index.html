@@ -1073,6 +1073,54 @@ document.addEventListener("click", function(e){
   }
   .cardpick-why{ font-size: 13px; line-height: 1.7; margin-bottom: 8px; }
   .cardpick-good{
+    font-size: 12px;
+    color: var(--good);
+    margin-bottom: 6px;
+  }
+  .cardpick-cons{
+    font-size: 12px;
+    color: var(--alert);
+    background: rgba(248,113,113,0.07);
+    border-left: 2px solid var(--alert);
+    border-radius: 0 6px 6px 0;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .cardpick-cons-label{
+    display: block;
+    font-weight: 700;
+    font-size: 10px;
+    margin-bottom: 3px;
+    letter-spacing: .03em;
+  }
+  .cardpick-criteria-note{
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--dim);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .cardpick-criteria-note svg{ flex-shrink: 0; margin-top: 1px; }
+  .source-meta{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 5px 8px;
+    background: var(--tint-2);
+    border-radius: 6px;
+    font-size: 10.5px;
+    color: var(--dim);
+  }
+  .source-date{ color: var(--muted); }
+  .source-label{ color: var(--dim); }
     padding: 7px 11px;
     margin-bottom: 9px;
     border-left: 2px solid var(--good);
@@ -2584,7 +2632,29 @@ document.addEventListener("click", function(e){
   }
   .campaign-store{ font-weight:700;font-size:15px;color:#F9FAFB; }
   .campaign-rate{ margin-left:auto;font-weight:700;font-size:14px;color:#F87171;white-space:nowrap; }
-  .campaign-cardname{ font-size:12px;color:#94A3B8; }
+  .campaign-cardname{ font-size:12px;color:#94A3B8; margin-bottom:6px; }
+  .campaign-date-row{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .campaign-date-item{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .campaign-date-label{
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--dim);
+    background: var(--surface-2);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
   .campaign-note{
     margin-top:6px;padding:7px 10px;border-left:2px solid #3B82F6;
     border-radius:0 6px 6px 0;background:rgba(59,130,246,0.07);font-size:11px;line-height:1.6;color:#94A3B8;
@@ -2860,6 +2930,27 @@ document.addEventListener("click", function(e){
     line-height: 1.6;
     color: #94A3B8;
   }
+  .note-toggle-btn{
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #3B82F6;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .note-full-extra{ display: block; margin-top: 6px; }
+  .note-article-link{
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #3B82F6;
+    text-decoration: none;
+  }
+  .note-article-link:hover{ text-decoration: underline; }
   .store-empty-note,
   .empty-state{
     padding: 46px 20px;
@@ -2891,6 +2982,26 @@ document.addEventListener("click", function(e){
   }
   .footer-links a{ color: var(--muted); text-decoration: underline; }
   .footer-links a:hover{ color: var(--text); }
+  .site-policy-note{
+    margin: 14px 0 10px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .site-policy-title{
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .site-policy-list{
+    margin: 0;
+    padding-left: 16px;
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.8;
+  }
   footer.colophon{
     margin-top: 40px;
     padding-top: 16px;
@@ -3926,6 +4037,10 @@ document.addEventListener("click", function(e){
     </div>
 
     <!-- ===== カード一覧（従来のリスト） ===== -->
+    <div class="cardpick-criteria-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      比較基準：基本還元率・年会費・特定店舗での還元・チャージ先・ポイントの使いやすさ。各カードにデメリット・注意点を明記しています。
+    </div>
     <div id="cardPickList"></div>
 
     <!-- ===== フッター信頼テキスト ===== -->
@@ -4086,10 +4201,20 @@ document.addEventListener("click", function(e){
       <p class="request-text">
         載っていないお店や、見つけたキャンペーンを教えてください。確認のうえ追加します。
       </p>
-      <a class="request-btn" id="requestBtn" href="#" target="_blank" rel="noopener noreferrer">リクエストを送る ↗</a>
+      <a class="request-btn" id="requestBtn" href="https://forms.gle/tBTgQ2b5ELC1K3vg6" target="_blank" rel="noopener noreferrer">リクエストを送る ↗</a>
     </div>
     <div class="ad-disclosure">本サイトはアフィリエイト広告を利用しています。</div>
     還元率・条件は変更される場合があります。利用前に各社公式ページでご確認ください。
+    <div class="site-policy-note">
+      <div class="site-policy-title">ペイ択の情報について</div>
+      <ul class="site-policy-list">
+        <li>掲載情報は各社公式サイト等を確認したうえで掲載しています</li>
+        <li>還元率・条件には確認日を表示し、変更が判明した場合は随時更新します</li>
+        <li>広告掲載（アフィリエイト）がある場合は、該当ページに明記します</li>
+        <li>広告掲載の有無によって、比較結果を恣意的に変更することはしません</li>
+        <li>比較基準は「基本還元率・年会費・利用可能店舗・チャージ先・ポイントの使いやすさ」です</li>
+      </ul>
+    </div>
     <div class="footer-links">
       <a href="articles/">記事一覧</a>
       ・
@@ -4150,6 +4275,16 @@ document.addEventListener("click", function(e){
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">注意点・デメリット</h2>
+      <ul class="lp-body-list">
+        <li>クレカ積立には対応していない。SBI証券・マネックス証券などのようにクレカでポイントを貯めながら積立する用途には使えない</li>
+        <li>投資信託・つみたてNISAの取り扱いが他の大手証券に比べて限定的。インデックスファンドを積立メインで使いたい場合は向かない</li>
+        <li>株式投資には元本割れのリスクがある。余裕資金の範囲で行うこと</li>
+      </ul>
+      <p class="lp-body-text" style="font-size:12px;color:var(--dim);">こんな人には向かない：クレカ積立でポイントを貯めたい人／投資信託の積立をメインにしたい人</p>
     </section>
 
     <section class="lp-section lp-cta-section">
@@ -4242,6 +4377,17 @@ document.addEventListener("click", function(e){
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">注意点・デメリット</h2>
+      <ul class="lp-body-list">
+        <li>au PAY残高・Pontaポイントを持っていない場合は他のECサイトと比べて特別有利というわけではない</li>
+        <li>送料や最低購入金額がショップによって異なるため、少額の日用品は実店舗の方が安い場合もある</li>
+        <li>ポイントアップ倍率はショップ・時期により変動するため、都度確認が必要</li>
+        <li>au回線がなくてもサービス自体は使えるが、au契約者向け優待の恩恵は受けられない</li>
+      </ul>
+      <p class="lp-body-text" style="font-size:12px;color:var(--dim);">こんな人には向かない：au PAY残高やPontaポイントを持っていない人／少額の購入が中心の人</p>
     </section>
 
     <section class="lp-section lp-cta-section">
@@ -4430,6 +4576,17 @@ document.addEventListener("click", function(e){
       </div>
     </section>
 
+    <section class="lp-section">
+      <h2 class="lp-section-title">注意点・デメリット</h2>
+      <ul class="lp-body-list">
+        <li>小田急沿線・小田急百貨店・Odakyu OXを利用しない人にはメリットがほぼない。基本還元率はOPポイントで1%だが、使い道が小田急グループに偏る</li>
+        <li>年1回の利用で翌年の年会費が無料になる条件があるため、まったく使わない年があると550円の年会費が発生する</li>
+        <li>OPポイントの使い道は基本的に小田急グループ内に限られる。汎用ポイント（楽天・dポイント等）への交換はできない</li>
+        <li>小田急百貨店でのポイントアップは「OPクレジットで決済」が条件。他の決済方法では還元率が下がる</li>
+      </ul>
+      <p class="lp-body-text" style="font-size:12px;color:var(--dim);">こんな人には向かない：小田急沿線・小田急百貨店を使わない人／ポイントを汎用的に使いたい人</p>
+    </section>
+
     <div class="lp-disclosure">本ページはアフィリエイト広告を含みます。還元率・条件は変更される場合があります。利用前に公式サイトでご確認ください。</div>
     <a href="#" class="lp-back lp-back-bottom" id="lpOdakyuBack2">← ペイ択に戻る</a>
   </div>
@@ -4449,27 +4606,36 @@ document.addEventListener("click", function(e){
       <table class="lp-info-table">
         <tr><th>サイト名</th><td>ペイ択（Paytaku）</td></tr>
         <tr><th>URL</th><td>https://paytaku.github.io/</td></tr>
-        <tr><th>運営者</th><td>ペイ択 運営</td></tr>
+        <tr><th>運営者</th><td>個人運営（キャッシュレス決済愛好家）</td></tr>
         <tr><th>開設</th><td>2026年8月</td></tr>
       </table>
     </section>
 
     <section class="lp-section">
       <h2 class="lp-section-title">サイトの目的</h2>
-      <p class="lp-body-text">ペイ択は「レジの前で、どのカード・どの決済で払うのが一番おトクか」を3秒で判断できることを目的にした比較サイトです。個人が実際にキャッシュレス決済を使いながら情報を集めて運営しています。</p>
+      <p class="lp-body-text">ペイ択は「レジの前で、どのカード・どの決済で払うのが一番おトクか」を3秒で判断できることを目的にした個人運営のキャッシュレス決済情報サイトです。実際にキャッシュレス決済を日常的に使いながら情報を集めて運営しています。</p>
     </section>
 
     <section class="lp-section">
-      <h2 class="lp-section-title">情報の正確性について</h2>
+      <h2 class="lp-section-title">掲載情報の確認体制</h2>
       <p class="lp-body-text">掲載する還元率・キャンペーン情報は、各社公式サイト・IR資料・比較メディアを参照して運営者が独自にまとめています。各項目には確認日と出典を可能な限り記載しています。</p>
-      <p class="lp-body-text">とはいえ、還元率や条件は各社の判断で予告なく変更されることがあります。実際に決済する前には、必ず各社の公式サイトで最新の条件をご確認ください。本サイトの情報を利用したことによる損害について、運営者は責任を負いません。</p>
+      <p class="lp-body-text">情報の変更が確認された場合は随時更新します。ただし、還元率や条件は各社の判断で予告なく変更されることがあります。実際に決済する前には、必ず各社の公式サイトで最新の条件をご確認ください。本サイトの情報を利用したことによる損害について、運営者は責任を負いません。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">比較・掲載の方針</h2>
+      <p class="lp-body-text">ペイ択では「基本還元率・年会費・利用可能店舗・チャージ先・ポイントの使いやすさ」などを基準にカード・決済サービスを比較しています。</p>
+      <ul class="lp-body-list">
+        <li>広告掲載の有無によって、比較結果や還元率の表示を意図的に変更することはしません</li>
+        <li>アフィリエイト広告を掲載している場合は、ページ内に明記します</li>
+        <li>情報の誤りや変更の指摘は、お問い合わせフォームからお知らせください。確認のうえ修正します</li>
+      </ul>
     </section>
 
     <section class="lp-section">
       <h2 class="lp-section-title">お問い合わせ・情報提供</h2>
       <p class="lp-body-text">お店・キャンペーンの追加リクエスト、掲載内容の誤りの指摘、その他のお問い合わせは以下のフォームからお願いします。</p>
-      <a href="#" id="aboutContactBtn" class="lp-apply-btn" style="margin-top:8px;">お問い合わせフォームを開く ↗</a>
-      <p class="lp-body-text" style="margin-top:10px;font-size:11.5px;color:var(--dim);">※ フォームURLが設定されていない場合はダミーリンクになります。編集モードから「📮 リクエスト先」を設定してください。</p>
+      <a href="https://forms.gle/tBTgQ2b5ELC1K3vg6" id="aboutContactBtn" class="lp-apply-btn" style="margin-top:8px;" target="_blank" rel="noopener noreferrer">お問い合わせフォームを開く ↗</a>
     </section>
 
     <section class="lp-section">
@@ -4809,6 +4975,7 @@ const CARD_PICKS = [
         rate: "1.2%",
         fee: "年会費永年無料",
         why: "特約店を気にせず、どこで使っても1.2%。年会費無料カードでは最高水準の基本還元率。",
+        cons: "貯まるリクルートポイントの使い道はじゃらん・ホットペッパーなど限定的。Pontaやdポイントへ交換は可能だが1ステップ挟む。電子マネーチャージのポイントに月間上限あり。",
         detail: "公共料金や携帯料金の支払いでも1.2%が付くのが強み（多くのカードは公共料金だと還元率が下がる）。貯まるリクルートポイントはPontaポイント・dポイントへ1:1で交換でき、じゃらん・ホットペッパーでも使える。Amazonでもリクルートポイントが使えるようになった。JCBブランドならETCカードの発行・年会費が無料（Visa/Mastercardは発行手数料あり）。電子マネーチャージでもポイントが付くが、月間の付与上限がある。［確認日: 2026-08-09］",
         good: "チャージルートが面倒／特約店を覚えたくない人",
         url: "https://recruit-card.jp/"
@@ -4818,6 +4985,7 @@ const CARD_PICKS = [
         rate: "最大10.5%（基本1.0%）",
         fee: "年会費永年無料",
         why: "基本1.0%に加え、J-POINTパートナーの優待店で大きく跳ねる。クレカ乗車10.5%も強力。",
+        cons: "申込は39歳まで限定（40歳以降の新規申込不可）。J-POINTパートナーの優待は店舗ごとに事前登録が必要で、登録していない店では1.0%。JCBは海外・一部ネットショップで使えない加盟店がある。",
         detail: "【申込条件】18〜39歳限定。ただし39歳までに入会すれば40歳以降も年会費無料のまま使い続けられる（40歳以降の新規申込は不可）。■【ポイントの仕組み】JCBのポイントは2026年1月にOki Dokiポイントから「J-POINT」へ移行し、1ポイント=1円で使えるようになった。貯まり方は3階建てで、①通常ポイント（基本0.5%）②J-POINTパートナー（登録した対象店で最大10%）③J-POINTボーナス（年間50万円達成ごとにボーナス）。■【W会員の優遇】JCB CARD W / W plus L / Biz ONE は常時+1倍が加算されるため、同じ店でも他のオリジナルシリーズより1段高くなる。クレカ乗車なら10%→10.5%、Amazonなら3倍→実質2%相当。■【最も間違えやすい点】J-POINTパートナーの優待は、店舗ごとに事前のポイントアップ登録（無料）をしないと倍率が上がらない。多くは初回1度きりで以降は不要だが、登録していない店では通常ポイントしか付かない。2026年からは従来の「MyJチェック登録」は倍率に関係しなくなり、ポイントアップ登録だけで完結する方式に変わった。［確認日: 2026-08-09］",
         good: "39歳以下／外食・コンビニ・交通の利用が多い人",
         url: "https://j-pointpartner.jcb.co.jp/"
@@ -4827,6 +4995,7 @@ const CARD_PICKS = [
         rate: "1.0%（楽天市場で3.0%以上）",
         fee: "年会費永年無料",
         why: "どこでも1.0%。楽天市場を使うなら3.0%以上になり、貯まったポイントの使い道も広い。",
+        cons: "SPUの条件は頻繁に改定されるため、過去の還元率が維持されない。楽天市場以外では還元率が平凡。楽天グループのサービスを使わない人はメリットが薄い。",
         detail: "国内で最も保有者が多いカードのひとつ。楽天ポイントは楽天グループだけでなく、楽天ポイントカード加盟店でも1ポイント1円で使え、支払いにも投資にも回せる。SPUで楽天銀行・楽天証券などを組み合わせると倍率が上がるが、SPUの条件は頻繁に改定されるため過信は禁物。楽天ペイと組み合わせると街の店でも還元を重ねられる。［確認日: 2026-08-09］",
         good: "楽天市場をよく使う人／ポイントの使い道を重視する人",
         url: "https://www.rakuten-card.co.jp/"
@@ -4836,6 +5005,7 @@ const CARD_PICKS = [
         rate: "0.5%（対象店で7〜8%）",
         fee: "年会費永年無料",
         why: "基本還元率は低いが、対象のコンビニ・飲食店でのスマホタッチ決済が突出して強い。",
+        cons: "基本還元率が0.5%と低く、対象店以外ではメリットが薄い。スマホのタッチ決済限定で、カード現物のタッチ・iD・差し込み・磁気は対象外。最大還元率には「セブン-イレブンアプリの提示」など条件達成が必要。1万円超の会計は対象外になる場合あり。",
         detail: "基本0.5%なので「土台」としては弱く、対象店専用の1枚と考えるのが正しい。リクルートカードなど基本還元率の高いカードと2枚持ちするのが定石。カード現物のタッチ決済は対象外で、必ずスマホをかざす必要がある。［確認日: 2026-08-09］",
         good: "コンビニ・対象飲食店をよく使う人（2枚目として）",
         url: "https://www.smbc-card.com/"
@@ -4850,6 +5020,7 @@ const CARD_PICKS = [
         rate: "0.5%（対象店7〜8%）",
         fee: "5,500円 → 年100万円利用で翌年以降永年無料",
         why: "一度100万円を達成すれば年会費が永久に無料。達成年は実質1.5%相当まで上がる。",
+        cons: "年100万円の達成が前提で、届かなければ年会費5,500円がかかる。クレカ積立や一部チャージは100万円集計の対象外。対象店以外の基本還元率は0.5%と低い。100万円を無理に使おうとすると逆に損をするケースもある。",
         detail: "いわゆる「100万円修行」。達成すると①翌年以降の年会費永年無料 ②毎年10,000ポイント還元 ③SBI証券のクレカ積立が最大1.0%、の3つが得られる。10,000ポイント分を含めると100万円利用時の実質還元率は1.5%相当。集計は税込・家族カード合算可。【注意】クレカ積立の利用額は100万円の集計対象外。またJAL Pay・au PAY・Kyash・バンドルカードへのチャージも2026年3月から対象外になったため、以前の「修行の近道」は使えない。年100万円を使う見込みがないなら、無理に狙う必要はない。［確認日: 2026-08-09］",
         good: "年間100万円以上カードを使う人／SBI証券で積立する人",
         url: "https://www.smbc-card.com/camp/gold-numberless/index.jsp"
@@ -4859,6 +5030,7 @@ const CARD_PICKS = [
         rate: "0.5%（優待店で最大10%）",
         fee: "11,000円",
         why: "還元率は通常のJCBと同じ。差が出るのはラウンジ・保険・優待の部分。",
+        cons: "還元率目的なら年会費無料のJCB CARD Wの方が高くなる場合がある（Wは常時+1倍）。年会費11,000円の元を取るには付帯サービスを積極的に使う必要がある。40歳以上向けの主な選択肢ではあるが、旅行をしない人には恩恵が少ない。",
         detail: "【還元率だけなら不要】J-POINTパートナーの倍率はJCBオリジナルシリーズ共通なので、還元率目的なら年会費無料のJCB CARD Wで足りる。むしろWは常時+1倍が付く分、同じ店ではゴールドより高くなる。■【ゴールドの価値】空港ラウンジ、最高1億円の海外旅行傷害保険、ショッピングガード保険、クラブオフ（最大90%OFFの優待）といった付帯サービス。■【例外的にゴールドが有利な場面】USJ・U-NEXT・Huluなど一部の優待店は「プレミアムカード」区分が設定されており、ゴールド以上だと倍率が上がる。Google Playも時期によってゴールド以上が10倍になることがある。■年齢制限がないため、40歳以降にJCBを作るならこちらが選択肢になる。［確認日: 2026-08-09］",
         good: "旅行が多い人／付帯保険や優待を使う人",
         url: "https://j-pointpartner.jcb.co.jp/"
@@ -4868,6 +5040,7 @@ const CARD_PICKS = [
         rate: "1.0%",
         fee: "11,000円",
         why: "2026年6月の改定で上乗せが廃止され、基本還元率は無料版と同じになった。",
+        cons: "2026年6月に上乗せ還元が廃止され、年会費に見合う還元率上のメリットがほぼなくなった。ソフトバンク・ワイモバイル以外のユーザーにはメリットが薄い。ソフトバンクの新プランに変更すると通信料の付与率が大幅に下がる点も注意。",
         detail: "以前あった「+0.5%上乗せ」は2026年6月2日で廃止。代わりに年100万円以上の決済で11,000ポイント（年会費相当）が付与される特典が新設された。実質的な価値はソフトバンク・ワイモバイル契約者向けの割引に寄っているため、キャリアが違う人はメリットが薄い。ソフトバンクの新プラン（ペイトク2など）に変更すると通信料の付与率が10%→1%に下がる点にも注意。［確認日: 2026-08-09］",
         good: "ソフトバンク／ワイモバイル利用者で年100万円使う人",
         url: "https://paypay.ne.jp/card-gold/"
@@ -4882,6 +5055,7 @@ const CARD_PICKS = [
         rate: "1.5%（2026/11から1.25%）",
         fee: "年会費無料",
         why: "対象外取引がなく、公共料金や税金を含む全ての支払いで還元される点が強い。",
+        cons: "2026年11月1日から還元率が1.25%に下がり、他社決済サービスへのチャージがポイント対象外になる。リアルカード（デビット付きキャッシュカード）が発行できないため、スマホ決済非対応の店では使えない。",
         detail: "【2026年11月1日から改定】還元率1.25%へ引き下げ、さらに他社決済サービスへのチャージ（VポイントPay・ANA Pay・au PAYなど）が軒並みポイント対象外に。鉄道・公共料金・税金・病院なども対象外になる。チャージルートの起点として使っていた人は11月以降その用途では還元されない。またリアルカード（デビット付きキャッシュカード）が発行できないため、スマホ決済非対応の店では使えない。［確認日: 2026-08-09］",
         good: "固定費もまとめて還元を受けたい人（ただし11月まで）",
         url: "https://www.netbk.co.jp/contents/lp/vneobank/"
@@ -4891,6 +5065,7 @@ const CARD_PICKS = [
         rate: "1.5%",
         fee: "年会費無料",
         why: "年会費無料のデビットとしてトップクラス。ポイントを現金に交換できる。",
+        cons: "鉄道・チャージ・公共料金・税金・病院などは対象外で0.3%に下がる。特にチャージが対象外なので、チャージルートの起点には向かない。月間1,000円未満の利用は還元対象外。",
         detail: "月間利用1,000円以上で1.5%が適用（1,000円ごとに15ポイント）。貯まったポイントは500ポイント以上から現金に交換でき、500ポイント未満でもデビットの支払いに1ポイント1円で充当できる。Mastercardブランド、リアルカードの発行も可能。【重要な弱点】鉄道・チャージ・公共料金・税金・病院などは対象外で0.3%に下がる。特にチャージが対象外なので、チャージルートの起点には向かない。［確認日: 2026-08-09］",
         good: "リアルカードが必要な人／ポイントを現金化したい人",
         url: "https://www.netbk.co.jp/"
@@ -4900,6 +5075,7 @@ const CARD_PICKS = [
         rate: "1.0〜2.0%（月末残高200万円以上で2.0%）",
         fee: "年会費無料・残高200万円の維持が実質条件",
         why: "2026年11月のV NEOBANK改悪後の最有力代替起点。月末200万円を維持できればV NEOBANKの1.5%を上回る2.0%になる。中部電力の契約は不要。カテエネポイントはVポイント・楽天・dポイント・Pontaへ等価交換可能。",
+        cons: "月末残高200万円の維持が条件で、資金を常に拘束する必要がある。200万円を下回った月は1.0%に下がる。知名度が低く情報が少ないため、今後の改定情報は公式サイトでの確認が必要。",
         good: "200万円の手元資金がある方、V NEOBANKからの移行先を探している方",
         detail: "住信SBIネット銀行の「カテエネBANK支店」のデビットカード。月末（末日）の円普通預金＋SBIハイブリッド預金の合計残高が200万円以上なら翌月は2.0%、200万円未満なら1.0%になる。中部電力ミライズとの電気・ガス契約は不要で誰でも口座開設可能。年会費無料・審査なし（デビットカード）。チャージルートの起点として：カテエネBANKデビット→au PAY→VポイントPayで合計3.0%（月5万円まで）になり、V NEOBANKルートの後継として最有力。なお、ルートとしてはV NEOBANKと完全に入れ替え可能なため、au PAYを普段使いしている方はそのままルートを引き継げる。200万円の維持が難しい場合は第一生命NEOBANKデビット Premium（条件なし1.5%）が代替になる。チャージ対象外取引については2026年8月時点では設定されていない（V NEOBANKのような改悪がないことを確認済み）。今後の改定情報はカテエネBANK公式で確認すること。［確認日: 2026-08-12／出典: カテエネBANK公式・各種情報サイト複数］",
         url: "https://katene.chuden.jp/clubkatene/p/lp/katenebank/"
@@ -4909,6 +5085,7 @@ const CARD_PICKS = [
         rate: "1.25〜2.0%",
         fee: "年会費無料",
         why: "住信SBIネット銀行が2025年に始めた新しいデビットカード。残高や取引状況に応じて還元率が上がります。",
+        cons: "最大2.0%にはスマプロランク4が必要で、残高や取引条件を満たす必要がある。ランク変動は翌々月に反映されるため即効性がない。住信SBIをメインバンクにしていない人には条件達成が難しい。",
         detail: "【どんなカードか】住信SBIネット銀行の口座から即時引き落としで支払うMastercardのデビットカード。年会費無料・審査なしで、15歳以上なら口座があれば作れます。■【還元率】基本1.25%。銀行の「スマプロランク」（円普通預金＋SBIハイブリッド預金の残高、または給与受取などの取引条件で決まる4段階）に応じて最大+0.75%が上乗せされ、最大2.0%になります。給与・年金の受け取り設定だけでも1.5%に届きます。■【V NEOBANKとの違い】同じ住信SBIですが別のカードです。V NEOBANKデビットは2026年11月に還元率1.25%へ引き下げ＋他社チャージが対象外になるため、その移行先として検討する価値があります。■ランクは判定月末の状態が翌々月から適用されるため、上げてもすぐには反映されません。［確認日: 2026-08-09］",
         good: "住信SBIをメインバンクにしている人",
         url: "https://www.netbk.co.jp/contents/lp/debit/pointplus/"
@@ -5931,6 +6108,7 @@ const DEFAULT_STORES = [
         "rate": "最大10〜11%",
         "method": "スマホのタッチ決済のみ（カード現物のタッチ・iD・差し込み・磁気は対象外）",
         "note": "ベースは7%（Oliveクレジットモードは8%）。これにセブン-イレブンアプリの会員コード提示などの条件達成で+3%が上乗せされ、Oliveクレジットモードなら最大11%、その他の三井住友カードなら最大10%。上乗せ3%のうち0.5%はセブンマイルとして付与（Vポイントに交換可）。1万円超は対象外になることがある。［確認日: 2026-08-09／出典: 三井住友カード公式「対象のコンビニ・飲食店で最大8％還元！」］",
+        "articleUrl": "articles/smbc-seven-eleven-max-11percent.html",
         "url": "https://www.smbc-card.com/camp/seven-eleven_vpoint/index.html"
       },
       {
@@ -8209,17 +8387,39 @@ const STORAGE_KEY = "kangenchou_stores_v1";
 const GITHUB_CONFIG_KEY = "kangenchou_github_config_v1";
 const STORES_JSON_PATH = "stores.json"; // 同じフォルダに置く想定
 
+// カード名→記事URLの対応表。
+// stores.jsonは外部ファイルなので、articleUrlフィールドを追加するには
+// ファイルを毎回更新する必要がある。それを避けるため、コード側で自動的に補完する。
+// 新しい記事を追加したら、ここにも対応を追加すること。
+const CARD_ARTICLE_MAP = {
+  "三井住友カード / Olive": "articles/smbc-seven-eleven-max-11percent.html",
+};
+
+// カードデータにarticleUrlを自動補完する。
+// 店舗名がセブン-イレブンのときだけリンクを付けるなど、
+// 将来的に店舗×カードの組み合わせで分けたい場合はここを拡張する。
+function injectArticleUrls(stores){
+  return (stores || []).map(store => ({
+    ...store,
+    cards: (store.cards || []).map(card => {
+      const articleUrl = CARD_ARTICLE_MAP[card.name];
+      if(articleUrl && !card.articleUrl) return { ...card, articleUrl };
+      return card;
+    })
+  }));
+}
+
 function loadStoresFromCache(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
     if(raw){
       const parsed = JSON.parse(raw);
-      if(Array.isArray(parsed)) return parsed;
+      if(Array.isArray(parsed)) return injectArticleUrls(parsed);
     }
   } catch(e){
     console.warn("店舗データの読み込みに失敗、初期データを使用します", e);
   }
-  return JSON.parse(JSON.stringify(DEFAULT_STORES)); // deep copy
+  return injectArticleUrls(JSON.parse(JSON.stringify(DEFAULT_STORES))); // deep copy
 }
 
 function saveStoresToCache(){
@@ -8308,7 +8508,7 @@ async function refreshFromGithubPages(){
       // 未送信のローカル編集がある間は、リモートで上書きしない
       return;
     }
-    STORES = data;
+    STORES = injectArticleUrls(data);
     saveStoresToCache();
     renderStores();
   } catch(e){
@@ -8521,6 +8721,49 @@ function formatNote(text){
     .replace(/^<br>/, "");
 }
 
+// 長い注記は最初の一文だけを表示し、「続きを読む」で展開できるようにする。
+// ほとんどの人は読まないという前提で、ホーム画面側は簡潔にしておく。
+// 展開後の全文表示や、外部リンク（articleUrl）があれば記事へのリンクも添える。
+function noteHtml(text, opts){
+  if(!text) return "";
+  const cls = (opts && opts.className) || "card-option-note";
+  const full = formatNote(text);
+  const firstDot = text.indexOf("。");
+  const hasShort = firstDot >= 0 && firstDot < text.length - 1;
+  const short = hasShort ? text.slice(0, firstDot + 1) : text;
+
+  if(!hasShort){
+    // もともと短い注記はそのまま表示（展開の必要なし）
+    return `<div class="${cls}">${full}</div>`;
+  }
+
+  const articleLink = (opts && opts.articleUrl)
+    ? `<a href="${opts.articleUrl}" class="note-article-link" target="_blank" rel="noopener noreferrer">くわしい記事を読む ↗</a>`
+    : "";
+
+  return `
+    <div class="${cls} note-collapsible">
+      <span class="note-short-text">${short}</span>
+      <span class="note-full-text" hidden>${full}</span>
+      <button type="button" class="note-toggle-btn">続きを読む</button>
+      <span class="note-full-extra" hidden>${articleLink}</span>
+    </div>
+  `;
+}
+
+// 注記から確認日・出典を抽出して、カード・ルートの下部に「情報の鮮度」として表示する。
+// ASP審査では「情報の根拠が明示されているか」が重要なため、独立したUIとして見せる。
+function sourceMetaHtml(text){
+  if(!text) return "";
+  const dateMatch = text.match(/確認日:\s*(\d{4}-\d{2}-\d{2}|\d{4}\/\d{2}\/\d{2}|\d{4}年\d{1,2}月\d{1,2}日)/);
+  const srcMatch  = text.match(/出典:\s*([^］\]]+)/);
+  if(!dateMatch && !srcMatch) return "";
+  const parts = [];
+  if(dateMatch) parts.push(`<span class="source-date">📅 確認日：${dateMatch[1]}</span>`);
+  if(srcMatch)  parts.push(`<span class="source-label">出典：${srcMatch[1].trim()}</span>`);
+  return `<div class="source-meta">${parts.join("")}</div>`;
+}
+
 function freshnessHtml(note){
   const m = (note || "").match(/確認日:\s*(\d{4})-(\d{2})-(\d{2})/);
   if(!m) return "";
@@ -8530,6 +8773,23 @@ function freshnessHtml(note){
   const label = days >= 180 ? `${Math.floor(days/30)}か月以上前の情報` : `${days}日前の情報`;
   return `<div class="stale-flag">⏳ ${label}です。変わっている可能性があるため、公式ページで確認してください。</div>`;
 }
+
+// noteHtml() で作った「続きを読む」トグルの開閉。
+// カード一覧はいろんな箇所で動的に再生成されるため、個別にbindせず document 側で一括処理する。
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".note-toggle-btn");
+  if(!btn) return;
+  const wrap = btn.closest(".note-collapsible");
+  if(!wrap) return;
+  const shortEl = wrap.querySelector(".note-short-text");
+  const fullEl = wrap.querySelector(".note-full-text");
+  const extraEl = wrap.querySelector(".note-full-extra");
+  const expanded = wrap.classList.toggle("expanded");
+  if(shortEl) shortEl.hidden = expanded;
+  if(fullEl) fullEl.hidden = !expanded;
+  if(extraEl) extraEl.hidden = !expanded;
+  btn.textContent = expanded ? "閉じる" : "続きを読む";
+});
 
 function buildStoreCardEl(store, distanceMeters){
   const shown = combinedCards(store);
@@ -8680,7 +8940,7 @@ function buildStoreCardEl(store, distanceMeters){
       <div class="card-option-method">${c.method || ""}</div>
       ${c.shutdownWarn ? `<div class="route-shutdown-warn" style="margin:4px 0 2px;"><b>⚠️ 終了予定</b>　${c.shutdownWarn.replace('⚠️ ', '').replace(/^終了予定。/, '')}</div>` : ""}
       ${/【変動が大きい案件】/.test(c.note || "") ? `<div class="volatile-flag">📈 還元率の変動が大きい案件です。購入直前に必ず現在の値を確認してください。</div>` : ""}
-      ${c.note ? `<div class="card-option-note">${formatNote(c.note)}</div>` : ""}
+      ${c.note ? noteHtml(c.note, {articleUrl: c.articleUrl}) : ""}
       ${freshnessHtml(c.note)}
       ${linkHtml(c)}
     `;
@@ -9358,7 +9618,7 @@ function renderPicks(){
       </div>
       <div class="pick-period">${p.period}　${expiryBadgeHtml(p)}</div>
       <ol class="pick-steps">${p.how.map(h => `<li>${h}</li>`).join("")}</ol>
-      <div class="card-option-note">${formatNote(p.note)}</div>
+      ${noteHtml(p.note)}
       ${linkRowHtml(p.url, p.name)}
     `;
     el.querySelector(".edit-pick-btn").addEventListener("click", ()=> openPickModal(p));
@@ -9562,6 +9822,10 @@ function renderCampaigns(){
   items.forEach(({ store, card, status }) => {
     const el = document.createElement("div");
     el.className = "campaign-card" + (status.kind === "expired" ? " is-expired" : "");
+
+    // 最終確認日をnoteから抽出して表示
+    const checkedMeta = sourceMetaHtml(card.note);
+
     el.innerHTML = `
       <div class="campaign-card-top">
         <span class="campaign-store">${store.name}</span>
@@ -9569,7 +9833,11 @@ function renderCampaigns(){
         <span class="campaign-rate">${card.rate}</span>
       </div>
       <div class="campaign-cardname">${card.name}　／　${card.method || ""}</div>
-      ${card.note ? `<div class="campaign-note">${formatNote(card.note)}</div>` : ""}
+      <div class="campaign-date-row">
+        ${card.expires ? `<span class="campaign-date-item"><span class="campaign-date-label">終了日</span>${card.expires}</span>` : `<span class="campaign-date-item"><span class="campaign-date-label">期間</span>常設</span>`}
+        ${checkedMeta || ""}
+      </div>
+      ${card.note ? noteHtml(card.note, {className: "campaign-note"}) : ""}
       <div class="link-row">
         ${card.url ? `<a class="src-link campaign-link" href="${card.url}" target="_blank" rel="noopener noreferrer">キャンペーンを見る ↗</a>` : ""}
         ${affiliateFor(card.name) ? `<a class="src-link apply-link" href="${affiliateFor(card.name)}" target="_blank" rel="sponsored noopener noreferrer">申し込み ↗</a>` : ""}
@@ -9900,7 +10168,8 @@ function renderRoutes(){
       ${r.starter ? `<div class="route-starter"><span class="route-starter-label">起点カード</span>${r.starter}</div>` : ""}
       ${howtoHtml(r, ri)}
       ${r.caution ? `<div class="route-caution">${r.caution}</div>` : ""}
-      <div class="card-option-note">${formatNote(r.note)}</div>
+      ${noteHtml(r.note)}
+      ${sourceMetaHtml(r.note)}
       ${linkRowHtml(r.url, r.name)}
       <button class="route-save-btn ${isRouteFav(r.name) ? 'saved' : ''}" data-route-save="${r.name}">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg>
@@ -10747,8 +11016,10 @@ function renderCardPicks(){
         </div>
         <div class="cardpick-fee">${c.fee}</div>
         <div class="cardpick-why">${c.why}</div>
+        ${c.cons ? `<div class="cardpick-cons"><span class="cardpick-cons-label">注意点・デメリット</span>${c.cons}</div>` : ""}
         <div class="cardpick-good">こんな人に：${c.good}</div>
-        <div class="card-option-note">${formatNote(c.detail)}</div>
+        ${noteHtml(c.detail)}
+        ${sourceMetaHtml(c.detail)}
         ${freshnessHtml(c.detail)}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
           <button class="featured-detail-btn" data-card="${c.name}" style="flex:1;">詳細＆申し込み</button>
@@ -10856,7 +11127,7 @@ function renderInvest(){
       </div>
       ${condsHtml}
       ${resultBlock}
-      <div class="card-option-note">${formatNote(p.note)}</div>
+      ${noteHtml(p.note)}
       ${isAff && p.url ? `
         <div style="margin-top:10px;">
           <a href="${p.url}" rel="sponsored nofollow noopener noreferrer" class="affiliate-dmm-btn">${p.broker}の口座開設ページを見る（PR）</a>
@@ -11802,7 +12073,7 @@ document.getElementById("addPickBtn").addEventListener("click", ()=> openPickMod
 
 document.getElementById("resetStoresBtn").addEventListener("click", ()=>{
   if(!confirm("この端末で編集した内容をすべて削除し、初期データに戻します。よろしいですか？")) return;
-  STORES = JSON.parse(JSON.stringify(DEFAULT_STORES));
+  STORES = injectArticleUrls(JSON.parse(JSON.stringify(DEFAULT_STORES)));
   persistStores();
   renderStores();
   renderCampaigns();
@@ -11999,17 +12270,6 @@ function applyRoute(){
     applyRoute();
   });
 });
-
-// 運営者情報ページの問い合わせボタンを、編集モードで設定された requestUrl に差し替える
-const aboutContactBtn = document.getElementById("aboutContactBtn");
-if(aboutContactBtn){
-  const currentRequestUrl = (typeof requestUrl !== "undefined" && requestUrl) ? requestUrl : null;
-  if(currentRequestUrl){
-    aboutContactBtn.href = currentRequestUrl;
-    aboutContactBtn.target = "_blank";
-    aboutContactBtn.rel = "noopener noreferrer";
-  }
-}
 
 // ハッシュ変更（ブラウザの進む・戻るボタン）
 window.addEventListener("hashchange", applyRoute);
