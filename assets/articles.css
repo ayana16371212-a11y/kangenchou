@@ -1,0 +1,313 @@
+/* ============================================================
+   ペイ択 記事共通スタイル（articles.css）
+   トップページ（index.html）の <link rel="stylesheet"> と、
+   /articles/*.html の各記事ページの両方から読み込む共通ファイル。
+   色・余白などのトーンは index.html 内のインラインCSSと揃えてある。
+   ============================================================ */
+
+:root{
+  --foil-1: #3B82F6;
+  --foil-2: #3B82F6;
+  --foil-3: #6366F1;
+  --foil-4: #EC4899;
+  --foil: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+
+:root, [data-theme="dark"]{
+  --bg:        #0B1120;
+  --surface:   #1E293B;
+  --surface-2: #334155;
+  --line:      #334155;
+  --text:      #F9FAFB;
+  --muted:     #94A3B8;
+  --dim:       #64748B;
+  --on-foil:   #FFFFFF;
+
+  --good:  #34D399;
+  --alert: #F87171;
+  --amber: #FBBF24;
+
+  --glow-a: rgba(59,130,246,0.08);
+  --glow-b: rgba(99,102,241,0.06);
+  --tint:   rgba(59,130,246,0.06);
+  --tint-2: rgba(59,130,246,0.04);
+  --hairline: rgba(255,255,255,0.04);
+}
+
+[data-theme="light"]{
+  --bg:        #F8FAFC;
+  --surface:   #FFFFFF;
+  --surface-2: #F1F5F9;
+  --line:      #E2E8F0;
+  --text:      #0F172A;
+  --muted:     #64748B;
+  --dim:       #94A3B8;
+  --on-foil:   #FFFFFF;
+
+  --good:  #059669;
+  --alert: #DC2626;
+  --amber: #D97706;
+
+  --glow-a: rgba(59,130,246,0.06);
+  --glow-b: rgba(99,102,241,0.04);
+  --tint:   rgba(59,130,246,0.04);
+  --tint-2: rgba(59,130,246,0.025);
+  --hairline: rgba(0,0,0,.04);
+}
+
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; }
+body{
+  background: var(--bg);
+  background-image:
+    radial-gradient(900px 500px at 12% -8%, var(--glow-a), transparent 62%),
+    radial-gradient(700px 420px at 95% 4%, var(--glow-b), transparent 62%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ===== ヘッダー（記事ページ共通） ===== */
+.site-header{
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.site-header-inner{
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-logo{
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: .01em;
+}
+.site-logo span{ color: var(--foil-2); }
+.site-header-tagline{
+  font-size: 11px;
+  color: var(--dim);
+  margin-left: auto;
+}
+
+/* ===== 別ページ（LP・記事）スタイル ===== */
+.lp-page{ background: var(--bg); min-height: 100vh; }
+.lp-wrap{ max-width: 600px; margin: 0 auto; padding: 16px 16px 48px; }
+.lp-back{
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 0;
+  margin-bottom: 12px;
+}
+.lp-back:hover{ color: var(--text); }
+.lp-back-bottom{ margin-top: 32px; }
+.lp-hero{
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.lp-badge{
+  display: inline-block;
+  background: var(--muted);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.lp-title{
+  font-size: 28px;
+  font-weight: 900;
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+.lp-tagline{
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.6;
+}
+.lp-section{ margin-bottom: 32px; }
+.lp-section-title{
+  font-size: 15px;
+  font-weight: 800;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--foil-2);
+  color: var(--text);
+}
+.lp-points{ display: flex; flex-direction: column; gap: 14px; }
+.lp-point{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.lp-point-icon{ font-size: 22px; flex-shrink: 0; }
+.lp-point-title{ font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+.lp-point-desc{ font-size: 12px; color: var(--muted); line-height: 1.55; }
+.lp-cta-section{
+  background: var(--tint-2);
+  border: 1px solid var(--foil-2);
+  border-radius: 14px;
+  padding: 20px;
+}
+.lp-cta-note{ font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+.lp-apply-btn{
+  display: block;
+  padding: 15px;
+  border-radius: 12px;
+  background: var(--foil);
+  border: 1px solid var(--foil-2);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+.lp-apply-btn:hover{ opacity: .85; }
+.lp-flow{ display: flex; flex-direction: column; gap: 0; }
+.lp-flow-step{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.lp-flow-num{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--foil-2);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lp-flow-arrow{
+  text-align: center;
+  color: var(--muted);
+  font-size: 18px;
+  padding: 4px 0;
+}
+.lp-disclosure{
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.6;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+}
+.lp-body-text{
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+.lp-body-list{
+  padding-left: 22px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+.lp-body-list li{ margin-bottom: 6px; }
+.lp-breadcrumb{ font-size: 11px; color: var(--dim); margin: 0 0 8px; }
+.lp-breadcrumb a{ color: var(--dim); text-decoration: none; }
+.lp-breadcrumb a:hover{ color: var(--muted); }
+.lp-byline{ font-size: 11px; color: var(--muted); margin: 10px 0 0; }
+.lp-toc{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+.lp-toc-title{ font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.lp-toc ol{ margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.9; }
+.lp-toc a{ color: var(--foil-2); text-decoration: none; }
+.lp-toc a:hover{ text-decoration: underline; }
+.lp-related{ display: flex; flex-direction: column; gap: 8px; }
+.lp-related-item{
+  display: block;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+.lp-related-item:hover{ border-color: var(--dim); }
+.lp-info-table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.lp-info-table th{
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--tint-2);
+  color: var(--muted);
+  font-weight: 700;
+  width: 30%;
+  border-bottom: 1px solid var(--line);
+}
+.lp-info-table td{
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.lp-risk-note{
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: var(--tint-2);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ===== 記事一覧（/articles/index.html） ===== */
+.article-list{ display: flex; flex-direction: column; gap: 10px; }
+.article-list-item{
+  display: block;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+}
+.article-list-item:hover{ border-color: var(--foil-2); }
+.article-list-cat{
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--foil-2);
+  margin-bottom: 4px;
+}
+.article-list-title{ font-size: 14.5px; font-weight: 700; margin-bottom: 3px; }
+.article-list-desc{ font-size: 12px; color: var(--muted); line-height: 1.5; }
