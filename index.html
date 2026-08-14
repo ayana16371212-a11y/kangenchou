@@ -2405,9 +2405,12 @@ document.addEventListener("click", function(e){
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 3px;
-    padding: 10px 12px;
-    min-width: 56px;
+    width: 72px;
+    height: 70px;
+    box-sizing: border-box;
+    padding: 8px 4px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: var(--surface);
@@ -4236,6 +4239,47 @@ document.addEventListener("click", function(e){
   </div>
 </div>
 
+<!-- ========== 別ページ：今月のおすすめ決済（ランキング詳細・共通テンプレート） ========== -->
+<div id="lp-pick-detail" class="lp-page" style="display:none;">
+  <div class="lp-wrap">
+    <a href="#" class="lp-back" id="lpPickBack">← ペイ択に戻る</a>
+    <div class="lp-hero">
+      <div class="lp-badge">今月のおすすめ</div>
+      <h1 class="lp-title" id="lpPickTitle"></h1>
+      <p class="lp-tagline" id="lpPickTagline"></p>
+    </div>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">このキャンペーンの特徴</h2>
+      <p class="lp-body-text" id="lpPickSummary"></p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">使い方の手順</h2>
+      <div class="lp-flow" id="lpPickSteps"></div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">注意点・詳細条件</h2>
+      <p class="lp-body-text" id="lpPickNote"></p>
+    </section>
+
+    <section class="lp-section" id="lpPickPeriodSection">
+      <h2 class="lp-section-title">実施期間</h2>
+      <p class="lp-body-text" id="lpPickPeriod"></p>
+    </section>
+
+    <section class="lp-section lp-cta-section">
+      <h2 class="lp-section-title">このキャンペーンを見る</h2>
+      <p class="lp-cta-note">条件・還元率は変更される場合があります。ご利用前に必ず公式ページで最新情報をご確認ください。</p>
+      <a href="#" class="lp-apply-btn" id="lpPickApplyBtn" target="_blank" rel="noopener noreferrer">公式ページで詳細を見る（PR）</a>
+    </section>
+
+    <div class="lp-disclosure">本ページの情報は掲載時点のものです。還元率・条件は変更される場合があるため、利用前に必ず公式サイトでご確認ください。本サイトはアフィリエイト広告を含みます。</div>
+    <a href="#" class="lp-back lp-back-bottom" id="lpPickBack2">← ペイ択に戻る</a>
+  </div>
+</div>
+
 <!-- ========== 別ページ：プライバシーポリシー ========== -->
 <div id="lp-privacy" class="lp-page" style="display:none;">
   <div class="lp-wrap">
@@ -4528,6 +4572,7 @@ function matchesCategory(storeCategory, filterCategory){
 // localStorage → この初期値、の順で読み込む。
 const DEFAULT_PICKS = [
   {
+    "slug": "touch-norisha-10-5",
     "name": "クレカのタッチ決済で乗車 最大10.5%（常設）",
     "rate": "JCB 10.5%／三井住友 8%",
     "period": "常設（JCBは2027/5/15まで）",
@@ -4540,6 +4585,7 @@ const DEFAULT_PICKS = [
     "url": "https://j-pointpartner.jcb.co.jp/"
   },
   {
+    "slug": "vpoint-pay-yusen-10",
     "name": "VポイントPay ポイント優先払いで10%還元",
     "rate": "10%還元",
     "period": "8/1〜8/31",
@@ -4554,6 +4600,7 @@ const DEFAULT_PICKS = [
     "url": "https://www.smbc-card.com/mem/cardinfo/26/cardinfo7244745.jsp"
   },
   {
+    "slug": "vcoupon-multi-shop-500pt",
     "name": "Vクーポン 複数ショップ利用で最大500ポイント",
     "rate": "最大500pt上乗せ",
     "period": "8/1〜9/30",
@@ -4566,6 +4613,7 @@ const DEFAULT_PICKS = [
     "url": "https://www.smbc-card.com/camp/vcoupon/index.jsp"
   },
   {
+    "slug": "natsu-coupon-matsuri",
     "name": "夏のクーポン祭り（Vクーポン × Vポイントアプリ）",
     "rate": "2種類のクーポンを重ね取り",
     "period": "8/1〜9/30",
@@ -4579,6 +4627,7 @@ const DEFAULT_PICKS = [
     "url": "https://www.vpoint.net/scm1"
   },
   {
+    "slug": "jichitai-campaign",
     "name": "自治体キャンペーン（地域限定の高還元）",
     "rate": "最大10〜30%還元",
     "period": "地域ごとに異なる",
@@ -4592,6 +4641,7 @@ const DEFAULT_PICKS = [
     "url": "https://paypay.ne.jp/event/"
   },
   {
+    "slug": "dpoint-koukan-zouryo",
     "name": "dポイント交換 最大15%増量キャンペーン",
     "rate": "もれなく8% ＋ 抽選7%",
     "period": "8/1〜8/31",
@@ -8681,15 +8731,27 @@ const CATEGORY_CHIP_ICONS = {
   "その他":           `<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>`,
 };
 
-// カテゴリ表示名（長いものは改行あり）
+// カテゴリ表示名（すべて2行に揃えて高さを統一する。
+// 自然に2行にならないものは、2行目を空白にして高さを合わせる）
 const CATEGORY_CHIP_LABELS = {
-  "飲食店（すべて）": "飲食店",
+  "コンビニ":         "コンビニ\n\u00A0",
+  "飲食店（すべて）": "飲食店\n\u00A0",
   "飲食店（その他）": "飲食店\nその他",
   "ファストフード":   "ファスト\nフード",
   "牛丼・定食":       "牛丼\n定食",
-  "ホームセンター":   "ホーム\nセンター",
+  "ファミレス":       "ファミレス\n\u00A0",
+  "回転寿司":         "回転寿司\n\u00A0",
+  "カフェ":           "カフェ\n\u00A0",
+  "スーパー":         "スーパー\n\u00A0",
   "ドラッグストア":   "ドラッグ\nストア",
+  "自販機":           "自販機\n\u00A0",
+  "エンタメ":         "エンタメ\n\u00A0",
+  "トラベル":         "トラベル\n\u00A0",
+  "ホームセンター":   "ホーム\nセンター",
+  "ファッション":     "ファッション\n\u00A0",
   "ネット通販":       "ネット\n通販",
+  "交通":             "交通\n\u00A0",
+  "その他":           "その他\n\u00A0",
 };
 
 function categoryChipIcon(cat){
@@ -8704,8 +8766,7 @@ function renderCategoryChips(){
   // 「すべて」チップ
   const allChip = document.createElement("button");
   allChip.className = "category-chip" + (storeState.category === "all" ? " active" : "");
-  allChip.innerHTML = `${categoryChipIcon("すべて")}<span style="margin-top:2px;">すべて</span>`;
-  allChip.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;min-width:56px;";
+  allChip.innerHTML = `${categoryChipIcon("すべて")}<span style="margin-top:2px;white-space:pre-line;text-align:center;">すべて\n\u00A0</span>`;
   allChip.addEventListener("click", ()=>{ storeState.category = "all"; renderStores(); });
   row.appendChild(allChip);
 
@@ -8714,10 +8775,9 @@ function renderCategoryChips(){
       ? STORES.filter(s => FOOD_SUBCATEGORIES.includes(s.category)).length
       : STORES.filter(s => s.category === cat).length;
     if(count === 0) return;
-    const label = CATEGORY_CHIP_LABELS[cat] || cat;
+    const label = CATEGORY_CHIP_LABELS[cat] || `${cat}\n\u00A0`;
     const chip = document.createElement("button");
     chip.className = "category-chip" + (storeState.category === cat ? " active" : "");
-    chip.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 12px;min-width:56px;";
     chip.innerHTML = `${categoryChipIcon(cat)}<span style="margin-top:2px;white-space:pre-line;text-align:center;">${label}</span>`;
     chip.addEventListener("click", ()=>{ storeState.category = cat; renderStores(); });
     row.appendChild(chip);
@@ -9416,7 +9476,7 @@ function renderCampaignRanking(){
   ];
 
   list.innerHTML = ranked.map(({p, v, isPercent}, i) => `
-    <div class="cmp-rank-card">
+    <div class="cmp-rank-card" data-slug="${p.slug || ""}" style="cursor:pointer;">
       <div class="cmp-rank-badge" style="background:${RANK_COLORS[i]};">
         <span style="width:16px;height:16px;display:flex;align-items:center;justify-content:center;">${RANK_ICONS[i]}</span>
         <span>${i+1}</span>
@@ -9435,6 +9495,15 @@ function renderCampaignRanking(){
       <svg class="cmp-rank-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
     </div>
   `).join("");
+
+  // カード（＞マーク含む）をタップすると、ペイ択内の詳細ページへ遷移する。
+  // 外部サイトへは詳細ページ側のCTAボタンから飛ぶ形にして、記事ページ数を確保する。
+  list.querySelectorAll(".cmp-rank-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const slug = card.dataset.slug;
+      if(slug) location.hash = `#/pick/${slug}`;
+    });
+  });
 }
 
 function renderCampaigns(){
@@ -11877,9 +11946,63 @@ function showMain(){
   document.querySelectorAll(".lp-page").forEach(p => p.style.display = "none");
 }
 
+// 「今月のおすすめ」ランキングの各項目を、共通テンプレートの詳細ページに流し込む。
+// 記事（ページ）数を増やす目的もあるため、手順・注意点・期間などをできるだけ具体的に書く。
+function renderPickDetail(pick){
+  document.getElementById("lpPickTitle").textContent = pick.name || "";
+
+  const tagParts = [];
+  if(pick.rate) tagParts.push(pick.rate);
+  if(pick.period) tagParts.push(pick.period);
+  document.getElementById("lpPickTagline").textContent = tagParts.join("／");
+
+  const summaryEl = document.getElementById("lpPickSummary");
+  const summarySrc = (pick.note || "").split("。")[0];
+  summaryEl.textContent = summarySrc ? summarySrc + "。" : "詳しい条件は下記の手順・注意点をご確認ください。";
+
+  const stepsWrap = document.getElementById("lpPickSteps");
+  const steps = pick.how || [];
+  stepsWrap.innerHTML = steps.map((s, i) => `
+    <div class="lp-flow-step">
+      <div class="lp-flow-num">${i+1}</div>
+      <div>${s}</div>
+    </div>
+    ${i < steps.length - 1 ? '<div class="lp-flow-arrow">↓</div>' : ""}
+  `).join("");
+
+  document.getElementById("lpPickNote").textContent = pick.note || "特記事項はありません。";
+
+  const periodSection = document.getElementById("lpPickPeriodSection");
+  const periodEl = document.getElementById("lpPickPeriod");
+  if(pick.period){
+    periodEl.textContent = pick.period + (pick.expires ? `（〜${pick.expires}）` : "");
+    periodSection.style.display = "";
+  } else {
+    periodSection.style.display = "none";
+  }
+
+  const btn = document.getElementById("lpPickApplyBtn");
+  btn.href = pick.url || "#";
+}
+
 function applyRoute(){
   const hash = window.location.hash;
   const path = hash.startsWith("#/") ? hash.slice(1) : null;
+
+  // 今月のおすすめランキングの詳細ページ（#/pick/スラッグ）
+  if(path && path.startsWith("/pick/")){
+    const slug = path.slice("/pick/".length);
+    const pick = MONTHLY_PICKS.find(p => p.slug === slug);
+    if(pick){
+      document.title = `${pick.name} | ペイ択`;
+      const desc = (pick.note || pick.name || "").slice(0, 110);
+      document.querySelector('meta[name="description"]')?.setAttribute("content", desc);
+      renderPickDetail(pick);
+      showLP("lp-pick-detail");
+      return;
+    }
+  }
+
   const lpId = path ? LP_ROUTES[path] : null;
 
   if(lpId){
@@ -11897,7 +12020,7 @@ function applyRoute(){
 }
 
 // 戻るボタン
-["lpDmmBack","lpDmmBack2","lpAupayBack","lpAupayBack2","lpOdakyuBack","lpOdakyuBack2","lpPrivacyBack","lpPrivacyBack2","lpAboutBack","lpAboutBack2"].forEach(id => {
+["lpDmmBack","lpDmmBack2","lpAupayBack","lpAupayBack2","lpOdakyuBack","lpOdakyuBack2","lpPrivacyBack","lpPrivacyBack2","lpAboutBack","lpAboutBack2","lpPickBack","lpPickBack2"].forEach(id => {
   document.getElementById(id)?.addEventListener("click", e => {
     e.preventDefault();
     history.pushState(null, "", window.location.pathname);
