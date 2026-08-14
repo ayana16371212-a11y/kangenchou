@@ -1139,6 +1139,21 @@ document.addEventListener("click", function(e){
     color: var(--foil-2);
   }
 
+  .cardpick-face-link{
+    display: block;
+    margin: 8px 0 10px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .cardpick-face-img{
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
+  }
   .cardpick-fee{
     display: inline-block;
     padding: 3px 9px;
@@ -3038,6 +3053,27 @@ document.addEventListener("click", function(e){
     text-decoration: none;
   }
   .note-article-link:hover{ text-decoration: underline; }
+  .card-article-btn{
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--foil);
+    color: var(--on-foil);
+    font-family: "Noto Sans JP", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 14.5px;
+    letter-spacing: 0.01em;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform .12s ease, filter .15s ease;
+  }
+  .card-article-btn:hover{ filter: brightness(1.07); }
+  .card-article-btn:active{ transform: scale(.985); }
   .store-empty-note,
   .empty-state{
     padding: 46px 20px;
@@ -4141,6 +4177,15 @@ document.addEventListener("click", function(e){
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
       比較基準：基本還元率・年会費・特定店舗での還元・チャージ先・ポイントの使いやすさ。各カードにデメリット・注意点を明記しています。
     </div>
+    <!-- 楽天カード アフィリエイト枠（TG-Affiliate／コード変更禁止） -->
+    <div class="affiliate-section" style="margin-bottom:14px;">
+      <div class="affiliate-section-label">📣 PR</div>
+      <div class="affiliate-rakuten-wrap">
+        <a href="https://ad2.trafficgate.net/t/r/877/1396/318860_398517" target="_blank" rel="sponsored noopener nofollow">
+          <img src="https://srv2.trafficgate.net/t/b/877/1396/318860_398517" alt="楽天カード" style="max-width:100%;border-radius:10px;display:block;margin:0 auto;">
+        </a>
+      </div>
+    </div>
     <div id="cardPickList"></div>
 
     <!-- ===== フッター信頼テキスト ===== -->
@@ -5098,7 +5143,10 @@ const CARD_PICKS = [
         cons: "SPUの条件は頻繁に改定されるため、過去の還元率が維持されない。楽天市場以外では還元率が平凡。楽天グループのサービスを使わない人はメリットが薄い。",
         detail: "国内で最も保有者が多いカードのひとつ。楽天ポイントは楽天グループだけでなく、楽天ポイントカード加盟店でも1ポイント1円で使え、支払いにも投資にも回せる。SPUで楽天銀行・楽天証券などを組み合わせると倍率が上がるが、SPUの条件は頻繁に改定されるため過信は禁物。楽天ペイと組み合わせると街の店でも還元を重ねられる。［確認日: 2026-08-09］",
         good: "楽天市場をよく使う人／ポイントの使い道を重視する人",
-        url: "https://www.rakuten-card.co.jp/"
+        url: "https://www.rakuten-card.co.jp/",
+        // TG-Affiliate（券面画像バナー）。バナーコードは規約により変更禁止。
+        cardImageUrl: "https://srv2.trafficgate.net/t/b/519/1396/318860_398517",
+        cardImageLink: "https://ad2.trafficgate.net/t/r/519/1396/318860_398517"
       },
       {
         name: "三井住友カード（NL）/ Olive",
@@ -5115,6 +5163,19 @@ const CARD_PICKS = [
   {
     group: "ゴールド以上（年会費を払う価値があるか）",
     items: [
+      {
+        name: "楽天プレミアムカード",
+        rate: "1.0%（楽天市場で3.0%以上／プライオリティ・パス付帯）",
+        fee: "11,000円",
+        why: "楽天カードの上位版。国内・海外の空港ラウンジが無料で使えるプライオリティ・パスが付帯し、旅行保険も手厚い。",
+        cons: "年会費11,000円は還元率だけで元を取るのは難しく、ラウンジや旅行保険をどれだけ使うかが価値を左右する。SPUの上乗せ倍率は改定されやすい。海外利用時のポイント優遇は条件付き。",
+        detail: "楽天カードとの最大の違いはプライオリティ・パス（無料でラウンジが使い放題）と旅行傷害保険の手厚さ。年会費11,000円だが、空港ラウンジやホテルの優待を使う人にはコストパフォーマンスが高い。楽天市場でのSPU倍率は通常の楽天カードと同様に加算され、あわせて3.0%以上を狙える。［確認日: 2026-08-12］",
+        good: "空港ラウンジをよく使う人／旅行の頻度が高い人",
+        url: "https://www.rakuten-card.co.jp/premiumcard/",
+        // TG-Affiliate（プレミアムカード券面画像バナー）。バナーコードは規約により変更禁止。
+        cardImageUrl: "https://srv2.trafficgate.net/t/b/298/1396/318860_398517",
+        cardImageLink: "https://ad2.trafficgate.net/t/r/298/1396/318860_398517"
+      },
       {
         name: "三井住友カード ゴールド（NL）",
         rate: "0.5%（対象店7〜8%）",
@@ -8493,6 +8554,7 @@ const STORES_JSON_PATH = "stores.json"; // 同じフォルダに置く想定
 // 新しい記事を追加したら、ここにも対応を追加すること。
 const CARD_ARTICLE_MAP = {
   "三井住友カード / Olive": "articles/smbc-seven-eleven-max-11percent.html",
+  "楽天カード": "articles/rakuten-card-review.html",
 };
 
 // カードデータにarticleUrlを自動補完する。
@@ -9040,7 +9102,8 @@ function buildStoreCardEl(store, distanceMeters){
       <div class="card-option-method">${c.method || ""}</div>
       ${c.shutdownWarn ? `<div class="route-shutdown-warn" style="margin:4px 0 2px;"><b>⚠️ 終了予定</b>　${c.shutdownWarn.replace('⚠️ ', '').replace(/^終了予定。/, '')}</div>` : ""}
       ${/【変動が大きい案件】/.test(c.note || "") ? `<div class="volatile-flag">📈 還元率の変動が大きい案件です。購入直前に必ず現在の値を確認してください。</div>` : ""}
-      ${c.note ? noteHtml(c.note, {articleUrl: c.articleUrl}) : ""}
+      ${c.note ? noteHtml(c.note) : ""}
+      ${c.articleUrl ? `<a href="${c.articleUrl}" class="card-article-btn" target="_blank" rel="noopener noreferrer">📖 くわしい記事を読む ↗</a>` : ""}
       ${freshnessHtml(c.note)}
       ${linkHtml(c)}
     `;
@@ -11116,11 +11179,16 @@ function renderCardPicks(){
           <button class="card-pick-name-btn route-name" data-card="${c.name}">${c.name}</button>${verifyBadgeHtml("cardpick:" + c.name)}
           <span class="route-total">${c.rate}</span>
         </div>
+        ${c.cardImageUrl ? `
+        <a href="${c.cardImageLink || aff || c.url}" target="_blank" rel="sponsored noopener nofollow" class="cardpick-face-link">
+          <img src="${c.cardImageUrl}" alt="${c.name} 券面" class="cardpick-face-img">
+        </a>` : ""}
         <div class="cardpick-fee">${c.fee}</div>
         <div class="cardpick-why">${c.why}</div>
         ${c.cons ? `<div class="cardpick-cons"><span class="cardpick-cons-label">注意点・デメリット</span>${c.cons}</div>` : ""}
         <div class="cardpick-good">こんな人に：${c.good}</div>
         ${noteHtml(c.detail)}
+        ${CARD_ARTICLE_MAP[c.name] ? `<a href="${CARD_ARTICLE_MAP[c.name]}" class="card-article-btn" target="_blank" rel="noopener noreferrer">📖 くわしい記事を読む ↗</a>` : ""}
         ${sourceMetaHtml(c.detail)}
         ${freshnessHtml(c.detail)}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
