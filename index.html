@@ -584,6 +584,34 @@ document.addEventListener("click", function(e){
     margin: 0 0 12px;
   }
   .lp-body-list li{ margin-bottom: 6px; }
+  .lp-breadcrumb{ font-size: 11px; color: var(--dim); margin: 0 0 8px; }
+  .lp-breadcrumb a{ color: var(--dim); text-decoration: none; }
+  .lp-breadcrumb a:hover{ color: var(--muted); }
+  .lp-byline{ font-size: 11px; color: var(--muted); margin: 10px 0 0; }
+  .lp-toc{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 28px;
+  }
+  .lp-toc-title{ font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+  .lp-toc ol{ margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.9; }
+  .lp-toc a{ color: var(--foil-2); text-decoration: none; }
+  .lp-toc a:hover{ text-decoration: underline; }
+  .lp-related{ display: flex; flex-direction: column; gap: 8px; }
+  .lp-related-item{
+    display: block;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .lp-related-item:hover{ border-color: var(--dim); }
   .lp-info-table{
     width: 100%;
     border-collapse: collapse;
@@ -4236,47 +4264,6 @@ document.addEventListener("click", function(e){
 
     <div class="lp-disclosure">本ページはアフィリエイト広告を含みます。還元率・条件は変更される場合があります。利用前に公式サイトでご確認ください。</div>
     <a href="#" class="lp-back lp-back-bottom" id="lpAupayBack2">← ペイ択に戻る</a>
-  </div>
-</div>
-
-<!-- ========== 別ページ：今月のおすすめ決済（ランキング詳細・共通テンプレート） ========== -->
-<div id="lp-pick-detail" class="lp-page" style="display:none;">
-  <div class="lp-wrap">
-    <a href="#" class="lp-back" id="lpPickBack">← ペイ択に戻る</a>
-    <div class="lp-hero">
-      <div class="lp-badge">今月のおすすめ</div>
-      <h1 class="lp-title" id="lpPickTitle"></h1>
-      <p class="lp-tagline" id="lpPickTagline"></p>
-    </div>
-
-    <section class="lp-section">
-      <h2 class="lp-section-title">このキャンペーンの特徴</h2>
-      <p class="lp-body-text" id="lpPickSummary"></p>
-    </section>
-
-    <section class="lp-section">
-      <h2 class="lp-section-title">使い方の手順</h2>
-      <div class="lp-flow" id="lpPickSteps"></div>
-    </section>
-
-    <section class="lp-section">
-      <h2 class="lp-section-title">注意点・詳細条件</h2>
-      <p class="lp-body-text" id="lpPickNote"></p>
-    </section>
-
-    <section class="lp-section" id="lpPickPeriodSection">
-      <h2 class="lp-section-title">実施期間</h2>
-      <p class="lp-body-text" id="lpPickPeriod"></p>
-    </section>
-
-    <section class="lp-section lp-cta-section">
-      <h2 class="lp-section-title">このキャンペーンを見る</h2>
-      <p class="lp-cta-note">条件・還元率は変更される場合があります。ご利用前に必ず公式ページで最新情報をご確認ください。</p>
-      <a href="#" class="lp-apply-btn" id="lpPickApplyBtn" target="_blank" rel="noopener noreferrer">公式ページで詳細を見る（PR）</a>
-    </section>
-
-    <div class="lp-disclosure">本ページの情報は掲載時点のものです。還元率・条件は変更される場合があるため、利用前に必ず公式サイトでご確認ください。本サイトはアフィリエイト広告を含みます。</div>
-    <a href="#" class="lp-back lp-back-bottom" id="lpPickBack2">← ペイ択に戻る</a>
   </div>
 </div>
 
@@ -9520,12 +9507,12 @@ function renderCampaignRanking(){
     </div>
   `).join("");
 
-  // カード（＞マーク含む）をタップすると、ペイ択内の詳細ページへ遷移する。
-  // 外部サイトへは詳細ページ側のCTAボタンから飛ぶ形にして、記事ページ数を確保する。
+  // カード（＞マーク含む）をタップすると、articles/ 配下の静的記事ページへ遷移する。
+  // ハッシュルーティングだとクローラーから見て「別ページ」と認識されにくいため、実ファイルへ直接飛ばす。
   list.querySelectorAll(".cmp-rank-card").forEach(card => {
     card.addEventListener("click", () => {
       const slug = card.dataset.slug;
-      if(slug) location.hash = `#/pick/${slug}`;
+      if(slug) location.href = `articles/${slug}.html`;
     });
   });
 }
@@ -11970,62 +11957,9 @@ function showMain(){
   document.querySelectorAll(".lp-page").forEach(p => p.style.display = "none");
 }
 
-// 「今月のおすすめ」ランキングの各項目を、共通テンプレートの詳細ページに流し込む。
-// 記事（ページ）数を増やす目的もあるため、手順・注意点・期間などをできるだけ具体的に書く。
-function renderPickDetail(pick){
-  document.getElementById("lpPickTitle").textContent = pick.name || "";
-
-  const tagParts = [];
-  if(pick.rate) tagParts.push(pick.rate);
-  if(pick.period) tagParts.push(pick.period);
-  document.getElementById("lpPickTagline").textContent = tagParts.join("／");
-
-  const summaryEl = document.getElementById("lpPickSummary");
-  const summarySrc = (pick.note || "").split("。")[0];
-  summaryEl.textContent = summarySrc ? summarySrc + "。" : "詳しい条件は下記の手順・注意点をご確認ください。";
-
-  const stepsWrap = document.getElementById("lpPickSteps");
-  const steps = pick.how || [];
-  stepsWrap.innerHTML = steps.map((s, i) => `
-    <div class="lp-flow-step">
-      <div class="lp-flow-num">${i+1}</div>
-      <div>${s}</div>
-    </div>
-    ${i < steps.length - 1 ? '<div class="lp-flow-arrow">↓</div>' : ""}
-  `).join("");
-
-  document.getElementById("lpPickNote").textContent = pick.note || "特記事項はありません。";
-
-  const periodSection = document.getElementById("lpPickPeriodSection");
-  const periodEl = document.getElementById("lpPickPeriod");
-  if(pick.period){
-    periodEl.textContent = pick.period + (pick.expires ? `（〜${pick.expires}）` : "");
-    periodSection.style.display = "";
-  } else {
-    periodSection.style.display = "none";
-  }
-
-  const btn = document.getElementById("lpPickApplyBtn");
-  btn.href = pick.url || "#";
-}
-
 function applyRoute(){
   const hash = window.location.hash;
   const path = hash.startsWith("#/") ? hash.slice(1) : null;
-
-  // 今月のおすすめランキングの詳細ページ（#/pick/スラッグ）
-  if(path && path.startsWith("/pick/")){
-    const slug = path.slice("/pick/".length);
-    const pick = MONTHLY_PICKS.find(p => p.slug === slug);
-    if(pick){
-      document.title = `${pick.name} | ペイ択`;
-      const desc = (pick.note || pick.name || "").slice(0, 110);
-      document.querySelector('meta[name="description"]')?.setAttribute("content", desc);
-      renderPickDetail(pick);
-      showLP("lp-pick-detail");
-      return;
-    }
-  }
 
   const lpId = path ? LP_ROUTES[path] : null;
 
@@ -12044,7 +11978,7 @@ function applyRoute(){
 }
 
 // 戻るボタン
-["lpDmmBack","lpDmmBack2","lpAupayBack","lpAupayBack2","lpOdakyuBack","lpOdakyuBack2","lpPrivacyBack","lpPrivacyBack2","lpAboutBack","lpAboutBack2","lpPickBack","lpPickBack2"].forEach(id => {
+["lpDmmBack","lpDmmBack2","lpAupayBack","lpAupayBack2","lpOdakyuBack","lpOdakyuBack2","lpPrivacyBack","lpPrivacyBack2","lpAboutBack","lpAboutBack2"].forEach(id => {
   document.getElementById(id)?.addEventListener("click", e => {
     e.preventDefault();
     history.pushState(null, "", window.location.pathname);
