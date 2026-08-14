@@ -4660,15 +4660,38 @@ const DEFAULT_PICKS = [
 const PICKS_KEY = "kangenchou_picks";
 const PICKS_JSON_PATH = "picks.json";
 
+// slugを持たない古いデータ（picks.jsonやlocalStorageの旧キャッシュ）が来た場合に、
+// DEFAULT_PICKSの同名項目からslugを補い、それも無ければ名前から安定的に生成する。
+function hashCode(str){
+  let h = 0;
+  for(let i = 0; i < str.length; i++){
+    h = (h << 5) - h + str.charCodeAt(i);
+    h |= 0;
+  }
+  return h;
+}
+function slugifyPickName(name, i){
+  const base = String(name || `pick-${i}`);
+  return "pick-" + Math.abs(hashCode(base)).toString(36);
+}
+function ensurePickSlugs(list){
+  return (list || []).map((p, i) => {
+    if(p && p.slug) return p;
+    const def = DEFAULT_PICKS.find(d => d.name === (p && p.name));
+    const slug = (def && def.slug) || slugifyPickName(p && p.name, i);
+    return Object.assign({}, p, { slug });
+  });
+}
+
 function loadPicks(){
   try{
     const raw = localStorage.getItem(PICKS_KEY);
     if(raw){
       const p = JSON.parse(raw);
-      if(Array.isArray(p)) return p;
+      if(Array.isArray(p)) return ensurePickSlugs(p);
     }
   } catch {}
-  return JSON.parse(JSON.stringify(DEFAULT_PICKS));
+  return ensurePickSlugs(JSON.parse(JSON.stringify(DEFAULT_PICKS)));
 }
 function savePicks(){
   try{ localStorage.setItem(PICKS_KEY, JSON.stringify(MONTHLY_PICKS)); } catch {}
@@ -4762,9 +4785,10 @@ async function refreshPicksFromGithubPages(){
     if(!res.ok) return;
     const data = await res.json();
     if(Array.isArray(data)){
-      MONTHLY_PICKS = data;
+      MONTHLY_PICKS = ensurePickSlugs(data);
       savePicks();
       renderPicks();
+      renderCampaigns();
     }
   } catch(e){
     console.info("picks.json の取得をスキップしました", e.message);
