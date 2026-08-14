@@ -2549,6 +2549,14 @@ document.addEventListener("click", function(e){
   .cmp-rank-rate{ font-size:22px;font-weight:700;color:#F87171;line-height:1.1; }
   .cmp-rank-rate-sub{ font-size:10px;color:#94A3B8; }
   .cmp-rank-arrow{ color:#94A3B8;margin-left:8px;flex:0 0 auto; }
+  .cmp-articles-link{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    margin-top:10px;padding:10px 14px;
+    font-size:12.5px;font-weight:600;color:var(--foil-2);
+    border:1px solid var(--line);border-radius:10px;
+    background:var(--surface);text-decoration:none;
+  }
+  .cmp-articles-link:hover{ border-color:var(--foil-2); }
   /* update banner */
   .cmp-update-banner{
     display:flex;align-items:center;gap:12px;padding:14px 16px;
@@ -3989,6 +3997,10 @@ document.addEventListener("click", function(e){
       今月使うべき決済ランキング
     </div>
     <div id="cmpRankingList" class="cmp-ranking-list"></div>
+    <a href="articles/" class="cmp-articles-link">
+      <span>キャンペーン攻略・カード活用の記事一覧を見る</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </a>
 
     <!-- 更新情報バナー -->
     <div class="cmp-update-banner">
@@ -4079,6 +4091,8 @@ document.addEventListener("click", function(e){
     <div class="ad-disclosure">本サイトはアフィリエイト広告を利用しています。</div>
     還元率・条件は変更される場合があります。利用前に各社公式ページでご確認ください。
     <div class="footer-links">
+      <a href="articles/">記事一覧</a>
+      ・
       <a href="#/about">運営者情報</a>
       ・
       <a href="#/privacy">プライバシーポリシー</a>
@@ -12026,6 +12040,10 @@ applyRoute();
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
     <span>ガイド</span>
   </button>
+  <button class="bottom-nav-item" data-nav="articles">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+    <span>記事</span>
+  </button>
 </nav>
 <script>
 // ========== Bottom navigation ==========
@@ -12199,6 +12217,7 @@ applyRoute();
       else if(type==="history") showHistory();
       else if(type==="favorites") showFavorites();
       else if(type==="guide") showGuide();
+      else if(type==="articles") window.location.href="articles/";
     });
   });
 })();
