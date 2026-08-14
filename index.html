@@ -9395,8 +9395,10 @@ function renderCampaignRanking(){
   // MONTHLY_PICKSから最大還元率が高い上位3件をランキング表示
   const ranked = [...MONTHLY_PICKS]
     .map(p => {
-      const m = String(p.rate||"").match(/(\d+(?:\.\d+)?)/);
-      return { p, v: m ? parseFloat(m[1]) : 0 };
+      const rateStr = String(p.rate||"");
+      const m = rateStr.match(/(\d+(?:\.\d+)?)/);
+      const isPercent = /%/.test(rateStr);
+      return { p, v: m ? parseFloat(m[1]) : 0, isPercent };
     })
     .sort((a,b)=> b.v - a.v)
     .slice(0, 3);
@@ -9413,7 +9415,7 @@ function renderCampaignRanking(){
     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>`,
   ];
 
-  list.innerHTML = ranked.map(({p, v}, i) => `
+  list.innerHTML = ranked.map(({p, v, isPercent}, i) => `
     <div class="cmp-rank-card">
       <div class="cmp-rank-badge" style="background:${RANK_COLORS[i]};">
         <span style="width:16px;height:16px;display:flex;align-items:center;justify-content:center;">${RANK_ICONS[i]}</span>
@@ -9427,8 +9429,8 @@ function renderCampaignRanking(){
       </div>
       <div class="cmp-rank-right">
         <div class="cmp-rank-label">最大</div>
-        <div class="cmp-rank-rate">${v}%</div>
-        <div class="cmp-rank-rate-sub">還元</div>
+        <div class="cmp-rank-rate">${v}${isPercent ? "%" : "pt"}</div>
+        <div class="cmp-rank-rate-sub">${isPercent ? "還元" : "獲得"}</div>
       </div>
       <svg class="cmp-rank-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
     </div>
