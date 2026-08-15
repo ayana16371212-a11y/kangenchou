@@ -2878,25 +2878,7 @@
   }
   .store-card:not(.collapsed) .store-route-box-chevron{ transform: rotate(90deg); }
 
-  /* CTA button */
-  .store-cta{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: calc(100% - 32px);
-    margin: 0 16px 16px;
-    height: 44px;
-    border: none;
-    border-radius: 8px;
-    background: var(--foil);
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  /* card options (expanded detail) */
+  /* 店舗カード内の比較用カード一覧 */
   .card-options{ border-top: 1px solid var(--line); }
   .card-option{
     position: relative;
@@ -2974,11 +2956,11 @@
     display: block;
     width: 100%;
     margin-top: 10px;
-    padding: 12px 14px;
+    padding: 13px 14px;
     border: 1px solid var(--primary);
     border-radius: var(--radius-sm);
-    background: var(--surface-2);
-    color: var(--primary);
+    background: var(--primary);
+    color: #fff;
     font-family: "Noto Sans JP", system-ui, sans-serif;
     font-weight: 800;
     font-size: 13.5px;
@@ -2987,9 +2969,9 @@
     text-decoration: none;
     box-sizing: border-box;
     cursor: pointer;
-    transition: transform .12s ease, background .15s ease, filter .15s ease;
+    transition: transform .12s ease, filter .15s ease;
   }
-  .card-article-btn:hover{ background: var(--surface); filter: brightness(1.04); }
+  .card-article-btn:hover{ filter: brightness(1.08); }
   .card-article-btn:active{ transform: scale(.985); }
   .store-empty-note,
   .empty-state{
