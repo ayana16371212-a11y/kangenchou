@@ -4294,26 +4294,6 @@ function buildStoreCardEl(store, distanceMeters){
   `;
   routeBox.addEventListener("click", ()=> card.classList.toggle("collapsed"));
 
-  // CTAボタン
-  const ctaBtn = document.createElement("button");
-  ctaBtn.className = "store-cta";
-  ctaBtn.innerHTML = `このお店を比較する <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>`;
-  ctaBtn.addEventListener("click", ()=>{
-    // 「お店から探す」の比較欄へ移動し、クリックした店舗を自動選択する。
-    const storesMode = document.querySelector('.mode-btn[data-mode="stores"]');
-    if(storesMode && !storesMode.classList.contains("active")) storesMode.click();
-    const sel = document.getElementById("answerStore");
-    if(sel){
-      const opt = [...sel.options].find(o => o.value === store.name);
-      if(opt){
-        sel.value = store.name;
-        sel.dispatchEvent(new Event("change", {bubbles:true}));
-      }
-    }
-    requestAnimationFrame(()=>{
-      document.getElementById("answerBox")?.scrollIntoView({behavior:"smooth", block:"start"});
-    });
-  });
 
   // 編集ボタン（編集モード時のみ表示）
   const editBtns = document.createElement("div");
@@ -4419,7 +4399,6 @@ function buildStoreCardEl(store, distanceMeters){
   card.appendChild(tagsEl);
   card.appendChild(routeBox);
   card.appendChild(options);
-  card.appendChild(ctaBtn);
   if(editMode) card.appendChild(editBtns);
   return card;
 }
