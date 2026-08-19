@@ -150,7 +150,7 @@ function articleTemplate(a, bySlug){
   const canonical = `${SITE_URL}/articles/${a.slug}.html`;
 
   return `<!DOCTYPE html>
-<html lang="ja" data-theme="dark">
+<html lang="ja" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -246,7 +246,7 @@ function indexTemplate(articles){
     </section>`).join("\n");
 
   return `<!DOCTYPE html>
-<html lang="ja" data-theme="dark">
+<html lang="ja" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -293,6 +293,13 @@ function main(){
 
   articles.forEach(a => {
     if(!a.slug) throw new Error(`記事に slug がありません: ${a.title}`);
+    // customHtml=true の記事は、標準テンプレートに収まらない診断・比較などの
+    // 独立HTMLをリポジトリで直接管理している。上書きすると手作業の内容が消えるため、
+    // ここではHTML生成をスキップし、記事一覧（index.html）にだけ載せる。
+    if(a.customHtml){
+      console.log(`skipped (customHtml): articles/${a.slug}.html`);
+      return;
+    }
     const html = articleTemplate(a, bySlug);
     writeFileSync(join(OUT_DIR, `${a.slug}.html`), html, "utf-8");
     console.log(`generated: articles/${a.slug}.html`);
