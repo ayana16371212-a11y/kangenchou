@@ -389,8 +389,19 @@
       <button id="addRouteBtn" class="add-store-btn">＋ ルートを追加</button>
     </div>
     <div class="edit-mode-hint">編集モード中です。ルート右上の✎で編集（JSON形式）、🗑で削除できます。GitHub連携を設定していれば、変更は自動でリポジトリにも保存されます。</div>
-    <div id="starterBox"></div>
-    <div class="category-chip-row" id="routeChipRow"></div>
+    <div class="route-filter-tabs" id="routeFilterTabs">
+      <button type="button" class="route-filter-tab active" data-route-tab="starter">起点カードで探す</button>
+      <button type="button" class="route-filter-tab" data-route-tab="goal">ゴール決済方法で探す</button>
+    </div>
+    <div class="route-filter-panel active" data-route-panel="starter">
+      <div class="route-filter-desc">最初に使うクレジットカード（起点カード）を選ぶと、そのカードで実際に貯まるポイントの種類・還元率がわかります。</div>
+      <div id="starterBox"></div>
+    </div>
+    <div class="route-filter-panel" data-route-panel="goal">
+      <div class="route-filter-desc">ルートの最後にたどり着く「使用する決済方法」（チャージ後に実際に使うサービス）を選ぶと、そのサービスがゴールになるルートだけに絞り込めます。</div>
+      <span class="mypanel-label">使用する決済方法（ゴール）</span>
+      <div class="category-chip-row" id="routeChipRow"></div>
+    </div>
     <div id="routeList"></div>
     <!-- au PAYマーケット アフィリエイト枠（チャージルートタブ下部） -->
     <div class="affiliate-section" style="margin:18px 0 8px;">
