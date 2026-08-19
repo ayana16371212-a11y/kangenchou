@@ -349,7 +349,36 @@ function main(){
 
   writeFileSync(join(OUT_DIR, "index.html"), indexTemplate(articles), "utf-8");
   console.log(`generated: articles/index.html`);
+
+  // sitemap.xml も記事一覧から自動生成する（記事を追加したら検索エンジンに拾われるように）
+  writeFileSync(join(ROOT, "sitemap.xml"), sitemapXml(articles), "utf-8");
+  console.log(`generated: sitemap.xml`);
+
   console.log(`\n合計 ${articles.length} 件の記事を生成しました。`);
+}
+
+function sitemapXml(articles){
+  const today = new Date().toISOString().slice(0, 10);
+  const rows = [];
+  const push = (loc, freq, pri, lastmod) => {
+    rows.push(`  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${freq}</changefreq>
+    <priority>${pri}</priority>
+  </url>`);
+  };
+  push(`${SITE_URL}/`, "weekly", "1.0", today);
+  push(`${SITE_URL}/articles/`, "weekly", "0.8", today);
+  articles.forEach(a => {
+    const lastmod = a.updatedDate || a.publishedDate || today;
+    push(`${SITE_URL}/articles/${a.slug}.html`, "monthly", "0.7", lastmod);
+  });
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${rows.join("\n")}
+</urlset>
+`;
 }
 
 main();
