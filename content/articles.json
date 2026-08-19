@@ -1,5 +1,16 @@
 [
   {
+    "slug": "rakuten-card-shindan",
+    "category": "カード解説",
+    "title": "楽天カードは「楽天市場を使わない人」でも得か？街の買い物で1.5%にする設定まで解説",
+    "publishedDate": "2026-08-19",
+    "updatedDate": "2026-08-19",
+    "tags": ["楽天カード", "楽天ペイ", "楽天キャッシュ", "楽天ポイント", "還元率", "年会費無料"],
+    "overview": "楽天市場をほぼ使わなくても、楽天カード＋楽天ペイで街の買い物を実質1.5%還元にできます。「やばい」と言われる理由の真相、期間限定ポイントを失効させない初期設定、他社カードからの乗り換え判定まで、申し込み前に知りたいことをまとめました。",
+    "related": ["dcard-series-shindan", "vpoint-pay-yusen-10"],
+    "customHtml": true
+  },
+  {
     "slug": "dcard-series-shindan",
     "category": "カード解説",
     "title": "dカード完全ガイド｜GOLD／PLATINUM／GOLD U、あなたに合う1枚を30秒で診断",
@@ -7,6 +18,7 @@
     "updatedDate": "2026-08-19",
     "tags": ["dカード", "dカード GOLD", "dカード PLATINUM", "dカード GOLD U", "dポイント", "ドコモ"],
     "overview": "年会費11,000円は本当に元が取れるのか？ 年齢・ドコモ料金・カード利用額の3問で、あなたに合う1枚を30秒で判定。年会費を確実に回収する寄せる支払い5つまで解説します。",
+    "related": ["rakuten-card-shindan", "dpoint-koukan-zouryo"],
     "customHtml": true
   },
   {
