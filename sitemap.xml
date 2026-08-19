@@ -13,6 +13,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://paytaku.github.io/articles/dmm-kabu-shindan.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://paytaku.github.io/articles/smbc-nl-shindan.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://paytaku.github.io/articles/epos-card-shindan.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://paytaku.github.io/articles/jcb-card-w-shindan.html</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
