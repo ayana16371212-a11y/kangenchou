@@ -2697,6 +2697,21 @@
     background:var(--surface);text-decoration:none;
   }
   .cmp-articles-link:hover{ border-color:var(--foil-2); }
+  /* トップ新着記事カード */
+  .cmp-latest-articles{
+    display:flex;flex-direction:column;gap:8px;margin-top:12px;
+  }
+  .cmp-latest-card{
+    display:block;padding:12px 14px;
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    text-decoration:none;box-shadow:var(--shadow-card);
+  }
+  .cmp-latest-card:hover{ border-color:var(--foil-2); }
+  .cmp-latest-cat{
+    display:inline-block;font-size:10px;font-weight:700;color:var(--foil-2);
+    background:var(--primary-tint,rgba(79,70,229,0.12));padding:2px 8px;border-radius:999px;margin-bottom:6px;
+  }
+  .cmp-latest-title{ font-size:13.5px;font-weight:700;color:var(--text);line-height:1.45; }
   /* update banner */
   .cmp-update-banner{
     display:flex;align-items:center;gap:12px;padding:14px 16px;
