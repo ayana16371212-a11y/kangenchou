@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>楽天カードは「楽天市場を使わない人」でも得か？街の買い物で1.5%にする設定まで解説 | ペイ択（Paytaku）</title>
+<meta name="description" content="楽天市場をほぼ使わなくても、楽天カード＋楽天ペイで街の買い物を実質1.5%還元にできます。「やばい」と言われる理由の真相、期間限定ポイントを失効させない初期設定、他社カードからの乗り換え判定まで、申し込み前に知りたいことをまとめました。">
+<link rel="canonical" href="https://paytaku.github.io/articles/rakuten-card-shindan.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="楽天カードは「楽天市場を使わない人」でも得か？街の買い物で1.5%にする設定まで解説 | ペイ択（Paytaku）">
+<meta property="og:description" content="楽天市場をほぼ使わなくても、楽天カード＋楽天ペイで街の買い物を実質1.5%還元にできます。申し込み前に知りたいことをまとめました。">
+<meta property="og:url" content="https://paytaku.github.io/articles/rakuten-card-shindan.html">
+<meta property="og:site_name" content="ペイ択（Paytaku）">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/articles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="../index.html">ペイ<span>択</span></a>
+    <span class="site-header-tagline">還元率比較・お得情報</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">🌙</button>
+  </div>
+</header>
+<script>
+(function(){
+  var STORAGE_KEY = 'paytaku-theme';
+  var DEFAULT = 'dark';
+  var saved = localStorage.getItem(STORAGE_KEY) || DEFAULT;
+  document.documentElement.setAttribute('data-theme', saved);
+  window.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  });
+})();
+</script>
+
+<div class="lp-page">
+  <div class="lp-wrap">
+    <a href="../index.html" class="lp-back">← ペイ択トップに戻る</a>
+    <nav class="lp-breadcrumb">
+      <a href="../index.html">ホーム</a> ＞ <a href="./index.html">カード解説</a> ＞ 楽天カードは「楽天市場を使わない人」でも得か？…
+    </nav>
+
+    <div class="lp-hero">
+      <div class="lp-badge">カード解説</div>
+      <h1 class="lp-title">楽天カードは「楽天市場を使わない人」でも得か？街の買い物で1.5%にする設定まで解説</h1>
+      <p class="lp-tagline">「楽天市場はほとんど使わないんだけど……」そう思って申し込みをためらっている人へ。街の買い物だけでもしっかり得する使い方を、設定手順つきでまとめました。</p>
+      <div class="lp-byline">更新日：2026-08-19　|　ペイ択編集部</div>
+    </div>
+
+    <nav class="lp-toc">
+      <div class="lp-toc-title">この記事の内容</div>
+      <ol>
+        <li><a href="#shindan">【3秒判定】楽天市場を使わない人でも持つ意味はあるか</a></li>
+        <li><a href="#yabai">「やばい」と検索して怖くなった人へ</a></li>
+        <li><a href="#pay15">街の買い物で実質1.5%にする設定レシピ</a></li>
+        <li><a href="#kikan">期間限定ポイントを失効させない初期設定</a></li>
+        <li><a href="#norikae">他社カードから乗り換えるべきかの判定</a></li>
+        <li><a href="#spu">SPU倍率の現実的な天井</a></li>
+        <li><a href="#checklist">申し込み〜初期設定チェックリスト</a></li>
+      </ol>
+    </nav>
+
+    <!-- PRバナー（アフィリエイトURL・画像URLに差し替えてください） -->
+    <div class="lp-banner-box">
+      <div class="lp-banner-label">📣 PR</div>
+      <a href="https://ad2.trafficgate.net/t/r/877/1396/318860_398517" target="_blank" rel="sponsored noopener nofollow">
+        <img src="https://srv2.trafficgate.net/t/b/877/1396/318860_398517" alt="楽天カード" class="lp-banner-img">
+      </a>
+    </div>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="shindan">【3秒判定】楽天市場を使わない人でも持つ意味はあるか</h2>
+      <p class="lp-body-text">多くの記事は「楽天経済圏を使う人向け」と書くので、楽天市場をほぼ使わない人は「自分には関係ない」と離れてしまいます。でも判定はシンプルです。次の1問に答えてください。</p>
+
+      <p class="lp-body-text"><b>Q．普段の買い物（コンビニ・スーパー・ドラッグストア・外食）で、まだ還元率1%未満のカードや現金を使っていますか？</b><br>
+      → <b>はい</b>：楽天カードを持つ意味があります。年会費無料で基本1%、楽天ペイと組み合わせれば街の買い物が実質1.5%になります。このまま読み進めてください。<br>
+      → <b>いいえ（すでに1%以上のカードをメインにしている）</b>：乗り換えるべきかは「⑤他社カードから乗り換えるべきかの判定」を先に読んでください。</p>
+
+      <p class="lp-body-text">つまり、<b>楽天市場を使うかどうかは判定の中心ではありません</b>。ポイントは「普段の街の買い物を、年会費0円でどこまで得にできるか」です。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="yabai">「やばい」と検索して怖くなった人へ</h2>
+      <p class="lp-body-text">楽天カードを調べると「やばい」「やめたほうがいい」といったキーワードが目に入り、申し込む気持ちがしぼんでしまう人が少なくありません。まず結論から言うと、怖がって申し込みを止めるほどの話ではありません。理由は単純で、発行枚数が3,000万枚を超える国内最大級のカードなので、母数が多いぶんネガティブな声も集まりやすいという構造があります。</p>
+      <p class="lp-body-text">実際に指摘される中身は、「楽天市場以外ではポイントが上乗せされない」「期間限定ポイントの有効期限が短い」「サービス内容の改定（改悪）がときどきある」といったもので、これらは<b>使い方でカバーできる範囲</b>です。本記事の後半で、期間限定ポイントを失効させない設定や、街の買い物で還元率を底上げする方法を具体的に案内します。年会費が永年無料なので、合わなければ使わなければいいだけ、という気軽さも持っておいてください。</p>
+
+      <!-- PRリンク（アフィリエイトURLに差し替えてください） -->
+      <section class="lp-section lp-cta-section" style="margin-top:20px;">
+        <h2 class="lp-section-title">まず年会費無料で1枚持っておく</h2>
+        <p class="lp-cta-note">楽天カードは年会費永年無料。合わなければ使わない選択もできます。条件・還元率は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+        <a href="https://ad2.trafficgate.net/t/r/519/1396/318860_398517" class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">楽天カードを申し込む（PR）</a>
+      </section>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="pay15">街の買い物で実質1.5%にする設定レシピ</h2>
+      <p class="lp-body-text">「設定が面倒くさそう」と感じるかもしれませんが、最初の5分だけです。楽天カードから「楽天キャッシュ」にチャージして楽天ペイで払うと、楽天ペイ分1%＋楽天キャッシュチャージ分0.5%で<b>合計1.5%還元</b>になります。楽天カードでそのまま払う（1%）よりお得です。</p>
+
+      <div class="lp-flow">
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">1</div>
+          <div>楽天ペイアプリをインストールし、楽天IDでログインする</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">2</div>
+          <div>「楽天キャッシュ」のチャージ元に<b>楽天カードを登録</b>する（この設定が1.5%の肝）</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">3</div>
+          <div>支払い時は「楽天キャッシュ」残高から払う。事前チャージ or オートチャージを設定しておく</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">4</div>
+          <div>楽天ポイントカード加盟店なら、アプリ内の楽天ポイントカードを提示してから払うと、提示分のポイントも二重取りできる</div>
+        </div>
+      </div>
+
+      <p class="lp-body-text">この「楽天キャッシュ経由」がポイントです。楽天カードを楽天ペイに直接ひもづけて払う（都度払い）と1%どまりですが、いったん楽天キャッシュにチャージしてから払うことで、チャージ分の0.5%が上乗せされます。月5万円を街で使うなら、1%（500ポイント）と1.5%（750ポイント）で年間3,000ポイントの差になります。</p>
+
+      <div class="lp-risk-note">
+        ⚠️ 楽天ペイの還元条件は2026年3月に変更が予定されていましたが、公式から見合わせが発表され、従来の1.5%が維持されています。ポイント制度は改定されやすい分野なので、利用前に楽天ペイアプリ内の最新の還元条件を確認してください。［確認日: 2026-08-19］
+      </div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="kikan">期間限定ポイントを失効させない初期設定</h2>
+      <p class="lp-body-text">「期間限定ポイントを使い忘れて失効した」という不安は、受け取り後すぐの設定でほぼ解消できます。期間限定ポイントは通常30〜60日程度で失効しますが、日常の支払いに自動で充当する仕組みを作っておけば取りこぼしません。</p>
+
+      <ul class="lp-body-list">
+        <li><b>楽天ペイで「ポイント優先で使う」設定にする</b>：街の買い物のたびに期間限定ポイントから消費され、失効しにくくなる。</li>
+        <li><b>楽天でんき・楽天モバイルなど固定費の支払いに充当する</b>：毎月自動でポイントが消える導線を作る。</li>
+        <li><b>楽天市場の「ポイントを使う」をデフォルトにする</b>：たまに楽天市場を使うときも自動で消化される。</li>
+        <li><b>楽天ポイントアプリで有効期限の通知をオンにする</b>：失効前にプッシュ通知で気づける。</li>
+      </ul>
+
+      <p class="lp-body-text">この4つのうち、特に1つ目の「楽天ペイでポイント優先設定」だけでも入れておけば、街の買い物で自然に消費されるので、失効のリスクは大きく下がります。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="norikae">他社カードから乗り換えるべきかの判定</h2>
+      <p class="lp-body-text">すでに還元率1%以上のカードを持っている人向けに、正直な判定を出します。<b>乗り換えなくていいケースから先に書きます。</b></p>
+
+      <table class="lp-info-table">
+        <tr><th>今のメインカード</th><th>判定</th></tr>
+        <tr><td>リクルートカード（1.2%）</td><td>基本還元率だけなら据え置き有利。ただし楽天ポイント加盟店やポイント消化のしやすさを重視するなら楽天カードを2枚目に。</td></tr>
+        <tr><td>三井住友カード(NL)（コンビニ・飲食で高還元）</td><td>対象コンビニ・飲食店が生活圏に多いなら据え置き。それ以外の街の買い物では楽天カード＋楽天ペイの1.5%が効く。併用が現実的。</td></tr>
+        <tr><td>PayPayカード（1%）</td><td>PayPay経済圏中心なら据え置き。楽天ポイントを貯めたい・使いたいなら楽天カードへ。</td></tr>
+        <tr><td>還元率0.5%のカード／現金中心</td><td>楽天カードへの乗り換え・追加を推奨。年会費無料で還元率が2〜3倍になる。</td></tr>
+      </table>
+
+      <p class="lp-body-text">結論として、<b>「今のカードを解約して乗り換える」より「年会費無料の楽天カードを2枚目として追加し、得意な場面で使い分ける」のが現実的</b>です。楽天ポイント加盟店（マクドナルド、すき家、ドラッグストアなど）や楽天ペイが使える店では楽天カード、対象コンビニでは三井住友NL、というように使い分けると取りこぼしが減ります。</p>
+
+      <!-- PRリンク（アフィリエイトURLに差し替えてください） -->
+      <section class="lp-section lp-cta-section" style="margin-top:20px;">
+        <h2 class="lp-section-title">2枚目の無料カードとして追加する</h2>
+        <p class="lp-cta-note">楽天カードは年会費永年無料。使い分けで取りこぼしを減らせます。条件・還元率は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+        <a href="https://ad2.trafficgate.net/t/r/519/1396/318860_398517" class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">楽天カードを申し込む（PR）</a>
+      </section>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="spu">SPU倍率の現実的な天井</h2>
+      <p class="lp-body-text">SPU（スーパーポイントアッププログラム）は「最大◯倍」と大きく宣伝されますが、その最大倍率は楽天モバイル・楽天銀行・楽天証券・楽天ひかりなど多くのサービスをフル契約した場合の数字です。楽天市場を使わない人にとっては、この最大倍率を追う必要はありません。</p>
+      <p class="lp-body-text">楽天モバイルも楽天銀行も使わない人が、たまに楽天市場で買い物をする場合の現実的な還元率は、<b>基本1%＋楽天カード利用分の上乗せで2〜3%程度</b>と考えておけば十分です。SPUの倍率表を眺めて「そんなに使えない」と落ち込む必要はありません。街の買い物1.5%と、たまの楽天市場2〜3%。この2つを押さえておけば、楽天カードは年会費無料のカードとして十分に働きます。</p>
+
+      <div class="lp-risk-note">
+        ⚠️ SPUの倍率・対象サービス・付与条件は頻繁に改定されます。また、SPUで得られるポイントの多くは期間限定ポイントで、有効期限が短い点にも注意してください。最新の倍率は楽天市場の公式ページでご確認ください。［確認日: 2026-08-19］
+      </div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="checklist">申し込み〜初期設定チェックリスト</h2>
+      <p class="lp-body-text">申し込みから使い始めまで、失敗しない順番で並べました。</p>
+
+      <div class="lp-flow">
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">1</div>
+          <div><b>申し込み資格を確認</b>：楽天カード（一般）は原則18歳以上で申し込めます（高校生を除く）。申し込みには本人確認情報と、支払い口座の情報が必要です。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">2</div>
+          <div><b>口座はオンライン設定できる銀行を選ぶ</b>：楽天銀行・ゆうちょ・主要な都市銀行などはその場で口座設定まで完了でき、発行がスムーズです。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">3</div>
+          <div><b>カード到着後、楽天e-NAVIに登録</b>：利用明細の確認、各種設定、キャンペーンの受け取りができるようになります。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">4</div>
+          <div><b>楽天ペイの楽天キャッシュ設定（本記事③）と、ポイント優先設定（本記事④）を済ませる</b>：ここまでやって初めて「街で1.5%・失効しない」状態が完成します。</div>
+        </div>
+      </div>
+
+      <p class="lp-body-text">カードの到着はおおむね1週間程度が目安です。届いたらすぐに③④の設定を済ませてしまうのがおすすめです。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="summary">まとめ</h2>
+      <p class="lp-body-text">楽天カードは「楽天市場を使う人のカード」と思われがちですが、実際は<b>年会費無料で街の買い物を実質1.5%還元にできる、普段使いのカード</b>です。楽天市場をほぼ使わなくても、楽天ペイの楽天キャッシュ経由の設定と、期間限定ポイントの失効防止設定さえ済ませれば、しっかり得できます。</p>
+      <p class="lp-body-text">「やばい」という評判は母数の多さから来るもので、年会費無料なので合わなければ使わなければいいだけ。すでに1%以上のカードを持っている人も、2枚目として追加して使い分けるのが現実的です。準備ができたら、下のボタンから公式ページに進んでください。</p>
+      <p class="lp-body-text" style="font-size:12px;color:var(--dim);">タグ：楽天カード　楽天ペイ　楽天キャッシュ　楽天ポイント　還元率　年会費無料</p>
+    </section>
+
+    <section class="lp-section lp-cta-section">
+      <h2 class="lp-section-title">楽天カードを申し込む</h2>
+      <p class="lp-cta-note">年会費永年無料。条件・還元率・キャンペーンは変更される場合があります。申し込み前に必ず公式ページで最新情報をご確認ください。</p>
+      <a href="https://ad2.trafficgate.net/t/r/519/1396/318860_398517" class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトで申し込む（PR）</a>
+    </section>
+
+    <div class="lp-disclosure">本ページの情報は掲載時点のものです。還元率・条件・キャンペーン内容は変更される場合があるため、利用前に必ず公式サイトでご確認ください。本サイトはアフィリエイト広告を含みます。［確認日: 2026-08-19］</div>
+    <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
+  </div>
+</div>
+</body>
+</html>
