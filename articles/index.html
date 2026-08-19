@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>記事一覧 | ペイ択（Paytaku）</title>
+<meta name="description" content="ペイ択が公開している、キャンペーン攻略・カード活用の記事一覧です。">
+<link rel="canonical" href="https://paytaku.github.io/articles/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="記事一覧 | ペイ択（Paytaku）">
+<meta property="og:description" content="ペイ択が公開している、キャンペーン攻略・カード活用の記事一覧です。">
+<meta property="og:url" content="https://paytaku.github.io/articles/index.html">
+<meta property="og:site_name" content="ペイ択（Paytaku）">
+<link rel="stylesheet" href="../assets/articles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="../index.html">ペイ<span>択</span></a>
+    <span class="site-header-tagline">還元率比較・お得情報</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">🌙</button>
+  </div>
+</header>
+<script>
+(function(){
+  var STORAGE_KEY = 'paytaku-theme';
+  var DEFAULT = 'dark';
+  var saved = localStorage.getItem(STORAGE_KEY) || DEFAULT;
+  document.documentElement.setAttribute('data-theme', saved);
+  window.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  });
+})();
+</script>
+
+<div class="lp-page">
+  <div class="lp-wrap">
+    <a href="../index.html" class="lp-back">← ペイ択トップに戻る</a>
+    <div class="lp-hero">
+      <h1 class="lp-title">記事一覧</h1>
+      <p class="lp-tagline">キャンペーン攻略・カード活用の記事をまとめています。</p>
+    </div>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">カード解説</h2>
+      <div class="article-list">
+        
+        <a class="article-list-item" href="./jcb-card-w-shindan.html">
+          <span class="article-list-cat">カード解説</span>
+          <div class="article-list-title">JCB CARD Wは「39歳まで」のラストチャンス｜還元率悪い説の真相と損しない使い方</div>
+          <div class="article-list-desc">JCB CARD Wは39歳までに作れば40歳以降もずっと年会費無料。「還元率が悪い」と言われる理由を数字で分解し、J-POINT（旧OkiDoki）を1ポイント1円以上で使う交換先、優待店を使わない人でも元が取れる基準…</div>
+        </a>
+        
+        <a class="article-list-item" href="./rakuten-card-shindan.html">
+          <span class="article-list-cat">カード解説</span>
+          <div class="article-list-title">楽天カードは「楽天市場を使わない人」でも得か？街の買い物で1.5%にする設定まで解説</div>
+          <div class="article-list-desc">楽天市場をほぼ使わなくても、楽天カード＋楽天ペイで街の買い物を実質1.5%還元にできます。「やばい」と言われる理由の真相、期間限定ポイントを失効させない初期設定、他社カードからの乗り換え判定まで、申し込み前に知りたいこと…</div>
+        </a>
+        
+        <a class="article-list-item" href="./dcard-series-shindan.html">
+          <span class="article-list-cat">カード解説</span>
+          <div class="article-list-title">dカード完全ガイド｜GOLD／PLATINUM／GOLD U、あなたに合う1枚を30秒で診断</div>
+          <div class="article-list-desc">年会費11,000円は本当に元が取れるのか？ 年齢・ドコモ料金・カード利用額の3問で、あなたに合う1枚を30秒で判定。年会費を確実に回収する寄せる支払い5つまで解説します。</div>
+        </a>
+        
+        <a class="article-list-item" href="./rakuten-card-review.html">
+          <span class="article-list-cat">カード解説</span>
+          <div class="article-list-title">楽天カードを徹底解説｜還元率・SPU・プレミアムカードとの違い</div>
+          <div class="article-list-desc">楽天カードは年会費永年無料でどこでも1.0%還元、楽天市場で使えばSPUの上乗せで3.0%以上まで還元率が上がるカードです。国内で最も保有者数が多いカードのひとつで、貯まった楽天ポイントは楽天グループの各サービスだけでな…</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">キャンペーン</h2>
+      <div class="article-list">
+        
+        <a class="article-list-item" href="./touch-norisha-10-5.html">
+          <span class="article-list-cat">キャンペーン</span>
+          <div class="article-list-title">クレカのタッチ決済で乗車 最大10.5%（常設）の使い方</div>
+          <div class="article-list-desc">電車・バスなどの運賃を、クレジットカードのタッチ決済で支払うだけでポイント還元が受けられる常設キャンペーンです。JCBカードなら最大10.5%、三井住友カードなら最大8%という高い還元率が、事前エントリーとタッチ決済の設…</div>
+        </a>
+        
+        <a class="article-list-item" href="./vpoint-pay-yusen-10.html">
+          <span class="article-list-cat">キャンペーン</span>
+          <div class="article-list-title">VポイントPay ポイント優先払いで10%還元キャンペーンの使い方</div>
+          <div class="article-list-desc">VポイントPayアプリの「ポイントで支払う」をONにしたうえでスマホのタッチ決済を使うと、合計500円（税込）以上の利用で10%のVポイントが還元されるキャンペーンです。上限は500ポイントで、5,000円分の利用で上限…</div>
+        </a>
+        
+        <a class="article-list-item" href="./vcoupon-multi-shop-500pt.html">
+          <span class="article-list-cat">キャンペーン</span>
+          <div class="article-list-title">Vクーポン 複数ショップ利用で最大500ポイントもらう方法</div>
+          <div class="article-list-desc">三井住友カードの「Vクーポン」を、複数の対象ショップで使うほど上乗せポイントが増えていく、いわば「はしご」ボーナス企画です。下記の店舗別Vクーポンと併用できるため、1店舗だけで終わらせず、複数店舗をまわるほど有利になりま…</div>
+        </a>
+        
+        <a class="article-list-item" href="./natsu-coupon-matsuri.html">
+          <span class="article-list-cat">キャンペーン</span>
+          <div class="article-list-title">夏のクーポン祭り（Vクーポン × Vポイントアプリ）の攻略法</div>
+          <div class="article-list-desc">三井住友カードの「Vクーポン」と、Vポイントアプリの「Vカードクーポン」を両方セットしてから会計することで、提示時と決済時のそれぞれで特典が重なる企画です。Vポイントアプリを初めて使う人・久しぶりの人には30ptがもらえ…</div>
+        </a>
+        
+        <a class="article-list-item" href="./jichitai-campaign.html">
+          <span class="article-list-cat">キャンペーン</span>
+          <div class="article-list-title">自治体キャンペーン（地域限定の高還元）の見つけ方・使い方</div>
+          <div class="article-list-desc">自治体とスマホ決済各社が連携した還元事業で、還元率が突出して高いのが特徴です。多くは在住・在勤を問わず観光客も対象で、事前エントリーも不要です。ただし予算上限に達すると期間内でも早期終了するため、使う予定があるなら期間の…</div>
+        </a>
+        
+        <a class="article-list-item" href="./dpoint-koukan-zouryo.html">
+          <span class="article-list-cat">キャンペーン</span>
+          <div class="article-list-title">dポイント交換 最大15%増量キャンペーンの活用法</div>
+          <div class="article-list-desc">他社ポイント（Pontaポイント、ポイントサイトのポイントなど）をdポイントへ交換すると、交換した合計額に対して8%が期間限定ポイントとして付与されるキャンペーンです。買い物をしなくても、持っているポイントを交換するだけ…</div>
+        </a>
+      </div>
+    </section>
+    <div class="lp-disclosure">本サイトはアフィリエイト広告を含みます。</div>
+    <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
+  </div>
+</div>
+</body>
+</html>
