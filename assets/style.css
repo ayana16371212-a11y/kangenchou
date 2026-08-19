@@ -2491,6 +2491,82 @@
   }
   .switch-btn[aria-checked="true"] .switch-knob{ left: 21px; background: var(--on-foil); }
   .sort-toggle-label{ font-size: 13px; font-weight: 600; color: var(--muted); }
+  /* ===== チャージルート：起点カード／ゴール決済方法タブ ===== */
+  .route-filter-tabs{
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .route-filter-tab{
+    flex: 1 1 50%;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 12.5px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .route-filter-tab:hover{ color: var(--text); }
+  .route-filter-tab.active{
+    background: var(--primary);
+    color: #fff;
+  }
+  .route-filter-panel{ display: none; }
+  .route-filter-panel.active{ display: block; animation: fade .2s ease both; }
+  .route-filter-desc{
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .starter-picker{
+    padding: 12px 13px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    margin-bottom: 12px;
+  }
+  .starter-picker .answer-select{ width: 100%; margin-top: 4px; }
+  .starter-note{
+    margin-top: 8px;
+    padding: 8px 10px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--dim);
+  }
+  .starter-gain{
+    margin: 10px 0;
+    padding: 10px 12px;
+    border: 1px solid var(--foil-2);
+    border-radius: var(--radius-sm);
+    background: var(--tint-2);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .starter-gain.is-zero{
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--muted);
+  }
+  .starter-gain-label{
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
   .category-chip-row{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; align-items: flex-start; }
   .category-chip{
     flex: 0 0 auto;
