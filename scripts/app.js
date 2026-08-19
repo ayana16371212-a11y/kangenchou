@@ -5482,7 +5482,25 @@ function routeTotalLabel(route){
   return route.total;
 }
 
+// ========== チャージルート：起点カード／ゴール決済方法タブ ==========
+// 「起点にするカードを選ぶ」ことと「ゴールにする決済方法で絞り込む」ことは
+// 目的が違うので、タブで分けて片方ずつ見せる。選んだ内容はタブを切り替えても保持される。
+function initRouteFilterTabs(){
+  const tabs = document.getElementById("routeFilterTabs");
+  if(!tabs || tabs.dataset.bound) return;
+  tabs.dataset.bound = "1";
+  tabs.querySelectorAll(".route-filter-tab").forEach(btn => {
+    btn.addEventListener("click", ()=>{
+      const key = btn.dataset.routeTab;
+      tabs.querySelectorAll(".route-filter-tab").forEach(b => b.classList.toggle("active", b === btn));
+      document.querySelectorAll(".route-filter-panel").forEach(p =>
+        p.classList.toggle("active", p.dataset.routePanel === key));
+    });
+  });
+}
+
 function renderRoutes(){
+  initRouteFilterTabs();
   renderRouteChips();
   const sb = document.getElementById("starterBox");
   if(sb){
