@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DMM株が向く人・向かない人｜投信で積立したい人は開かなくていい理由とSBI・楽天との使い分け | ペイ択（Paytaku）</title>
+<meta name="description" content="DMM株は手数料最安水準で米国株もスマホで1株から買える証券。ただし投資信託は買えず、つみたてNISAも不可。積立はSBI・楽天、個別株の売買はDMMという使い分けが正解です。手数料の実質コスト、ポイント還元の損得、口座開設の手順まで、開設前に知りたいことをまとめました。">
+<link rel="canonical" href="https://paytaku.github.io/articles/dmm-kabu-shindan.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DMM株が向く人・向かない人｜投信で積立したい人は開かなくていい理由とSBI・楽天との使い分け | ペイ択（Paytaku）">
+<meta property="og:description" content="積立はSBI・楽天、個別株はDMMの使い分けが正解。開設前に知りたいことをまとめました。">
+<meta property="og:url" content="https://paytaku.github.io/articles/dmm-kabu-shindan.html">
+<meta property="og:site_name" content="ペイ択（Paytaku）">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/articles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="../index.html">ペイ<span>択</span></a>
+    <span class="site-header-tagline">還元率比較・お得情報</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">🌙</button>
+  </div>
+</header>
+<script>
+(function(){
+  var STORAGE_KEY = 'paytaku-theme';
+  var DEFAULT = 'dark';
+  var saved = localStorage.getItem(STORAGE_KEY) || DEFAULT;
+  document.documentElement.setAttribute('data-theme', saved);
+  window.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  });
+})();
+</script>
+
+<div class="lp-page">
+  <div class="lp-wrap">
+    <a href="../index.html" class="lp-back">← ペイ択トップに戻る</a>
+    <nav class="lp-breadcrumb">
+      <a href="../index.html">ホーム</a> ＞ <a href="./index.html">カード解説</a> ＞ DMM株が向く人・向かない人…
+    </nav>
+
+    <div class="lp-hero">
+      <div class="lp-badge">証券・投資</div>
+      <h1 class="lp-title">DMM株が向く人・向かない人｜投信で積立したい人は開かなくていい理由とSBI・楽天との使い分け</h1>
+      <p class="lp-tagline">「もうSBI持ってるのに開く意味ある？」「投信が買えないなら論外では？」──その一歩手前で止まっている人へ。DMM株が本当に向く人を正直に整理しました。</p>
+      <div class="lp-byline">更新日：2026-08-20　|　ペイ択編集部</div>
+    </div>
+
+    <nav class="lp-toc">
+      <div class="lp-toc-title">この記事の内容</div>
+      <ol>
+        <li><a href="#muki">【結論】DMM株が向く人・向かない人</a></li>
+        <li><a href="#tsukaiwake">SBI・楽天を持っていても2つ目に開く理由</a></li>
+        <li><a href="#tesuryo">「手数料最安」は本当か？ 他社と比較</a></li>
+        <li><a href="#beikoku">米国株を1株・数千円から買うイメージ</a></li>
+        <li><a href="#point">「手数料1%ポイント還元」は得なのか</a></li>
+        <li><a href="#chuii">口座開設前に知る3つの注意点</a></li>
+        <li><a href="#checklist">口座開設〜取引開始までの手順</a></li>
+      </ol>
+    </nav>
+
+    <!-- PRバナー（アフィリエイトURL・画像URLに差し替えてください） -->
+    <div class="lp-banner-box">
+      <div class="lp-banner-label">📣 PR</div>
+      <a href="https://ad2.trafficgate.net/t/r/519/1396/dmm-kabu" target="_blank" rel="sponsored noopener nofollow">
+        <img src="https://srv2.trafficgate.net/t/b/519/1396/dmm-kabu" alt="DMM株" class="lp-banner-img">
+      </a>
+    </div>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="muki">【結論】DMM株が向く人・向かない人</h2>
+      <p class="lp-body-text">最初に正直に書きます。<b>「新NISAで投資信託を積み立てたいだけ」という人は、DMM株を開く必要はありません。</b>DMM株は投資信託の取扱いがなく、つみたてNISAにも対応していないからです。積立中心の人は、SBI証券や楽天証券のほうが向いています。</p>
+      <p class="lp-body-text">では、DMM株が向くのはどんな人か。それは<b>「個別株（特に米国株）を、できるだけ安い手数料で売買したい人」</b>です。DMM株は国内株・米国株の売買手数料が業界最安水準で、米国株もスマホアプリから1株単位で買えます。次のどれかに当てはまるなら、開く価値があります。</p>
+
+      <table class="lp-info-table">
+        <tr><th>DMM株が向く人</th><th>向かない人</th></tr>
+        <tr><td>AppleやNVIDIAなど米国の個別株を買いたい</td><td>投資信託でコツコツ積立だけしたい</td></tr>
+        <tr><td>日本株の個別銘柄を安く売買したい</td><td>つみたてNISAをメインで使いたい</td></tr>
+        <tr><td>スマホアプリで手軽に取引したい</td><td>幅広い商品（投信・債券等）を1社で揃えたい</td></tr>
+        <tr><td>IPO（新規公開株）に事前入金なしで申し込みたい</td><td>より多くの米国銘柄（数千以上）から選びたい</td></tr>
+      </table>
+
+      <p class="lp-body-text">自分が「向く人」側に当てはまるなら、このまま読み進めてください。「向かない人」側なら、無理に開かず、積立はSBI・楽天で完結させるのが正解です。</p>
+
+      <!-- PRリンク（アフィリエイトURLに差し替えてください） -->
+      <section class="lp-section lp-cta-section" style="margin-top:20px;">
+        <h2 class="lp-section-title">個別株を安く売買したい人はこちら</h2>
+        <p class="lp-cta-note">DMM株はアカウント登録・口座維持は無料。国内株・米国株を業界最安水準の手数料で売買できます。手数料・条件は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+        <a href="https://ad2.trafficgate.net/t/r/519/1396/dmm-kabu" class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">DMM株の口座を開設する（PR）</a>
+      </section>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="tsukaiwake">SBI・楽天を持っていても2つ目に開く理由</h2>
+      <p class="lp-body-text">「もうSBI証券や楽天証券を持っているから、DMMはいらないのでは？」と感じる人へ。証券口座は複数持っても維持費はかからないので、<b>置き換えではなく"役割分担"で2つ目に持つ</b>のが賢い使い方です。</p>
+
+      <ul class="lp-body-list">
+        <li><b>メイン証券（SBI・楽天）の役割</b>：新NISAの投信積立、幅広い商品の保有。長期の資産形成の土台。</li>
+        <li><b>DMM株の役割</b>：個別株（特に米国株）の売買。手数料の安さとスマホアプリの使いやすさを活かす。</li>
+      </ul>
+
+      <p class="lp-body-text">たとえば「積立はSBIの新NISAで自動化しておき、気になった米国の個別株はDMM株のアプリで1株だけ買ってみる」という使い方ができます。<b>口座を分けておくと、長期の積立資産と、短期で売買する個別株が混ざらず管理しやすい</b>というメリットもあります。維持費ゼロなので、2つ目として開くハードルは低いです。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="tesuryo">「手数料最安」は本当か？ 他社と比較</h2>
+      <p class="lp-body-text">「手数料最安」とうたわれますが、近年はSBI証券・楽天証券も国内株の手数料無料化を進めています。そのうえで、DMM株が優位に立つ場面を正直に整理します。</p>
+
+      <table class="lp-info-table">
+        <tr><th>取引</th><th>DMM株の手数料（税込）</th></tr>
+        <tr><td>国内株式（現物）</td><td>約定代金5万円まで55円〜、上限880円。少額の売買はかなり安い。</td></tr>
+        <tr><td>国内株式（信用）</td><td>金額にかかわらず0円。信用取引を使う人には大きい。</td></tr>
+        <tr><td>米国株式（現物）</td><td>取引手数料0ドル〜（別途、円⇔ドルの為替コストがかかる）。</td></tr>
+      </table>
+
+      <p class="lp-body-text">ポイントは、<b>国内株の無料化競争ではSBI・楽天と横並びに近い一方、「米国株もスマホアプリで手軽に・安く」という点でDMM株が使いやすい</b>ことです。米国株取引に対応したスマホアプリを持つ証券は限られるため、「スマホで米国個別株を売買したい人」にとってはDMM株の価値が出ます。国内株の積立や投信が中心なら、無理にDMMを選ぶ理由は薄いです。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="beikoku">米国株を1株・数千円から買うイメージ</h2>
+      <p class="lp-body-text">「米国株は難しそう・お金がかかりそう」と感じている人へ。DMM株では<b>米国株を1株単位で買えます</b>。日本株のように100株単位で買う必要がないので、有名企業でも数千円〜数万円から投資を始められます（株価・為替により変動します）。</p>
+      <p class="lp-body-text">スマホアプリには「かんたんモード」があり、銘柄を選んで株数を入力するだけで発注できます。AppleやAmazonのような身近な企業を、少額から1株だけ買ってみる、といった始め方ができるのが魅力です。</p>
+      <p class="lp-body-text">なお、米国株の取引手数料自体は0ドル〜ですが、<b>円をドルに替える際の為替コストが別途かかります</b>。DMM株には、あらかじめ為替取引でドルを用意しておき、売買時に外貨決済を選ぶことで、取引の都度発生する為替コストを抑える方法もあります。実質のコストは為替分を含めて考えておきましょう。</p>
+
+      <div class="lp-risk-note">
+        ⚠️ 株式投資は価格変動・為替変動などにより、元本を割り込む（損失が出る）可能性があります。米国株では為替手数料・為替変動リスクも生じます。投資は余裕資金の範囲で、ご自身の判断と責任で行ってください。本記事は特定の銘柄や投資行動を推奨するものではありません。［確認日: 2026-08-20］
+      </div>
+
+      <!-- PRリンク（アフィリエイトURLに差し替えてください） -->
+      <section class="lp-section lp-cta-section" style="margin-top:20px;">
+        <h2 class="lp-section-title">米国株をスマホで少額から始める</h2>
+        <p class="lp-cta-note">DMM株は米国株もスマホアプリで1株から。アカウント登録は無料です。手数料・為替コスト・条件は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+        <a href="https://ad2.trafficgate.net/t/r/519/1396/dmm-kabu" class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">DMM株の口座を開設する（PR）</a>
+      </section>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="point">「手数料1%ポイント還元」は得なのか</h2>
+      <p class="lp-body-text">DMM株では、<b>日本株の取引手数料の1%がDMM株ポイントとして貯まり、1ポイント＝1円で現金に交換できます</b>。ただし、この特典が効くかどうかは取引スタイルによります。正直に分解します。</p>
+
+      <ul class="lp-body-list">
+        <li><b>ほぼ意味がない人</b>：たまに少額を売買するだけの人。手数料が数十円なら、その1%は1円未満で、実感はほぼありません。</li>
+        <li><b>効く人</b>：日本株を頻繁に売買する人。手数料の総額が大きくなるほど、1%還元の積み上がりも大きくなります。</li>
+      </ul>
+
+      <p class="lp-body-text">つまり、<b>ポイント還元を目当てに開くカードではなく、「よく売買する人へのちょっとしたおまけ」</b>と捉えるのが正確です。なお、米国株はもともと取引手数料が無料のため、ポイント還元の対象外です。ポイントの有効期限は付与から1年なので、貯まったらこまめに現金化しておくと失効を防げます。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="chuii">口座開設前に知る3つの注意点</h2>
+      <p class="lp-body-text">開設してから「聞いてない」とならないよう、先に注意点を開示します。これらを理解したうえで、それでも「向く人」なら開く価値があります。</p>
+
+      <div class="lp-flow">
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">1</div>
+          <div><b>投資信託・つみたてNISAは非対応</b>：DMM株では投信を買えず、つみたてNISAも利用できません。積立はSBI・楽天など別の証券で行う前提で考えてください。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">2</div>
+          <div><b>ポイントの有効期限は1年</b>：DMM株ポイントは付与から1年で失効します。貯まったらこまめに現金化しておくのが安全です。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">3</div>
+          <div><b>取扱商品・銘柄数は絞られている</b>：日本株・米国株に特化しており、債券や豊富な投信を1社で揃えたい人には不向き。米国株の取扱銘柄数も大手より少なめなので、狙う銘柄があるか事前に確認を。</div>
+        </div>
+      </div>
+
+      <p class="lp-body-text">これらは「欠点」ではなく「特化の裏返し」です。DMM株は"何でも揃うデパート"ではなく、"個別株を安く売買する専門店"。役割を理解して使えば、注意点は気にならなくなります。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="checklist">口座開設〜取引開始までの手順</h2>
+      <p class="lp-body-text">口座開設から取引開始まで、つまずかない順番でまとめました。</p>
+
+      <div class="lp-flow">
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">1</div>
+          <div><b>申し込み資格・必要書類を確認</b>：申し込みには本人確認書類（運転免許証・マイナンバーカードなど）とマイナンバーが必要です。オンラインで完結でき、最短即日で取引を開始できる場合があります。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">2</div>
+          <div><b>特定口座（源泉徴収あり）を選ぶ</b>：口座区分で「特定口座・源泉徴収あり」を選んでおくと、利益が出ても原則として確定申告が不要になります。確定申告の手間を避けたい人はこれを選択。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">3</div>
+          <div><b>クイック入金で資金を用意</b>：クイック入金なら手数料0円・24時間即時反映で、投資のタイミングを逃しません。</div>
+        </div>
+        <div class="lp-flow-arrow">↓</div>
+        <div class="lp-flow-step">
+          <div class="lp-flow-num">4</div>
+          <div><b>アプリで取引開始</b>：スマホアプリの「かんたんモード」で、日本株・米国株を選んで発注。まずは少額から試すのがおすすめです。</div>
+        </div>
+      </div>
+
+      <p class="lp-body-text">開設時に迷いやすいのが口座区分ですが、<b>確定申告をしたくないなら「特定口座・源泉徴収あり」</b>を選んでおけば大きく外しません。あとはアプリで少額から始めてみましょう。</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title" id="summary">まとめ</h2>
+      <p class="lp-body-text">DMM株は「何でも揃う総合証券」ではなく、<b>個別株（特に米国株）を安くスマホで売買するための特化型サブ証券</b>です。投資信託やつみたてNISAには非対応なので、積立中心の人には向きません。逆に、SBI・楽天で積立をしつつ「気になる個別株はDMMで手軽に売買したい」という人には、維持費ゼロで持てる便利な2つ目の口座になります。</p>
+      <p class="lp-body-text">自分が「個別株を安く売買したい側」に当てはまるなら、開設を検討する価値があります。投資は価格変動・為替変動などのリスクを理解したうえで、余裕資金の範囲で行ってください。準備ができたら、下のボタンから公式ページに進んでください。</p>
+      <p class="lp-body-text" style="font-size:12px;color:var(--dim);">タグ：DMM株　DMM.com証券　米国株　ネット証券　手数料　口座開設</p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">あわせて読みたい</h2>
+      <div class="lp-related">
+        <a class="lp-related-item" href="./smbc-nl-shindan.html">三井住友カード（NL）はコンビニに行かない人でも得か？7%を取り逃さない設定と2枚持ち設計</a>
+        <a class="lp-related-item" href="./epos-card-shindan.html">エポスカードは「還元率で選ぶカード」ではない｜0.5%でも2枚目に持つ価値と無料ゴールド化の全手順</a>
+      </div>
+    </section>
+
+    <section class="lp-section lp-cta-section">
+      <h2 class="lp-section-title">DMM株の口座を開設する</h2>
+      <p class="lp-cta-note">アカウント登録・口座維持は無料。手数料・キャンペーン・取扱商品は変更される場合があります。投資にはリスクがあります。申し込み前に必ず公式ページで最新情報をご確認ください。</p>
+      <a href="https://ad2.trafficgate.net/t/r/519/1396/dmm-kabu" class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトで口座開設する（PR）</a>
+    </section>
+
+    <div class="lp-disclosure">本ページの情報は掲載時点のものです。手数料・条件・キャンペーン内容・取扱商品は変更される場合があるため、利用前に必ず公式サイトでご確認ください。株式投資は価格変動・為替変動などにより元本を割り込む可能性があります。投資はご自身の判断と責任で、余裕資金の範囲で行ってください。本記事は特定の金融商品の勧誘・投資助言を目的とするものではありません。本サイトはアフィリエイト広告を含みます。［確認日: 2026-08-20］</div>
+    <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
+  </div>
+</div>
+</body>
+</html>
