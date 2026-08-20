@@ -1,8 +1,7 @@
 /* ============================================================
    ペイ択 記事共通スタイル（articles.css）
-   トップページ（index.html）の <link rel="stylesheet"> と、
-   /articles/*.html の各記事ページの両方から読み込む共通ファイル。
-   ライトテーマ・PayTakuブランドカラーで構成。
+   ライト／ダーク両モード対応。デフォルトはダークモード。
+   記事ページヘッダーの月/太陽ボタンで切り替え、localStorageに保存。
    ============================================================ */
 
 :root{
@@ -16,14 +15,41 @@
   --radius-sm: 8px;
   --primary: #4F46E5;
   --primary-hover: #4338CA;
-  --primary-tint: #EEF2FF;
   --rate-accent: #7C3AED;
   --accent-tint: #F3E8FF;
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
   --shadow-md: 0 8px 24px rgba(79, 70, 229, 0.16);
 }
 
-:root, [data-theme="light"], [data-theme="dark"]{
+/* ===== ダークモード（デフォルト） ===== */
+:root, [data-theme="dark"]{
+  --bg:        #0F172A;
+  --surface:   #1E293B;
+  --surface-2: #273449;
+  --line:      #334155;
+  --text:      #F1F5F9;
+  --muted:     #94A3B8;
+  --dim:       #64748B;
+  --on-foil:   #FFFFFF;
+  --header-bg: rgba(15,23,42,0.92);
+
+  --good:      #10B981;
+  --good-tint: rgba(16,185,129,0.15);
+  --alert:     #F87171;
+  --amber:     #FBBF24;
+  --amber-tint: rgba(251,191,36,0.12);
+
+  --primary-tint: rgba(79,70,229,0.22);
+
+  --glow-a: rgba(79,70,229,0.08);
+  --glow-b: rgba(124,58,237,0.06);
+  --tint:   rgba(79,70,229,0.1);
+  --tint-2: rgba(79,70,229,0.06);
+  --hairline: rgba(255,255,255,.06);
+}
+
+/* ===== ライトモード ===== */
+[data-theme="light"]{
   --bg:        #FFFFFF;
   --surface:   #F8FAFC;
   --surface-2: #F1F5F9;
@@ -32,12 +58,15 @@
   --muted:     #64748B;
   --dim:       #94A3B8;
   --on-foil:   #FFFFFF;
+  --header-bg: rgba(255,255,255,0.92);
 
-  --good:  #10B981;
+  --good:      #10B981;
   --good-tint: #ECFDF5;
-  --alert: #DC2626;
-  --amber: #F59E0B;
+  --alert:     #DC2626;
+  --amber:     #F59E0B;
   --amber-tint: #FFFBEB;
+
+  --primary-tint: #EEF2FF;
 
   --glow-a: rgba(79,70,229,0.045);
   --glow-b: rgba(124,58,237,0.03);
@@ -64,14 +93,15 @@ body{
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(255,255,255,0.92);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
+  transition: background .2s;
 }
 .site-header-inner{
   max-width: 600px;
   margin: 0 auto;
-  padding: 14px 16px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -89,6 +119,26 @@ body{
   color: var(--dim);
   margin-left: auto;
 }
+
+/* ダークモードトグルボタン */
+.theme-toggle{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .15s, border-color .15s;
+  margin-left: 8px;
+}
+.theme-toggle:hover{ background: var(--surface-2); }
 
 /* ===== 別ページ（LP・記事）スタイル ===== */
 .lp-page{ background: var(--bg); min-height: 100vh; }
@@ -421,3 +471,572 @@ body{
 }
 .article-list-title{ font-size: 14.5px; font-weight: 700; margin-bottom: 3px; }
 .article-list-desc{ font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+
+/* ============================================================
+   カード診断記事 共通UI（.card-shindan-page でスコープ）
+   ------------------------------------------------------------
+   楽天・JCB・エポス・NL などのカード診断記事で使い回せる汎用UI。
+   使い方：記事の <body> 直下ラッパーに class="lp-page card-shindan-page"
+   を付けるだけで、以下の .nl-* クラス（ヒーロー/診断/STEP/比較/FAQ 等）
+   が全記事で利用可能になる。記事固有の中身（診断ロジック・文言）は
+   各記事HTML側で用意する。色はすべてテーマ変数なのでライト/ダーク両対応。
+   ============================================================ */
+
+.card-shindan-page{
+  --nl-accent: var(--primary);          /* ブランドカラー */
+  --nl-good: var(--good);               /* おすすめ・成功 */
+  --nl-good-tint: var(--good-tint);
+  --nl-warn: var(--amber);
+  --nl-warn-tint: var(--amber-tint);
+  --nl-card-radius: 16px;
+}
+
+/* 節ごとの余白を広めに取り、圧迫感を減らす */
+.card-shindan-page .nl-block{ margin: 0 0 36px; }
+/* 主要セクション見出し（縦線アクセントあり） */
+.card-shindan-page .nl-h2{
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+.card-shindan-page .nl-h2::before{
+  content: "";
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+  background: var(--nl-accent);
+  flex-shrink: 0;
+}
+/* 補足・FAQなどシンプルな見出し（アクセントなし・やや小さめ） */
+.card-shindan-page .nl-h2-plain{
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+/* 見出し直下の導入文・通常の本文（カードにしない） */
+.card-shindan-page .nl-text{
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+.card-shindan-page .nl-text:last-child{ margin-bottom: 0; }
+.card-shindan-page .nl-text b, .card-shindan-page .nl-text strong{ color: var(--text); font-weight: 800; }
+.card-shindan-page .nl-lead{
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+/* 通常の箇条書き（カードにしない） */
+.card-shindan-page .nl-list{
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+.card-shindan-page .nl-list li{
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.card-shindan-page .nl-list li b{ font-weight: 800; }
+/* 補足の小さめテキスト */
+.card-shindan-page .nl-note-inline{
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+/* ========== ① ファーストビュー ヒーローカード ========== */
+.card-shindan-page .nl-hero{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--nl-card-radius);
+  padding: 24px 20px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 14px;
+}
+.card-shindan-page .nl-hero-name{
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 0;
+}
+.card-shindan-page .nl-hero-sub{
+  font-size: 12px;
+  color: var(--muted);
+  margin: 3px 0 10px;
+}
+/* 7% を記事で一番目立たせる */
+.card-shindan-page .nl-hero-big{
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.card-shindan-page .nl-hero-big .num{
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--nl-accent);
+  letter-spacing: -0.03em;
+}
+.card-shindan-page .nl-hero-big .unit{
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--nl-accent);
+}
+.card-shindan-page .nl-hero-big .kanji{
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text);
+  margin-left: 2px;
+}
+.card-shindan-page .nl-hero-cap{
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 0 0 16px;
+  line-height: 1.6;
+}
+.card-shindan-page .nl-spec-row{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.card-shindan-page .nl-spec{
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.card-shindan-page .nl-spec-label{
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.card-shindan-page .nl-spec-value{
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+.card-shindan-page .nl-spec-value.accent{ color: var(--nl-accent); }
+
+/* 診断を「目玉」として大きく見せる導入ブロック */
+.card-shindan-page .nl-quiz-hero-h{
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.4;
+  margin: 0 0 6px;
+  text-align: center;
+}
+.card-shindan-page .nl-quiz-hero-h .em{ color: var(--nl-accent); }
+.card-shindan-page .nl-quiz-hero-sub{
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  margin: 0 0 16px;
+  line-height: 1.6;
+}
+
+/* ========== CTAカード（統一デザイン） ========== */
+.card-shindan-page .nl-cta{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--nl-card-radius);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+  margin: 4px 0 8px;
+}
+.card-shindan-page .nl-cta-name{
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 2px;
+}
+.card-shindan-page .nl-cta-spec{
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+.card-shindan-page .nl-cta-btn{
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--nl-accent);
+  color: var(--on-foil);
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.card-shindan-page .nl-cta-btn:hover{ opacity: .9; }
+.card-shindan-page .nl-cta-note{
+  font-size: 11px;
+  color: var(--dim);
+  margin: 10px 0 0;
+  line-height: 1.6;
+}
+.card-shindan-page .nl-cta-hint{
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+/* ========== ② 診断UI ========== */
+.card-shindan-page .nl-quiz{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--nl-card-radius);
+  padding: 20px 18px;
+  box-shadow: var(--shadow-card);
+}
+.card-shindan-page .nl-quiz-q{
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+.card-shindan-page .nl-quiz-q .qn{
+  display: inline-block;
+  background: var(--primary-tint);
+  color: var(--nl-accent);
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-right: 6px;
+}
+.card-shindan-page .nl-quiz-group{ margin-bottom: 18px; }
+.card-shindan-page .nl-quiz-group:last-of-type{ margin-bottom: 16px; }
+.card-shindan-page .nl-opts{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.card-shindan-page .nl-opt{
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 11px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  text-align: center;
+}
+.card-shindan-page .nl-opt:hover{ border-color: var(--nl-accent); }
+.card-shindan-page .nl-opt.selected{
+  border-color: var(--nl-accent);
+  background: var(--primary-tint);
+  color: var(--nl-accent);
+  font-weight: 800;
+}
+.card-shindan-page .nl-quiz-result{
+  margin-top: 4px;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  display: none;
+}
+.card-shindan-page .nl-quiz-result.show{ display: block; }
+.card-shindan-page .nl-quiz-result .verdict{
+  font-size: 16px;
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+.card-shindan-page .nl-quiz-result.good{ border-color: var(--nl-good); background: var(--nl-good-tint); }
+.card-shindan-page .nl-quiz-result.good .verdict{ color: var(--nl-good); }
+.card-shindan-page .nl-quiz-result.mid{ border-color: var(--nl-accent); background: var(--primary-tint); }
+.card-shindan-page .nl-quiz-result.mid .verdict{ color: var(--nl-accent); }
+.card-shindan-page .nl-quiz-result.low{ border-color: var(--nl-warn); background: var(--nl-warn-tint); }
+.card-shindan-page .nl-quiz-result.low .verdict{ color: var(--text); }
+.card-shindan-page .nl-quiz-result .rtext{
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ========== ③ 結論カード（3枚） ========== */
+.card-shindan-page .nl-conc-list{ display: flex; flex-direction: column; gap: 10px; }
+.card-shindan-page .nl-conc{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.card-shindan-page .nl-conc.good{ border-left-color: var(--nl-good); }
+.card-shindan-page .nl-conc.mid{ border-left-color: var(--nl-accent); }
+.card-shindan-page .nl-conc.low{ border-left-color: var(--nl-warn); }
+.card-shindan-page .nl-conc-when{ font-size: 12px; color: var(--muted); margin: 0 0 4px; }
+.card-shindan-page .nl-conc-verdict{ font-size: 15px; font-weight: 800; color: var(--text); margin: 0 0 6px; }
+.card-shindan-page .nl-conc-verdict.good{ color: var(--nl-good); }
+.card-shindan-page .nl-conc-desc{ font-size: 12.5px; line-height: 1.65; color: var(--text); margin: 0; }
+
+/* ========== ④ メリットカード（グリッド） ========== */
+.card-shindan-page .nl-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.card-shindan-page .nl-mcard{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow-card);
+}
+.card-shindan-page .nl-mcard-title{ font-size: 13px; font-weight: 800; color: var(--text); margin: 0 0 4px; }
+.card-shindan-page .nl-mcard-desc{ font-size: 12px; line-height: 1.6; color: var(--muted); margin: 0; }
+
+/* ========== ⑤ 積み上げ（最大還元の内訳） ========== */
+.card-shindan-page .nl-stack-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.card-shindan-page .nl-stack-row .l{ font-size: 12.5px; color: var(--text); font-weight: 600; }
+.card-shindan-page .nl-stack-row .r{ font-size: 16px; font-weight: 800; color: var(--text); }
+.card-shindan-page .nl-stack-plus{ text-align: center; font-size: 14px; color: var(--dim); padding: 4px 0; }
+.card-shindan-page .nl-stack-total{
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--primary-tint);
+  border: 1px solid var(--nl-accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-shindan-page .nl-stack-total .l{ font-size: 13px; font-weight: 800; color: var(--nl-accent); }
+.card-shindan-page .nl-stack-total .r{ font-size: 24px; font-weight: 900; color: var(--nl-accent); line-height: 1; }
+
+/* ========== STEP UI ========== */
+.card-shindan-page .nl-steps{ display: flex; flex-direction: column; gap: 0; }
+.card-shindan-page .nl-step{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow-card);
+}
+.card-shindan-page .nl-step-num{
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--nl-accent);
+  color: var(--on-foil);
+  font-size: 13px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.card-shindan-page .nl-step-body .t{ font-size: 13.5px; font-weight: 800; color: var(--text); margin: 0 0 3px; }
+.card-shindan-page .nl-step-body .d{ font-size: 12px; line-height: 1.6; color: var(--muted); margin: 0; }
+.card-shindan-page .nl-step-arrow{ text-align: center; color: var(--dim); font-size: 15px; padding: 3px 0; }
+
+/* ========== 店舗別カード ========== */
+.card-shindan-page .nl-store{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+}
+.card-shindan-page .nl-store + .nl-store{ margin-top: 10px; }
+.card-shindan-page .nl-store-top{ display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.card-shindan-page .nl-store-name{ font-size: 13.5px; font-weight: 800; color: var(--text); }
+.card-shindan-page .nl-store-rate{ font-size: 20px; font-weight: 900; color: var(--nl-accent); line-height: 1; }
+.card-shindan-page .nl-store-desc{ font-size: 12px; line-height: 1.65; color: var(--muted); margin: 0; }
+
+/* ========== 比較表（横スクロール可） ========== */
+.card-shindan-page .nl-table-wrap{ overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; border: 1px solid var(--line); }
+.card-shindan-page table.nl-compare{
+  width: 100%;
+  min-width: 360px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12.5px;
+  background: var(--surface);
+}
+.card-shindan-page table.nl-compare th,
+.card-shindan-page table.nl-compare td{
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  color: var(--text);
+}
+.card-shindan-page table.nl-compare thead th{
+  background: var(--primary-tint);
+  color: var(--nl-accent);
+  font-weight: 800;
+  position: sticky; left: 0;
+}
+.card-shindan-page table.nl-compare tbody th{
+  background: var(--bg);
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.card-shindan-page table.nl-compare tr:last-child th,
+.card-shindan-page table.nl-compare tr:last-child td{ border-bottom: none; }
+
+.card-shindan-page .nl-two{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.card-shindan-page .nl-two .nl-mcard-title{ margin-bottom: 6px; }
+
+/* ========== 店舗別（プレーンな行・カードにしない） ========== */
+.card-shindan-page .nl-store-row{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.card-shindan-page .nl-store-row:last-child{ border-bottom: none; }
+.card-shindan-page .nl-store-row .sname{ font-size: 14px; font-weight: 700; color: var(--text); flex-shrink: 0; }
+.card-shindan-page .nl-store-row .sdesc{ font-size: 12px; line-height: 1.6; color: var(--muted); margin: 3px 0 0; }
+.card-shindan-page .nl-store-row .sbody{ flex: 1; }
+.card-shindan-page .nl-store-row .srate{ font-size: 17px; font-weight: 800; color: var(--nl-accent); flex-shrink: 0; white-space: nowrap; }
+.card-shindan-page .nl-store-row .srate.off{ color: var(--dim); font-size: 13px; font-weight: 700; }
+
+/* ========== 2枚持ち（軽量フロー・枠線のみ） ========== */
+.card-shindan-page .nl-flow2{ display: flex; flex-direction: column; gap: 8px; margin: 4px 0 0; }
+.card-shindan-page .nl-flow2-card{
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: transparent;
+}
+.card-shindan-page .nl-flow2-role{
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--nl-accent);
+  background: var(--primary-tint);
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin-bottom: 6px;
+}
+.card-shindan-page .nl-flow2-name{ font-size: 13.5px; font-weight: 800; color: var(--text); margin: 0 0 3px; }
+.card-shindan-page .nl-flow2-use{ font-size: 12px; color: var(--muted); margin: 0; }
+.card-shindan-page .nl-flow2-plus{ text-align: center; color: var(--dim); font-size: 16px; }
+
+/* ========== 積み上げ（枠を軽く・カード感を弱める） ========== */
+.card-shindan-page .nl-stack{
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  background: transparent;
+}
+
+/* ========== 注意点カード ========== */
+.card-shindan-page .nl-caution{
+  display: flex;
+  gap: 10px;
+  background: var(--nl-warn-tint);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.card-shindan-page .nl-caution-mark{ color: var(--nl-warn); font-weight: 800; flex-shrink: 0; }
+.card-shindan-page .nl-caution-text{ font-size: 12.5px; line-height: 1.7; color: var(--text); margin: 0; }
+
+/* ========== FAQ アコーディオン ========== */
+.card-shindan-page .nl-faq{ display: flex; flex-direction: column; gap: 8px; }
+.card-shindan-page .nl-faq-item{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-shindan-page .nl-faq-q{
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.card-shindan-page .nl-faq-q .mark{
+  flex-shrink: 0;
+  color: var(--nl-accent);
+  font-size: 16px;
+  transition: transform .2s;
+}
+.card-shindan-page .nl-faq-item.open .nl-faq-q .mark{ transform: rotate(45deg); }
+.card-shindan-page .nl-faq-a{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease;
+}
+.card-shindan-page .nl-faq-a-inner{
+  padding: 0 16px 14px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+/* ========== まとめカード ========== */
+.card-shindan-page .nl-summary{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--nl-card-radius);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+}
+.card-shindan-page .nl-summary p{ font-size: 13px; line-height: 1.8; color: var(--text); margin: 0 0 10px; }
+.card-shindan-page .nl-summary p:last-child{ margin-bottom: 0; }
+.card-shindan-page .nl-tags{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.card-shindan-page .nl-tag{
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 10px;
+}
+
+/* ========== レスポンシブ（PCで一部横並び） ========== */
+@media (min-width: 600px){
+  .card-shindan-page .nl-steps{ flex-direction: row; align-items: stretch; }
+  .card-shindan-page .nl-step{ flex: 1; flex-direction: column; }
+  .card-shindan-page .nl-step-arrow{ display: flex; align-items: center; padding: 0 4px; transform: rotate(-90deg); }
+  .card-shindan-page .nl-flow2{ flex-direction: row; align-items: stretch; }
+  .card-shindan-page .nl-flow2-card{ flex: 1; }
+  .card-shindan-page .nl-flow2-plus{ display: flex; align-items: center; }
+}
+
+/* スマホでヒーローのスペックが窮屈にならないよう調整 */
+@media (max-width: 360px){
+  .card-shindan-page .nl-hero-big .num{ font-size: 54px; }
+  .card-shindan-page .nl-opts{ grid-template-columns: 1fr; }
+}
