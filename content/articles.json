@@ -341,5 +341,26 @@
       "jichitai-campaign",
       "vpoint-pay-yusen-10"
     ]
+  },
+  {
+    "slug": "aupay-seikyusho-max-route",
+    "category": "チャージルート",
+    "title": "au PAY請求書払い、2026年8月時点の最大ルートはこのカード｜三井住友ゴールドNLルートはもう古い",
+    "publishedDate": "2026-08-20",
+    "updatedDate": "2026-08-20",
+    "tags": [
+      "au PAY",
+      "au PAYゴールドカード",
+      "請求書払い",
+      "チャージルート",
+      "Pontaポイント"
+    ],
+    "overview": "au PAY請求書払いの「最強ルート」として今も紹介され続けている三井住友カード ゴールド(NL)は、2026年3月の改定で実質0.6%まで下がっています。2026年8月時点で最大のルートを組めるのはau PAYゴールドカードです。年会費11,000円をポイントアップリワードで相殺する条件まで含めて解説します。",
+    "related": [
+      "charge-route-guide",
+      "aupay-seikyusho-charge-route",
+      "smbc-nl-shindan"
+    ],
+    "customHtml": true
   }
 ]
