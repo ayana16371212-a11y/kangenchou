@@ -108,6 +108,17 @@ h1{font-size:20px;font-weight:900;margin:0 0 4px;}
 .pat-wrap{position:relative;}
 .pat-wrap input{padding-right:44px;}
 .pat-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--dim);cursor:pointer;font-size:16px;padding:0;}
+/* カスタム追加モーダル */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;width:100%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+.modal h2{font-size:16px;font-weight:800;margin:0 0 4px;}
+.modal p{font-size:12.5px;color:var(--muted);margin:0 0 16px;}
+.modal-btns{display:flex;gap:10px;margin-top:16px;}
+.modal-btns button{flex:1;}
+/* カード削除ボタン */
+.card-del-btn{background:none;border:none;color:var(--dim);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:6px;font-family:inherit;font-weight:700;transition:all .15s;}
+.card-del-btn:hover{color:var(--danger);background:var(--danger-tint);}
 
 /* 報酬パネル */
 .reward-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -188,6 +199,7 @@ h1{font-size:20px;font-weight:900;margin:0 0 4px;}
   <div class="tab-panel" id="tab-links">
     <p style="font-size:12.5px;color:var(--muted);margin:0 0 16px;">申し込みURL・バナーを入力して「GitHubに保存」を押すと <code>affiliates.json</code> が更新されます。</p>
     <div id="cardList"></div>
+    <button class="btn-add" id="addCardBtn" style="margin-bottom:16px;"><span>＋</span> カードを追加（松井証券・PayPayカードなど）</button>
     <div class="preview-block">
       <h3>保存されるJSONのプレビュー</h3>
       <pre id="preview"></pre>
@@ -213,6 +225,27 @@ h1{font-size:20px;font-weight:900;margin:0 0 4px;}
       <input type="file" id="rewardFileInput" accept=".json" style="display:none">
     </div>
     <div class="reward-summary" id="rewardSummary"></div>
+  </div>
+</div>
+
+<!-- カスタムカード追加モーダル -->
+<div class="modal-overlay" id="addCardModal">
+  <div class="modal">
+    <h2>カードを追加</h2>
+    <p>松井証券・PayPayカードなど、リストにない案件を追加できます。</p>
+    <div class="field">
+      <label>カード名・サービス名</label>
+      <input type="text" id="newCardName" placeholder="例：松井証券、PayPayカード">
+    </div>
+    <div class="field">
+      <label>キー（半角英数字・ハイフン）</label>
+      <input type="text" id="newCardKey" placeholder="例：matsui-shoken、paypay-card">
+      <div style="font-size:11px;color:var(--dim);margin-top:4px;">URLや管理上の識別子。英小文字・数字・ハイフンのみ。自動で入力されます。</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" id="addCardCancel">キャンセル</button>
+      <button class="btn btn-primary" id="addCardConfirm">追加する</button>
+    </div>
   </div>
 </div>
 
@@ -384,11 +417,13 @@ function buildLinkCard(card){
   var key=card.key, s=linkState[key];
   var el=document.createElement('div');
   el.className='card'; el.id='card-'+key;
+  var isCustom=!CARDS.find(function(c){ return c.key===card.key&&!c.custom; });
   el.innerHTML=
     '<div class="card-top">'
       +'<span class="card-name">'+esc(card.name)+'</span>'
       +'<span class="card-key">'+esc(key)+'</span>'
       +'<span class="badge '+(s.url?'set':'unset')+'" id="badge-'+key+'">'+(s.url?'設定済み':'未設定')+'</span>'
+      +(card.custom?'<button class="card-del-btn" data-del-key="'+key+'" title="削除">削除</button>':'')
     +'</div>'
     +'<div class="type-row">'
       +'<button class="type-btn'+(s.type==='direct'?' active':'')+'" data-key="'+key+'" data-type="direct">直アフィリエイト</button>'
@@ -426,6 +461,15 @@ function bindLinkCard(card){
   document.getElementById('badd-'+key).addEventListener('click',function(){
     var i=s.banners.length; s.banners.push({title:'',href:'',img:''});
     var bl=document.getElementById('blist-'+key); var div=document.createElement('div'); div.innerHTML=buildBannerHtml(key,i,s.banners[i]); bl.appendChild(div.firstChild); bindBannerItem(key,i); updatePreview();
+  });
+  var delBtn=el.querySelector('.card-del-btn[data-del-key="'+key+'"]');
+  if(delBtn) delBtn.addEventListener('click',function(){
+    if(!confirm('「'+card.name+'」を削除しますか？')) return;
+    CARDS.splice(CARDS.findIndex(function(c){ return c.key===key; }),1);
+    delete linkState[key]; delete rewardState[key];
+    var el2=document.getElementById('card-'+key); if(el2) el2.parentNode.removeChild(el2);
+    var rel=document.getElementById('reward-'+key); if(rel) rel.parentNode.removeChild(rel);
+    saveCustomCards(); updatePreview(); updateRewardSummary();
   });
 }
 
@@ -555,9 +599,68 @@ document.getElementById('rewardFileInput').addEventListener('change',function(e)
   reader.readAsText(file); e.target.value='';
 });
 
+/* ===== カスタムカード管理 ===== */
+function saveCustomCards(){
+  LS.set('paytaku-custom-cards', CARDS.filter(function(c){ return c.custom; }));
+}
+function loadCustomCards(){
+  var saved=LS.get('paytaku-custom-cards')||[];
+  saved.forEach(function(c){
+    if(!CARDS.find(function(x){ return x.key===c.key; })){
+      CARDS.push({key:c.key,name:c.name,custom:true});
+      linkState[c.key]  ={type:'direct',url:'',via:'',banners:[]};
+      rewardState[c.key]={asp:'',aspOther:'',reward:'',rewardNote:'',memo:''};
+    }
+  });
+}
+function toKey(name){
+  return name.toLowerCase()
+    .replace(/[\u3041-\u3096]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)+0x60); })
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'custom-'+Date.now();
+}
+
+// モーダル
+document.getElementById('addCardBtn').addEventListener('click',function(){
+  document.getElementById('newCardName').value='';
+  document.getElementById('newCardKey').value='';
+  document.getElementById('addCardModal').classList.add('show');
+  setTimeout(function(){ document.getElementById('newCardName').focus(); },50);
+});
+document.getElementById('addCardCancel').addEventListener('click',function(){
+  document.getElementById('addCardModal').classList.remove('show');
+});
+document.getElementById('addCardModal').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('show');
+});
+// カード名からキーを自動生成
+document.getElementById('newCardName').addEventListener('input',function(){
+  document.getElementById('newCardKey').value=toKey(this.value);
+});
+document.getElementById('addCardConfirm').addEventListener('click',function(){
+  var name=document.getElementById('newCardName').value.trim();
+  var key =document.getElementById('newCardKey').value.trim().replace(/[^a-z0-9-]/g,'');
+  if(!name){ alert('カード名を入力してください。'); return; }
+  if(!key){ alert('キーを入力してください（半角英数字・ハイフン）。'); return; }
+  if(CARDS.find(function(c){ return c.key===key; })){
+    alert('そのキーは既に使われています。別のキーを入力してください。'); return;
+  }
+  var card={key:key,name:name,custom:true};
+  CARDS.push(card);
+  linkState[key]  ={type:'direct',url:'',via:'',banners:[]};
+  rewardState[key]={asp:'',aspOther:'',reward:'',rewardNote:'',memo:''};
+  buildLinkCard(card);
+  buildRewardCard(card);
+  saveCustomCards();
+  updatePreview();
+  document.getElementById('addCardModal').classList.remove('show');
+  // 追加したカードまでスクロール
+  setTimeout(function(){ var el=document.getElementById('card-'+key); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); },100);
+});
+
 /* ===== 初期化 ===== */
 function init(){
   loadGhSettings();
+  loadCustomCards(); // カスタムカードをlocalStorageから復元
 
   // リンク状態をaffiliate.jsonから読み込み（既存JSON）
   var saved=LS.get('paytaku-link-state');
