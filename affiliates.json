@@ -1,4 +1,47 @@
 {
-  "楽天カード": "https://ad2.trafficgate.net/t/r/519/1396/318860_398517",
-  "楽天プレミアムカード": "https://ad2.trafficgate.net/t/r/497/1396/318860_398517"
+  "_comment": "アフィリンクの一元管理。type=direct は直アフィリエイト、type=point はポイントサイト経由。ポイントサイト経由の場合 via にサイト名を書くと、ボタンが『〇〇経由で申し込む』表示になります。url を書き換えるだけで全記事に反映されます。",
+  "links": {
+    "rakuten-card": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/318860_398517"
+    },
+    "rakuten-premium": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/497/1396/318860_398517"
+    },
+    "dcard-gold": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/dcard-gold"
+    },
+    "dcard-goldu": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/dcard-goldu"
+    },
+    "dcard-platinum": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/dcard-platinum"
+    },
+    "jcb-card-w": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/jcb-card-w"
+    },
+    "epos-card": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/epos-card"
+    },
+    "smbc-nl": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/smbc-nl"
+    },
+    "dmm-kabu": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/519/1396/dmm-kabu"
+    }
+  },
+  "banners": {
+    "rakuten-card": {
+      "href": "https://ad2.trafficgate.net/t/r/877/1396/318860_398517",
+      "img":  "https://srv2.trafficgate.net/t/b/877/1396/318860_398517"
+    }
+  }
 }
