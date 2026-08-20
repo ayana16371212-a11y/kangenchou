@@ -197,7 +197,17 @@ h1{font-size:20px;font-weight:900;margin:0 0 4px;}
 
   <!-- ② リンク管理 -->
   <div class="tab-panel" id="tab-links">
-    <p style="font-size:12.5px;color:var(--muted);margin:0 0 16px;">申し込みURL・バナーを入力して「GitHubに保存」を押すと <code>affiliates.json</code> が更新されます。</p>
+    <p style="font-size:12.5px;color:var(--muted);margin:0 0 12px;">申し込みURL・バナーを入力して「GitHubに保存」を押すと <code>affiliates.json</code> が更新されます。</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+      <button class="btn btn-outline" id="loadFromGhBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>GitHubから読み込む
+      </button>
+      <button class="btn btn-outline" id="loadFromFileBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>ファイルから読み込む
+      </button>
+      <input type="file" id="linkFileInput" accept=".json" style="display:none">
+      <span id="loadStatus" style="font-size:12px;color:var(--muted);"></span>
+    </div>
     <div id="cardList"></div>
     <button class="btn-add" id="addCardBtn" style="margin-bottom:16px;"><span>＋</span> カードを追加（松井証券・PayPayカードなど）</button>
     <div class="preview-block">
@@ -657,6 +667,36 @@ document.getElementById('addCardConfirm').addEventListener('click',function(){
   setTimeout(function(){ var el=document.getElementById('card-'+key); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); },100);
 });
 
+/* ===== affiliates.jsonの内容をUIに反映する共通関数 ===== */
+function applyLinksJson(data){
+  var links=data.links||{}, banners=data.banners||{};
+  // JSONに含まれるカスタムカードをCARDSに追加
+  Object.keys(links).forEach(function(key){
+    if(!CARDS.find(function(c){ return c.key===key; })){
+      var card={key:key,name:key,custom:true};
+      CARDS.push(card);
+      linkState[key]  ={type:'direct',url:'',via:'',banners:[]};
+      rewardState[key]={asp:'',aspOther:'',reward:'',rewardNote:'',memo:''};
+      saveCustomCards();
+    }
+  });
+  // リンク状態を更新
+  CARDS.forEach(function(card){
+    var l=links[card.key];
+    if(l){
+      linkState[card.key].type=typeof l==='string'?'direct':(l.type||'direct');
+      linkState[card.key].url =typeof l==='string'?l:(l.url||'');
+      linkState[card.key].via =typeof l==='string'?'':(l.via||'');
+    }
+    var b=banners[card.key];
+    if(b) linkState[card.key].banners=Array.isArray(b)?b.map(function(x){ return Object.assign({title:'',href:'',img:''},x); }):[Object.assign({title:'',href:'',img:''},b)];
+  });
+  // UIを再構築
+  document.getElementById('cardList').innerHTML='';
+  CARDS.forEach(function(card){ buildLinkCard(card); });
+  updatePreview();
+}
+
 /* ===== 初期化 ===== */
 function init(){
   loadGhSettings();
@@ -679,33 +719,54 @@ function init(){
   updatePreview();
   updateRewardSummary();
 
-  // GitHub APIからaffiliates.jsonを読み込んで最新状態にする
+  // GitHub APIからaffiliates.jsonを自動読み込み（PAT設定済みの場合）
   var gh=LS.get('paytaku-gh-settings');
   if(gh&&gh.token&&gh.owner&&gh.repo){
-    fetch('https://api.github.com/repos/'+gh.owner+'/'+gh.repo+'/contents/affiliates.json',{
-      headers:{'Authorization':'token '+gh.token,'Accept':'application/vnd.github.v3+json'}
-    }).then(function(r){ return r.ok?r.json():null; }).then(function(j){
-      if(!j||!j.content) return;
-      try{
-        var data=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,'')))));
-        var links=data.links||{}, banners=data.banners||{};
-        CARDS.forEach(function(card){
-          var l=links[card.key]; if(l){
-            linkState[card.key].type=l.type||'direct';
-            linkState[card.key].url=typeof l==='string'?l:(l.url||'');
-            linkState[card.key].via=l.via||'';
-          }
-          var b=banners[card.key];
-          if(b) linkState[card.key].banners=Array.isArray(b)?b:[b];
-        });
-        // UIを再構築
-        document.getElementById('cardList').innerHTML='';
-        CARDS.forEach(function(card){ buildLinkCard(card); });
-        updatePreview();
-      } catch(e){}
-    }).catch(function(){});
+    fetchFromGitHub(true); // 初回は静かに読み込む
   }
 }
+
+/* GitHub APIから読み込む関数 */
+function fetchFromGitHub(silent){
+  var gh=LS.get('paytaku-gh-settings');
+  if(!gh||!gh.token||!gh.owner||!gh.repo){
+    setStatus('先に「GitHub設定」タブでPATとリポジトリ名を設定してください。','warn'); return;
+  }
+  var ls=document.getElementById('loadStatus');
+  if(ls) ls.textContent='読み込み中...';
+  fetch('https://api.github.com/repos/'+gh.owner+'/'+gh.repo+'/contents/affiliates.json',{
+    headers:{'Authorization':'token '+gh.token,'Accept':'application/vnd.github.v3+json'}
+  }).then(function(r){ return r.ok?r.json():Promise.reject(r.status); })
+  .then(function(j){
+    if(!j||!j.content) return;
+    var data=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,'')))));
+    applyLinksJson(data);
+    if(ls) ls.textContent='✓ GitHubから読み込みました（'+new Date().toLocaleTimeString()+'）';
+    if(!silent) setStatus('GitHubから最新の affiliates.json を読み込みました。','ok',4000);
+  }).catch(function(e){
+    if(ls) ls.textContent='読み込み失敗';
+    if(!silent) setStatus('読み込みに失敗しました（'+e+'）。GitHub設定を確認してください。','error');
+  });
+}
+
+/* ボタンイベント */
+document.getElementById('loadFromGhBtn').addEventListener('click',function(){ fetchFromGitHub(false); });
+document.getElementById('loadFromFileBtn').addEventListener('click',function(){ document.getElementById('linkFileInput').click(); });
+document.getElementById('linkFileInput').addEventListener('change',function(e){
+  var file=e.target.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var data=JSON.parse(ev.target.result);
+      applyLinksJson(data);
+      var ls=document.getElementById('loadStatus');
+      if(ls) ls.textContent='✓ ファイルから読み込みました';
+      setStatus('affiliates.json をファイルから読み込みました。','ok',4000);
+    } catch(err){ setStatus('JSONの読み込みに失敗しました。ファイルを確認してください。','error'); }
+  };
+  reader.readAsText(file); e.target.value='';
+});
+
 init();
 </script>
 </body>
