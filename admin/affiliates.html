@@ -512,14 +512,20 @@ function buildRewardCard(card){
   var key=card.key, r=rewardState[key];
   var el=document.createElement('div');
   el.className='card'; el.id='reward-'+key;
-  var opts=ASP_LIST.map(function(a){ return '<option value="'+esc(a)+'"'+(r.asp===a?' selected':'')+'>'+esc(a)+'</option>'; }).join('');
+  var aspInList = ASP_LIST.indexOf(r.asp) !== -1;
+  var showOther = !!(r.asp && !aspInList);
+  var otherValue = r.aspOther || (showOther ? r.asp : '');
+  var opts=ASP_LIST.map(function(a){
+    var isSelected = a==='その他（手動入力）' ? (r.asp===a || showOther) : (r.asp===a);
+    return '<option value="'+esc(a)+'"'+(isSelected?' selected':'')+'>'+esc(a)+'</option>';
+  }).join('');
   el.innerHTML=
     '<div class="card-top">'
       +'<span class="card-name">'+esc(card.name)+'</span>'
       +'<span class="card-key">'+esc(key)+'</span>'
     +'</div>'
     +'<div class="reward-row">'
-      +'<div class="field"><label>ASPサービス</label><select id="rasp-'+key+'"><option value="">未設定</option>'+opts+'</select><input type="text" id="rasp-other-'+key+'" placeholder="サービス名を入力" style="margin-top:6px;display:none;" value="'+esc(r.aspOther||'')+'"></div>'
+      +'<div class="field"><label>ASPサービス</label><select id="rasp-'+key+'"><option value="">未設定</option>'+opts+'</select><input type="text" id="rasp-other-'+key+'" placeholder="サービス名を入力" style="margin-top:6px;'+(showOther?'display:block;':'display:none;')+'" value="'+esc(otherValue)+'"></div>'
       +'<div class="field"><label>報酬額（円）</label><input type="number" id="rrwd-'+key+'" placeholder="例：5000" value="'+esc(r.reward)+'"></div>'
     +'</div>'
     +'<div class="field"><label>備考（承認タイミング・条件など）</label><input type="text" id="rnote-'+key+'" placeholder="例：承認後2ヶ月・新規のみ" value="'+esc(r.rewardNote)+'"></div>'
@@ -538,7 +544,7 @@ function buildRewardCard(card){
     if(!isOther) roth.value='';
     updateRewardSummary();
   }
-  if(rsel){ rsel.addEventListener('change', syncAspOther); syncAspOther(); }
+  if(rsel){ rsel.addEventListener('change', syncAspOther); }
   if(roth){ roth.addEventListener('input', updateRewardSummary); }
 }
 
