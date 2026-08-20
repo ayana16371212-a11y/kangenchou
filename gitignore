@@ -1,0 +1,7 @@
+# アフィリエイト報酬・ASP情報（プライベート）
+# このファイルはGitHubにアップロードされません。
+# ローカルの管理画面（admin/affiliates.html）のlocalStorageで管理されます。
+affiliates-private.json
+
+# その他
+.DS_Store
