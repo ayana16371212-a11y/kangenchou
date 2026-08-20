@@ -363,5 +363,28 @@
       "epos-card-shindan"
     ],
     "customHtml": true
+  },
+  {
+    "slug": "seikyusho-barai-app-hikaku",
+    "category": "チャージルート",
+    "title": "請求書払いアプリ徹底比較｜au PAY・PayPay・楽天ペイ・d払い・ファミペイ、2026年8月時点でどれが得か",
+    "publishedDate": "2026-08-20",
+    "updatedDate": "2026-08-20",
+    "tags": [
+      "請求書払い",
+      "au PAY",
+      "PayPay",
+      "楽天ペイ",
+      "d払い",
+      "ファミペイ",
+      "チャージルート"
+    ],
+    "overview": "税金・公共料金の請求書払い、実はほとんどのアプリでもう還元メリットがありません。PayPayはほぼゼロ、d払いは請求書払い自体は対象外、楽天ペイの単純ルートも改悪済み（複雑な多段ルートなら今も高還元）。2026年8月時点で一番手軽に狙えるのはau PAYです。5アプリを正直に比較しました。",
+    "related": [
+      "aupay-seikyusho-max-route",
+      "aupay-seikyusho-charge-route",
+      "charge-route-guide"
+    ],
+    "customHtml": true
   }
 ]
