@@ -5,9 +5,19 @@
     "title": "DMM株が向く人・向かない人｜投信で積立したい人は開かなくていい理由とSBI・楽天との使い分け",
     "publishedDate": "2026-08-20",
     "updatedDate": "2026-08-20",
-    "tags": ["DMM株", "DMM.com証券", "米国株", "ネット証券", "手数料", "口座開設"],
+    "tags": [
+      "DMM株",
+      "DMM.com証券",
+      "米国株",
+      "ネット証券",
+      "手数料",
+      "口座開設"
+    ],
     "overview": "DMM株は手数料最安水準で米国株もスマホで1株から買える証券。ただし投資信託は買えず、つみたてNISAも不可。積立はSBI・楽天、個別株の売買はDMMという使い分けが正解です。手数料の実質コスト、ポイント還元の損得、口座開設の手順まで、開設前に知りたいことをまとめました。",
-    "related": ["smbc-nl-shindan", "epos-card-shindan"],
+    "related": [
+      "smbc-nl-shindan",
+      "epos-card-shindan"
+    ],
     "customHtml": true
   },
   {
@@ -16,9 +26,19 @@
     "title": "三井住友カード（NL）はコンビニに行かない人でも得か？7%を取り逃さない設定と2枚持ち設計",
     "publishedDate": "2026-08-20",
     "updatedDate": "2026-08-20",
-    "tags": ["三井住友カード（NL）", "三井住友カード ゴールド（NL）", "Vポイント", "スマホのタッチ決済", "年会費無料", "2枚持ち"],
+    "tags": [
+      "三井住友カード（NL）",
+      "三井住友カード ゴールド（NL）",
+      "Vポイント",
+      "スマホのタッチ決済",
+      "年会費無料",
+      "2枚持ち"
+    ],
     "overview": "三井住友カード（NL）は対象コンビニ・飲食店でスマホのタッチ決済7%還元。でも2026年2月からカード現物・iDは対象外に。7%を取り逃さない設定、ファミマ派の立ち回り、楽天・JCB Wをメイン＋NLをサブにする2枚持ち設計、一般とゴールドの選び方まで、申し込み前に知りたいことをまとめました。",
-    "related": ["epos-card-shindan", "jcb-card-w-shindan"],
+    "related": [
+      "epos-card-shindan",
+      "jcb-card-w-shindan"
+    ],
     "customHtml": true
   },
   {
@@ -27,9 +47,19 @@
     "title": "エポスカードは「還元率で選ぶカード」ではない｜0.5%でも2枚目に持つ価値と無料ゴールド化の全手順",
     "publishedDate": "2026-08-20",
     "updatedDate": "2026-08-20",
-    "tags": ["エポスカード", "エポスゴールドカード", "選べるポイントアップショップ", "年会費無料", "海外旅行保険", "2枚目"],
+    "tags": [
+      "エポスカード",
+      "エポスゴールドカード",
+      "選べるポイントアップショップ",
+      "年会費無料",
+      "海外旅行保険",
+      "2枚目"
+    ],
     "overview": "エポスカードは基本還元率0.5%ながら、年会費無料で手厚い海外旅行保険・空港ラウンジ・全国優待・ポイント無期限が手に入る「特典要員」カード。選べるポイントアップショップで1.5%にする方法、ゴールドを永年無料にする2ルート、楽天・三井住友NLとの使い分けまで、申し込み前に知りたいことをまとめました。",
-    "related": ["jcb-card-w-shindan", "rakuten-card-shindan"],
+    "related": [
+      "jcb-card-w-shindan",
+      "rakuten-card-shindan"
+    ],
     "customHtml": true
   },
   {
@@ -38,9 +68,19 @@
     "title": "JCB CARD Wは「39歳まで」のラストチャンス｜還元率悪い説の真相と損しない使い方",
     "publishedDate": "2026-08-20",
     "updatedDate": "2026-08-20",
-    "tags": ["JCB CARD W", "JCB CARD W plus L", "J-POINT", "年会費無料", "高還元", "クレジットカード"],
+    "tags": [
+      "JCB CARD W",
+      "JCB CARD W plus L",
+      "J-POINT",
+      "年会費無料",
+      "高還元",
+      "クレジットカード"
+    ],
     "overview": "JCB CARD Wは39歳までに作れば40歳以降もずっと年会費無料。「還元率が悪い」と言われる理由を数字で分解し、J-POINT（旧OkiDoki）を1ポイント1円以上で使う交換先、優待店を使わない人でも元が取れる基準、楽天カード・三井住友NLとの選び方まで、申し込み前に知りたいことをまとめました。",
-    "related": ["rakuten-card-shindan", "dcard-series-shindan"],
+    "related": [
+      "rakuten-card-shindan",
+      "dcard-series-shindan"
+    ],
     "customHtml": true
   },
   {
@@ -49,9 +89,19 @@
     "title": "楽天カードは「楽天市場を使わない人」でも得か？街の買い物で1.5%にする設定まで解説",
     "publishedDate": "2026-08-19",
     "updatedDate": "2026-08-19",
-    "tags": ["楽天カード", "楽天ペイ", "楽天キャッシュ", "楽天ポイント", "還元率", "年会費無料"],
+    "tags": [
+      "楽天カード",
+      "楽天ペイ",
+      "楽天キャッシュ",
+      "楽天ポイント",
+      "還元率",
+      "年会費無料"
+    ],
     "overview": "楽天市場をほぼ使わなくても、楽天カード＋楽天ペイで街の買い物を実質1.5%還元にできます。「やばい」と言われる理由の真相、期間限定ポイントを失効させない初期設定、他社カードからの乗り換え判定まで、申し込み前に知りたいことをまとめました。",
-    "related": ["dcard-series-shindan", "vpoint-pay-yusen-10"],
+    "related": [
+      "dcard-series-shindan",
+      "vpoint-pay-yusen-10"
+    ],
     "customHtml": true
   },
   {
@@ -60,9 +110,19 @@
     "title": "dカード完全ガイド｜GOLD／PLATINUM／GOLD U、あなたに合う1枚を30秒で診断",
     "publishedDate": "2026-08-19",
     "updatedDate": "2026-08-19",
-    "tags": ["dカード", "dカード GOLD", "dカード PLATINUM", "dカード GOLD U", "dポイント", "ドコモ"],
+    "tags": [
+      "dカード",
+      "dカード GOLD",
+      "dカード PLATINUM",
+      "dカード GOLD U",
+      "dポイント",
+      "ドコモ"
+    ],
     "overview": "年会費11,000円は本当に元が取れるのか？ 年齢・ドコモ料金・カード利用額の3問で、あなたに合う1枚を30秒で判定。年会費を確実に回収する寄せる支払い5つまで解説します。",
-    "related": ["rakuten-card-shindan", "dpoint-koukan-zouryo"],
+    "related": [
+      "rakuten-card-shindan",
+      "dpoint-koukan-zouryo"
+    ],
     "customHtml": true
   },
   {
@@ -71,7 +131,12 @@
     "title": "楽天カードを徹底解説｜還元率・SPU・プレミアムカードとの違い",
     "publishedDate": "2026-08-14",
     "updatedDate": "2026-08-14",
-    "tags": ["楽天カード", "楽天プレミアムカード", "クレジットカード", "SPU"],
+    "tags": [
+      "楽天カード",
+      "楽天プレミアムカード",
+      "クレジットカード",
+      "SPU"
+    ],
     "overview": "楽天カードは年会費永年無料でどこでも1.0%還元、楽天市場で使えばSPUの上乗せで3.0%以上まで還元率が上がるカードです。国内で最も保有者数が多いカードのひとつで、貯まった楽天ポイントは楽天グループの各サービスだけでなく街の楽天ポイントカード加盟店でも1ポイント1円として使えます。",
     "customHtml": true
   },
@@ -81,9 +146,19 @@
     "title": "小田急ポイントカードは沿線に住んでない人でも得か？「最大12%」の正体と無料カード／OPクレジットの選び方",
     "publishedDate": "2026-08-20",
     "updatedDate": "2026-08-20",
-    "tags": ["小田急ポイントカード", "OPクレジット", "OPクレジット ゴールド", "小田急おでかけポイント", "PASMOオートチャージ", "2枚持ち"],
+    "tags": [
+      "小田急ポイントカード",
+      "OPクレジット",
+      "OPクレジット ゴールド",
+      "小田急おでかけポイント",
+      "PASMOオートチャージ",
+      "2枚持ち"
+    ],
     "overview": "小田急ポイントカードは加盟店提示で最大12%還元。でもその12%の正体は、実は「電車の乗り方」にあります。無料のOPポイント専用カードとOPクレジットの違い、二重取りの仕組み、電車・百貨店での立ち回り、楽天カードとの2枚持ち設計まで、申し込み前に知りたいことをまとめました。",
-    "related": ["smbc-nl-shindan", "epos-card-shindan"],
+    "related": [
+      "smbc-nl-shindan",
+      "epos-card-shindan"
+    ],
     "customHtml": true
   },
   {
@@ -92,7 +167,12 @@
     "title": "クレカのタッチ決済で乗車 最大10.5%（常設）の使い方",
     "publishedDate": "2026-08-09",
     "updatedDate": "2026-08-09",
-    "tags": ["JCB", "三井住友カード", "交通", "タッチ決済"],
+    "tags": [
+      "JCB",
+      "三井住友カード",
+      "交通",
+      "タッチ決済"
+    ],
     "rate": "JCB 10.5%／三井住友 8%",
     "period": "常設（JCBは2027/5/15まで）",
     "expires": "",
@@ -107,7 +187,10 @@
     "ctaLabel": "公式ページで詳細を見る",
     "ctaUrl": "https://j-pointpartner.jcb.co.jp/",
     "affiliate": false,
-    "related": ["vpoint-pay-yusen-10", "vcoupon-multi-shop-500pt"]
+    "related": [
+      "vpoint-pay-yusen-10",
+      "vcoupon-multi-shop-500pt"
+    ]
   },
   {
     "slug": "vpoint-pay-yusen-10",
@@ -115,7 +198,11 @@
     "title": "VポイントPay ポイント優先払いで10%還元キャンペーンの使い方",
     "publishedDate": "2026-08-09",
     "updatedDate": "2026-08-09",
-    "tags": ["三井住友カード", "Vポイント", "キャンペーン"],
+    "tags": [
+      "三井住友カード",
+      "Vポイント",
+      "キャンペーン"
+    ],
     "rate": "10%還元",
     "period": "8/1〜8/31",
     "expires": "2026-08-31",
@@ -131,7 +218,10 @@
     "ctaLabel": "公式ページで詳細を見る",
     "ctaUrl": "https://www.smbc-card.com/mem/cardinfo/26/cardinfo7244745.jsp",
     "affiliate": false,
-    "related": ["vcoupon-multi-shop-500pt", "natsu-coupon-matsuri"]
+    "related": [
+      "vcoupon-multi-shop-500pt",
+      "natsu-coupon-matsuri"
+    ]
   },
   {
     "slug": "vcoupon-multi-shop-500pt",
@@ -139,7 +229,11 @@
     "title": "Vクーポン 複数ショップ利用で最大500ポイントもらう方法",
     "publishedDate": "2026-08-09",
     "updatedDate": "2026-08-09",
-    "tags": ["三井住友カード", "Vポイント", "Vクーポン"],
+    "tags": [
+      "三井住友カード",
+      "Vポイント",
+      "Vクーポン"
+    ],
     "rate": "最大500pt上乗せ",
     "period": "8/1〜9/30",
     "expires": "2026-09-30",
@@ -153,7 +247,10 @@
     "ctaLabel": "公式ページで詳細を見る",
     "ctaUrl": "https://www.smbc-card.com/camp/vcoupon/index.jsp",
     "affiliate": false,
-    "related": ["natsu-coupon-matsuri", "vpoint-pay-yusen-10"]
+    "related": [
+      "natsu-coupon-matsuri",
+      "vpoint-pay-yusen-10"
+    ]
   },
   {
     "slug": "natsu-coupon-matsuri",
@@ -161,7 +258,11 @@
     "title": "夏のクーポン祭り（Vクーポン × Vポイントアプリ）の攻略法",
     "publishedDate": "2026-08-09",
     "updatedDate": "2026-08-09",
-    "tags": ["三井住友カード", "Vポイント", "Vクーポン"],
+    "tags": [
+      "三井住友カード",
+      "Vポイント",
+      "Vクーポン"
+    ],
     "rate": "2種類のクーポンを重ね取り",
     "period": "8/1〜9/30",
     "expires": "2026-09-30",
@@ -176,7 +277,10 @@
     "ctaLabel": "公式ページで詳細を見る",
     "ctaUrl": "https://www.vpoint.net/scm1",
     "affiliate": false,
-    "related": ["vcoupon-multi-shop-500pt", "vpoint-pay-yusen-10"]
+    "related": [
+      "vcoupon-multi-shop-500pt",
+      "vpoint-pay-yusen-10"
+    ]
   },
   {
     "slug": "jichitai-campaign",
@@ -184,7 +288,11 @@
     "title": "自治体キャンペーン（地域限定の高還元）の見つけ方・使い方",
     "publishedDate": "2026-08-09",
     "updatedDate": "2026-08-09",
-    "tags": ["PayPay", "地域振興", "自治体キャンペーン"],
+    "tags": [
+      "PayPay",
+      "地域振興",
+      "自治体キャンペーン"
+    ],
     "rate": "最大10〜30%還元",
     "period": "地域ごとに異なる",
     "expires": "2026-09-30",
@@ -199,7 +307,10 @@
     "ctaLabel": "公式ページで詳細を見る",
     "ctaUrl": "https://paypay.ne.jp/event/",
     "affiliate": false,
-    "related": ["dpoint-koukan-zouryo", "vcoupon-multi-shop-500pt"]
+    "related": [
+      "dpoint-koukan-zouryo",
+      "vcoupon-multi-shop-500pt"
+    ]
   },
   {
     "slug": "dpoint-koukan-zouryo",
@@ -207,7 +318,11 @@
     "title": "dポイント交換 最大15%増量キャンペーンの活用法",
     "publishedDate": "2026-08-09",
     "updatedDate": "2026-08-09",
-    "tags": ["dポイント", "ポイント交換", "キャンペーン"],
+    "tags": [
+      "dポイント",
+      "ポイント交換",
+      "キャンペーン"
+    ],
     "rate": "もれなく8% ＋ 抽選7%",
     "period": "8/1〜8/31",
     "expires": "2026-08-31",
@@ -222,6 +337,9 @@
     "ctaLabel": "公式ページで詳細を見る",
     "ctaUrl": "https://dpoint.docomo.ne.jp/campaign/index.html",
     "affiliate": false,
-    "related": ["jichitai-campaign", "vpoint-pay-yusen-10"]
+    "related": [
+      "jichitai-campaign",
+      "vpoint-pay-yusen-10"
+    ]
   }
 ]
