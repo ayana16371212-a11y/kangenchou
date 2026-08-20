@@ -678,9 +678,49 @@ function kanaToRomaji(str){
   }
   return out;
 }
+/* よく出てくるブランド名（漢字を含む）のキー変換辞書。
+   ひらがな・カタカナだけでは変換できない漢字の社名・サービス名をここに追加していく。
+   長い語から先にマッチさせるため、キーは長さ降順で判定する。 */
+var BRAND_KEY_MAP = {
+  '小田急': 'odakyu',
+  '三井住友': 'smbc',
+  '三菱ＵＦＪ': 'mufg',
+  '三菱UFJ': 'mufg',
+  '三菱東京': 'mufg',
+  'みずほ': 'mizuho',
+  '楽天': 'rakuten',
+  '住信ＳＢＩ': 'sbi-sumishin',
+  '住信SBI': 'sbi-sumishin',
+  '横浜銀行': 'yokohama-bank',
+  '東急': 'tokyu',
+  '西武': 'seibu',
+  '京王': 'keio',
+  '京急': 'keikyu',
+  '阪急': 'hankyu',
+  '近鉄': 'kintetsu',
+  '西日本': 'jr-west',
+  '東日本': 'jr-east',
+  '日本旅行': 'nta',
+  '証券': 'shoken',
+  '百貨店': 'department'
+};
+/* 辞書に一致する部分をローマ字（英数字）へ事前に置換してから、通常のtoKey処理にかける */
+function applyBrandMap(name){
+  var out = name;
+  Object.keys(BRAND_KEY_MAP)
+    .sort(function(a,b){ return b.length - a.length; }) // 長い語から優先的にマッチ
+    .forEach(function(jp){
+      if(out.indexOf(jp) !== -1){
+        out = out.split(jp).join(' ' + BRAND_KEY_MAP[jp] + ' ');
+      }
+    });
+  return out;
+}
 function toKey(name){
-  return kanaToRomaji(name).toLowerCase()
-    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'custom-'+Date.now();
+  return kanaToRomaji(applyBrandMap(name)).toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
+  /* 変換の結果が空文字になるケース（辞書にない漢字だけの名前など）は、
+     ここでタイムスタンプに逃がさない。addCardConfirm側で手入力を必須にする。 */
 }
 
 // モーダル
@@ -698,7 +738,17 @@ document.getElementById('addCardModal').addEventListener('click',function(e){
 });
 // カード名からキーを自動生成
 document.getElementById('newCardName').addEventListener('input',function(){
-  document.getElementById('newCardKey').value=toKey(this.value);
+  var keyEl = document.getElementById('newCardKey');
+  var generated = toKey(this.value);
+  keyEl.value = generated;
+  if(this.value.trim() && !generated){
+    // 辞書にない漢字だけの名前などで自動生成できなかった場合、手入力を促す
+    keyEl.placeholder = '自動生成できませんでした。半角英数字で手入力してください（例：odakyu-op）';
+    keyEl.style.borderColor = 'var(--warn)';
+  } else {
+    keyEl.placeholder = '例：matsui-shoken、paypay-card';
+    keyEl.style.borderColor = '';
+  }
 });
 document.getElementById('addCardConfirm').addEventListener('click',function(){
   var name=document.getElementById('newCardName').value.trim();
