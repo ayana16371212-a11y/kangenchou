@@ -229,14 +229,14 @@ var CARDS = [
   {key:'smbc-nl',         name:'三井住友カード（NL）'},
   {key:'dmm-kabu',        name:'DMM株'},
 ];
-var ASP_LIST = ['トラフィックゲート','A8.net','afb','バリューコマース','LinkShare','ハピタス','モッピー','その他'];
+var ASP_LIST = ['トラフィックゲート','A8.net','afb','バリューコマース','LinkShare','ハピタス','モッピー','その他（手動入力）'];
 
 /* ===== 状態 ===== */
 var linkState   = {}; // key -> {type,url,via,banners:[]}
 var rewardState = {}; // key -> {asp,reward,rewardNote,memo}
 CARDS.forEach(function(c){
   linkState[c.key]   = {type:'direct',url:'',via:'',banners:[]};
-  rewardState[c.key] = {asp:'',reward:'',rewardNote:'',memo:''};
+  rewardState[c.key] = {asp:'',aspOther:'',reward:'',rewardNote:'',memo:''};
 });
 
 /* ===== ユーティリティ ===== */
@@ -464,16 +464,27 @@ function buildRewardCard(card){
       +'<span class="card-key">'+esc(key)+'</span>'
     +'</div>'
     +'<div class="reward-row">'
-      +'<div class="field"><label>ASPサービス</label><select id="rasp-'+key+'"><option value="">未設定</option>'+opts+'</select></div>'
+      +'<div class="field"><label>ASPサービス</label><select id="rasp-'+key+'"><option value="">未設定</option>'+opts+'</select><input type="text" id="rasp-other-'+key+'" placeholder="サービス名を入力" style="margin-top:6px;display:none;" value="'+esc(r.aspOther||'')+'"></div>'
       +'<div class="field"><label>報酬額（円）</label><input type="number" id="rrwd-'+key+'" placeholder="例：5000" value="'+esc(r.reward)+'"></div>'
     +'</div>'
     +'<div class="field"><label>備考（承認タイミング・条件など）</label><input type="text" id="rnote-'+key+'" placeholder="例：承認後2ヶ月・新規のみ" value="'+esc(r.rewardNote)+'"></div>'
     +'<div class="field"><label>メモ（自由記入）</label><textarea id="rmemo-'+key+'" placeholder="期限、特記事項など">'+esc(r.memo)+'</textarea></div>';
   document.getElementById('rewardList').appendChild(el);
-  ['rasp-'+key,'rrwd-'+key,'rnote-'+key,'rmemo-'+key].forEach(function(id){
+  ['rrwd-'+key,'rnote-'+key,'rmemo-'+key].forEach(function(id){
     var el=document.getElementById(id); if(!el) return;
     el.addEventListener('input',function(){ updateRewardSummary(); });
   });
+  // ASPセレクト：「その他」選択時に手動入力欄を表示
+  var rsel=document.getElementById('rasp-'+key);
+  var roth=document.getElementById('rasp-other-'+key);
+  function syncAspOther(){
+    var isOther=rsel.value==='その他（手動入力）';
+    roth.style.display=isOther?'block':'none';
+    if(!isOther) roth.value='';
+    updateRewardSummary();
+  }
+  if(rsel){ rsel.addEventListener('change', syncAspOther); syncAspOther(); }
+  if(roth){ roth.addEventListener('input', updateRewardSummary); }
 }
 
 function getRewardData(){
@@ -481,7 +492,11 @@ function getRewardData(){
   CARDS.forEach(function(card){
     var key=card.key;
     out[key]={
-      asp:   (document.getElementById('rasp-'+key)||{}).value||'',
+      asp:   (function(){
+        var sel=(document.getElementById('rasp-'+key)||{}).value||'';
+        var oth=(document.getElementById('rasp-other-'+key)||{}).value||'';
+        return sel==='その他（手動入力）'?(oth||'その他'):sel;
+      })(),
       reward:(document.getElementById('rrwd-'+key)||{}).value||'',
       rewardNote:(document.getElementById('rnote-'+key)||{}).value||'',
       memo:  (document.getElementById('rmemo-'+key)||{}).value||'',
@@ -524,7 +539,14 @@ document.getElementById('rewardFileInput').addEventListener('change',function(e)
       CARDS.forEach(function(card){
         var d=data[card.key]; if(!d) return;
         var s=function(id,v){ var el=document.getElementById(id); if(el) el.value=v||''; };
-        s('rasp-'+card.key,d.asp); s('rrwd-'+card.key,d.reward); s('rnote-'+card.key,d.rewardNote); s('rmemo-'+card.key,d.memo);
+        // その他入力の復元
+        var aspInList=ASP_LIST.indexOf(d.asp)!==-1;
+        s('rasp-'+card.key, aspInList?d.asp:'その他（手動入力）');
+        s('rasp-other-'+card.key, aspInList?'':(d.asp||''));
+        var rs=document.getElementById('rasp-'+card.key);
+        var ro=document.getElementById('rasp-other-'+card.key);
+        if(rs&&ro){ ro.style.display=rs.value==='その他（手動入力）'?'block':'none'; }
+        s('rrwd-'+card.key,d.reward); s('rnote-'+card.key,d.rewardNote); s('rmemo-'+card.key,d.memo);
       });
       updateRewardSummary();
       setStatus('バックアップから読み込みました。','ok',4000);
