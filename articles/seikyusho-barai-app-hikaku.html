@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--ARTICLE_META
+{
+  "slug": "seikyusho-barai-app-hikaku",
+  "category": "チャージルート",
+  "title": "請求書払いアプリ徹底比較｜au PAY・PayPay・楽天ペイ・d払い・ファミペイ、2026年8月時点でどれが得か",
+  "publishedDate": "2026-08-20",
+  "updatedDate": "2026-08-20",
+  "tags": ["請求書払い", "au PAY", "PayPay", "楽天ペイ", "d払い", "ファミペイ", "チャージルート"],
+  "overview": "税金・公共料金の請求書払い、実はほとんどのアプリでもう還元メリットがありません。PayPayはほぼゼロ、d払いは請求書払い自体は対象外、楽天ペイの単純ルートも改悪済み（複雑な多段ルートなら今も高還元）。2026年8月時点で一番手軽に狙えるのはau PAYです。5アプリを正直に比較しました。",
+  "related": ["aupay-seikyusho-max-route", "aupay-seikyusho-charge-route", "charge-route-guide"]
+}
+ARTICLE_META-->
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>請求書払いアプリ徹底比較｜au PAY・PayPay・楽天ペイ・d払い・ファミペイ、2026年8月時点でどれが得か | ペイ択（Paytaku）</title>
+<meta name="description" content="税金・公共料金の請求書払い、実はほとんどのアプリでもう還元メリットがありません。2026年8月時点で唯一意味があるのはau PAYです。6アプリを正直に比較しました。">
+<link rel="canonical" href="https://paytaku.github.io/articles/seikyusho-barai-app-hikaku.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="請求書払いアプリ徹底比較｜au PAY・PayPay・楽天ペイ・d払い・ファミペイ、2026年8月時点でどれが得か | ペイ択（Paytaku）">
+<meta property="og:description" content="2026年8月時点で唯一意味があるのはau PAYです。6アプリを正直に比較しました。">
+<meta property="og:url" content="https://paytaku.github.io/articles/seikyusho-barai-app-hikaku.html">
+<meta property="og:site_name" content="ペイ択（Paytaku）">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/articles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="../index.html">ペイ<span>択</span></a>
+    <span class="site-header-tagline">還元率比較・お得情報</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">🌙</button>
+  </div>
+</header>
+<script>
+(function(){
+  var STORAGE_KEY = 'paytaku-theme';
+  var DEFAULT = 'dark';
+  var saved = localStorage.getItem(STORAGE_KEY) || DEFAULT;
+  document.documentElement.setAttribute('data-theme', saved);
+  window.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  });
+})();
+</script>
+
+<div class="lp-page card-shindan-page">
+  <div class="lp-wrap">
+    <a href="../index.html" class="lp-back">← ペイ択トップに戻る</a>
+    <nav class="lp-breadcrumb">
+      <a href="../index.html">ホーム</a> ＞ <a href="./index.html">チャージルート</a> ＞ 請求書払いアプリ徹底比較…
+    </nav>
+
+    <div class="nl-hero">
+      <p class="nl-hero-name">請求書払いアプリ徹底比較</p>
+      <p class="nl-hero-sub">2026年8月時点でどれが得か</p>
+      <p class="nl-hero-cap" style="margin-top:10px;">税金・公共料金の請求書払い、実は「決済時のポイント還元」はほぼ全滅しています。今も意味があるのは、チャージ側で還元が残っているアプリだけです。6つを正直に比較します。</p>
+    </div>
+    <div class="lp-byline" style="margin-bottom:28px;">更新日：2026-08-20　|　ペイ択編集部</div>
+
+    <nav class="lp-toc">
+      <div class="lp-toc-title">この記事の流れ</div>
+      <ol>
+        <li><a href="#conc">結論：決済時の還元はほぼ全滅、チャージ側で決まる</a></li>
+        <li><a href="#hikaku">5アプリ比較表</a></li>
+        <li><a href="#apps">アプリごとの正直な評価</a></li>
+        <li><a href="#rakuten-route">上級者向け：楽天ペイの複雑ルート（ANA Pay経由）</a></li>
+        <li><a href="#why">なぜ「まだ得」という古い記事が残っているのか</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+        <li><a href="#summary">まとめ</a></li>
+      </ol>
+    </nav>
+
+    <section class="nl-block" id="conc">
+      <h2 class="nl-h2">結論：決済時の還元はほぼ全滅、チャージ側で決まる</h2>
+      <p class="nl-text">2022〜2023年ごろまでは、請求書払いそのものにもポイントが付くアプリがありました。しかし現在は<b>PayPay・d払い・au PAY・楽天ペイのいずれも、請求書払いという決済行為自体への還元は0%</b>です（ファミペイだけ1件あたり少額の定額ボーナスが残っています）。なお、かつて選択肢の1つだったLINE Payは2025年4月30日に日本国内でのサービスを終了し、PayPayに統合されています。</p>
+      <p class="nl-text" style="margin-top:10px;">つまり今お得を狙うなら、<b>「請求書払いに使う残高を、どのクレジットカードでチャージするか」</b>で還元率のほぼ全てが決まります。2026年8月時点で、このチャージ側の還元が実用的に残っているのはau PAYだけ、というのが率直な結論です。</p>
+    </section>
+
+    <section class="nl-block" id="hikaku">
+      <h2 class="nl-h2">6アプリ比較表</h2>
+      <div class="nl-table-wrap">
+        <table class="nl-compare">
+          <thead>
+            <tr><th>アプリ</th><th>決済時還元</th><th>チャージ側還元</th><th>チャージ上限/月</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>au PAY</th><td>0%</td><td>最大5.5%（au PAYゴールド）</td><td>10万円</td></tr>
+            <tr><th>楽天ペイ</th><td>0%</td><td>単純ルート0% / 複雑ルートは1.5〜2%超</td><td>ルートによる</td></tr>
+            <tr><th>ファミペイ</th><td>10P/件（定額）</td><td>0.5〜1%（対応JCBカードのみ）</td><td>2万円（ファミマカードのみ10万円）</td></tr>
+            <tr><th>PayPay</th><td>0%</td><td>0%（税金等には使えない場合あり）</td><td>―</td></tr>
+            <tr><th>d払い</th><td>0%</td><td>請求書払い分はチャージ不可（銀行/ATMのみ）</td><td>―</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nl-text" style="margin-top:10px; font-size:12.5px; color:var(--dim, #94a3b8);">※かつて選択肢の1つだったLINE Payは2025年4月30日にサービス終了、PayPayに統合されたため比較対象から除外しています。</p>
+    </section>
+
+    <section class="nl-block" id="apps">
+      <h2 class="nl-h2">アプリごとの正直な評価</h2>
+      <div class="nl-store-plain">
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">au PAY：手軽さと還元率のバランスが一番良い</div>
+            <p class="sdesc">au PAYゴールドカードのオートチャージ特典（条件達成で最大5.5%）が、複雑な手順なしで狙える現実的な選択肢です。詳しくは<a href="./aupay-seikyusho-max-route.html">こちらの記事</a>で解説しています。</p>
+          </div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">楽天ペイ：単純ルートは終了、複雑ルートなら今も高還元</div>
+            <p class="sdesc">以前主流だった「楽天カード→楽天キャッシュ」の単純チャージは、2024年6月の改定で還元が無くなったとの報告があります。ただし、<b>ANA Payを経由して楽天Edyと楽天キャッシュを相互交換するルート</b>を使えば、今も1.5〜2%超を狙えます（詳しくは次の見出しで解説）。</p>
+          </div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">ファミペイ：JCBカード限定だが実際に還元がある</div>
+            <p class="sdesc">対応するJCBブランドカードでチャージすると0.5〜1%のカード側還元が付き、さらに請求書払い1件につきファミマポイントの定額ボーナスも別枠で付きます。ただしチャージ上限は他アプリより低め（多くのJCBカードで月2万円、ファミマカードのみ月10万円）です。</p>
+          </div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">PayPay：チャージしてもポイントは付かない</div>
+            <p class="sdesc">PayPay残高へチャージできるのはPayPayカードのみですが、チャージ自体にポイントは付与されません。ソフトバンク・Y!mobile・LINEMOの「まとめて支払い」経由だとポイントは付きますが、その残高は税金など自治体発行の納付書には使えない点に注意してください。</p>
+          </div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">d払い：請求書払いに使う残高はクレカでチャージできない</div>
+            <p class="sdesc">d払いの通常の買い物ではdカード払いでポイント2重取りができますが、請求書払いに使う「d払い残高」は銀行口座・ATMからのチャージのみ対応で、クレジットカードは使えません。そのため請求書払い限定で見ると、カード側のポイントを重ねる方法が今のところありません。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- サブターゲット誘導: 楽天ペイの複雑ルート -->
+    <section class="nl-block" id="rakuten-route">
+      <h2 class="nl-h2">上級者向け：楽天ペイの複雑ルート（ANA Pay経由）</h2>
+      <p class="nl-text">楽天ペイで高還元を狙う場合、現在も生きているとされるのが次のルートです。</p>
+      <div class="nl-steps">
+        <div class="nl-step">
+          <div class="nl-step-num">1</div>
+          <div class="nl-step-body">
+            <p class="t">高還元クレジットカードでANA Payにチャージ</p>
+            <p class="d">JAL Pay、ANAダイナース、エポスゴールドなど、ANA Payチャージでポイントが付与されるカードを使う。</p>
+          </div>
+        </div>
+        <div class="nl-step-arrow">↓</div>
+        <div class="nl-step">
+          <div class="nl-step-num">2</div>
+          <div class="nl-step-body">
+            <p class="t">ANA Payから楽天Edyへチャージ</p>
+            <p class="d">ANA Payの残高を楽天Edyに移す。</p>
+          </div>
+        </div>
+        <div class="nl-step-arrow">↓</div>
+        <div class="nl-step">
+          <div class="nl-step-num">3</div>
+          <div class="nl-step-body">
+            <p class="t">楽天Edyと楽天キャッシュを相互交換</p>
+            <p class="d">楽天Edyの残高を楽天キャッシュへ交換し、楽天ペイの請求書払いに使う。</p>
+          </div>
+        </div>
+      </div>
+      <div class="nl-caution" style="margin-top:14px;">
+        <span class="nl-caution-mark">!</span>
+        <p class="nl-caution-text">このルートは3段階を経由する分、還元率は1.5〜2%超と高い一方、途中1箇所でも仕様変更が入ると成立しなくなるリスクがあります（実際に、似た構成の別ルートが過去に終了した例が複数報告されています）。<a href="./charge-route-guide.html">チャージルート全般の考え方</a>もあわせてご確認のうえ、まずは少額で試してから本格運用することをおすすめします。条件・対応カードは変更される場合があるため、利用前に必ず公式サイトで最新情報をご確認ください。［確認日: 2026-08-20］</p>
+      </div>
+    </section>
+
+    <section class="nl-block" id="why">
+      <h2 class="nl-h2">なぜ「まだ得」という古い記事が残っているのか</h2>
+      <p class="nl-text">請求書払い比較系の記事は2022〜2023年ごろに書かれたものが今も検索上位に残っていることが多く、当時の還元率のまま更新されていないケースが目立ちます。特に「楽天カードからのチャージで0.5%還元」「au PAYのチャージ上限は月5万円」といった記述は、2024年以降の改定で数字が変わっているにもかかわらず、そのまま放置されている典型例です。請求書払い系の情報を見るときは、記事の更新日と、記載されている数字の根拠（公式発表へのリンクがあるか）を必ず確認してください。</p>
+    </section>
+
+    <section class="nl-block" id="faq">
+      <h2 class="nl-h2-plain">よくある質問</h2>
+      <div class="nl-faq">
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">結局どのアプリを使えばいい？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">手軽さと還元率のバランスで選ぶなら、2026年8月時点ではau PAYが最有力です。手間をかけてでも還元率を最大化したいなら、楽天ペイの複雑ルート（ANA Pay経由）で1.5〜2%超を狙う選択肢もあります。すでに他のアプリを日常的に使っている場合は、無理に乗り換えず「税金・公共料金の支払いだけ切り替える」という部分的な使い分けでも十分です。</div></div>
+        </div>
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">領収書はどのアプリでも発行される？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">スマホ決済の請求書払いは、窓口払いのようにその場で領収証書は発行されません。入金確認まで数週間かかることが多いため、車検などですぐに納税証明書が必要な場合は、金融機関やコンビニの窓口払いを選んでください。</div></div>
+        </div>
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">この記事の内容もいずれ古くなる？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">はい、その可能性があります。請求書払い・チャージルート系の還元率は今後も変更される可能性が高い分野です。本記事の更新日を確認のうえ、実際に利用する前には必ず各アプリの公式サイトで最新情報をご確認ください。</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nl-block" id="summary">
+      <h2 class="nl-h2-plain">まとめ</h2>
+      <p class="nl-text">請求書払いは、決済そのものへの還元がほぼ全滅した今、「どのアプリを使うか」より「チャージ側の還元をどう組むか」が重要です。手軽さと還元率のバランスならau PAYゴールドカード（最大5.5%）、手間をかけてでも最大化したいなら楽天ペイの複雑ルート（ANA Pay経由、1.5〜2%超）が選択肢になります。ファミペイも対応JCBカードなら実際に還元がありますが、PayPay・d払いは請求書払いに関してはメリットがほぼありません。</p>
+      <div class="nl-tags">
+        <span class="nl-tag">請求書払い</span>
+        <span class="nl-tag">au PAY</span>
+        <span class="nl-tag">PayPay</span>
+        <span class="nl-tag">楽天ペイ</span>
+        <span class="nl-tag">チャージルート</span>
+      </div>
+    </section>
+
+    <section class="nl-block">
+      <h2 class="nl-h2-plain">あわせて読みたい</h2>
+      <div class="lp-related">
+        <a class="lp-related-item" href="./aupay-seikyusho-max-route.html">au PAY請求書払い、2026年8月時点の最大ルートはこのカード｜三井住友ゴールドNLルートはもう古い</a>
+        <a class="lp-related-item" href="./aupay-seikyusho-charge-route.html">au PAY請求書払いは実は還元0%｜「お得」の正体とチャージ側で稼げる現実的な上限</a>
+        <a class="lp-related-item" href="./charge-route-guide.html">チャージルートは「今から真似する」と危ない｜長続きする低リスクルートの作り方</a>
+      </div>
+    </section>
+
+    <div class="lp-disclosure">本ページの情報は掲載時点のものです。各アプリの還元率・チャージ上限・対応状況は変更される場合があるため、利用前に必ず各社の公式サイトでご確認ください。本サイトはアフィリエイト広告を含みます。［確認日: 2026-08-20］</div>
+    <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.querySelector('.card-shindan-page');
+  if(!root) return;
+  root.querySelectorAll('.nl-faq-item').forEach(function(item){
+    var q = item.querySelector('.nl-faq-q');
+    var a = item.querySelector('.nl-faq-a');
+    q.addEventListener('click', function(){
+      var open = item.classList.toggle('open');
+      a.style.maxHeight = open ? (a.scrollHeight + 'px') : '0';
+    });
+  });
+})();
+</script>
+<script src="../assets/affiliates.js"></script>
+</body>
+</html>
