@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アフィリリンク管理 | ペイ択</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --bg:       #0F172A;
+  --surface:  #1E293B;
+  --surface2: #273449;
+  --line:     #334155;
+  --text:     #F1F5F9;
+  --muted:    #94A3B8;
+  --dim:      #64748B;
+  --primary:  #4F46E5;
+  --ptint:    rgba(79,70,229,0.18);
+  --good:     #10B981;
+  --good-tint:rgba(16,185,129,0.12);
+  --warn:     #F59E0B;
+  --warn-tint:rgba(245,158,11,0.12);
+  --danger:   #F87171;
+  --radius:   12px;
+  --shadow:   0 1px 3px rgba(0,0,0,0.4);
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans JP", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+
+/* ヘッダー */
+.page-header { margin-bottom: 32px; }
+.page-header h1 { font-size: 22px; font-weight: 900; margin: 0 0 4px; }
+.page-header p { font-size: 13px; color: var(--muted); margin: 0; }
+.logo { font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 16px; display: block; }
+
+/* ステータスバナー */
+.status-bar {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  display: none;
+}
+.status-bar.show { display: block; }
+.status-bar.ok   { background: var(--good-tint); color: var(--good); border: 1px solid var(--good); }
+.status-bar.warn { background: var(--warn-tint); color: var(--warn); border: 1px solid var(--warn); }
+
+/* 操作バー */
+.action-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.action-bar p { font-size: 12px; color: var(--muted); margin: 0; flex: 1 1 100%; }
+
+/* カードリスト */
+.card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+.card-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.card-item.dirty { border-color: var(--warn); }
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.card-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  flex: 1;
+}
+.card-key {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--dim);
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-family: "SFMono-Regular", Menlo, monospace;
+}
+.status-badge {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.status-badge.set   { background: var(--good-tint); color: var(--good); }
+.status-badge.unset { background: var(--warn-tint); color: var(--warn); }
+
+/* タイプ切り替え */
+.type-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.type-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+}
+.type-btn:hover { border-color: var(--primary); color: var(--text); }
+.type-btn.active {
+  background: var(--ptint);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 入力フィールド */
+.field { margin-bottom: 8px; }
+.field label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.field input {
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color .15s;
+}
+.field input:focus { border-color: var(--primary); }
+.field input.has-value { border-color: var(--good); }
+.field input::placeholder { color: var(--dim); }
+.via-row { display: none; }
+.via-row.show { display: block; }
+
+/* バナーセクション */
+.banner-toggle {
+  font-size: 11.5px;
+  color: var(--primary);
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 4px;
+  font-weight: 700;
+}
+.banner-section { margin-top: 10px; display: none; }
+.banner-section.show { display: block; }
+.banner-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dim);
+  background: var(--surface2);
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+/* ボタン */
+.btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: opacity .15s;
+}
+.btn:hover { opacity: .85; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+.btn-download {
+  background: var(--good);
+  color: #fff;
+  font-size: 15px;
+  padding: 13px 24px;
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ダウンロードブロック */
+.download-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+.download-block h2 { font-size: 16px; font-weight: 800; margin: 0 0 6px; }
+.download-block p { font-size: 12.5px; color: var(--muted); margin: 0 0 16px; }
+.download-note {
+  font-size: 11.5px;
+  color: var(--dim);
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+/* プレビュー */
+.preview-block {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 20px;
+}
+.preview-block h3 { font-size: 12px; font-weight: 700; color: var(--muted); margin: 0 0 8px; }
+.preview-block pre {
+  margin: 0;
+  font-size: 11.5px;
+  font-family: "SFMono-Regular", Menlo, monospace;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* セパレーター */
+.sep { border: none; border-top: 1px solid var(--line); margin: 28px 0; }
+
+@media (max-width: 480px) {
+  .action-bar { flex-direction: column; align-items: stretch; }
+  .btn-download { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="logo">ペイ択 管理ツール</span>
+  <div class="page-header">
+    <h1>アフィリリンク管理</h1>
+    <p>URLを入力して「JSONをダウンロード」→ リポジトリの <code>affiliates.json</code> に上書きするだけで全記事に反映されます。</p>
+  </div>
+
+  <div class="status-bar" id="statusBar"></div>
+
+  <div class="action-bar">
+    <button class="btn btn-outline" id="loadBtn">現在のaffiliates.jsonを読み込む</button>
+    <p>既存の設定を読み込んで編集することもできます（ファイルを選択してください）。</p>
+    <input type="file" id="fileInput" accept=".json" style="display:none">
+  </div>
+
+  <div class="card-list" id="cardList"></div>
+
+  <hr class="sep">
+
+  <div class="download-block">
+    <h2>JSONをダウンロード</h2>
+    <p>入力内容を <code>affiliates.json</code> として書き出します。ダウンロード後、リポジトリのルートに上書きしてください。</p>
+    <button class="btn btn-download" id="downloadBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      affiliates.json をダウンロード
+    </button>
+    <p class="download-note">
+      ダウンロード後の手順：<br>
+      1. ダウンロードした <code>affiliates.json</code> をリポジトリのルート直下に上書き<br>
+      2. コミット＆プッシュ（GitHub Pagesに反映）<br>
+      3. 全記事のCTAボタンに自動で新しいリンクが適用されます
+    </p>
+    <div class="preview-block">
+      <h3>プレビュー（ダウンロードされる内容）</h3>
+      <pre id="preview"></pre>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========== カードのマスターデータ ==========
+var CARDS = [
+  { key: 'rakuten-card',   name: '楽天カード',          hasBanner: true  },
+  { key: 'rakuten-premium',name: '楽天プレミアムカード', hasBanner: false },
+  { key: 'dcard-gold',     name: 'dカード GOLD',         hasBanner: true  },
+  { key: 'dcard-goldu',    name: 'dカード GOLD U',       hasBanner: true  },
+  { key: 'dcard-platinum', name: 'dカード PLATINUM',     hasBanner: true  },
+  { key: 'jcb-card-w',     name: 'JCB CARD W',           hasBanner: true  },
+  { key: 'epos-card',      name: 'エポスカード',          hasBanner: true  },
+  { key: 'smbc-nl',        name: '三井住友カード（NL）',  hasBanner: true  },
+  { key: 'dmm-kabu',       name: 'DMM株',                hasBanner: false },
+];
+
+// ========== 状態 ==========
+var state = {}; // key -> { type, url, via, bannerHref, bannerImg }
+CARDS.forEach(function(c){
+  state[c.key] = { type: 'direct', url: '', via: '', bannerHref: '', bannerImg: '' };
+});
+
+// ========== ユーティリティ ==========
+function show(id){ document.getElementById(id).classList.add('show'); }
+function hide(id){ document.getElementById(id).classList.remove('show'); }
+function setStatus(msg, type){
+  var el = document.getElementById('statusBar');
+  el.textContent = msg;
+  el.className = 'status-bar show ' + type;
+  setTimeout(function(){ el.className = 'status-bar'; }, 4000);
+}
+
+// ========== カードUI生成 ==========
+function buildCards(){
+  var list = document.getElementById('cardList');
+  list.innerHTML = '';
+  CARDS.forEach(function(card){
+    var s = state[card.key];
+    var el = document.createElement('div');
+    el.className = 'card-item';
+    el.id = 'card-' + card.key;
+    el.innerHTML = [
+      '<div class="card-top">',
+        '<span class="card-name">' + card.name + '</span>',
+        '<span class="card-key">' + card.key + '</span>',
+        '<span class="status-badge ' + (s.url ? 'set' : 'unset') + '" id="badge-'+card.key+'">' + (s.url ? '設定済み' : '未設定') + '</span>',
+      '</div>',
+      '<div class="type-row">',
+        '<button class="type-btn' + (s.type==='direct'?' active':'') + '" data-key="'+card.key+'" data-type="direct">直アフィリエイト</button>',
+        '<button class="type-btn' + (s.type==='point'?' active':'') + '" data-key="'+card.key+'" data-type="point">ポイントサイト経由</button>',
+      '</div>',
+      '<div class="field">',
+        '<label>申し込みURL</label>',
+        '<input type="url" id="url-'+card.key+'" placeholder="https://..." value="'+esc(s.url)+'">',
+      '</div>',
+      '<div class="via-row' + (s.type==='point'?' show':'') + '" id="via-'+card.key+'">',
+        '<div class="field">',
+          '<label>ポイントサイト名（例：ハピタス）</label>',
+          '<input type="text" id="via-input-'+card.key+'" placeholder="ハピタス" value="'+esc(s.via)+'">',
+        '</div>',
+      '</div>',
+      card.hasBanner ? [
+        '<button class="banner-toggle" id="btoggle-'+card.key+'">＋ バナー設定（任意）</button>',
+        '<div class="banner-section' + (s.bannerHref||s.bannerImg?' show':'') + '" id="bsec-'+card.key+'">',
+          '<span class="banner-label">PRバナー（任意）</span>',
+          '<div class="field"><label>バナーの遷移URL</label>',
+            '<input type="url" id="bhref-'+card.key+'" placeholder="https://..." value="'+esc(s.bannerHref)+'">',
+          '</div>',
+          '<div class="field"><label>バナー画像URL</label>',
+            '<input type="url" id="bimg-'+card.key+'" placeholder="https://...jpg" value="'+esc(s.bannerImg)+'">',
+          '</div>',
+        '</div>',
+      ].join('') : '',
+    ].join('');
+    list.appendChild(el);
+    bindCard(card);
+  });
+  updatePreview();
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ========== カードのイベント ==========
+function bindCard(card){
+  var key = card.key;
+
+  // タイプボタン
+  document.querySelectorAll('.type-btn[data-key="'+key+'"]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var type = btn.getAttribute('data-type');
+      state[key].type = type;
+      document.querySelectorAll('.type-btn[data-key="'+key+'"]').forEach(function(b){
+        b.classList.toggle('active', b === btn);
+      });
+      var vr = document.getElementById('via-'+key);
+      type === 'point' ? vr.classList.add('show') : vr.classList.remove('show');
+      updatePreview();
+    });
+  });
+
+  // URLフィールド
+  function bindInput(id, stateKey){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.classList.toggle('has-value', !!el.value);
+    el.addEventListener('input', function(){
+      state[key][stateKey] = el.value.trim();
+      el.classList.toggle('has-value', !!el.value);
+      var badge = document.getElementById('badge-'+key);
+      if(stateKey === 'url'){
+        badge.textContent = el.value ? '設定済み' : '未設定';
+        badge.className = 'status-badge ' + (el.value ? 'set' : 'unset');
+      }
+      updatePreview();
+    });
+  }
+  bindInput('url-'+key,      'url');
+  bindInput('via-input-'+key,'via');
+  bindInput('bhref-'+key,    'bannerHref');
+  bindInput('bimg-'+key,     'bannerImg');
+
+  // バナートグル
+  var btoggle = document.getElementById('btoggle-'+key);
+  if(btoggle){
+    btoggle.addEventListener('click', function(){
+      var sec = document.getElementById('bsec-'+key);
+      sec.classList.toggle('show');
+      btoggle.textContent = sec.classList.contains('show') ? '− バナー設定（任意）' : '＋ バナー設定（任意）';
+    });
+  }
+}
+
+// ========== JSON生成 ==========
+function buildJson(){
+  var links = {}, banners = {};
+  CARDS.forEach(function(card){
+    var s = state[card.key];
+    if(!s.url) return; // URLが空なら省略
+    var entry = { type: s.type, url: s.url };
+    if(s.type === 'point' && s.via) entry.via = s.via;
+    links[card.key] = entry;
+    if(card.hasBanner && (s.bannerHref || s.bannerImg)){
+      banners[card.key] = {};
+      if(s.bannerHref) banners[card.key].href = s.bannerHref;
+      if(s.bannerImg)  banners[card.key].img  = s.bannerImg;
+    }
+  });
+  return {
+    _comment: 'アフィリエイトリンクの一元管理ファイル。type=direct は直アフィリエイト、type=point はポイントサイト経由（via にサイト名を書くとボタン文言が変わります）。このファイルを書き換えるだけで全記事に反映されます。',
+    links: links,
+    banners: Object.keys(banners).length ? banners : undefined
+  };
+}
+
+function updatePreview(){
+  var obj = buildJson();
+  document.getElementById('preview').textContent = JSON.stringify(obj, null, 2);
+}
+
+// ========== ダウンロード ==========
+document.getElementById('downloadBtn').addEventListener('click', function(){
+  var obj = buildJson();
+  var hasAny = Object.keys(obj.links).length > 0;
+  if(!hasAny){
+    setStatus('URLが1件も入力されていません。少なくとも1件入力してからダウンロードしてください。', 'warn');
+    return;
+  }
+  var json = JSON.stringify(obj, null, 2);
+  var blob = new Blob([json], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'affiliates.json';
+  a.click();
+  setStatus('ダウンロード完了。リポジトリのルートにある affiliates.json を上書きしてプッシュしてください。', 'ok');
+});
+
+// ========== JSONファイル読み込み ==========
+document.getElementById('loadBtn').addEventListener('click', function(){
+  document.getElementById('fileInput').click();
+});
+document.getElementById('fileInput').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    try {
+      var data = JSON.parse(ev.target.result);
+      var links = data.links || {};
+      var banners = data.banners || {};
+      CARDS.forEach(function(card){
+        var l = links[card.key];
+        if(l){
+          state[card.key].type = l.type || 'direct';
+          state[card.key].url  = typeof l === 'string' ? l : (l.url || '');
+          state[card.key].via  = l.via || '';
+        }
+        var b = banners[card.key];
+        if(b){
+          state[card.key].bannerHref = b.href || '';
+          state[card.key].bannerImg  = b.img  || '';
+        }
+      });
+      buildCards();
+      setStatus('読み込み完了。内容を確認・編集してからダウンロードしてください。', 'ok');
+    } catch(err){
+      setStatus('JSONの読み込みに失敗しました。ファイルを確認してください。', 'warn');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// ========== 初期化 ==========
+buildCards();
+</script>
+</body>
+</html>
