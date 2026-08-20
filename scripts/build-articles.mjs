@@ -228,7 +228,7 @@ ${periodSectionHtml(a)}
     <section class="lp-section lp-cta-section">
       <h2 class="lp-section-title">このキャンペーンを見る</h2>
       <p class="lp-cta-note">条件・還元率は変更される場合があります。ご利用前に必ず公式ページで最新情報をご確認ください。</p>
-      <a href="${esc(a.ctaUrl || "#")}" class="lp-apply-btn" target="_blank" rel="noopener noreferrer">${esc(ctaButtonLabel(a))}</a>
+      <a href="${esc(a.ctaUrl || "#")}"${a.affKey ? ` data-aff="${esc(a.affKey)}"` : ""} class="lp-apply-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">${esc(ctaButtonLabel(a))}</a>
     </section>
 ${relatedHtml(a, bySlug)}
 
@@ -236,6 +236,7 @@ ${relatedHtml(a, bySlug)}
     <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
   </div>
 </div>
+<script src="../assets/affiliates.js"></script>
 </body>
 </html>
 `;
