@@ -353,10 +353,11 @@ function buildLinksJson(){
   var links={},banners={};
   CARDS.forEach(function(card){
     var s=linkState[card.key];
-    if(!s.url) return;
-    var entry={type:s.type,url:s.url};
-    if(s.type==='point'&&s.via) entry.via=s.via;
-    links[card.key]=entry;
+    if(s.url){
+      var entry={type:s.type,url:s.url};
+      if(s.type==='point'&&s.via) entry.via=s.via;
+      links[card.key]=entry;
+    }
     var vb=s.banners.filter(function(b){ return b.href||b.img; });
     if(vb.length){
       banners[card.key]=vb.map(function(b){
@@ -623,9 +624,62 @@ function loadCustomCards(){
     }
   });
 }
+/* かな→ローマ字変換（キー自動生成用） */
+var KANA_BASE = {
+  'あ':'a','い':'i','う':'u','え':'e','お':'o',
+  'か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
+  'が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go',
+  'さ':'sa','し':'shi','す':'su','せ':'se','そ':'so',
+  'ざ':'za','じ':'ji','ず':'zu','ぜ':'ze','ぞ':'zo',
+  'た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to',
+  'だ':'da','ぢ':'ji','づ':'zu','で':'de','ど':'do',
+  'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no',
+  'は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho',
+  'ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo',
+  'ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po',
+  'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo',
+  'や':'ya','ゆ':'yu','よ':'yo',
+  'ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro',
+  'わ':'wa','ゐ':'i','ゑ':'e','を':'o','ん':'n',
+  'ゔ':'vu'
+};
+var KANA_YOON = {
+  'きゃ':'kya','きゅ':'kyu','きょ':'kyo','ぎゃ':'gya','ぎゅ':'gyu','ぎょ':'gyo',
+  'しゃ':'sha','しゅ':'shu','しょ':'sho','じゃ':'ja','じゅ':'ju','じょ':'jo',
+  'ちゃ':'cha','ちゅ':'chu','ちょ':'cho','ぢゃ':'ja','ぢゅ':'ju','ぢょ':'jo',
+  'にゃ':'nya','にゅ':'nyu','にょ':'nyo',
+  'ひゃ':'hya','ひゅ':'hyu','ひょ':'hyo','びゃ':'bya','びゅ':'byu','びょ':'byo',
+  'ぴゃ':'pya','ぴゅ':'pyu','ぴょ':'pyo',
+  'みゃ':'mya','みゅ':'myu','みょ':'myo',
+  'りゃ':'rya','りゅ':'ryu','りょ':'ryo'
+};
+function toHiragana(s){ return s.replace(/[\u30A1-\u30F6]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }); }
+function kanaToRomaji(str){
+  var s=toHiragana(str); // カタカナをひらがなに正規化してから変換
+  var out='', i=0;
+  while(i<s.length){
+    var two=s.substr(i,2);
+    if(KANA_YOON[two]){ out+=KANA_YOON[two]; i+=2; continue; }
+    var c=s[i];
+    if(c==='っ'){ // 促音：次の子音を重ねる
+      var next=s[i+1];
+      var nextTwo=s.substr(i+1,2);
+      var rom=KANA_YOON[nextTwo]||KANA_BASE[next]||'';
+      if(rom) out+=rom[0];
+      i++; continue;
+    }
+    if(c==='ー'){ // 長音符：直前の母音を繰り返す
+      var last=out.slice(-1);
+      if('aiueo'.indexOf(last)!==-1) out+=last;
+      i++; continue;
+    }
+    if(KANA_BASE[c]){ out+=KANA_BASE[c]; i++; continue; }
+    out+=c; i++; // かな以外（英数字・記号・漢字）はそのまま残す
+  }
+  return out;
+}
 function toKey(name){
-  return name.toLowerCase()
-    .replace(/[\u3041-\u3096]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)+0x60); })
+  return kanaToRomaji(name).toLowerCase()
     .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'custom-'+Date.now();
 }
 
