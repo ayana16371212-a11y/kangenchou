@@ -1,5 +1,5 @@
 {
-  "_comment": "アフィリンクの一元管理。type=direct は直アフィリエイト、type=point はポイントサイト経由。ポイントサイト経由の場合 via にサイト名を書くと、ボタンが『〇〇経由で申し込む』表示になります。url を書き換えるだけで全記事に反映されます。",
+  "_comment": "アフィリエイトリンクの一元管理ファイル。type=direct は直アフィリエイト、type=point はポイントサイト経由（via にサイト名を書くとボタン文言が変わります）。banners は配列で複数登録可（title で識別）。このファイルを書き換えるだけで全記事に反映されます。",
   "links": {
     "rakuten-card": {
       "type": "direct",
@@ -39,9 +39,52 @@
     }
   },
   "banners": {
-    "rakuten-card": {
-      "href": "https://ad2.trafficgate.net/t/r/877/1396/318860_398517",
-      "img":  "https://srv2.trafficgate.net/t/b/877/1396/318860_398517"
-    }
+    "rakuten-card": [
+      {
+        "title": "楽天カード券面画像",
+        "href": "https://ad2.trafficgate.net/t/r/519/1396/318860_398517",
+        "img": "https://srv2.trafficgate.net/t/b/519/1396/318860_398517"
+      },
+      {
+        "title": "ポイント訴求",
+        "href": "https://ad2.trafficgate.net/t/r/877/1396/318860_398517",
+        "img": "https://srv2.trafficgate.net/t/b/877/1396/318860_398517"
+      }
+    ],
+    "jcb-card-w": [
+      {
+        "title": "JCB CARD W バナー",
+        "href": "",
+        "img": ""
+      }
+    ],
+    "epos-card": [
+      {
+        "title": "エポスカード バナー",
+        "href": "",
+        "img": ""
+      }
+    ],
+    "smbc-nl": [
+      {
+        "title": "三井住友カード（NL）バナー",
+        "href": "",
+        "img": ""
+      }
+    ],
+    "dcard-gold": [
+      {
+        "title": "dカード GOLD バナー",
+        "href": "",
+        "img": ""
+      }
+    ],
+    "dmm-kabu": [
+      {
+        "title": "DMM株 バナー",
+        "href": "",
+        "img": ""
+      }
+    ]
   }
 }
