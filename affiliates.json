@@ -5,6 +5,10 @@
       "type": "direct",
       "url": "https://ad2.trafficgate.net/t/r/401/1396/318860_398517"
     },
+    "rakuten-premium": {
+      "type": "direct",
+      "url": "https://ad2.trafficgate.net/t/r/385/1396/318860_398517"
+    },
     "custom-1787195013076": {
       "type": "direct",
       "url": "https://ad2.trafficgate.net/t/r/385/1396/318860_398517"
@@ -25,6 +29,18 @@
         "title": "ポイント訴求",
         "href": "https://ad2.trafficgate.net/t/r/877/1396/318860_398517",
         "img": "https://srv2.trafficgate.net/t/b/877/1396/318860_398517"
+      }
+    ],
+    "rakuten-premium": [
+      {
+        "title": "ポイント訴求",
+        "href": "https://ad2.trafficgate.net/t/r/497/1396/318860_398517",
+        "img": "https://srv2.trafficgate.net/t/b/497/1396/318860_398517"
+      },
+      {
+        "title": "券面",
+        "href": "https://ad2.trafficgate.net/t/r/298/1396/318860_398517",
+        "img": "https://srv2.trafficgate.net/t/b/298/1396/318860_398517"
       }
     ],
     "custom-1787195013076": [
