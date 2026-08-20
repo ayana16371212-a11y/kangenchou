@@ -1,0 +1,46 @@
+name: build-articles
+
+# content/articles.json や articles/*.html、affiliates.json を変更してmainにpushすると、
+# 記事一覧（articles/index.html）とsitemap.xmlを自動生成してコミットし直す。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/articles.json"
+      - "articles/**"
+      - "scripts/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 記事HTMLのARTICLE_METAをarticles.jsonへ同期
+        run: node scripts/sync-articles-meta.mjs
+
+      - name: 記事一覧・sitemapを生成
+        run: node scripts/build-articles.mjs
+
+      - name: 変更があればコミット・push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add articles/index.html sitemap.xml content/articles.json
+          if git diff --cached --quiet; then
+            echo "変更なし。コミットをスキップします。"
+          else
+            git commit -m "chore: 記事一覧・sitemapを自動更新"
+            git push
+          fi
