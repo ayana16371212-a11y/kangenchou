@@ -17,7 +17,7 @@
  * 再実行するだけでよい（GitHub Actionsで自動実行する設定は .github/workflows/build-articles.yml を参照）。
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -25,6 +25,23 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const ARTICLES_JSON = join(ROOT, "content", "articles.json");
 const OUT_DIR = join(ROOT, "articles");
+const THUMBS_DIR = join(ROOT, "assets", "thumbnails");
+const THUMB_EXTS = ["png", "jpg", "jpeg", "webp"];
+
+/**
+ * assets/thumbnails/{slug}.{png|jpg|jpeg|webp} が存在すれば、そのパスを返す。
+ * articles.json に明示的な thumbnail フィールドがあればそちらを優先する
+ * （外部URLを使いたい場合はそちらで上書きできる）。
+ */
+function resolveThumbnail(slug, explicitThumbnail){
+  if(explicitThumbnail) return explicitThumbnail;
+  for(const ext of THUMB_EXTS){
+    if(existsSync(join(THUMBS_DIR, `${slug}.${ext}`))){
+      return `../assets/thumbnails/${slug}.${ext}`;
+    }
+  }
+  return null;
+}
 
 const SITE_NAME = "ペイ択（Paytaku）";
 const SITE_URL = "https://paytaku.github.io";
@@ -46,11 +63,14 @@ const CATEGORY_ORDER = ["すべて", "キャンペーン", "カード解説", "�
 
 /* PR枠（実データではなく広告枠。運用時はここだけ書き換える） */
 const PR_CARD = {
-  title: "【2026年8月最新】クレジットカード入会キャンペーンまとめ｜最大15,000ポイントもらえるカードは？",
-  overview: "2026年8月時点で実施中のクレジットカード入会キャンペーンを徹底比較。新規入会ポイント還元を中心に、お得なカードを厳選して紹介します。",
-  ctaLabel: "詳細を見る",
-  ctaUrl: "#",
-  affKey: "" // affiliates.jsonのキーを設定するとdata-affで自動差し込みされる
+  category: "カード解説",
+  title: "楽天カードは年会費永年無料でポイントが貯まりやすい定番カード｜新規入会でポイントプレゼント中",
+  overview: "年会費永年無料、還元率1.0%からスタート。楽天市場での買い物はSPUの上乗せでさらに還元率アップ。今なら新規入会・利用でポイントがもらえるキャンペーンを実施中です。",
+  updatedDate: "2026-08-20",
+  ctaUrl: "#", // affKey優先。ここはaffiliates.json取得失敗時のフォールバック用
+  affKey: "rakuten-card", // affiliates.json の links.rakuten-card がリンク先として使われる
+  bannerKey: "rakuten-card", // affiliates.json の banners.rakuten-card が画像として使われる
+  bannerIdx: 1 // banners.rakuten-card の何番目を使うか（0=券面画像, 1=ポイント訴求）
 };
 
 function esc(s){
@@ -271,14 +291,13 @@ function indexTemplate(articles){
   const description = "ペイ択が公開している、キャンペーン攻略・カード活用の記事一覧です。";
   const canonical = `${SITE_URL}/articles/index.html`;
 
-  // クライアント側フィルタリング用に、必要なフィールドだけ軽量化してJSへ埋め込む
   const slim = articles.map(a => ({
     slug: a.slug,
     category: a.category || "その他",
     title: a.title,
     overview: metaDescriptionFor(a),
     updatedDate: a.updatedDate || a.publishedDate || "",
-    thumbnail: a.thumbnail || null // articles.jsonに thumbnail: "https://..." を追加すると実画像が使われる
+    thumbnail: resolveThumbnail(a.slug, a.thumbnail) // assets/thumbnails/{slug}.png等を自動検出。articles.jsonのthumbnailフィールドがあればそちら優先
   }));
   const articlesJson = JSON.stringify(slim);
   const prJson = JSON.stringify(PR_CARD);
@@ -299,23 +318,37 @@ function indexTemplate(articles){
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="${esc(SITE_NAME)}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.1/tailwind.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config = { darkMode: 'class' };</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --fs-page-title:22px; --fs-page-sub:13px; --fs-section:16px;
-    --fs-card-title:16px; --fs-card-desc:13px; --fs-tag:11px;
-    --fs-date:11px; --fs-nav:10px; --pad-card:16px; --gap-card:12px;
+    --fs-card-title:18px; --fs-card-desc:14px; --fs-tag:11px;
+    --fs-date:11px; --fs-nav:10px; --pad-card:16px; --gap-card:16px;
     --pad-edge:16px; --h-btn:48px; --h-nav:64px;
   }
   html.large{
     --fs-page-title:28px; --fs-page-sub:15px; --fs-section:20px;
-    --fs-card-title:20px; --fs-card-desc:15px; --fs-tag:12px;
-    --fs-date:12px; --fs-nav:12px; --pad-card:20px; --gap-card:16px;
+    --fs-card-title:22px; --fs-card-desc:16px; --fs-tag:12px;
+    --fs-date:12px; --fs-nav:12px; --pad-card:20px; --gap-card:20px;
     --pad-edge:20px; --h-btn:56px; --h-nav:72px;
   }
   html.large body{ line-height:1.6; }
-  body{ max-width:430px; margin:0 auto; }
+  a{ text-decoration:none; }
+  *{ -webkit-tap-highlight-color: transparent; }
+  body{ max-width:430px; margin:0 auto; font-family:'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif; }
+  .icon-btn{ -webkit-tap-highlight-color:transparent; }
+  .icon-btn:active{ background-color:rgba(79,70,229,0.08); }
+  html.dark .icon-btn:active{ background-color:rgba(129,140,248,0.15); }
+  .card-link{ -webkit-tap-highlight-color:transparent; }
+  .card-link:active{ transform:scale(0.99); }
+  .thumb-pattern{
+    background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.10) 0 2px, transparent 2px 18px);
+  }
+  .thumb-16x9{ aspect-ratio:16/9; width:100%; display:flex; align-items:center; justify-content:center; }
   .clamp2{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .fade-in{ animation:fadeIn .25s ease; }
   @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
@@ -327,24 +360,44 @@ function indexTemplate(articles){
 <header class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-[#E2E8F0] dark:border-slate-700" style="height:56px;">
   <div class="h-full flex items-center justify-between px-4">
     <a href="../index.html" class="flex items-center gap-2">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 3V21" stroke="#4F46E5" stroke-width="2" stroke-linecap="round"/>
-        <path d="M5 7H19" stroke="#4F46E5" stroke-width="2" stroke-linecap="round"/>
-        <path d="M5 7L2 13C2 15 3.5 16 5 16C6.5 16 8 15 8 13L5 7Z" stroke="#4F46E5" stroke-width="1.6" stroke-linejoin="round"/>
-        <path d="M19 7L16 13C16 15 17.5 16 19 16C20.5 16 22 15 22 13L19 7Z" stroke="#4F46E5" stroke-width="1.6" stroke-linejoin="round"/>
-        <path d="M9 21H15" stroke="#4F46E5" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <img src="../assets/logo.png" alt="ペイ択" width="22" height="22" class="shrink-0">
       <span class="font-bold text-[15px] text-[#0F172A] dark:text-white">ペイ<span class="text-[#4F46E5]">択</span></span>
     </a>
-    <div class="flex items-center gap-1.5">
-      <button id="fontToggle" aria-label="文字サイズ切替" class="w-10 h-10 rounded-full flex items-center justify-center text-[13px] font-bold border border-[#E2E8F0] dark:border-slate-600 text-[#4F46E5] dark:text-indigo-300 hover:bg-[#F8FAFC] dark:hover:bg-slate-800">A+</button>
-      <button id="themeToggle" aria-label="ダークモード切替" class="w-10 h-10 rounded-full flex items-center justify-center border border-[#E2E8F0] dark:border-slate-600 hover:bg-[#F8FAFC] dark:hover:bg-slate-800">🌙</button>
+    <div class="flex items-center gap-1">
+      <button id="fontToggle" aria-label="文字サイズ切替" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold text-[#4F46E5] dark:text-indigo-300 bg-[#EEF2FF] dark:bg-indigo-950/60">A+</button>
+      <button id="themeToggle" aria-label="ダークモード切替" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center text-[#64748B] dark:text-slate-300">🌙</button>
+      <button aria-label="検索" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center text-[#64748B] dark:text-slate-300">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button id="menuToggle" aria-label="メニュー" aria-expanded="false" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center text-[#64748B] dark:text-slate-300">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 7H20M4 12H20M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </div>
 </header>
 
+<!-- メニューパネル -->
+<div id="menuOverlay" class="hidden fixed inset-0 bg-black/40 z-40" style="max-width:430px; margin:0 auto;"></div>
+<div id="menuPanel" class="hidden fixed top-0 right-0 h-full bg-white dark:bg-slate-900 z-50 shadow-2xl" style="width:78%; max-width:340px;">
+  <div class="flex items-center justify-between px-4 border-b border-[#E2E8F0] dark:border-slate-700" style="height:56px;">
+    <span class="font-bold text-[15px] text-[#0F172A] dark:text-white">メニュー</span>
+    <button id="menuClose" aria-label="閉じる" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center text-[#64748B] dark:text-slate-300">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <nav class="flex flex-col p-2">
+    <a href="../index.html" class="px-3 py-3 rounded-lg text-[#0F172A] dark:text-white font-bold hover:bg-[#F8FAFC] dark:hover:bg-slate-800">ホーム</a>
+    <a href="./index.html" class="px-3 py-3 rounded-lg text-[#0F172A] dark:text-white font-bold hover:bg-[#F8FAFC] dark:hover:bg-slate-800">記事一覧</a>
+    <div class="my-1 border-t border-[#E2E8F0] dark:border-slate-700"></div>
+    <button data-menu-cat="キャンペーン" class="text-left px-3 py-3 rounded-lg text-[#64748B] dark:text-slate-300 hover:bg-[#F8FAFC] dark:hover:bg-slate-800">キャンペーン</button>
+    <button data-menu-cat="カード解説" class="text-left px-3 py-3 rounded-lg text-[#64748B] dark:text-slate-300 hover:bg-[#F8FAFC] dark:hover:bg-slate-800">カード解説</button>
+    <button data-menu-cat="証券・投資" class="text-left px-3 py-3 rounded-lg text-[#64748B] dark:text-slate-300 hover:bg-[#F8FAFC] dark:hover:bg-slate-800">証券・投資</button>
+    <button data-menu-cat="チャージルート" class="text-left px-3 py-3 rounded-lg text-[#64748B] dark:text-slate-300 hover:bg-[#F8FAFC] dark:hover:bg-slate-800">チャージルート</button>
+  </nav>
+</div>
+
 <nav class="bg-[#F8FAFC] dark:bg-slate-800 px-4 py-2 text-[12px] text-[#64748B] dark:text-slate-400">
-  <a href="../index.html" class="hover:text-[#4F46E5]">ホーム</a> &gt; 記事一覧
+  <a href="../index.html" class="text-[#4F46E5] dark:text-indigo-300">ホーム</a> &gt; 記事一覧
 </nav>
 
 <div class="px-4 py-4 bg-white dark:bg-slate-900">
@@ -364,21 +417,25 @@ function indexTemplate(articles){
 </div>
 
 <nav class="fixed bottom-0 left-0 right-0 mx-auto bg-white dark:bg-slate-900 border-t border-[#E2E8F0] dark:border-slate-700 flex" style="max-width:430px; height:var(--h-nav); z-index:50;">
-  <a href="../index.html" class="flex-1 flex flex-col items-center justify-center gap-1 text-[#64748B] dark:text-slate-400">
+  <a href="../index.html" class="flex-1 flex flex-col items-center justify-center gap-1 text-[#4F46E5]">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10V20H19V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span style="font-size:var(--fs-nav);">ホーム</span>
-  </a>
-  <a href="./index.html" class="flex-1 flex flex-col items-center justify-center gap-1 text-[#4F46E5]">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 9H16M8 13H16M8 17H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span class="font-bold" style="font-size:var(--fs-nav);">記事</span>
+    <span class="font-bold" style="font-size:var(--fs-nav);">ホーム</span>
   </a>
   <button class="flex-1 flex flex-col items-center justify-center gap-1 text-[#64748B] dark:text-slate-400">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span style="font-size:var(--fs-nav);">検索</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9L12 3L21 9V20H15V14H9V20H3V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    <span style="font-size:var(--fs-nav);">お店から選ぶ</span>
   </button>
   <button class="flex-1 flex flex-col items-center justify-center gap-1 text-[#64748B] dark:text-slate-400">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20C4 16 7.5 14 12 14C16.5 14 20 16 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span style="font-size:var(--fs-nav);">マイページ</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 8V13L16 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+    <span style="font-size:var(--fs-nav);">比較履歴</span>
+  </button>
+  <button class="flex-1 flex flex-col items-center justify-center gap-1 text-[#64748B] dark:text-slate-400">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 20C12 20 4 15 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 15 12 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    <span style="font-size:var(--fs-nav);">お気に入り</span>
+  </button>
+  <button class="flex-1 flex flex-col items-center justify-center gap-1 text-[#64748B] dark:text-slate-400">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V19L12 16L4 19Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    <span style="font-size:var(--fs-nav);">ガイド</span>
   </button>
 </nav>
 
@@ -393,22 +450,25 @@ function fmtDate(s){ if(!s) return ""; const [y,m,d] = s.split("-"); return \`\$
 
 function thumbHtml(a){
   if(a.thumbnail){
-    return \`<img src="\${a.thumbnail}" alt="" class="shrink-0 rounded-xl object-cover" style="width:88px;height:88px;" loading="lazy">\`;
+    return \`<div class="thumb-16x9"><img src="\${a.thumbnail}" alt="" class="w-full h-full object-cover" loading="lazy"></div>\`;
   }
   const bg = THUMB_GRADIENT[a.category] || THUMB_GRADIENT["カード解説"];
   const icon = THUMB_ICON[a.category] || "📄";
-  return \`<div class="shrink-0 rounded-xl flex items-center justify-center text-white" style="width:88px;height:88px;font-size:32px;background:\${bg};">\${icon}</div>\`;
+  return \`<div class="thumb-16x9 thumb-pattern text-white relative" style="background:\${bg};">
+    <span style="font-size:56px; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));">\${icon}</span>
+    <span class="absolute font-extrabold text-white/90" style="right:14px; bottom:10px; font-size:13px; letter-spacing:0.05em; text-shadow:0 1px 4px rgba(0,0,0,0.35);">\${a.category}</span>
+  </div>\`;
 }
 
 function cardHtml(a){
   return \`
-  <a href="./\${a.slug}.html" data-cat="\${a.category}" class="fade-in flex bg-[#F8FAFC] dark:bg-slate-800 rounded-xl shadow-[0_1px_3px_rgba(15,23,42,0.08)]" style="padding:var(--pad-card);">
+  <a href="./\${a.slug}.html" data-cat="\${a.category}" class="card-link fade-in block bg-[#F8FAFC] dark:bg-slate-800 rounded-2xl overflow-hidden border border-[#E2E8F0]/70 dark:border-slate-700 shadow-[0_2px_8px_rgba(15,23,42,0.06)]">
     \${thumbHtml(a)}
-    <div class="flex-1 min-w-0" style="margin-left:12px;">
+    <div style="padding:var(--pad-card);">
       <span class="inline-block rounded-full bg-[#EEF2FF] dark:bg-indigo-950 text-[#4F46E5] dark:text-indigo-300 font-bold px-2 py-0.5" style="font-size:var(--fs-tag);">\${a.category}</span>
-      <h3 class="clamp2 font-bold mt-1 text-[#0F172A] dark:text-white" style="font-size:var(--fs-card-title);">\${a.title}</h3>
-      <p class="clamp2 mt-1 text-[#64748B] dark:text-slate-400" style="font-size:var(--fs-card-desc);">\${a.overview}</p>
-      <p class="mt-1.5 text-[#94A3B8] dark:text-slate-500 flex items-center gap-1" style="font-size:var(--fs-date);">
+      <h3 class="clamp2 font-bold text-[#0F172A] dark:text-white" style="font-size:var(--fs-card-title); margin-top:8px;">\${a.title}</h3>
+      <p class="clamp2 text-[#64748B] dark:text-slate-400" style="font-size:var(--fs-card-desc); margin-top:8px;">\${a.overview}</p>
+      <p class="text-[#94A3B8] dark:text-slate-500 flex items-center gap-1" style="font-size:var(--fs-date); margin-top:12px;">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 10H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V7M16 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         更新日：\${fmtDate(a.updatedDate)}
       </p>
@@ -419,15 +479,30 @@ function cardHtml(a){
 function prHtml(){
   return \`
   <a href="\${PR.ctaUrl}"\${PR.affKey ? \` data-aff="\${PR.affKey}"\` : ""} target="_blank" rel="noopener noreferrer nofollow sponsored"
-     class="fade-in flex bg-[#FAF5FF] dark:bg-purple-950/40 rounded-xl border border-[#D8B4FE] dark:border-purple-800 shadow-[0_1px_3px_rgba(126,34,206,0.08)]" style="padding:var(--pad-card);">
-    <div class="shrink-0 relative rounded-xl flex items-center justify-center text-white" style="width:88px;height:88px;font-size:32px;background:linear-gradient(135deg,#7C3AED 0%,#EC4899 100%);">
-      🎉
-      <span class="absolute -top-2 -left-2 bg-[#7C3AED] text-white font-bold rounded px-2 py-0.5" style="font-size:10px;">PR</span>
+     class="card-link fade-in block bg-[#FAF5FF] dark:bg-purple-950/40 rounded-2xl overflow-hidden border border-[#D8B4FE] dark:border-purple-800 shadow-[0_2px_8px_rgba(126,34,206,0.08)]">
+    <div class="relative">
+      <div class="thumb-16x9 thumb-pattern text-white relative overflow-hidden" style="background:linear-gradient(135deg,#7C3AED 0%,#EC4899 100%);">
+        <span style="font-size:56px; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));">🎁</span>
+        <div class="lp-banner-box absolute inset-0">
+          <img data-aff-banner="\${PR.bannerKey}" data-aff-banner-idx="\${PR.bannerIdx}" alt="" class="w-full h-full object-cover" loading="lazy">
+        </div>
+      </div>
+      <span class="absolute bg-[#7C3AED] text-white font-bold rounded px-2 py-0.5" style="font-size:10px; top:12px; left:12px;">PR</span>
     </div>
-    <div class="flex-1 min-w-0" style="margin-left:12px;">
-      <h3 class="clamp2 font-bold text-[#0F172A] dark:text-white" style="font-size:var(--fs-card-title);">\${PR.title}</h3>
-      <p class="clamp2 mt-1 text-[#64748B] dark:text-slate-400" style="font-size:var(--fs-card-desc);">\${PR.overview}</p>
-      <span class="inline-block mt-1.5 text-[#7C3AED] dark:text-purple-300 font-bold" style="font-size:var(--fs-date);">\${PR.ctaLabel} →</span>
+    <div style="padding:var(--pad-card);">
+      <span class="inline-block rounded-full bg-[#EEF2FF] dark:bg-indigo-950 text-[#4F46E5] dark:text-indigo-300 font-bold px-2 py-0.5" style="font-size:var(--fs-tag);">\${PR.category}</span>
+      <h3 class="clamp2 font-bold text-[#0F172A] dark:text-white" style="font-size:var(--fs-card-title); margin-top:8px;">\${PR.title}</h3>
+      <p class="clamp2 text-[#64748B] dark:text-slate-400" style="font-size:var(--fs-card-desc); margin-top:8px;">\${PR.overview}</p>
+      <div class="flex items-center justify-between" style="margin-top:12px;">
+        <span class="text-[#94A3B8] dark:text-slate-500 flex items-center gap-1" style="font-size:var(--fs-date);">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 10H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V7M16 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          更新日：\${fmtDate(PR.updatedDate || "")}
+        </span>
+        <span class="text-[#94A3B8] dark:text-slate-500 flex items-center gap-1" style="font-size:var(--fs-date);" title="広告主から提供された情報をもとに作成しています">
+          PRについて
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/></svg>
+        </span>
+      </div>
     </div>
   </a>\`;
 }
@@ -441,7 +516,7 @@ function render(cat){
   let html = "";
   filtered.forEach((a, i) => {
     html += cardHtml(a);
-    if(i === 2 && cat === "すべて") html += prHtml();
+    if(i === 0 && cat === "すべて") html += prHtml(); // 1件目の直後にPRを1枚だけ挿入（全件表示時のみ）
   });
   list.innerHTML = html;
 }
@@ -467,6 +542,36 @@ chipsEl.querySelectorAll('.chip').forEach(btn => {
   });
 });
 styleChips();
+
+/* メニューパネル */
+const menuToggle = document.getElementById('menuToggle');
+const menuPanel = document.getElementById('menuPanel');
+const menuOverlay = document.getElementById('menuOverlay');
+const menuClose = document.getElementById('menuClose');
+function openMenu(){
+  menuPanel.classList.remove('hidden');
+  menuOverlay.classList.remove('hidden');
+  menuToggle.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu(){
+  menuPanel.classList.add('hidden');
+  menuOverlay.classList.add('hidden');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+menuToggle.addEventListener('click', openMenu);
+menuClose.addEventListener('click', closeMenu);
+menuOverlay.addEventListener('click', closeMenu);
+document.querySelectorAll('[data-menu-cat]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const cat = btn.dataset.menuCat;
+    const chip = chipsEl.querySelector(\`[data-cat="\${CSS.escape(cat)}"]\`);
+    if(chip) chip.click();
+    closeMenu();
+    document.getElementById('articleList').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
 
 const FS_KEY = 'paytaku-fontsize';
 function applyFontSize(v){ document.documentElement.classList.toggle('large', v === 'large'); }
@@ -505,6 +610,9 @@ function main(){
   const bySlug = new Map(articles.map(a => [a.slug, a]));
 
   mkdirSync(OUT_DIR, { recursive: true });
+
+  const thumbHits = articles.filter(a => resolveThumbnail(a.slug, a.thumbnail)).length;
+  console.log(`サムネイル画像: ${thumbHits}/${articles.length} 件を検出（assets/thumbnails/ + articles.json）`);
 
   articles.forEach(a => {
     if(!a.slug) throw new Error(`記事に slug がありません: ${a.title}`);
