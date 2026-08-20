@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  カード診断記事テンプレート（コピペ用の雛形）
+  使い方：
+  1. このファイルを articles/xxxx-shindan.html としてコピー
+  2. {{ }} のプレースホルダーを記事の内容に置き換える
+  3. 診断ロジック（judge関数）を記事に合わせて書き換える
+  4. content/articles.json に customHtml:true で登録
+  ※ CSSは articles.css の .card-shindan-page 共通UIを使うので
+     追加のCSSファイルは不要。ライト/ダーク両対応。
+  ============================================================
+-->
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{タイトル}} | ペイ択（Paytaku）</title>
+<meta name="description" content="{{メタディスクリプション}}">
+<link rel="canonical" href="https://paytaku.github.io/articles/{{slug}}.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{タイトル}} | ペイ択（Paytaku）">
+<meta property="og:description" content="{{OGP説明}}">
+<meta property="og:url" content="https://paytaku.github.io/articles/{{slug}}.html">
+<meta property="og:site_name" content="ペイ択（Paytaku）">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/articles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="../index.html">ペイ<span>択</span></a>
+    <span class="site-header-tagline">還元率比較・お得情報</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">🌙</button>
+  </div>
+</header>
+<script>
+(function(){
+  var STORAGE_KEY = 'paytaku-theme';
+  var DEFAULT = 'dark';
+  var saved = localStorage.getItem(STORAGE_KEY) || DEFAULT;
+  document.documentElement.setAttribute('data-theme', saved);
+  window.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  });
+})();
+</script>
+
+<!-- ★ ラッパーに card-shindan-page を付けると共通UIが有効になる -->
+<div class="lp-page card-shindan-page">
+  <div class="lp-wrap">
+    <a href="../index.html" class="lp-back">← ペイ択トップに戻る</a>
+    <nav class="lp-breadcrumb">
+      <a href="../index.html">ホーム</a> ＞ <a href="./index.html">カード解説</a> ＞ {{パンくず短縮タイトル}}
+    </nav>
+
+    <!-- ① ファーストビュー（主役の数字を大きく） -->
+    <div class="nl-hero">
+      <p class="nl-hero-name">{{カード名}}</p>
+      <p class="nl-hero-sub">{{ひとことターゲット}}</p>
+      <div class="nl-hero-big">
+        <span class="num">{{主役数字}}</span><span class="unit">%</span><span class="kanji">還元</span>
+      </div>
+      <p class="nl-hero-cap">{{数字の補足説明}}</p>
+      <div class="nl-spec-row">
+        <div class="nl-spec"><div class="nl-spec-label">年会費</div><div class="nl-spec-value">{{年会費}}</div></div>
+        <div class="nl-spec"><div class="nl-spec-label">通常還元</div><div class="nl-spec-value">{{通常還元}}</div></div>
+        <div class="nl-spec"><div class="nl-spec-label">{{推し項目}}</div><div class="nl-spec-value accent">{{推し数字}}</div></div>
+      </div>
+      <a href="{{アフィリンク}}" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトを見る（PR）</a>
+      <p class="nl-cta-hint">その前に ── このカードが自分に必要か、まず下の3分診断で確認できます。</p>
+    </div>
+    <div class="lp-byline" style="margin-bottom:28px;">更新日：{{日付}}　|　ペイ択編集部</div>
+
+    <nav class="lp-toc">
+      <div class="lp-toc-title">この記事の流れ</div>
+      <ol>
+        <li><a href="#quiz">3分診断：あなたは作るべき？</a></li>
+        <li><a href="#conc">あなたへの結論</a></li>
+        <li><a href="#merit">なぜ？ 詳しい解説</a></li>
+        <!-- 必要な見出しを追加 -->
+      </ol>
+    </nav>
+
+    <!-- ② 診断UI（記事の目玉） -->
+    <section class="nl-block" id="quiz">
+      <p class="nl-quiz-hero-h">あなたは<span class="em">{{カード名}}</span>を<br>作るべき？</p>
+      <p class="nl-quiz-hero-sub">スペックの前に、まず「自分に必要か」から。2問で結論が出ます。</p>
+      <div class="nl-quiz">
+        <div class="nl-quiz-group">
+          <p class="nl-quiz-q"><span class="qn">Q1</span>{{質問1}}</p>
+          <div class="nl-opts" data-q="1">
+            <button type="button" class="nl-opt" data-val="a">{{選択肢1a}}</button>
+            <button type="button" class="nl-opt" data-val="b">{{選択肢1b}}</button>
+            <button type="button" class="nl-opt" data-val="c">{{選択肢1c}}</button>
+            <button type="button" class="nl-opt" data-val="d">{{選択肢1d}}</button>
+          </div>
+        </div>
+        <div class="nl-quiz-group">
+          <p class="nl-quiz-q"><span class="qn">Q2</span>{{質問2}}</p>
+          <div class="nl-opts" data-q="2">
+            <button type="button" class="nl-opt" data-val="a">{{選択肢2a}}</button>
+            <button type="button" class="nl-opt" data-val="b">{{選択肢2b}}</button>
+            <button type="button" class="nl-opt" data-val="c">{{選択肢2c}}</button>
+            <button type="button" class="nl-opt" data-val="d">{{選択肢2d}}</button>
+          </div>
+        </div>
+        <div class="nl-quiz-result" id="nlQuizResult">
+          <p class="verdict" id="nlVerdict"></p>
+          <p class="rtext" id="nlRtext"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 結論（本文＋カード3枚） -->
+    <section class="nl-block" id="conc">
+      <h2 class="nl-h2">診断の結論</h2>
+      <p class="nl-text">{{結論の導入文}}</p>
+      <div class="nl-conc-list">
+        <div class="nl-conc good">
+          <p class="nl-conc-when">{{条件A}}</p>
+          <p class="nl-conc-verdict good">{{判定A}}</p>
+          <p class="nl-conc-desc">{{説明A}}</p>
+        </div>
+        <div class="nl-conc mid">
+          <p class="nl-conc-when">{{条件B}}</p>
+          <p class="nl-conc-verdict">{{判定B}}</p>
+          <p class="nl-conc-desc">{{説明B}}</p>
+        </div>
+        <div class="nl-conc low">
+          <p class="nl-conc-when">{{条件C}}</p>
+          <p class="nl-conc-verdict">{{判定C}}</p>
+          <p class="nl-conc-desc">{{説明C}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ ここから「なぜ？」の詳しい解説 -->
+    <section class="nl-block" id="merit">
+      <p class="nl-note-inline" style="text-align:center;border-top:1px solid var(--line);padding-top:20px;margin-bottom:20px;">――― ここから、結論の「なぜ？」を詳しく解説します ―――</p>
+      <h2 class="nl-h2">{{見出し}}</h2>
+      <p class="nl-text">{{本文}}</p>
+      <!--
+        以下、必要なUIパーツをコピペして使う（すべて .card-shindan-page 配下で有効）：
+
+        ● 重要メリット2枚のカード
+        <div class="nl-grid">
+          <div class="nl-mcard"><p class="nl-mcard-title">見出し</p><p class="nl-mcard-desc">説明</p></div>
+          <div class="nl-mcard"><p class="nl-mcard-title">見出し</p><p class="nl-mcard-desc">説明</p></div>
+        </div>
+
+        ● プレーンな箇条書き
+        <ul class="nl-list"><li><b>強調</b>：説明</li></ul>
+
+        ● 還元率の積み上げ
+        <div class="nl-stack">
+          <div class="nl-stack-row"><span class="l">基本</span><span class="r">0.5%</span></div>
+          <div class="nl-stack-plus">＋</div>
+          <div class="nl-stack-row"><span class="l">上乗せ</span><span class="r">最大X%</span></div>
+          <div class="nl-stack-plus">↓</div>
+          <div class="nl-stack-total"><span class="l">最大</span><span class="r">X%</span></div>
+        </div>
+
+        ● STEP UI
+        <div class="nl-steps">
+          <div class="nl-step"><div class="nl-step-num">1</div><div class="nl-step-body"><p class="t">見出し</p><p class="d">説明</p></div></div>
+          <div class="nl-step-arrow">↓</div>
+          <div class="nl-step"><div class="nl-step-num">2</div><div class="nl-step-body"><p class="t">見出し</p><p class="d">説明</p></div></div>
+        </div>
+
+        ● 比較表（横スクロール可）
+        <div class="nl-table-wrap"><table class="nl-compare">
+          <thead><tr><th></th><th>A</th><th>B</th></tr></thead>
+          <tbody><tr><th>項目</th><td>値</td><td>値</td></tr></tbody>
+        </table></div>
+
+        ● 注意カード
+        <div class="nl-caution"><span class="nl-caution-mark">!</span><p class="nl-caution-text">注意文</p></div>
+
+        ● CTA
+        <div class="nl-cta">
+          <p class="nl-cta-name">カード名</p>
+          <p class="nl-cta-spec">年会費0円・特徴</p>
+          <a href="{{アフィリンク}}" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトを見る（PR）</a>
+          <p class="nl-cta-note">条件は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+        </div>
+
+        ● FAQ（アコーディオン）
+        <div class="nl-faq">
+          <div class="nl-faq-item">
+            <button type="button" class="nl-faq-q">質問<span class="mark">＋</span></button>
+            <div class="nl-faq-a"><div class="nl-faq-a-inner">回答</div></div>
+          </div>
+        </div>
+
+        ● 補足・まとめ見出し（アクセントなし）は <h2 class="nl-h2-plain">
+      -->
+    </section>
+
+    <!-- あわせて読みたい -->
+    <section class="nl-block">
+      <h2 class="nl-h2-plain">あわせて読みたい</h2>
+      <div class="lp-related">
+        <a class="lp-related-item" href="./{{関連slug1}}.html">{{関連タイトル1}}</a>
+        <a class="lp-related-item" href="./{{関連slug2}}.html">{{関連タイトル2}}</a>
+      </div>
+    </section>
+
+    <!-- 最終CTA -->
+    <div class="nl-cta">
+      <p class="nl-cta-name">{{カード名}}を申し込む</p>
+      <p class="nl-cta-spec">{{特徴一行}}</p>
+      <a href="{{アフィリンク}}" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトで申し込む（PR）</a>
+      <p class="nl-cta-note">条件・還元率・キャンペーンは変更される場合があります。申し込み前に必ず公式ページで最新情報をご確認ください。</p>
+    </div>
+
+    <div class="lp-disclosure">本ページの情報は掲載時点のものです。還元率・条件・キャンペーン内容は変更される場合があるため、利用前に必ず公式サイトでご確認ください。本サイトはアフィリエイト広告を含みます。［確認日: {{日付}}］</div>
+    <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
+  </div>
+</div>
+
+<!-- 共通スクリプト：診断UI・FAQアコーディオン（.card-shindan-page でスコープ） -->
+<script>
+(function(){
+  var root = document.querySelector('.card-shindan-page');
+  if(!root) return;
+  var answers = { 1: null, 2: null };
+  var resultBox = document.getElementById('nlQuizResult');
+  var verdictEl = document.getElementById('nlVerdict');
+  var rtextEl   = document.getElementById('nlRtext');
+
+  // ★ 記事ごとにこの judge 関数を書き換える
+  function judge(){
+    if(!answers[1] || !answers[2]) return;
+    var q1 = answers[1], q2 = answers[2];
+    var cls, verdict, text;
+    // 例：Q1が a/b なら good、c なら mid、d なら low
+    if(q1 === 'a' || q1 === 'b'){ cls='good'; verdict='かなりおすすめ'; text='{{結果good}}'; }
+    else if(q1 === 'c'){ cls='mid'; verdict='2枚目として検討'; text='{{結果mid}}'; }
+    else { cls='low'; verdict='優先度は低め'; text='{{結果low}}'; }
+    resultBox.className = 'nl-quiz-result show ' + cls;
+    verdictEl.textContent = verdict;
+    rtextEl.textContent = text;
+  }
+
+  root.querySelectorAll('.nl-opts').forEach(function(group){
+    var q = group.getAttribute('data-q');
+    group.querySelectorAll('.nl-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        group.querySelectorAll('.nl-opt').forEach(function(b){ b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        answers[q] = btn.getAttribute('data-val');
+        judge();
+      });
+    });
+  });
+
+  root.querySelectorAll('.nl-faq-item').forEach(function(item){
+    var q = item.querySelector('.nl-faq-q');
+    var a = item.querySelector('.nl-faq-a');
+    q.addEventListener('click', function(){
+      var open = item.classList.toggle('open');
+      a.style.maxHeight = open ? (a.scrollHeight + 'px') : '0';
+    });
+  });
+})();
+</script>
+</body>
+</html>
