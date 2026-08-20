@@ -472,7 +472,7 @@ function bindLinkCard(card){
     var i=s.banners.length; s.banners.push({title:'',href:'',img:''});
     var bl=document.getElementById('blist-'+key); var div=document.createElement('div'); div.innerHTML=buildBannerHtml(key,i,s.banners[i]); bl.appendChild(div.firstChild); bindBannerItem(key,i); updatePreview();
   });
-  var delBtn=el.querySelector('.card-del-btn[data-del-key="'+key+'"]');
+  var delBtn=document.getElementById('card-'+key).querySelector('.card-del-btn[data-del-key="'+key+'"]');
   if(delBtn) delBtn.addEventListener('click',function(){
     if(!confirm('「'+card.name+'」を削除しますか？')) return;
     CARDS.splice(CARDS.findIndex(function(c){ return c.key===key; }),1);
