@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小田急ポイントカードは沿線に住んでない人でも得か？「最大12%」の正体と無料カード／OPクレジットの選び方 | ペイ択（Paytaku）</title>
+<meta name="description" content="小田急ポイントカードは加盟店提示で最大12%還元。でもその12%の正体は、実は「電車の乗り方」にあります。無料のOPポイント専用カードとOPクレジットの違い、二重取りの仕組み、電車・百貨店での立ち回り、楽天カードとの2枚持ち設計まで、申し込み前に知りたいことをまとめました。">
+<link rel="canonical" href="https://paytaku.github.io/articles/odakyu-point-card-shindan.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小田急ポイントカードは沿線に住んでない人でも得か？「最大12%」の正体と無料カード／OPクレジットの選び方 | ペイ択（Paytaku）">
+<meta property="og:description" content="「最大12%」の正体と、楽天カードと組み合わせる2枚持ち設計を申し込み前にまとめました。">
+<meta property="og:url" content="https://paytaku.github.io/articles/odakyu-point-card-shindan.html">
+<meta property="og:site_name" content="ペイ択（Paytaku）">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/articles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="../index.html">ペイ<span>択</span></a>
+    <span class="site-header-tagline">還元率比較・お得情報</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">🌙</button>
+  </div>
+</header>
+<script>
+(function(){
+  var STORAGE_KEY = 'paytaku-theme';
+  var DEFAULT = 'dark';
+  var saved = localStorage.getItem(STORAGE_KEY) || DEFAULT;
+  document.documentElement.setAttribute('data-theme', saved);
+  window.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  });
+})();
+</script>
+
+<div class="lp-page card-shindan-page">
+  <div class="lp-wrap">
+    <a href="../index.html" class="lp-back">← ペイ択トップに戻る</a>
+    <nav class="lp-breadcrumb">
+      <a href="../index.html">ホーム</a> ＞ <a href="./index.html">カード解説</a> ＞ 小田急ポイントカードは沿線に住んでない人でも得か？…
+    </nav>
+
+    <!-- ① ファーストビュー（12%主役） -->
+    <div class="nl-hero">
+      <p class="nl-hero-name">小田急ポイントカード（OPカード）</p>
+      <p class="nl-hero-sub">小田急沿線をよく使う人向け</p>
+      <div class="nl-hero-big">
+        <span class="num">12</span><span class="unit">%</span><span class="kanji">還元</span>
+      </div>
+      <p class="nl-hero-cap">小田急ポイントサービス加盟店の一部、および「小田急おでかけポイント」で狙える最大還元率（店舗・利用状況により異なります）</p>
+      <div class="nl-spec-row">
+        <div class="nl-spec">
+          <div class="nl-spec-label">年会費</div>
+          <div class="nl-spec-value">550円※</div>
+        </div>
+        <div class="nl-spec">
+          <div class="nl-spec-label">通常還元</div>
+          <div class="nl-spec-value">0.5%</div>
+        </div>
+        <div class="nl-spec">
+          <div class="nl-spec-label">加盟店提示</div>
+          <div class="nl-spec-value accent">最大12%</div>
+        </div>
+      </div>
+      <!-- CTA（アフィリエイトURLに差し替えてください） -->
+      <a data-aff="odakyu-op" href="https://ad2.trafficgate.net/t/r/519/1396/odakyu-op" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトを見る（PR）</a>
+      <p class="nl-cta-hint">その前に ── このカードが自分に必要か、まず下の3分診断で確認できます。</p>
+    </div>
+    <div class="lp-byline" style="margin-bottom:28px;">更新日：2026-08-20　|　ペイ択編集部</div>
+
+    <nav class="lp-toc">
+      <div class="lp-toc-title">この記事の流れ</div>
+      <ol>
+        <li><a href="#quiz">3分診断：あなたは作るべき？</a></li>
+        <li><a href="#conc">あなたへの結論</a></li>
+        <li><a href="#merit">なぜ？① このカードのメリット</a></li>
+        <li><a href="#stack">なぜ？② 「最大12%」の正体を分解する</a></li>
+        <li><a href="#step">なぜ？③ 二重取りを受ける3ステップ</a></li>
+        <li><a href="#train">電車で貯める：PASMO・定期券・オートチャージ</a></li>
+        <li><a href="#store">加盟店の使い分けとファミマ的な立ち回り</a></li>
+        <li><a href="#gold">OPクレジットとOPクレジット ゴールドの違い</a></li>
+        <li><a href="#nimaime">他のカードとの2枚持ち設計</a></li>
+        <li><a href="#chuii">注意点</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+        <li><a href="#summary">まとめ</a></li>
+      </ol>
+    </nav>
+
+    <!-- ② 診断UI（記事の目玉） -->
+    <section class="nl-block" id="quiz">
+      <p class="nl-quiz-hero-h">あなたは<span class="em">小田急ポイントカード</span>を<br>クレジットにするべき？</p>
+      <p class="nl-quiz-hero-sub">スペックの前に、まず「自分に必要か」から。2問で結論が出ます。</p>
+      <div class="nl-quiz">
+        <div class="nl-quiz-group">
+          <p class="nl-quiz-q"><span class="qn">Q1</span>小田急線・小田急沿線のお店（小田急百貨店、Odakyu OXなど）をどれくらい利用しますか？</p>
+          <div class="nl-opts" data-q="1">
+            <button type="button" class="nl-opt" data-val="daily">ほぼ毎日（通勤・通学）</button>
+            <button type="button" class="nl-opt" data-val="weekly">週1〜2回</button>
+            <button type="button" class="nl-opt" data-val="monthly">月に数回</button>
+            <button type="button" class="nl-opt" data-val="rare">ほとんど使わない</button>
+          </div>
+        </div>
+        <div class="nl-quiz-group">
+          <p class="nl-quiz-q"><span class="qn">Q2</span>普段使っているメインカードは？</p>
+          <div class="nl-opts" data-q="2">
+            <button type="button" class="nl-opt" data-val="rakuten">楽天カード</button>
+            <button type="button" class="nl-opt" data-val="jcb">JCB CARD W など</button>
+            <button type="button" class="nl-opt" data-val="other">その他</button>
+            <button type="button" class="nl-opt" data-val="none">特にない</button>
+          </div>
+        </div>
+        <div class="nl-quiz-result" id="nlQuizResult">
+          <p class="verdict" id="nlVerdict"></p>
+          <p class="rtext" id="nlRtext"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 結論（本文＋カード3枚） -->
+    <section class="nl-block" id="conc">
+      <h2 class="nl-h2">診断の結論</h2>
+      <p class="nl-text">タイプ別に、このカードとの向き合い方をまとめると次のとおりです。自分がどれに当てはまるかを確認してください。</p>
+      <div class="nl-conc-list">
+        <div class="nl-conc good">
+          <p class="nl-conc-when">小田急線・沿線のお店をよく使うなら</p>
+          <p class="nl-conc-verdict good">かなりおすすめ</p>
+          <p class="nl-conc-desc">通勤・通学でPASMOを使うなら「小田急おでかけポイント」だけでも運賃の還元が積み上がります。年会費は前年1回のクレジット払いで実質無料なので、持つコストはほぼゼロです。</p>
+        </div>
+        <div class="nl-conc low">
+          <p class="nl-conc-when">沿線をほとんど使わないなら</p>
+          <p class="nl-conc-verdict">優先度は低め</p>
+          <p class="nl-conc-desc">一般のJCB/Visa/Mastercard加盟店では0.5%しか貯まらないので、それだけを見るなら基本1%以上の他のカードを優先したほうがよい可能性があります。まずは無料のOPポイント専用カードで様子を見るのも手です。</p>
+        </div>
+        <div class="nl-conc mid">
+          <p class="nl-conc-when">すでに楽天カードなどを持っているなら</p>
+          <p class="nl-conc-verdict">2枚目として検討</p>
+          <p class="nl-conc-desc">メインカードを乗り換えるのではなく、「小田急沿線・電車専用カード」として使い分けるのが現実的です。年会費は前年1回の利用で無料なので、2枚持ちのコストはほぼゼロです。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ メリット（ここから「なぜ？」の詳しい解説） -->
+    <section class="nl-block" id="merit">
+      <p class="nl-note-inline" style="text-align:center;border-top:1px solid var(--line);padding-top:20px;margin-bottom:20px;">――― ここから、結論の「なぜ？」を詳しく解説します ―――</p>
+      <h2 class="nl-h2">このカードのメリット</h2>
+      <p class="nl-text">小田急ポイントカード（OPクレジット）の魅力は、突き詰めると<b>「年会費が実質無条件で無料」なのに「加盟店提示とクレジット払いの二重取りができる」</b>という2点に集約されます。この2つがこのカードの核なので、まずここだけカードで強調します。</p>
+      <div class="nl-grid">
+        <div class="nl-mcard">
+          <p class="nl-mcard-title">年会費 550円（実質無料）</p>
+          <p class="nl-mcard-desc">初年度は無料。2年目以降も、前年度に一度でもクレジット払いの利用があれば年会費無料になります。</p>
+        </div>
+        <div class="nl-mcard">
+          <p class="nl-mcard-title">加盟店提示で 最大12%</p>
+          <p class="nl-mcard-desc">小田急百貨店・Odakyu OX・小田急線の乗車など。店舗によって還元率は大きく異なります。</p>
+        </div>
+      </div>
+      <p class="nl-text" style="margin-top:14px;">そのほかの特徴は、次のような点です。いずれも「あると嬉しい」レベルで、上の2点ほど決定的ではありません。</p>
+      <ul class="nl-list">
+        <li><b>通常還元は0.5%</b>。小田急グループ以外の一般加盟店では平均的なので、メインではなく沿線専用のサブとして持つのが正解です。</li>
+        <li><b>PASMOと連携できる</b>。オートチャージや「小田急おでかけポイント」の登録で、電車代からもポイントが貯まります。</li>
+        <li><b>家族カードでポイント合算</b>。本会員と家族会員の利用分をまとめて貯められます。</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <div class="nl-cta">
+      <p class="nl-cta-name">小田急ポイントカード（OPクレジット）</p>
+      <p class="nl-cta-spec">年会費実質無料・小田急沿線と電車で二重取り</p>
+      <a data-aff="odakyu-op" href="https://ad2.trafficgate.net/t/r/519/1396/odakyu-op" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトを見る（PR）</a>
+      <p class="nl-cta-note">条件・還元率は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+    </div>
+
+    <!-- ⑤ 最大12%の正体（本文＋積み上げUI＋補足本文） -->
+    <section class="nl-block" id="stack">
+      <h2 class="nl-h2">「最大12%」の正体を分解する</h2>
+      <p class="nl-text">「小田急ポイントカードは最大12%還元」という案内をよく見かけますが、これを普通の買い物で誰でも取れる数字だと思うと期待外れになります。内訳を分解すると、12%の主な出どころは<b>「電車の乗り方」</b>です。</p>
+      <div class="nl-stack">
+        <div class="nl-stack-row"><span class="l">クレジットご利用ポイント（基本）</span><span class="r">0.5%</span></div>
+        <div class="nl-stack-plus">＋</div>
+        <div class="nl-stack-row"><span class="l">加盟店提示のお買い上げポイント（店舗による）</span><span class="r">0.5〜数%</span></div>
+        <div class="nl-stack-plus">＋</div>
+        <div class="nl-stack-row"><span class="l">小田急おでかけポイント（同一運賃区間の乗車回数に応じて）</span><span class="r">運賃の0.5〜12%</span></div>
+        <div class="nl-stack-plus">↓</div>
+        <div class="nl-stack-total"><span class="l">組み合わせ次第で最大</span><span class="r">12%</span></div>
+      </div>
+      <p class="nl-note-inline" style="margin-top:14px;">つまり「小田急百貨店で買い物をすれば誰でも12%」ではなく、<b>PASMOでの通勤・通学のように同じ運賃区間を月内に何度も乗る人</b>が「小田急おでかけポイント」で高い還元率に到達しやすい仕組みです。買い物だけで12%を狙う記事は、この内訳を省略していることが多いので注意してください。</p>
+    </section>
+
+    <!-- ⑥ 二重取りを受ける3STEP（本文＋STEP UI＋注意） -->
+    <section class="nl-block" id="step">
+      <h2 class="nl-h2">二重取りを受ける3ステップ</h2>
+      <p class="nl-text">ここが最重要です。<b>カードを提示するだけの「お買い上げ・ご利用ポイント」と、クレジット払いで貯まる「クレジットご利用ポイント」は別枠</b>です。現金払いでカードを提示するだけでは、クレジット分の0.5%を取り逃します。申し込んだら、まず次の3ステップを済ませてください。</p>
+      <div class="nl-steps">
+        <div class="nl-step">
+          <div class="nl-step-num">1</div>
+          <div class="nl-step-body">
+            <p class="t">OPクレジット（JCB/Visa/Mastercard）に申し込む</p>
+            <p class="d">無料のOPポイント専用カードではなく、クレジット機能付きのOPカードを選ぶ。</p>
+          </div>
+        </div>
+        <div class="nl-step-arrow">↓</div>
+        <div class="nl-step">
+          <div class="nl-step-num">2</div>
+          <div class="nl-step-body">
+            <p class="t">小田急ONE・小田急ポイントアプリにPASMOを登録</p>
+            <p class="d">「小田急おでかけポイント」にPASMO番号を紐づけると、乗車分の運賃ポイントが自動で貯まる。</p>
+          </div>
+        </div>
+        <div class="nl-step-arrow">↓</div>
+        <div class="nl-step">
+          <div class="nl-step-num">3</div>
+          <div class="nl-step-body">
+            <p class="t">加盟店では「提示」と「支払い」を両方する</p>
+            <p class="d">カードを提示したうえで支払いもクレジット払いにする。現金払い＋提示だけだとクレジット分を取り逃す。</p>
+          </div>
+        </div>
+      </div>
+      <div class="nl-caution" style="margin-top:14px;">
+        <span class="nl-caution-mark">!</span>
+        <p class="nl-caution-text">「お買い上げ・ご利用ポイント」の還元率は加盟店ごとに異なり、対象外の商品・サービスもあります。また「クレジットご利用ポイント」の対象外となる支払い（モバイルSuicaチャージ分、キャッシング、年会費など）もあります。条件は変更されることがあるため、利用前に公式サイトで最新情報をご確認ください。［確認日: 2026-08-20］</p>
+      </div>
+    </section>
+
+    <!-- ⑦ 電車で貯める（プレーンな行・カードにしない） -->
+    <section class="nl-block" id="train">
+      <h2 class="nl-h2">電車で貯める：PASMO・定期券・オートチャージ</h2>
+      <p class="nl-text">小田急ポイントカードの実力は、実は<b>買い物より電車の使い方</b>で決まる部分が大きいです。通勤・通学でPASMOを使う人ほど恩恵が大きくなります。</p>
+      <div class="nl-store-plain">
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">PASMOでの乗車（小田急おでかけポイント）</div>
+            <p class="sdesc">同一運賃区間を同一月内に複数回乗車すると、乗車回数に応じて運賃の0.5〜12%が貯まります。PASMOの事前登録が必要です。</p>
+          </div>
+          <div class="srate">運賃の最大12%</div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">定期券の購入</div>
+            <p class="sdesc">クレジット払いにすると、購入額200円（税込）につき1ポイント（0.5%）のクレジットご利用ポイントが貯まります。</p>
+          </div>
+          <div class="srate">0.5%</div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">PASMOオートチャージ</div>
+            <p class="sdesc">改札での入出場時に自動でチャージされ、チャージ額もクレジットご利用ポイントの対象になります。券売機に並ぶ手間もなくなります。</p>
+          </div>
+          <div class="srate">0.5%</div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">ロマンスカーの特急券</div>
+            <p class="sdesc">「ロマンスカー＠クラブ」に登録すると、月間の乗車金額に応じて特急券購入料金の最大5%のポイントが貯まります。</p>
+          </div>
+          <div class="srate">最大5%</div>
+        </div>
+      </div>
+      <p class="nl-text" style="margin-top:14px;">つまり、小田急沿線に住んでいなくても、<b>通勤・通学で小田急線に乗る機会があるだけで</b>このカードは意味を持ちます。逆に、小田急線にほぼ乗らず沿線の店舗も使わないなら、電車由来の還元は期待できません。</p>
+    </section>
+
+    <!-- ⑧ 加盟店の使い分け -->
+    <section class="nl-block" id="store">
+      <h2 class="nl-h2">加盟店の使い分け</h2>
+      <p class="nl-text">「小田急ポイントサービス加盟店」は小田急百貨店・Odakyu OXだけでなく、沿線の一般店舗や横浜銀行など多岐にわたります。<b>還元率は店舗ごとに異なり</b>、大半は0.5〜数%程度です。主な店の扱いを整理しました。</p>
+      <div class="nl-store-plain">
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">小田急百貨店</div>
+            <p class="sdesc">通常はご奉仕品・食料品などで1%、その他条件により変動。前年度の年間購入額に応じてランクアップ制度があり、購入額が多いほど還元率が上がります。</p>
+          </div>
+          <div class="srate">1%〜（変動）</div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">Odakyu OX（スーパー）</div>
+            <p class="sdesc">カード提示で基本のお買い上げポイントに加え、月間ボーナスポイントが付与される場合があります。</p>
+          </div>
+          <div class="srate">店舗により変動</div>
+        </div>
+        <div class="nl-store-row">
+          <div class="sbody">
+            <div class="sname">小田急線以外のJCB/Visa/Mastercard加盟店</div>
+            <p class="sdesc">全国のJCB、Visa、Mastercard加盟店でクレジット払いをすれば、クレジットご利用ポイントの0.5%は貯まります。加盟店提示分はつきません。</p>
+          </div>
+          <div class="srate off">0.5%のみ</div>
+        </div>
+      </div>
+      <p class="nl-text" style="margin-top:14px;">つまり、日常のコンビニや全国チェーンでの買い物は「クレジット払いの0.5%」止まりです。高還元を狙うなら、小田急百貨店・Odakyu OX・小田急線の乗車という「小田急グループの土俵」で使うことが前提になります。</p>
+    </section>
+
+    <!-- CTA -->
+    <div class="nl-cta">
+      <p class="nl-cta-name">小田急ポイントカード（OPクレジット）</p>
+      <p class="nl-cta-spec">年会費実質無料・小田急沿線＋電車専用のサブとして</p>
+      <a data-aff="odakyu-op" href="https://ad2.trafficgate.net/t/r/519/1396/odakyu-op" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトを見る（PR）</a>
+      <p class="nl-cta-note">条件・還元率は変更される場合があるため、必ず公式ページで最新情報をご確認ください。</p>
+    </div>
+
+    <!-- ⑨ OPクレジット vs ゴールド（本文＋比較表＋本文） -->
+    <section class="nl-block" id="gold">
+      <h2 class="nl-h2">OPクレジットとOPクレジット ゴールドの違い</h2>
+      <p class="nl-text">小田急ポイントカードには、クレジット機能なしで無料の「OPポイント専用カード」と、クレジット機能付きの「OPクレジット」、さらに上位の「OPクレジット ゴールド」があります。主な違いは次のとおりです。</p>
+      <div class="nl-table-wrap">
+        <table class="nl-compare">
+          <thead>
+            <tr><th></th><th>OPポイント専用</th><th>OPクレジット</th><th>OPクレジット ゴールド</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>年会費</th><td>無料</td><td>550円（条件付き無料）</td><td>11,000円（条件付き無料）</td></tr>
+            <tr><th>クレジット払い</th><td>不可</td><td>可</td><td>可</td></tr>
+            <tr><th>クレジット利用ポイント</th><td>―</td><td>0.5%</td><td>0.5%</td></tr>
+            <tr><th>永年無料の条件</th><td>無条件</td><td>前年に1回でもクレジット利用</td><td>前年に年間200万円利用</td></tr>
+            <tr><th>おすすめ</th><td>審査なしで今すぐ使いたい人</td><td>初めての人</td><td>年間利用額が多い人</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nl-text" style="margin-top:14px;">判断の目安は<b>「クレジット払いで0.5%を上乗せしたいか」</b>。今すぐ現金派のまま貯め始めたいなら無料のOPポイント専用カードでも十分ですが、公共料金や定期券などをこのカードに寄せられるなら、実質無料のOPクレジットのほうがトータルで得します。ゴールドは付帯保険サービスなどが付く分、年間200万円をこのカードに集約できる人向けです。</p>
+      <div class="nl-caution" style="margin-top:14px;">
+        <span class="nl-caution-mark">!</span>
+        <p class="nl-caution-text">OPポイント専用カードは、後からOPクレジットへの切り替えが可能です。まず無料カードで試してから、利用額が増えたらクレジットに切り替える道もあります。切り替え条件は公式サイトでご確認ください。［確認日: 2026-08-20］</p>
+      </div>
+    </section>
+
+    <!-- ⑩ 2枚持ち（本文＋軽量フロー＋本文） -->
+    <section class="nl-block" id="nimaime">
+      <h2 class="nl-h2">他のカードとの2枚持ち設計</h2>
+      <p class="nl-text">OPクレジットの基本還元率は0.5%と低いので、メインにするには向きません。すでに楽天カードやJCB CARD Wを持っている人は、置き換えではなく「小田急沿線・電車専用のサブ」として足すのが正解です。役割を分けると、こう整理できます。</p>
+      <div class="nl-flow2">
+        <div class="nl-flow2-card">
+          <span class="nl-flow2-role">メインカード</span>
+          <p class="nl-flow2-name">楽天カード / JCB CARD W など</p>
+          <p class="nl-flow2-use">普段の買い物すべて（基本1%以上を確保）</p>
+        </div>
+        <div class="nl-flow2-plus">＋</div>
+        <div class="nl-flow2-card">
+          <span class="nl-flow2-role">サブカード</span>
+          <p class="nl-flow2-name">小田急ポイントカード（OPクレジット）</p>
+          <p class="nl-flow2-use">定期券・PASMOオートチャージ・小田急百貨店・Odakyu OXだけ</p>
+        </div>
+      </div>
+      <p class="nl-text" style="margin-top:14px;">「小田急グループの支払いだけOPクレジット、それ以外は楽天／JCB」と決めておくだけで、取りこぼしが大きく減ります。年会費はどちらも実質無料なので、2枚持ちのコストはほぼゼロです。</p>
+    </section>
+
+    <!-- ⑪ 注意点（プレーンな箇条書き・カードにしない） -->
+    <section class="nl-block" id="chuii">
+      <h2 class="nl-h2-plain">申し込み前の注意点</h2>
+      <ul class="nl-list">
+        <li><b>「12%」は買い物だけの数字ではない</b>：主な出どころは「小田急おでかけポイント」（電車の乗り方）です。買い物だけで12%を狙う設計にすると期待外れになります。</li>
+        <li><b>提示と支払いは別枠</b>：加盟店提示の「お買い上げ・ご利用ポイント」と、クレジット払いの「クレジットご利用ポイント」は別々に貯まります。現金払いだとクレジット分の0.5%を取り逃します。</li>
+        <li><b>PASMOの事前登録が必要</b>：「小田急おでかけポイント」は小田急ONEでPASMO番号を紐づけないと貯まりません。カードを作っただけでは自動で始まりません。</li>
+        <li><b>モバイルSuicaチャージなどはポイント対象外</b>：一部の電子マネーチャージやキャッシング、年会費などはクレジットご利用ポイントの対象外です。</li>
+      </ul>
+    </section>
+
+    <!-- ⑫ FAQ（シンプル見出し＋アコーディオン） -->
+    <section class="nl-block" id="faq">
+      <h2 class="nl-h2-plain">よくある質問</h2>
+      <div class="nl-faq">
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">小田急沿線に住んでなくても意味ある？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">通勤・通学などで小田急線に乗る機会があれば、「小田急おでかけポイント」の恩恵を受けられます。小田急線にまったく乗らず沿線の店舗も使わないなら、一般加盟店での0.5%しか貯まらないため、優先度は低めです。</div></div>
+        </div>
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">無料のOPポイント専用カードだけじゃダメ？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">現金払いでも加盟店提示分のポイントは貯まります。ただし、クレジット払いの0.5%上乗せやPASMOオートチャージとの連携はOPクレジット限定です。よく使うならクレジットのほうがトータルで有利ですが、まず無料カードで試すのも合理的です。</div></div>
+        </div>
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">年会費550円は本当に無料になる？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">初年度は無料です。2年目以降も、前年度に一度でもクレジット払いの利用があれば年会費は無料になります。逆に、1年間まったく使わないと550円が発生する点には注意してください。</div></div>
+        </div>
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">楽天カードと2枚持ちする意味は？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">OPクレジットの通常還元は0.5%なのでメインには向きません。普段の買い物は楽天カード（1%以上）、定期券・オートチャージ・小田急百貨店だけOPクレジットと使い分けると、取りこぼしが減ります。年会費はどちらも実質無料です。</div></div>
+        </div>
+        <div class="nl-faq-item">
+          <button type="button" class="nl-faq-q">OPクレジット ゴールドはどんな人向け？<span class="mark">＋</span></button>
+          <div class="nl-faq-a"><div class="nl-faq-a-inner">年間200万円をこのカードに集約できる人向けです。達成すると翌年度の年会費11,000円が無料になり、付帯保険サービスなどの特典も付きます。年間利用額に自信がなければ、まず通常のOPクレジットから始めるのが無難です。</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑬ まとめ（プレーンな本文・カードにしない） -->
+    <section class="nl-block" id="summary">
+      <h2 class="nl-h2-plain">まとめ</h2>
+      <p class="nl-text">小田急ポイントカードは「小田急沿線に住んでいる人専用」ではなく、通勤・通学などで小田急線に乗る機会があるか、小田急百貨店・Odakyu OXを使う機会があるかで価値が決まるサブカードです。「最大12%」の主な出どころは電車の乗り方であることを理解しておくと、期待外れになりません。</p>
+      <p class="nl-text">鍵は「PASMOを小田急ONEに登録すること」と「加盟店では提示だけでなく支払いもクレジットにすること」。この2つを済ませれば、無料に近い年会費で二重取りが始まります。既に楽天カードやJCB CARD Wを持っている人も、置き換えではなく「小田急沿線・電車専用のサブ」として2枚持ちするのが正解です。</p>
+      <div class="nl-tags">
+        <span class="nl-tag">小田急ポイントカード</span>
+        <span class="nl-tag">OPクレジット</span>
+        <span class="nl-tag">OPクレジット ゴールド</span>
+        <span class="nl-tag">小田急おでかけポイント</span>
+        <span class="nl-tag">PASMOオートチャージ</span>
+        <span class="nl-tag">2枚持ち</span>
+      </div>
+    </section>
+
+    <!-- あわせて読みたい -->
+    <section class="nl-block">
+      <h2 class="nl-h2-plain">あわせて読みたい</h2>
+      <div class="lp-related">
+        <a class="lp-related-item" href="./smbc-nl-shindan.html">三井住友カード（NL）はコンビニに行かない人でも得か？7%を取り逃さない設定と2枚持ち設計</a>
+        <a class="lp-related-item" href="./epos-card-shindan.html">エポスカードは「還元率で選ぶカード」ではない｜0.5%でも2枚目に持つ価値と無料ゴールド化の全手順</a>
+      </div>
+    </section>
+
+    <!-- ⑭ 最終CTA -->
+    <div class="nl-cta">
+      <p class="nl-cta-name">小田急ポイントカード（OPクレジット）を申し込む</p>
+      <p class="nl-cta-spec">年会費実質無料・小田急沿線＋電車で二重取り</p>
+      <a data-aff="odakyu-op" href="https://ad2.trafficgate.net/t/r/519/1396/odakyu-op" class="nl-cta-btn" target="_blank" rel="noopener noreferrer nofollow sponsored">公式サイトで申し込む（PR）</a>
+      <p class="nl-cta-note">条件・還元率・キャンペーンは変更される場合があります。申し込み前に必ず公式ページで最新情報をご確認ください。</p>
+    </div>
+
+    <div class="lp-disclosure">本ページの情報は掲載時点のものです。還元率・条件・キャンペーン内容は変更される場合があるため、利用前に必ず公式サイトでご確認ください。本サイトはアフィリエイト広告を含みます。［確認日: 2026-08-20］</div>
+    <a href="../index.html" class="lp-back lp-back-bottom">← ペイ択トップに戻る</a>
+  </div>
+</div>
+
+<!-- 記事専用スクリプト：診断UI・FAQアコーディオン（既存機能に影響しないようスコープ） -->
+<script>
+(function(){
+  var root = document.querySelector('.card-shindan-page');
+  if(!root) return;
+
+  var answers = { 1: null, 2: null };
+  var resultBox = document.getElementById('nlQuizResult');
+  var verdictEl = document.getElementById('nlVerdict');
+  var rtextEl   = document.getElementById('nlRtext');
+
+  function judge(){
+    if(!answers[1] || !answers[2]) return;
+    var q1 = answers[1], q2 = answers[2];
+    var cls, verdict, text;
+    if(q1 === 'daily' || q1 === 'weekly'){
+      if(q2 === 'none'){
+        cls = 'good';
+        verdict = 'かなりおすすめ（メイン級）';
+        text = '小田急線・沿線のお店をよく使い、メインカードもまだお持ちでないので、二重取りの恩恵を活かしやすい状況です。PASMOの登録を忘れずに。';
+      } else {
+        cls = 'good';
+        verdict = 'かなりおすすめ（2枚目に）';
+        text = '小田急線・沿線をよく使うので二重取りの恩恵が大きいです。今のメインカードは日常用に残し、定期券・オートチャージ・小田急百貨店だけOPクレジットで支払う2枚持ちが最適です。';
+      }
+    } else if(q1 === 'monthly'){
+      cls = 'mid';
+      verdict = '2枚目として検討';
+      text = '月に数回でも小田急沿線を使うなら、年会費実質無料なので持っておく価値はあります。定期券やオートチャージだけOPクレジット、それ以外は今のカード、と使い分けましょう。';
+    } else {
+      cls = 'low';
+      verdict = '優先度は低め';
+      text = '小田急沿線をほとんど使わないなら、二重取りの恩恵は小さめです。一般加盟店での還元は0.5%なので、基本1%以上の他カードを優先するか、まずは無料のOPポイント専用カードから試すほうがよい可能性があります。';
+    }
+    resultBox.className = 'nl-quiz-result show ' + cls;
+    verdictEl.textContent = verdict;
+    rtextEl.textContent = text;
+  }
+
+  root.querySelectorAll('.nl-opts').forEach(function(group){
+    var q = group.getAttribute('data-q');
+    group.querySelectorAll('.nl-opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        group.querySelectorAll('.nl-opt').forEach(function(b){ b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        answers[q] = btn.getAttribute('data-val');
+        judge();
+      });
+    });
+  });
+
+  root.querySelectorAll('.nl-faq-item').forEach(function(item){
+    var q = item.querySelector('.nl-faq-q');
+    var a = item.querySelector('.nl-faq-a');
+    q.addEventListener('click', function(){
+      var open = item.classList.toggle('open');
+      a.style.maxHeight = open ? (a.scrollHeight + 'px') : '0';
+    });
+  });
+})();
+</script>
+<script src="../assets/affiliates.js"></script>
+</body>
+</html>
