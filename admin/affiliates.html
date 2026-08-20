@@ -691,10 +691,25 @@ function applyLinksJson(data){
     var b=banners[card.key];
     if(b) linkState[card.key].banners=Array.isArray(b)?b.map(function(x){ return Object.assign({title:'',href:'',img:''},x); }):[Object.assign({title:'',href:'',img:''},b)];
   });
-  // UIを再構築
+  // 再構築前に現在の報酬入力内容をrewardStateに保存（上書きで消えないように）
+  CARDS.forEach(function(card){
+    var key=card.key;
+    var rsel=document.getElementById('rasp-'+key);
+    var roth=document.getElementById('rasp-other-'+key);
+    var rwd =document.getElementById('rrwd-'+key);
+    var rnot=document.getElementById('rnote-'+key);
+    var rmem=document.getElementById('rmemo-'+key);
+    if(rsel) rewardState[key].asp      = rsel.value==='その他（手動入力）'?((roth&&roth.value)||'その他'):rsel.value;
+    if(rwd)  rewardState[key].reward   = rwd.value;
+    if(rnot) rewardState[key].rewardNote = rnot.value;
+    if(rmem) rewardState[key].memo     = rmem.value;
+  });
+  // UIを再構築（リンクカードと報酬カードの両方）
   document.getElementById('cardList').innerHTML='';
-  CARDS.forEach(function(card){ buildLinkCard(card); });
+  document.getElementById('rewardList').innerHTML='';
+  CARDS.forEach(function(card){ buildLinkCard(card); buildRewardCard(card); });
   updatePreview();
+  updateRewardSummary();
 }
 
 /* ===== 初期化 ===== */
